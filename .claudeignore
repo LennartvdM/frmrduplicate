@@ -1,8 +1,7 @@
 # Files that should never be loaded into AI context
 
 # Vendor runtime — 41K lines of React + Framer SDK + Framer Motion
-src/chunk--react-and-framer-runtime.mjs
-src/chunk--framer-motion.mjs
+src/vendor/
 
 # Entire directories to skip
 archive/

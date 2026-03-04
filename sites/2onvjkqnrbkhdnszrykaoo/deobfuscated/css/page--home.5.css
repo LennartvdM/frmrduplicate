@@ -1,0 +1,9 @@
+@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }
+
+.framer-2FQXY.framer-1919kbd, .framer-2FQXY .framer-1919kbd { display: block; }
+
+.framer-2FQXY.framer-14h8w6j { cursor: pointer; height: 72px; overflow: visible; position: relative; width: 380px; }
+
+.framer-2FQXY .framer-1c06u0h { -webkit-user-select: none; bottom: 0px; flex: none; height: auto; left: 50%; overflow: visible; position: absolute; user-select: none; white-space: pre-wrap; width: 360px; word-break: break-word; word-wrap: break-word; }
+
+.framer-2FQXY.framer-v-1r41h02.framer-14h8w6j { overflow: hidden; will-change: var(--framer-will-change-override, transform); }

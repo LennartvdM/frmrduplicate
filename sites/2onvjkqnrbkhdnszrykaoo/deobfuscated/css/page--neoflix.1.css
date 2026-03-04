@@ -1,0 +1,13 @@
+@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }
+
+.framer-v0tbV.framer-12qjzrj, .framer-v0tbV .framer-12qjzrj { display: block; }
+
+.framer-v0tbV.framer-1ewt70r { height: 600px; overflow: hidden; position: relative; width: 800px; }
+
+.framer-v0tbV .framer-1h9hgau, .framer-v0tbV .framer-1qcn6wb-container, .framer-v0tbV .framer-o9c2ut, .framer-v0tbV .framer-7mze90-container, .framer-v0tbV .framer-1fk9uar, .framer-v0tbV .framer-uoewgw-container, .framer-v0tbV .framer-7d7u5f, .framer-v0tbV .framer-iinprr-container, .framer-v0tbV .framer-foyl56-container, .framer-v0tbV .framer-33vwgr-container, .framer-v0tbV .framer-1d40tbl-container { bottom: 0px; flex: none; left: 0px; position: absolute; right: 0px; top: 0px; }
+
+.framer-v0tbV .framer-zpq5vh { bottom: 0px; flex: none; left: 0px; overflow: visible; position: absolute; right: 0px; top: 0px; }
+
+.framer-v0tbV .framer-1xyvsbf { bottom: 0px; flex: none; left: 0px; overflow: hidden; position: absolute; right: 0px; top: 0px; }
+
+.framer-v0tbV .framer-pq83k9 { bottom: 0px; flex: none; left: 0px; mix-blend-mode: screen; overflow: visible; position: absolute; right: 0px; top: 0px; }

@@ -2,10 +2,6 @@
  * Page metadata chunk - contains responsive breakpoints, SEO metadata, and page title.
  * breakpoints define responsive behavior at different screen widths.
  */
-/**
- * Import aliases resolved:
- *   t → getSiteMetadata
- */
 import { getSiteMetadata } from "./chunk--site-metadata.mjs";
 function r(e, a) {
   return {
@@ -18,10 +14,10 @@ function r(e, a) {
       },
       { hash: "3ttsx", mediaQuery: "(max-width: 809px)" },
     ],
-    description: t(e, a).description,
+    description: getSiteMetadata(e, a).description,
     elements: {},
     robots: "max-image-preview:large",
-    title: t(e, a).title || "Toolbox_Learning_from_success_stories",
+    title: getSiteMetadata(e, a).title || "Toolbox_Learning_from_success_stories",
     viewport: "width=device-width",
   };
 }

@@ -1,16 +1,6 @@
 /**
  * framer components
  */
-/**
- * Import aliases resolved:
- *   l → RenderTarget
- *   r → ControlType
- *   h → useIsOnFramerCanvas
- *   i → useEffect
- *   s → useMemo
- *   d → fontLoader
- *   e → navigator
- */
 import { RenderTarget,
   ControlType,
   useIsOnFramerCanvas,
@@ -18,7 +8,7 @@ import { RenderTarget,
   useMemo,
   fontLoader } from "./chunk--react-and-framer-runtime.mjs";
 import { navigator } from "./chunk--browser-polyfills.mjs";
-d.loadFonts([]);
+fontLoader.loadFonts([]);
 var M = [{ explicitInter: !0, fonts: [] }],
   R = [
     '.framer-VnG2h .framer-styles-preset-b5e6zr:not(.rich-text-wrapper), .framer-VnG2h .framer-styles-preset-b5e6zr.rich-text-wrapper a { --framer-link-current-text-color: var(--token-3f355627-0701-4163-9212-31117bae3b68, #72c2c2) /* {"name":"Bar Green"} */; --framer-link-current-text-decoration: none; --framer-link-hover-text-color: var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, #529c9c) /* {"name":"Text Highlight"} */; --framer-link-hover-text-decoration: underline; --framer-link-text-color: #574b4b; --framer-link-text-decoration: none; }',
@@ -41,12 +31,12 @@ var C = {
     flexDirection: "column",
   },
   w = {
-    onClick: { type: r.EventHandler },
-    onMouseEnter: { type: r.EventHandler },
-    onMouseLeave: { type: r.EventHandler },
+    onClick: { type: ControlType.EventHandler },
+    onMouseEnter: { type: ControlType.EventHandler },
+    onMouseLeave: { type: ControlType.EventHandler },
   },
   B = {
-    type: r.Number,
+    type: ControlType.Number,
     title: "Font Size",
     min: 2,
     max: 200,
@@ -55,20 +45,20 @@ var C = {
   },
   I = {
     font: {
-      type: r.Boolean,
+      type: ControlType.Boolean,
       title: "Font",
       defaultValue: !1,
       disabledTitle: "Default",
       enabledTitle: "Custom",
     },
     fontFamily: {
-      type: r.String,
+      type: ControlType.String,
       title: "Family",
       placeholder: "Inter",
       hidden: ({ font: t }) => !t,
     },
     fontWeight: {
-      type: r.Enum,
+      type: ControlType.Enum,
       title: "Weight",
       options: [100, 200, 300, 400, 500, 600, 700, 800, 900],
       optionTitles: [
@@ -92,14 +82,14 @@ function N(t, o) {
   return g(!1, t, o);
 }
 function g(t, o, u = !0) {
-  let c = h();
-  i(() => {
+  let c = useIsOnFramerCanvas();
+  useEffect(() => {
     u && c === t && o();
   }, [c]);
 }
 var x = () => {
-    if (typeof e < "u") {
-      let t = e.userAgent.toLowerCase();
+    if (typeof navigator < "u") {
+      let t = navigator.userAgent.toLowerCase();
       return (
         (t.indexOf("safari") > -1 ||
           t.indexOf("framermobile") > -1 ||
@@ -108,9 +98,9 @@ var x = () => {
       );
     } else return !1;
   },
-  U = () => s(() => x(), []);
+  U = () => useMemo(() => x(), []);
 function J() {
-  return s(() => l.current() === l.canvas, []);
+  return useMemo(() => RenderTarget.current() === RenderTarget.canvas, []);
 }
 function ee(t) {
   let {
@@ -121,7 +111,7 @@ function ee(t) {
     bottomRightRadius: m,
     bottomLeftRadius: f,
   } = t;
-  return s(
+  return useMemo(
     () => (u ? `${c}px ${p}px ${m}px ${f}px` : `${o}px`),
     [o, u, c, p, m, f],
   );
@@ -129,7 +119,7 @@ function ee(t) {
 var te = {
   borderRadius: {
     title: "Radius",
-    type: r.FusedNumber,
+    type: ControlType.FusedNumber,
     toggleKey: "isMixedBorderRadius",
     toggleTitles: ["Radius", "Radius per corner"],
     valueKeys: [
@@ -144,7 +134,7 @@ var te = {
 };
 var ne = {
   padding: {
-    type: r.FusedNumber,
+    type: ControlType.FusedNumber,
     toggleKey: "paddingPerSide",
     toggleTitles: ["Padding", "Padding per side"],
     valueKeys: ["paddingTop", "paddingRight", "paddingBottom", "paddingLeft"],
@@ -157,13 +147,13 @@ export {
   C as a,
   E as b,
   w as c,
-  L as d,
-  N as e,
+  L as fontLoader,
+  N as navigator,
   U as f,
   J as g,
-  ee as h,
-  te as i,
+  ee as useIsOnFramerCanvas,
+  te as useEffect,
   M as j,
   R as k,
-  k as l,
+  k as RenderTarget,
 };

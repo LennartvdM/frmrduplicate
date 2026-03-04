@@ -1,0 +1,77 @@
+@supports (aspect-ratio: 1)  {
+   body  {
+   --framer-aspect-ratio-supported: auto;
+  }
+ 
+}
+
+.framer-n6VA4.framer-c5s3fe, .framer-n6VA4 .framer-c5s3fe  {
+   display: block;
+  }
+
+.framer-n6VA4.framer-7w45hl  {
+   align-content: center;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 10px;
+  height: 51px;
+  justify-content: center;
+  mix-blend-mode: color-dodge;
+  overflow: visible;
+  padding: 0px 5px 0px 5px;
+  position: relative;
+  width: 313px;
+  }
+
+.framer-n6VA4 .framer-xaj1uh  {
+   -webkit-user-select: none;
+  bottom: 8px;
+  flex: none;
+  height: auto;
+  left: 50%;
+  position: absolute;
+  user-select: none;
+  white-space: pre;
+  width: auto;
+  z-index: 6;
+  }
+
+@supports (background: -webkit-named-image(i)) and (not (font-palette:dark))  {
+   .framer-n6VA4.framer-7w45hl  {
+   gap: 0px;
+  }
+ .framer-n6VA4.framer-7w45hl > *  {
+   margin: 0px;
+  margin-left: calc(10px / 2);
+  margin-right: calc(10px / 2);
+  }
+ .framer-n6VA4.framer-7w45hl > :first-child  {
+   margin-left: 0px;
+  }
+ .framer-n6VA4.framer-7w45hl > :last-child  {
+   margin-right: 0px;
+  }
+ 
+}
+
+.framer-n6VA4.framer-v-1ob1qy7.framer-7w45hl  {
+   cursor: unset;
+  }
+
+.framer-n6VA4[data-border="true"]::after, .framer-n6VA4 [data-border="true"]::after  {
+   content: "";
+  border-width: var(--border-top-width, 0) var(--border-right-width, 0) var(--border-bottom-width, 0) var(--border-left-width, 0);
+  border-color: var(--border-color, none);
+  border-style: var(--border-style, none);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  box-sizing: border-box;
+  left: 0;
+  top: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  }

@@ -1,25 +1,3 @@
-/**
- * Import aliases resolved:
- *   U → mouseEventControls
- *   A → useOnAppear
- *   O → useOnDisappear
- *   L → useIsSafari
- *   _ → useIsOnCanvas
- *   N → useBorderRadius
- *   R → borderRadiusControls
- *   t → ControlType
- *   W → addPropertyControls
- *   G → useIsOnFramerCanvas
- *   Y → memo
- *   V → useCallback
- *   f → useEffect
- *   q → useMemo
- *   v → useRef
- *   I → useState
- *   k → jsx
- *   F → isMotionValue
- *   Z → useInView
- */
 import { mouseEventControls,
   useOnAppear,
   useOnDisappear,
@@ -67,18 +45,18 @@ function me(e) {
 }
 function B(e) {
   let s = me(e);
-  return k(Ce, { ...s });
+  return jsx(Ce, { ...s });
 }
 function fe(e) {
-  let s = G(),
-    a = v(!1),
-    c = V((i) => {
+  let s = useIsOnFramerCanvas(),
+    a = useRef(!1),
+    c = useCallback((i) => {
       if (!e.current) return;
       let u = (i === 1 ? 0.999 : i) * e.current.duration,
         m = Math.abs(e.current.currentTime - u) < 0.1;
       e.current.duration > 0 && !m && (e.current.currentTime = u);
     }, []),
-    p = V(() => {
+    p = useCallback(() => {
       !(
         e.current.currentTime > 0 &&
         e.current.onplaying &&
@@ -95,7 +73,7 @@ function fe(e) {
           .catch((u) => {})
           .finally(() => (a.current = !1)));
     }, []),
-    l = V(() => {
+    l = useCallback(() => {
       !e.current || a.current || e.current.pause();
     }, []);
   return { play: p, pause: l, setProgress: c };
@@ -107,8 +85,8 @@ function ye({
   playsinline: c,
   controls: p,
 }) {
-  let [l] = I(() => e),
-    [i, u] = I(!1);
+  let [l] = useState(() => e),
+    [i, u] = useState(!1);
   e !== l && !i && u(!0);
   let m = l && s && a && c && !p && !i,
     n;
@@ -118,7 +96,7 @@ function ye({
   );
 }
 var Q = !1,
-  Ce = Y(function (s) {
+  Ce = memo(function (s) {
     let {
         srcType: a,
         srcFile: c,
@@ -145,12 +123,12 @@ var Q = !1,
         volume: g,
         loop: E,
       } = s,
-      o = v(),
-      se = L(),
-      w = v(null),
-      j = v(null),
-      y = _(),
-      le = N(s),
+      o = useRef(),
+      se = useIsSafari(),
+      w = useRef(null),
+      j = useRef(null),
+      y = useIsOnCanvas(),
+      le = useBorderRadius(s),
       C = y
         ? "no-autoplay"
         : ye({
@@ -160,46 +138,46 @@ var Q = !1,
             playsinline: u,
             controls: m,
           }),
-      D = y ? !0 : Z(o),
+      D = y ? !0 : useInView(o),
       d = z === 100 ? 99.9 : z,
       { play: b, pause: M, setProgress: x } = fe(o);
-    (f(() => {
+    (useEffect(() => {
       y || (l ? b() : M());
     }, [l]),
-      f(() => {
+      useEffect(() => {
         y || (C === "on-viewport" && (D ? b() : M()));
       }, [C, D]),
-      f(() => {
+      useEffect(() => {
         if (!Q) {
           Q = !0;
           return;
         }
-        let r = F(n) ? n.get() : (n ?? 0) * 0.01;
+        let r = isMotionValue(n) ? n.get() : (n ?? 0) * 0.01;
         x((r ?? 0) || (d ?? 0) / 100);
       }, [d, c, p, n]),
-      f(() => {
-        if (F(n)) return n.on("change", (r) => x(r));
+      useEffect(() => {
+        if (isMotionValue(n)) return n.on("change", (r) => x(r));
       }, [n]),
-      A(() => {
+      useOnAppear(() => {
         w.current !== null && o.current && ((!j && E) || !w.current) && b();
       }),
-      O(() => {
+      useOnDisappear(() => {
         o.current &&
           ((j.current = o.current.ended), (w.current = o.current.paused), M());
       }));
-    let ue = q(() => {
+    let ue = useMemo(() => {
       let r = "";
       if (a === "URL") return p + r;
       if (a === "Upload") return c + r;
     }, [a, c, p, d]);
     return (
-      f(() => {
+      useEffect(() => {
         se && o.current && C === "on-mount" && setTimeout(() => b(), 50);
       }, []),
-      f(() => {
+      useEffect(() => {
         o.current && !i && (o.current.volume = (g ?? 0) / 100);
       }, [g]),
-      k("video", {
+      jsx("video", {
         onClick: H,
         onMouseEnter: te,
         onMouseLeave: ne,
@@ -262,15 +240,15 @@ function ge(e) {
   return (e.match(be) || []).map(ve).join(" ");
 }
 var X = ["cover", "fill", "contain", "scale-down", "none"];
-W(B, {
+addPropertyControls(B, {
   srcType: {
-    type: t.Enum,
+    type: ControlType.Enum,
     displaySegmentedControl: !0,
     title: "Source",
     options: ["URL", "Upload"],
   },
   srcUrl: {
-    type: t.String,
+    type: ControlType.String,
     title: "URL",
     placeholder: "../example.mp4",
     hidden(e) {
@@ -280,7 +258,7 @@ W(B, {
       "Hosted video file URL. For YouTube, use the YouTube component.",
   },
   srcFile: {
-    type: t.File,
+    type: ControlType.File,
     title: "File",
     allowedFileTypes: ["mp4", "webm"],
     hidden(e) {
@@ -288,63 +266,63 @@ W(B, {
     },
   },
   playing: {
-    type: t.Boolean,
+    type: ControlType.Boolean,
     title: "Playing",
     enabledTitle: "Yes",
     disabledTitle: "No",
   },
   posterEnabled: {
-    type: t.Boolean,
+    type: ControlType.Boolean,
     title: "Poster",
     enabledTitle: "Yes",
     disabledTitle: "No",
   },
-  poster: { type: t.Image, title: " ", hidden: ({ posterEnabled: e }) => !e },
-  backgroundColor: { type: t.Color, title: "Background" },
-  ...R,
+  poster: { type: ControlType.Image, title: " ", hidden: ({ posterEnabled: e }) => !e },
+  backgroundColor: { type: ControlType.Color, title: "Background" },
+  ...borderRadiusControls,
   startTime: {
     title: "Start Time",
-    type: t.Number,
+    type: ControlType.Number,
     min: 0,
     max: 100,
     step: 0.1,
     unit: "%",
   },
   loop: {
-    type: t.Boolean,
+    type: ControlType.Boolean,
     title: "Loop",
     enabledTitle: "Yes",
     disabledTitle: "No",
   },
   objectFit: {
-    type: t.Enum,
+    type: ControlType.Enum,
     title: "Fit",
     options: X,
     optionTitles: X.map(ge),
   },
   controls: {
-    type: t.Boolean,
+    type: ControlType.Boolean,
     title: "Controls",
     enabledTitle: "Show",
     disabledTitle: "Hide",
   },
   muted: {
-    type: t.Boolean,
+    type: ControlType.Boolean,
     title: "Muted",
     enabledTitle: "Yes",
     disabledTitle: "No",
   },
   volume: {
-    type: t.Number,
+    type: ControlType.Number,
     max: 100,
     min: 0,
     unit: "%",
     hidden: ({ muted: e }) => e,
   },
-  onEnd: { type: t.EventHandler },
-  onSeeked: { type: t.EventHandler },
-  onPause: { type: t.EventHandler },
-  onPlay: { type: t.EventHandler },
-  ...U,
+  onEnd: { type: ControlType.EventHandler },
+  onSeeked: { type: ControlType.EventHandler },
+  onPause: { type: ControlType.EventHandler },
+  onPlay: { type: ControlType.EventHandler },
+  ...mouseEventControls,
 });
 export { B as a };

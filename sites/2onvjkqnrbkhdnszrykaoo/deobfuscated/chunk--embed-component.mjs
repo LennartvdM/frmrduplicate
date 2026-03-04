@@ -1,39 +1,6 @@
+/* CSS extracted to: chunk--embed-component.css */
 /**
  * embed component
- */
-/**
- * Import aliases resolved:
- *   C → containerStyle
- *   L → placeholderStyle
- *   w → useIsOnCanvas
- *   X → fontConfig
- *   G → linkPresetStyles
- *   K → cssClassScope
- *   F → useLocale
- *   v → ControlType
- *   j → addPropertyControls
- *   O → cx
- *   z → useDeviceSize
- *   U → withCSS
- *   g → ReactFragment
- *   T → forwardRef
- *   E → useContext
- *   M → useEffect
- *   D → useId
- *   A → useMemo
- *   b → useRef
- *   W → useState
- *   Y → useVariantState
- *   e → jsx
- *   R → jsxs
- *   H → MotionContext
- *   q → FrameComponent
- *   x → RichTextComponent
- *   c → motion
- *   P → LayoutGroup
- *   B → loadFonts
- *   J → normalizeFontConfig
- *   h → window
  */
 import { containerStyle,
   placeholderStyle,
@@ -69,14 +36,14 @@ import { $ as y,
 import { window } from "./chunk--browser-polyfills.mjs";
 function $({ type: t, url: r, html: o, style: a = {} }) {
   return t === "url" && r
-    ? e(se, { url: r, style: a })
+    ? jsx(se, { url: r, style: a })
     : t === "html" && o
-      ? e(ce, { html: o, style: a })
-      : e(ie, { style: a });
+      ? jsx(ce, { html: o, style: a })
+      : jsx(ie, { style: a });
 }
-j($, {
+addPropertyControls($, {
   type: {
-    type: v.Enum,
+    type: ControlType.Enum,
     defaultValue: "url",
     displaySegmentedControl: !0,
     options: ["url", "html"],
@@ -84,7 +51,7 @@ j($, {
   },
   url: {
     title: "URL",
-    type: v.String,
+    type: ControlType.String,
     description: "Some websites don\u2019t support embedding.",
     hidden(t) {
       return t.type !== "url";
@@ -92,7 +59,7 @@ j($, {
   },
   html: {
     title: "HTML",
-    type: v.String,
+    type: ControlType.String,
     displayTextArea: !0,
     hidden(t) {
       return t.type !== "html";
@@ -100,9 +67,9 @@ j($, {
   },
 });
 function ie({ style: t }) {
-  return e("div", {
-    style: { minHeight: te(t), ...L, overflow: "hidden", ...t },
-    children: e("div", {
+  return jsx("div", {
+    style: { minHeight: te(t), ...placeholderStyle, overflow: "hidden", ...t },
+    children: jsx("div", {
       style: _,
       children:
         "To embed a website or widget, add it to the properties\xA0panel.",
@@ -112,10 +79,10 @@ function ie({ style: t }) {
 function se({ url: t, style: r }) {
   let o = !r.height;
   /[a-z]+:\/\//.test(t) || (t = "https://" + t);
-  let a = w(),
-    [s, f] = W(a ? void 0 : !1);
+  let a = useIsOnCanvas(),
+    [s, f] = useState(a ? void 0 : !1);
   if (
-    (M(() => {
+    (useEffect(() => {
       if (!a) return;
       let l = !0;
       f(void 0);
@@ -145,19 +112,19 @@ function se({ url: t, style: r }) {
     }, [t]),
     a && o)
   )
-    return e(k, {
+    return jsx(k, {
       message: "URL embeds do not support auto height.",
       style: r,
     });
   if (!t.startsWith("https://"))
-    return e(k, { message: "Unsupported protocol.", style: r });
-  if (s === void 0) return e(de, {});
-  if (s instanceof Error) return e(k, { message: s.message, style: r });
+    return jsx(k, { message: "Unsupported protocol.", style: r });
+  if (s === void 0) return jsx(de, {});
+  if (s instanceof Error) return jsx(k, { message: s.message, style: r });
   if (s === !0) {
     let l = `Can\u2019t embed ${t} due to its content security policy.`;
-    return e(k, { message: l, style: r });
+    return jsx(k, { message: l, style: r });
   }
-  return e("iframe", {
+  return jsx("iframe", {
     src: t,
     style: { ...ee, ...r },
     loading: "lazy",
@@ -187,13 +154,13 @@ function le(t) {
   );
 }
 function ce({ html: t, style: r }) {
-  let o = b(),
-    a = w(),
-    [s, f] = W(0),
+  let o = useRef(),
+    a = useIsOnCanvas(),
+    [s, f] = useState(0),
     l = !r.height,
     p = t.includes("<\/script>");
   if (
-    (M(() => {
+    (useEffect(() => {
       var n;
       let i =
         (n = o.current) === null || n === void 0 ? void 0 : n.contentWindow;
@@ -205,10 +172,10 @@ function ce({ html: t, style: r }) {
         typeof I == "number" && f(I);
       }
       return (
-        h.addEventListener("message", m),
+        window.addEventListener("message", m),
         i?.postMessage("getEmbedHeight", "*"),
         () => {
-          h.removeEventListener("message", m);
+          window.removeEventListener("message", m);
         }
       );
     }, []),
@@ -251,10 +218,10 @@ function ce({ html: t, style: r }) {
       i = { ...ee, ...r };
     return (
       l && (i.height = s + "px"),
-      e("iframe", { ref: o, style: i, srcDoc: n })
+      jsx("iframe", { ref: o, style: i, srcDoc: n })
     );
   }
-  return e("div", {
+  return jsx("div", {
     style: { ...fe, ...r },
     dangerouslySetInnerHTML: { __html: t },
   });
@@ -268,17 +235,17 @@ var fe = {
   alignItems: "center",
 };
 function de() {
-  return e("div", {
+  return jsx("div", {
     className: "framerInternalUI-componentPlaceholder",
-    style: { ...C, overflow: "hidden" },
-    children: e("div", { style: _, children: "Loading\u2026" }),
+    style: { ...containerStyle, overflow: "hidden" },
+    children: jsx("div", { style: _, children: "Loading\u2026" }),
   });
 }
 function k({ message: t, style: r }) {
-  return e("div", {
+  return jsx("div", {
     className: "framerInternalUI-errorPlaceholder",
-    style: { minHeight: te(r), ...C, overflow: "hidden", ...r },
-    children: e("div", { style: _, children: t }),
+    style: { minHeight: te(r), ...containerStyle, overflow: "hidden", ...r },
+    children: jsx("div", { style: _, children: t }),
   });
 }
 var _ = { textAlign: "center", minWidth: 140 };
@@ -311,17 +278,17 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     transition: re,
   },
   be = ({ value: t, children: r }) => {
-    let o = E(H),
+    let o = useContext(MotionContext),
       a = t ?? o.transition,
-      s = A(() => ({ ...o, transition: a }), [JSON.stringify(a)]);
-    return e(H.Provider, { value: s, children: r });
+      s = useMemo(() => ({ ...o, transition: a }), [JSON.stringify(a)]);
+    return jsx(MotionContext.Provider, { value: s, children: r });
   },
-  ve = c(g),
+  ve = motion(ReactFragment),
   xe = ({ height: t, id: r, width: o, ...a }) => ({ ...a }),
   Ce = (t, r) =>
     t.layoutDependency ? r.join("-") + t.layoutDependency : r.join("-"),
-  we = T(function (t, r) {
-    let { activeLocale: o, setLocale: a } = F(),
+  we = forwardRef(function (t, r) {
+    let { activeLocale: o, setLocale: a } = useLocale(),
       { style: s, className: f, layoutId: l, variant: p, ...n } = xe(t),
       {
         baseVariant: i,
@@ -333,28 +300,28 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
         setGestureState: Se,
         setVariant: Ie,
         variants: N,
-      } = Y({
+      } = useVariantState({
         cycleOrder: me,
         defaultVariant: "JCW3DAiCB",
         variant: p,
         variantClassNames: ue,
       }),
       d = Ce(t, N),
-      ae = b(null),
-      ne = D(),
-      oe = [K],
-      Me = z();
-    return e(P, {
+      ae = useRef(null),
+      ne = useId(),
+      oe = [cssClassScope],
+      Me = useDeviceSize();
+    return jsx(LayoutGroup, {
       id: l ?? ne,
-      children: e(ve, {
+      children: jsx(ve, {
         animate: N,
         initial: !1,
-        children: e(be, {
+        children: jsx(be, {
           value: he,
-          children: R(c.nav, {
+          children: jsxs(motion.nav, {
             ...n,
             ...u,
-            className: O(pe, ...oe, "framer-1v447sb", f, m),
+            className: cx(pe, ...oe, "framer-1v447sb", f, m),
             "data-framer-name": "Variant 1",
             layoutDependency: d,
             layoutId: "JCW3DAiCB",
@@ -365,10 +332,10 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
               ...s,
             },
             children: [
-              e(y, {
+              jsx(y, {
                 href: { webPageId: "augiA20Il" },
                 openInNewTab: !0,
-                children: e(q, {
+                children: jsx(FrameComponent, {
                   as: "a",
                   background: {
                     alt: "",
@@ -384,16 +351,16 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                   whileHover: ge,
                 }),
               }),
-              R(c.div, {
+              jsxs(motion.div, {
                 className: "framer-lg53ui",
                 "data-framer-name": "Links",
                 layoutDependency: d,
                 layoutId: "toQUyBvN4",
                 children: [
-                  e(x, {
+                  jsx(RichTextComponent, {
                     __fromCanvasComponent: !0,
-                    children: e(g, {
-                      children: e(c.p, {
+                    children: jsx(ReactFragment, {
+                      children: jsx(motion.p, {
                         style: {
                           "--font-selector": "R0Y7TW9udHNlcnJhdC01MDA=",
                           "--framer-font-family":
@@ -403,11 +370,11 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                           "--framer-text-color":
                             "var(--extracted-r6o4lv, rgb(33, 33, 33))",
                         },
-                        children: e(y, {
+                        children: jsx(y, {
                           href: { webPageId: "bzydBB85Y" },
                           openInNewTab: !1,
                           smoothScroll: !1,
-                          children: e(c.a, {
+                          children: jsx(motion.a, {
                             className: "framer-styles-preset-b5e6zr",
                             "data-styles-preset": "H9WgrbXMf",
                             children: "Neoflix",
@@ -424,10 +391,10 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                     verticalAlignment: "top",
                     withExternalLayout: !0,
                   }),
-                  e(x, {
+                  jsx(RichTextComponent, {
                     __fromCanvasComponent: !0,
-                    children: e(g, {
-                      children: e(c.p, {
+                    children: jsx(ReactFragment, {
+                      children: jsx(motion.p, {
                         style: {
                           "--font-selector": "R0Y7TW9udHNlcnJhdC01MDA=",
                           "--framer-font-family":
@@ -437,11 +404,11 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                           "--framer-text-color":
                             "var(--extracted-r6o4lv, rgb(33, 33, 33))",
                         },
-                        children: e(y, {
+                        children: jsx(y, {
                           href: { webPageId: "aLuYbVoBY" },
                           openInNewTab: !1,
                           smoothScroll: !1,
-                          children: e(c.a, {
+                          children: jsx(motion.a, {
                             className: "framer-styles-preset-b5e6zr",
                             "data-styles-preset": "H9WgrbXMf",
                             children: "Publications",
@@ -458,9 +425,9 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                     verticalAlignment: "top",
                     withExternalLayout: !0,
                   }),
-                  e(y, {
+                  jsx(y, {
                     href: { webPageId: "x05wlhCdy" },
-                    children: e(c.a, {
+                    children: jsx(motion.a, {
                       className: "framer-pklntu framer-cee5wl",
                       layoutDependency: d,
                       layoutId: "YhKLaMXjz",
@@ -473,10 +440,10 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                         borderTopRightRadius: 128,
                       },
                       whileHover: ye,
-                      children: e(x, {
+                      children: jsx(RichTextComponent, {
                         __fromCanvasComponent: !0,
-                        children: e(g, {
-                          children: e(c.p, {
+                        children: jsx(ReactFragment, {
+                          children: jsx(motion.p, {
                             style: {
                               "--font-selector": "R0Y7TW9udHNlcnJhdC01MDA=",
                               "--framer-font-family":
@@ -521,13 +488,13 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     ".framer-chkuW .framer-pklntu { align-content: center; align-items: center; display: flex; flex: none; flex-direction: row; flex-wrap: nowrap; gap: 10px; height: min-content; justify-content: center; overflow: visible; padding: 2px 11px 2px 11px; position: relative; text-decoration: none; width: min-content; z-index: 0; }",
     ".framer-chkuW .framer-42p1at { -webkit-user-select: none; flex: none; height: auto; position: relative; user-select: none; white-space: pre; width: auto; z-index: 10; }",
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-chkuW .framer-14v6odq, .framer-chkuW .framer-lg53ui, .framer-chkuW .framer-pklntu { gap: 0px; } .framer-chkuW .framer-14v6odq > *, .framer-chkuW .framer-pklntu > * { margin: 0px; margin-left: calc(10px / 2); margin-right: calc(10px / 2); } .framer-chkuW .framer-14v6odq > :first-child, .framer-chkuW .framer-lg53ui > :first-child, .framer-chkuW .framer-pklntu > :first-child { margin-left: 0px; } .framer-chkuW .framer-14v6odq > :last-child, .framer-chkuW .framer-lg53ui > :last-child, .framer-chkuW .framer-pklntu > :last-child { margin-right: 0px; } .framer-chkuW .framer-lg53ui > * { margin: 0px; margin-left: calc(20px / 2); margin-right: calc(20px / 2); } }",
-    ...G,
+    ...linkPresetStyles,
   ],
-  V = U(we, ke, "framer-chkuW"),
+  V = withCSS(we, ke, "framer-chkuW"),
   _t = V;
 V.displayName = "Nav";
 V.defaultProps = { height: 60, width: 1200 };
-B(
+loadFonts(
   V,
   [
     {
@@ -542,8 +509,8 @@ B(
         },
       ],
     },
-    ...J(X),
+    ...normalizeFontConfig(fontConfig),
   ],
   { supportsExplicitInterCodegen: !0 },
 );
-export { $ as a, _t as b };
+export { $ as a, _t as useRef };

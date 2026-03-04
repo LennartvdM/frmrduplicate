@@ -1,9 +1,5 @@
-/**
- * Import aliases resolved:
- *   e → fontLoader
- */
 import { fontLoader } from "./chunk--react-and-framer-runtime.mjs";
-e.loadFonts(["Inter-Bold"]);
+fontLoader.loadFonts(["Inter-Bold"]);
 var n = [
     {
       explicitInter: !0,

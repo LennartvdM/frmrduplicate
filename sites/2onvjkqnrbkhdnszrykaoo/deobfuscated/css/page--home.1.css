@@ -1,0 +1,13 @@
+@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }
+
+.framer-Kv8wc.framer-1lhwvl1, .framer-Kv8wc .framer-1lhwvl1 { display: block; }
+
+.framer-Kv8wc.framer-yyb023 { height: 287px; overflow: visible; position: relative; width: 935px; }
+
+.framer-Kv8wc .framer-1nwrmj9 { aspect-ratio: 1 / 1; bottom: -42px; flex: none; left: -43px; position: absolute; top: -43px; width: var(--framer-aspect-ratio-supported, 372px); z-index: 1; }
+
+.framer-Kv8wc .framer-1fz3tc2 { aspect-ratio: 1 / 1; bottom: -43px; flex: none; left: -43px; position: absolute; top: -42px; width: var(--framer-aspect-ratio-supported, 372px); z-index: 1; }
+
+.framer-Kv8wc .framer-v5bumn { aspect-ratio: 4.52020202020202 / 1; bottom: 0px; flex: none; height: 50%; position: absolute; right: 0px; width: var(--framer-aspect-ratio-supported, 646px); z-index: 1; }
+
+.framer-Kv8wc.framer-v-1kdysgy.framer-yyb023 { cursor: pointer; }

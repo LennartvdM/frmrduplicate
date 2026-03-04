@@ -1,31 +1,6 @@
+/* CSS extracted to: chunk--shared-components.css */
 /**
  * shared components
- */
-/**
- * Import aliases resolved:
- *   nt → useLocale
- *   f → ControlType
- *   b → addPropertyControls
- *   at → cx
- *   lt → useDeviceSize
- *   ht → withCSS
- *   W → ReactFragment
- *   tt → useContext
- *   F → useEffect
- *   et → useId
- *   it → useMemo
- *   I → useRef
- *   rt → MotionFragment
- *   mt → useVariantState
- *   m → jsx
- *   st → jsxs
- *   V → fontLoader
- *   X → MotionContext
- *   pt → RichTextComponent
- *   C → motion
- *   ot → LayoutGroup
- *   ut → loadFonts
- *   c → window
  */
 import { $ as ct,
   useLocale,
@@ -125,8 +100,8 @@ var G = class {
           (this.onWrapperResize(), this.onContentResize());
         }),
         (this.onWrapperResize = () => {
-          this.wrapper === c
-            ? ((this.width = c.innerWidth), (this.height = c.innerHeight))
+          this.wrapper === window
+            ? ((this.width = window.innerWidth), (this.height = window.innerHeight))
             : ((this.width = this.wrapper.clientWidth),
               (this.height = this.wrapper.clientHeight));
         }),
@@ -149,7 +124,7 @@ var G = class {
               }, 250)));
           };
         })(this.resize);
-        (this.wrapper !== c &&
+        (this.wrapper !== window &&
           ((this.wrapperResizeObserver = new ResizeObserver(s)),
           this.wrapperResizeObserver.observe(this.wrapper)),
           (this.contentResizeObserver = new ResizeObserver(s)),
@@ -278,7 +253,7 @@ var G = class {
   },
   H = class {
     constructor({
-      wrapper: t = c,
+      wrapper: t = window,
       content: e = document.documentElement,
       wheelEventsTarget: i = t,
       eventsTarget: s = i,
@@ -373,8 +348,8 @@ var G = class {
               this.emit());
           }
         }),
-        (c.lenisVersion = "1.0.29"),
-        (t !== document.documentElement && t !== document.body) || (t = c),
+        (window.lenisVersion = "1.0.29"),
+        (t !== document.documentElement && t !== document.body) || (t = window),
         (this.options = {
           wrapper: t,
           content: e,
@@ -492,7 +467,7 @@ var G = class {
               : (v = t) != null && v.nodeType && (p = t),
             p)
           ) {
-            if (this.options.wrapper !== c) {
+            if (this.options.wrapper !== window) {
               let w = this.options.wrapper.getBoundingClientRect();
               e -= this.isHorizontal ? w.left : w.top;
             }
@@ -548,7 +523,7 @@ var G = class {
       }
     }
     get rootElement() {
-      return this.options.wrapper === c
+      return this.options.wrapper === window
         ? document.documentElement
         : this.options.wrapper;
     }
@@ -617,12 +592,12 @@ var G = class {
   };
 function B(a) {
   let { intensity: t } = a,
-    e = I(null);
+    e = useRef(null);
   return (
-    F(() => {
+    useEffect(() => {
       e.current && e.current.scrollTo(0, { immediate: !0 });
     }, [e]),
-    F(() => {
+    useEffect(() => {
       let i = document.getElementById("overlay");
       if (i) {
         let s = (n, l) => {
@@ -630,7 +605,7 @@ function B(a) {
               if (h.type === "childList")
                 if (i.children.length > 0) {
                   let v = document.documentElement;
-                  c.getComputedStyle(v).getPropertyValue("overflow") ===
+                  window.getComputedStyle(v).getPropertyValue("overflow") ===
                   "hidden"
                     ? e.current.stop()
                     : e.current.start();
@@ -641,7 +616,7 @@ function B(a) {
         return (r.observe(i, o), () => r.disconnect());
       }
     }, []),
-    F(() => {
+    useEffect(() => {
       e.current = new H({ duration: t / 10 });
       let i = (s) => {
         (e.current.raf(s), requestAnimationFrame(i));
@@ -653,8 +628,8 @@ function B(a) {
         }
       );
     }, []),
-    m(MotionFragment, {
-      children: m("style", {
+    jsx(MotionFragment, {
+      children: jsx("style", {
         children: `
       html.lenis {
         height: auto;
@@ -681,7 +656,7 @@ function B(a) {
   );
 }
 B.displayName = "Smooth Scroll";
-b(B, { intensity: { title: "Intensity", type: f.Number, defaultValue: 10 } });
+addPropertyControls(B, { intensity: { title: "Intensity", type: ControlType.Number, defaultValue: 10 } });
 var ft = { Rwa3hKEk5: { hover: !0 } },
   gt = ["Rwa3hKEk5", "f7_6jHMU5"],
   vt = "framer-w2DMm",
@@ -692,12 +667,12 @@ function St(a, ...t) {
 }
 var xt = { damping: 40, delay: 0, mass: 1, stiffness: 400, type: "spring" /* physics-based spring animation */ },
   wt = ({ value: a, children: t }) => {
-    let e = useContext(X),
+    let e = useContext(MotionContext),
       i = a ?? e.transition,
       s = useMemo(() => ({ ...e, transition: i }), [JSON.stringify(i)]);
-    return m(X.Provider, { value: s, children: t });
+    return jsx(MotionContext.Provider, { value: s, children: t });
   },
-  _t = C(W),
+  _t = motion(ReactFragment),
   bt = { Active: "f7_6jHMU5", Inactive: "Rwa3hKEk5" },
   Mt = ({ height: a, id: t, link: e, smooth: i, title: s, width: r, ...o }) => {
     var n, l, h, u;
@@ -743,25 +718,25 @@ var xt = { damping: 40, delay: 0, mass: 1, stiffness: 400, type: "spring" /* phy
         variantClassNames: yt,
       }),
       _ = Tt(a, M),
-      L = I(null),
+      L = useRef(null),
       d = useId(),
       y = [],
       S = useDeviceSize();
-    return m(LayoutGroup, {
+    return jsx(LayoutGroup, {
       id: o ?? d,
-      children: m(_t, {
+      children: jsx(_t, {
         animate: M,
         initial: !1,
-        children: m(wt, {
+        children: jsx(wt, {
           value: xt,
-          children: m(ct, {
+          children: jsx(ct, {
             href: h,
             openInNewTab: !1,
             smoothScroll: u,
-            children: jsxs(C.a, {
+            children: jsxs(motion.a, {
               ...v,
               ...w,
-              className: `${at(vt, ...y, "framer-1h7km6n", r, g)} framer-1d3etll`,
+              className: `${cx(vt, ...y, "framer-1h7km6n", r, g)} framer-1d3etll`,
               "data-framer-name": "Inactive",
               layoutDependency: _,
               layoutId: "Rwa3hKEk5",
@@ -776,7 +751,7 @@ var xt = { damping: 40, delay: 0, mass: 1, stiffness: 400, type: "spring" /* phy
                 j,
               ),
               children: [
-                m(C.div, {
+                jsx(motion.div, {
                   className: "framer-18dmzzj",
                   layoutDependency: _,
                   layoutId: "dVn66HQMb",
@@ -795,10 +770,10 @@ var xt = { damping: 40, delay: 0, mass: 1, stiffness: 400, type: "spring" /* phy
                     },
                   },
                 }),
-                m(RichTextComponent, {
+                jsx(RichTextComponent, {
                   __fromCanvasComponent: !0,
-                  children: m(W, {
-                    children: m(C.h2, {
+                  children: jsx(ReactFragment, {
+                    children: jsx(motion.h2, {
                       style: {
                         "--font-selector": "R0Y7RE0gU2Fucy01MDA=",
                         "--framer-font-family":
@@ -848,22 +823,22 @@ var xt = { damping: 40, delay: 0, mass: 1, stiffness: 400, type: "spring" /* phy
     ".framer-w2DMm.framer-v-omnff2 .framer-18dmzzj { width: 30px; }",
     ".framer-w2DMm.framer-v-1h7km6n.hover .framer-18dmzzj { width: 11px; }",
   ],
-  E = ht(kt, Ct, "framer-w2DMm"),
+  E = withCSS(kt, Ct, "framer-w2DMm"),
   Wt = E;
 E.displayName = "Item Copy 2";
 E.defaultProps = { height: 25, width: 200 };
-b(E, {
+addPropertyControls(E, {
   variant: {
     options: ["Rwa3hKEk5", "f7_6jHMU5"],
     optionTitles: ["Inactive", "Active"],
     title: "Variant",
-    type: f.Enum,
+    type: ControlType.Enum,
   },
-  PGkyTrycd: { defaultValue: "Title", title: "Title", type: f.String },
-  S0KhFTFra: { title: "Link", type: f.Link },
-  PvnQG2uF_: { defaultValue: !0, title: "Smooth", type: f.Boolean },
+  PGkyTrycd: { defaultValue: "Title", title: "Title", type: ControlType.String },
+  S0KhFTFra: { title: "Link", type: ControlType.Link },
+  PvnQG2uF_: { defaultValue: !0, title: "Smooth", type: ControlType.Boolean },
 });
-ut(
+loadFonts(
   E,
   [
     {
@@ -881,13 +856,13 @@ ut(
   ],
   { supportsExplicitInterCodegen: !0 },
 );
-V.loadWebFontsFromSelectors(["Inter-Medium"]);
+fontLoader.loadWebFontsFromSelectors(["Inter-Medium"]);
 var Kt = [],
   At = [
     '.framer-9T5XM .framer-styles-preset-21ogod:not(.rich-text-wrapper), .framer-9T5XM .framer-styles-preset-21ogod.rich-text-wrapper p, .framer-9T5XM .framer-styles-preset-21ogod.rich-text-wrapper [data-preset-tag="p"] { --framer-font-family: "Inter-Medium", "Inter", sans-serif; --framer-font-size: 16px; --framer-font-style: normal; --framer-font-weight: 500; --framer-letter-spacing: 0px; --framer-line-height: 2em; --framer-paragraph-spacing: 20px; --framer-text-alignment: start; --framer-text-color: #666666; --framer-text-decoration: none; --framer-text-transform: none; }',
   ],
   Bt = "framer-9T5XM";
-V.loadWebFontsFromSelectors(["Inter-ExtraBold"]);
+fontLoader.loadWebFontsFromSelectors(["Inter-ExtraBold"]);
 var Jt = [],
   Zt = [
     '.framer-3fk2D .framer-styles-preset-3nqyhf:not(.rich-text-wrapper), .framer-3fk2D .framer-styles-preset-3nqyhf.rich-text-wrapper h1, .framer-3fk2D .framer-styles-preset-3nqyhf.rich-text-wrapper [data-preset-tag="h1"] { --framer-font-family: "Inter-ExtraBold", "Inter", sans-serif; --framer-font-size: 40px; --framer-font-style: normal; --framer-font-weight: 800; --framer-letter-spacing: -1.5px; --framer-line-height: 1.2em; --framer-paragraph-spacing: 0px; --framer-text-alignment: start; --framer-text-color: #111111; --framer-text-decoration: none; --framer-text-transform: none; }',
@@ -895,16 +870,16 @@ var Jt = [],
   $t = "framer-3fk2D";
 function Y(a) {
   let { opacity: t, backgroundSize: e, borderRadius: i } = a;
-  return m("div", {
+  return jsx("div", {
     style: { ...Rt, opacity: t, backgroundSize: e, borderRadius: i },
   });
 }
 Y.defaultProps = { opacity: 0.5, backgroundSize: 128, radius: 0 };
-b(Y, {
-  backgroundSize: { title: "Size", type: f.Number, min: 64, max: 256 },
+addPropertyControls(Y, {
+  backgroundSize: { title: "Size", type: ControlType.Number, min: 64, max: 256 },
   opacity: {
     title: "Opacity",
-    type: f.Number,
+    type: ControlType.Number,
     step: 0.1,
     displayStepper: !0,
     max: 1,
@@ -912,7 +887,7 @@ b(Y, {
   },
   borderRadius: {
     title: "Radius",
-    type: f.Number,
+    type: ControlType.Number,
     min: 0,
     max: 1e3,
     step: 1,
@@ -929,11 +904,11 @@ var Rt = {
 };
 export {
   B as a,
-  Y as b,
-  Wt as c,
+  Y as addPropertyControls,
+  Wt as window,
   Kt as d,
   At as e,
-  Bt as f,
+  Bt as ControlType,
   Jt as g,
   Zt as h,
   $t as i,

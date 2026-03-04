@@ -1,0 +1,13 @@
+@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }
+
+.framer-pC2CI.framer-1nchnn2, .framer-pC2CI .framer-1nchnn2 { display: block; }
+
+.framer-pC2CI.framer-1f4gy1p { cursor: pointer; height: 72px; overflow: visible; position: relative; width: 380px; }
+
+.framer-pC2CI .framer-1aqnoq4 { align-content: center; align-items: center; bottom: 0px; display: flex; flex: none; flex-direction: column; flex-wrap: nowrap; gap: 10px; height: min-content; justify-content: center; left: 50%; overflow: visible; padding: 0px; position: absolute; width: 360px; }
+
+.framer-pC2CI .framer-85chcm { -webkit-user-select: none; cursor: pointer; flex: none; height: auto; overflow: visible; position: relative; user-select: none; white-space: pre-wrap; width: 360px; word-break: break-word; word-wrap: break-word; }
+
+@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-pC2CI .framer-1aqnoq4 { gap: 0px; } .framer-pC2CI .framer-1aqnoq4 > * { margin: 0px; margin-bottom: calc(10px / 2); margin-top: calc(10px / 2); } .framer-pC2CI .framer-1aqnoq4 > :first-child { margin-top: 0px; } .framer-pC2CI .framer-1aqnoq4 > :last-child { margin-bottom: 0px; } }
+
+.framer-pC2CI.framer-v-tr7mnx.framer-1f4gy1p { overflow: hidden; will-change: var(--framer-will-change-override, transform); }

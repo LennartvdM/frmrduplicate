@@ -9,7 +9,7 @@ import { RenderTarget,
   fontLoader } from "./chunk--react-and-framer-runtime.mjs";
 import { navigator } from "./chunk--browser-polyfills.mjs";
 fontLoader.loadFonts([]);
-var M = [{ explicitInter: !0, fonts: [] }],
+var M = [{ explicitInter: true, fonts: [] }],
   R = [
     '.framer-VnG2h .framer-styles-preset-b5e6zr:not(.rich-text-wrapper), .framer-VnG2h .framer-styles-preset-b5e6zr.rich-text-wrapper a { --framer-link-current-text-color: var(--token-3f355627-0701-4163-9212-31117bae3b68, #72c2c2) /* {"name":"Bar Green"} */; --framer-link-current-text-decoration: none; --framer-link-hover-text-color: var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, #529c9c) /* {"name":"Text Highlight"} */; --framer-link-hover-text-decoration: underline; --framer-link-text-color: #574b4b; --framer-link-text-decoration: none; }',
   ],
@@ -41,13 +41,13 @@ var C = {
     min: 2,
     max: 200,
     step: 1,
-    displayStepper: !0,
+    displayStepper: true,
   },
   I = {
     font: {
       type: ControlType.Boolean,
       title: "Font",
-      defaultValue: !1,
+      defaultValue: false,
       disabledTitle: "Default",
       enabledTitle: "Custom",
     },
@@ -76,12 +76,12 @@ var C = {
     },
   };
 function L(t, o) {
-  return g(!0, t, o);
+  return g(true, t, o);
 }
 function N(t, o) {
-  return g(!1, t, o);
+  return g(false, t, o);
 }
-function g(t, o, u = !0) {
+function g(t, o, u = true) {
   let c = useIsOnFramerCanvas();
   useEffect(() => {
     u && c === t && o();
@@ -96,7 +96,7 @@ var x = () => {
           t.indexOf("framerx") > -1) &&
         t.indexOf("chrome") < 0
       );
-    } else return !1;
+    } else return false;
   },
   U = () => useMemo(() => x(), []);
 function J() {

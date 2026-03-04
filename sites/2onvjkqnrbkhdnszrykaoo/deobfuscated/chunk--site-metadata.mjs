@@ -13,4 +13,4 @@ function t(e, a) {
     title: "Neoflix",
   };
 }
-export { t as a };
+export { t as a, t as getSiteMetadata };

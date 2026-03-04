@@ -49,7 +49,7 @@ function B(e) {
 }
 function fe(e) {
   let s = useIsOnFramerCanvas(),
-    a = useRef(!1),
+    a = useRef(false),
     c = useCallback((i) => {
       if (!e.current) return;
       let u = (i === 1 ? 0.999 : i) * e.current.duration,
@@ -67,11 +67,11 @@ function fe(e) {
         e.current &&
         !a.current &&
         s &&
-        ((a.current = !0),
+        ((a.current = true),
         e.current
           .play()
           .catch((u) => {})
-          .finally(() => (a.current = !1)));
+          .finally(() => (a.current = false)));
     }, []),
     l = useCallback(() => {
       !e.current || a.current || e.current.pause();
@@ -86,8 +86,8 @@ function ye({
   controls: p,
 }) {
   let [l] = useState(() => e),
-    [i, u] = useState(!1);
-  e !== l && !i && u(!0);
+    [i, u] = useState(false);
+  e !== l && !i && u(true);
   let m = l && s && a && c && !p && !i,
     n;
   return (
@@ -95,7 +95,7 @@ function ye({
     n
   );
 }
-var Q = !1,
+var Q = false,
   Ce = memo(function (s) {
     let {
         srcType: a,
@@ -138,7 +138,7 @@ var Q = !1,
             playsinline: u,
             controls: m,
           }),
-      D = y ? !0 : useInView(o),
+      D = y ? true : useInView(o),
       d = z === 100 ? 99.9 : z,
       { play: b, pause: M, setProgress: x } = fe(o);
     (useEffect(() => {
@@ -149,7 +149,7 @@ var Q = !1,
       }, [C, D]),
       useEffect(() => {
         if (!Q) {
-          Q = !0;
+          Q = true;
           return;
         }
         let r = isMotionValue(n) ? n.get() : (n ?? 0) * 0.01;
@@ -191,14 +191,14 @@ var Q = !1,
         onPlay: (r) => P?.(r),
         onEnded: (r) => S?.(r),
         autoPlay: C === "on-mount",
-        poster: ie ? ae : void 0,
+        poster: ie ? ae : undefined,
         onLoadedData: () => {
           o.current &&
             (o.current.currentTime < 0.3 && x((d ?? 0) * 0.01),
             C === "on-mount" && b());
         },
         controls: m,
-        muted: y ? !0 : i,
+        muted: y ? true : i,
         playsInline: u,
         style: {
           cursor: H ? "pointer" : "auto",
@@ -219,13 +219,13 @@ B.defaultProps = {
   srcUrl:
     "./assets/mixkit-clouds-sky.mp4",
   srcFile: "",
-  posterEnabled: !1,
-  controls: !1,
-  playing: !0,
-  loop: !0,
-  muted: !0,
-  playsinline: !0,
-  restartOnEnter: !1,
+  posterEnabled: false,
+  controls: false,
+  playing: true,
+  loop: true,
+  muted: true,
+  playsinline: true,
+  restartOnEnter: false,
   objectFit: "cover",
   backgroundColor: "rgba(0,0,0,0)",
   radius: 0,
@@ -243,7 +243,7 @@ var X = ["cover", "fill", "contain", "scale-down", "none"];
 addPropertyControls(B, {
   srcType: {
     type: ControlType.Enum,
-    displaySegmentedControl: !0,
+    displaySegmentedControl: true,
     title: "Source",
     options: ["URL", "Upload"],
   },

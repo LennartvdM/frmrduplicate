@@ -2,7 +2,7 @@ import { fontLoader } from "./chunk--react-and-framer-runtime.mjs";
 fontLoader.loadFonts(["Inter-Bold"]);
 var n = [
     {
-      explicitInter: !0,
+      explicitInter: true,
       fonts: [
         {
           family: "Inter",

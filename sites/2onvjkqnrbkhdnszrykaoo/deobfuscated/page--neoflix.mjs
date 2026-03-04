@@ -50,7 +50,7 @@ import { $ as a,
   loadFonts,
   getFonts,
   normalizeFontConfig } from "./chunk--react-and-framer-runtime.mjs";
-import { a as Y } from "./chunk-QPIK4HVB.mjs";
+import { a as Y } from "./metadata--neoflix.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
 var Ye = getFonts(c),
@@ -97,8 +97,8 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
     return {
       ...d,
       variant:
-        (y = (g = Qe[d.variant]) !== null && g !== void 0 ? g : d.variant) !==
-          null && y !== void 0
+        (y = (g = Qe[d.variant]) !== null && g !== undefined ? g : d.variant) !==
+          null && y !== undefined
           ? y
           : "Rre_u8WuV",
     };
@@ -136,7 +136,7 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
       id: v ?? z,
       children: jsx(Je, {
         animate: _,
-        initial: !1,
+        initial: false,
         children: jsx(Ge, {
           value: Xe,
           children: jsxs(motion.div, {
@@ -182,16 +182,16 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         borderRadius: 0,
                         bottomLeftRadius: 0,
                         bottomRightRadius: 0,
-                        controls: !1,
+                        controls: false,
                         height: "100%",
                         id: "EumH2pnmK",
-                        isMixedBorderRadius: !1,
+                        isMixedBorderRadius: false,
                         layoutId: "EumH2pnmK",
-                        loop: !0,
-                        muted: !0,
+                        loop: true,
+                        muted: true,
                         objectFit: "cover",
-                        playing: !0,
-                        posterEnabled: !1,
+                        playing: true,
+                        posterEnabled: false,
                         srcFile:
                           "./assets/3krvwm0969thuiryj2na4kdauw.webm",
                         srcType: "Upload",
@@ -229,16 +229,16 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         borderRadius: 0,
                         bottomLeftRadius: 0,
                         bottomRightRadius: 0,
-                        controls: !1,
+                        controls: false,
                         height: "100%",
                         id: "Q4Ut8FyxB",
-                        isMixedBorderRadius: !1,
+                        isMixedBorderRadius: false,
                         layoutId: "Q4Ut8FyxB",
-                        loop: !0,
-                        muted: !0,
+                        loop: true,
+                        muted: true,
                         objectFit: "cover",
-                        playing: !0,
-                        posterEnabled: !1,
+                        playing: true,
+                        posterEnabled: false,
                         srcFile:
                           "./assets/nwfwqm9vebbwcrqkomujfkkma.webm",
                         srcType: "Upload",
@@ -276,16 +276,16 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         borderRadius: 0,
                         bottomLeftRadius: 0,
                         bottomRightRadius: 0,
-                        controls: !1,
+                        controls: false,
                         height: "100%",
                         id: "Ocb0EpzC7",
-                        isMixedBorderRadius: !1,
+                        isMixedBorderRadius: false,
                         layoutId: "Ocb0EpzC7",
-                        loop: !0,
-                        muted: !0,
+                        loop: true,
+                        muted: true,
                         objectFit: "cover",
-                        playing: !0,
-                        posterEnabled: !1,
+                        playing: true,
+                        posterEnabled: false,
                         srcFile:
                           "./assets/jm9ee97tcdcefsstds6w6jp0e1w.webm",
                         srcType: "Upload",
@@ -323,16 +323,16 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         borderRadius: 0,
                         bottomLeftRadius: 0,
                         bottomRightRadius: 0,
-                        controls: !1,
+                        controls: false,
                         height: "100%",
                         id: "kFS3ppAvv",
-                        isMixedBorderRadius: !1,
+                        isMixedBorderRadius: false,
                         layoutId: "kFS3ppAvv",
-                        loop: !0,
-                        muted: !0,
+                        loop: true,
+                        muted: true,
                         objectFit: "cover",
-                        playing: !0,
-                        posterEnabled: !1,
+                        playing: true,
+                        posterEnabled: false,
                         srcFile:
                           "./assets/td3yumpa2nfpplqmxpz9jlbjym.webm",
                         srcType: "Upload",
@@ -375,16 +375,16 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         borderRadius: 0,
                         bottomLeftRadius: 0,
                         bottomRightRadius: 0,
-                        controls: !1,
+                        controls: false,
                         height: "100%",
                         id: "NRZzc9_Zy",
-                        isMixedBorderRadius: !1,
+                        isMixedBorderRadius: false,
                         layoutId: "NRZzc9_Zy",
-                        loop: !0,
-                        muted: !0,
+                        loop: true,
+                        muted: true,
                         objectFit: "cover",
-                        playing: !0,
-                        posterEnabled: !1,
+                        playing: true,
+                        posterEnabled: false,
                         srcFile:
                           "./assets/nwkgjaocyelpifxmzrvxbowwius.webm",
                         srcType: "Upload",
@@ -431,16 +431,16 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         borderRadius: 0,
                         bottomLeftRadius: 0,
                         bottomRightRadius: 0,
-                        controls: !1,
+                        controls: false,
                         height: "100%",
                         id: "DRu3_2xH9",
-                        isMixedBorderRadius: !1,
+                        isMixedBorderRadius: false,
                         layoutId: "DRu3_2xH9",
-                        loop: !0,
-                        muted: !0,
+                        loop: true,
+                        muted: true,
                         objectFit: "cover",
-                        playing: !0,
-                        posterEnabled: !1,
+                        playing: true,
+                        posterEnabled: false,
                         srcFile:
                           "./assets/nwkgjaocyelpifxmzrvxbowwius.webm",
                         srcType: "Upload",
@@ -454,7 +454,7 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         width: "100%",
                         ...Pe(
                           {
-                            DkxmDygok: { srcFile: void 0 },
+                            DkxmDygok: { srcFile: undefined },
                             gRcraNE8T: {
                               srcFile:
                                 "./assets/79ajxjoljjurdtgiqvvugw34pai.webm",
@@ -524,11 +524,11 @@ addPropertyControls(q, {
     type: ControlType.Enum,
   },
 });
-loadFonts(q, [{ explicitInter: !0, fonts: [] }, ...Ye, ...Ze], {
-  supportsExplicitInterCodegen: !0,
+loadFonts(q, [{ explicitInter: true, fonts: [] }, ...Ye, ...Ze], {
+  supportsExplicitInterCodegen: true,
 });
 fontLoader.loadFonts([]);
-var Ae = [{ explicitInter: !0, fonts: [] }],
+var Ae = [{ explicitInter: true, fonts: [] }],
   Ve = [
     ".framer-1BPWo .framer-styles-preset-1wicq5s:not(.rich-text-wrapper), .framer-1BPWo .framer-styles-preset-1wicq5s.rich-text-wrapper a { --framer-link-current-text-color: var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, #383437); --framer-link-current-text-decoration: none; --framer-link-hover-text-color: var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, #529c9c); --framer-link-hover-text-decoration: underline; --framer-link-text-color: var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, #00333b); --framer-link-text-decoration: none; }",
   ],
@@ -597,8 +597,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     return {
       ...d,
       variant:
-        (y = (g = yr[d.variant]) !== null && g !== void 0 ? g : d.variant) !==
-          null && y !== void 0
+        (y = (g = yr[d.variant]) !== null && g !== undefined ? g : d.variant) !==
+          null && y !== undefined
           ? y
           : "vtnUon983",
     };
@@ -607,7 +607,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     let { activeLocale: u, setLocale: d } = useLocale(),
       { style: g, className: y, layoutId: v, variant: W, ...H } = xr(f);
     (useEffect(() => {
-      let i = Y(void 0, u);
+      let i = Y(undefined, u);
       if (i.robots) {
         let x = document.querySelector('meta[name="robots"]');
         x
@@ -617,13 +617,13 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
             x.setAttribute("content", i.robots),
             document.head.appendChild(x));
       }
-    }, [void 0, u]),
+    }, [undefined, u]),
       useInsertionEffect(() => {
-        let i = Y(void 0, u);
+        let i = Y(undefined, u);
         if (((document.title = i.title || ""), i.viewport)) {
           var x;
           (x = document.querySelector('meta[name="viewport"]')) === null ||
-            x === void 0 ||
+            x === undefined ||
             x.setAttribute("content", i.viewport);
         }
         let le = i.bodyClassName;
@@ -638,11 +638,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
           le &&
             document.body.classList.remove(`${i.bodyClassName}-framer-CacIk`);
         };
-      }, [void 0, u]));
-    let [h, ie] = useVariantState(W, mr, !1),
-      se = void 0,
+      }, [undefined, u]));
+    let [h, ie] = useVariantState(W, mr, false),
+      se = undefined,
       E = useRef(null),
-      R = () => (cr() ? h !== "AlOztWgAm" : !0),
+      R = () => (cr() ? h !== "AlOztWgAm" : true),
       ne = resolveLinks("WjO84y3BZ"),
       _ = useRef(null),
       l = resolveLinks("dbtg_NZW8"),
@@ -690,13 +690,13 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                     className: "framer-12f3lu4-container",
                     "data-framer-appear-id": "12f3lu4",
                     initial: pr,
-                    layoutScroll: !0,
-                    optimized: !0,
+                    layoutScroll: true,
+                    optimized: true,
                     style: { transformPerspective: 1200 },
                     children: jsx(nr, {
-                      __framer__animateOnce: !1,
+                      __framer__animateOnce: false,
                       __framer__threshold: 0.5,
-                      __framer__variantAppearEffectEnabled: !0,
+                      __framer__variantAppearEffectEnabled: true,
                       height: "100%",
                       id: "X_da1JZ1k",
                       layoutId: "X_da1JZ1k",
@@ -730,13 +730,13 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                     jsxs("main", {
                       className: "framer-28jrge",
                       "data-framer-name": "Main",
-                      "data-hide-scrollbars": !0,
+                      "data-hide-scrollbars": true,
                       name: "Main",
                       children: [
                         jsx("section", {
                           className: "framer-sa5hnr",
                           "data-framer-name": "Section-Time",
-                          "data-hide-scrollbars": !0,
+                          "data-hide-scrollbars": true,
                           id: ne,
                           name: "Section-Time",
                           ref: _,
@@ -757,7 +757,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                       className: "framer-1ouw02o",
                                       children: [
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsx("h1", {
@@ -798,8 +798,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "IDh2dRb_U",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -816,8 +816,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "cASgO3jWQ",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsxs("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -836,8 +836,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "pcYRXVdRv",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsxs("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -870,8 +870,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "HtIN1t6ER",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -891,7 +891,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           className: "framer-11v6mfd",
                                           fonts: ["Inter", "Inter-Bold"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                         jsx("div", {
                                           className: "framer-1boqtvh",
@@ -913,16 +913,16 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   borderRadius: 15,
                                                   bottomLeftRadius: 15,
                                                   bottomRightRadius: 15,
-                                                  controls: !1,
+                                                  controls: false,
                                                   height: "100%",
                                                   id: "h0JpIKWrU",
-                                                  isMixedBorderRadius: !1,
+                                                  isMixedBorderRadius: false,
                                                   layoutId: "h0JpIKWrU",
-                                                  loop: !0,
-                                                  muted: !0,
+                                                  loop: true,
+                                                  muted: true,
                                                   objectFit: "cover",
-                                                  playing: !0,
-                                                  posterEnabled: !1,
+                                                  playing: true,
+                                                  posterEnabled: false,
                                                   srcFile:
                                                     "./assets/vvn9ennnbxaxebaokh17jhgijg.mp4",
                                                   srcType: "Upload",
@@ -943,7 +943,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           }),
                                         }),
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsxs("p", {
@@ -961,8 +961,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "KgHIqfucs",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -978,8 +978,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "S5cL1K0Pb",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsxs("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -1027,7 +1027,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           className: "framer-1u19uqd",
                                           fonts: ["Inter", "Inter-Bold"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                       ],
                                     }),
@@ -1040,7 +1040,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                         jsx("section", {
                           className: "framer-1y2dv23",
                           "data-framer-name": "Section-Dance",
-                          "data-hide-scrollbars": !0,
+                          "data-hide-scrollbars": true,
                           id: l,
                           name: "Section-Dance",
                           ref: j,
@@ -1058,7 +1058,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                       className: "framer-1a7bs04",
                                       children: [
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsx("h1", {
@@ -1102,8 +1102,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "zI2CbZmPJ",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -1119,8 +1119,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "uQs2bgVcT",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsxs("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -1142,7 +1142,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           className: "framer-1f2berh",
                                           fonts: ["Inter", "Inter-Bold"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                         jsx("div", {
                                           className: "framer-avx6mw",
@@ -1164,16 +1164,16 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   borderRadius: 15,
                                                   bottomLeftRadius: 15,
                                                   bottomRightRadius: 15,
-                                                  controls: !1,
+                                                  controls: false,
                                                   height: "100%",
                                                   id: "meqeFY16Y",
-                                                  isMixedBorderRadius: !1,
+                                                  isMixedBorderRadius: false,
                                                   layoutId: "meqeFY16Y",
-                                                  loop: !0,
-                                                  muted: !0,
+                                                  loop: true,
+                                                  muted: true,
                                                   objectFit: "cover",
-                                                  playing: !0,
-                                                  posterEnabled: !1,
+                                                  playing: true,
+                                                  posterEnabled: false,
                                                   srcFile:
                                                     "./assets/yahq7dplzb3du76zsorv03p8y.mp4",
                                                   srcType: "Upload",
@@ -1194,7 +1194,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           }),
                                         }),
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsxs("p", {
@@ -1212,8 +1212,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "fN3izV_im",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -1243,8 +1243,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "sEYnG8vfd",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -1290,7 +1290,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           className: "framer-11834y9",
                                           fonts: ["Inter", "Inter-Bold"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                       ],
                                     }),
@@ -1303,7 +1303,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                         jsx("section", {
                           className: "framer-tryz2c",
                           "data-framer-name": "Section-Cost",
-                          "data-hide-scrollbars": !0,
+                          "data-hide-scrollbars": true,
                           id: S,
                           name: "Section-Cost",
                           ref: U,
@@ -1321,7 +1321,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                       className: "framer-vv1jrc",
                                       children: [
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsx("h1", {
@@ -1356,7 +1356,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           className: "framer-nl13cd",
                                           fonts: ["Inter"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                         jsx("div", {
                                           className: "framer-1261yhd",
@@ -1378,16 +1378,16 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   borderRadius: 15,
                                                   bottomLeftRadius: 15,
                                                   bottomRightRadius: 15,
-                                                  controls: !1,
+                                                  controls: false,
                                                   height: "100%",
                                                   id: "hFaYa_W3V",
-                                                  isMixedBorderRadius: !1,
+                                                  isMixedBorderRadius: false,
                                                   layoutId: "hFaYa_W3V",
-                                                  loop: !0,
-                                                  muted: !0,
+                                                  loop: true,
+                                                  muted: true,
                                                   objectFit: "cover",
-                                                  playing: !0,
-                                                  posterEnabled: !1,
+                                                  playing: true,
+                                                  posterEnabled: false,
                                                   srcFile:
                                                     "./assets/iytbauik57o8jzn3y2ufyugl8s.webm",
                                                   srcType: "Upload",
@@ -1408,7 +1408,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           }),
                                         }),
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsxs("p", {
@@ -1426,8 +1426,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "sEYnG8vfd",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -1444,8 +1444,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "MrFemP8j0",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -1475,8 +1475,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "EY4hH_Y7j",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -1493,8 +1493,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "X8n9MxBBr",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsxs("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -1555,7 +1555,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           className: "framer-1ejabff",
                                           fonts: ["Inter", "Inter-Bold"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                       ],
                                     }),
@@ -1568,7 +1568,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                         jsx("section", {
                           className: "framer-jnm6wk",
                           "data-framer-name": "Section-Skills",
-                          "data-hide-scrollbars": !0,
+                          "data-hide-scrollbars": true,
                           id: K,
                           name: "Section-Skills",
                           ref: F,
@@ -1586,7 +1586,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                       className: "framer-3p4opu",
                                       children: [
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsx("h1", {
@@ -1626,8 +1626,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "N3WZmbqwm",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsxs("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -1650,7 +1650,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           className: "framer-5yjl5u",
                                           fonts: ["Inter", "Inter-Bold"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                         jsx("div", {
                                           className: "framer-a6fuxj",
@@ -1672,16 +1672,16 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   borderRadius: 15,
                                                   bottomLeftRadius: 15,
                                                   bottomRightRadius: 15,
-                                                  controls: !1,
+                                                  controls: false,
                                                   height: "100%",
                                                   id: "EhgsuZXgp",
-                                                  isMixedBorderRadius: !1,
+                                                  isMixedBorderRadius: false,
                                                   layoutId: "EhgsuZXgp",
-                                                  loop: !0,
-                                                  muted: !0,
+                                                  loop: true,
+                                                  muted: true,
                                                   objectFit: "cover",
-                                                  playing: !0,
-                                                  posterEnabled: !1,
+                                                  playing: true,
+                                                  posterEnabled: false,
                                                   srcFile:
                                                     "./assets/lwhbyca3siautdycqsuedxms9k.mp4",
                                                   srcType: "Upload",
@@ -1702,7 +1702,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           }),
                                         }),
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsxs("p", {
@@ -1720,8 +1720,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "ut1mnZVW1",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -1738,8 +1738,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "t97unZiTK",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -1769,8 +1769,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "rC8gH4Mco",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsxs("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -1819,7 +1819,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           className: "framer-ysem9e",
                                           fonts: ["Inter", "Inter-Bold"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                       ],
                                     }),
@@ -1832,7 +1832,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                         jsx("section", {
                           className: "framer-1k2r7fq",
                           "data-framer-name": "Section-Team",
-                          "data-hide-scrollbars": !0,
+                          "data-hide-scrollbars": true,
                           id: X,
                           name: "Section-Team",
                           ref: z,
@@ -1850,7 +1850,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                       className: "framer-1itas1o",
                                       children: [
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsx("h1", {
@@ -1891,8 +1891,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "nzfaDOFRY",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -1912,7 +1912,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           className: "framer-1tf77ld",
                                           fonts: ["Inter", "Inter-Bold"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                         jsx("div", {
                                           className: "framer-1niytn",
@@ -1934,16 +1934,16 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   borderRadius: 15,
                                                   bottomLeftRadius: 15,
                                                   bottomRightRadius: 15,
-                                                  controls: !1,
+                                                  controls: false,
                                                   height: "100%",
                                                   id: "i_fLUmv7t",
-                                                  isMixedBorderRadius: !1,
+                                                  isMixedBorderRadius: false,
                                                   layoutId: "i_fLUmv7t",
-                                                  loop: !0,
-                                                  muted: !0,
+                                                  loop: true,
+                                                  muted: true,
                                                   objectFit: "cover",
-                                                  playing: !0,
-                                                  posterEnabled: !1,
+                                                  playing: true,
+                                                  posterEnabled: false,
                                                   srcFile:
                                                     "./assets/iwavlczgcginuobbbe6yoz9e4u.mp4",
                                                   srcType: "Upload",
@@ -1964,7 +1964,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           }),
                                         }),
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsxs("p", {
@@ -1982,8 +1982,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "mRVtT24DH",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -2028,7 +2028,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           className: "framer-1llnw04",
                                           fonts: ["Inter", "Inter-Bold"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                       ],
                                     }),
@@ -2041,7 +2041,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                         jsx("section", {
                           className: "framer-ybzgtm",
                           "data-framer-name": "Section-Perspectives",
-                          "data-hide-scrollbars": !0,
+                          "data-hide-scrollbars": true,
                           id: G,
                           name: "Section-Perspectives",
                           ref: A,
@@ -2059,7 +2059,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                       className: "framer-2tsoyv",
                                       children: [
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsx("h1", {
@@ -2100,8 +2100,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "ymL2yz5Md",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -2131,8 +2131,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "X8n9MxBBr",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -2149,8 +2149,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "NM8YGpOE1",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -2170,7 +2170,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           className: "framer-13yw1ak",
                                           fonts: ["Inter", "Inter-Bold"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                         jsx("div", {
                                           className: "framer-11a32oa",
@@ -2192,16 +2192,16 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   borderRadius: 15,
                                                   bottomLeftRadius: 15,
                                                   bottomRightRadius: 15,
-                                                  controls: !1,
+                                                  controls: false,
                                                   height: "100%",
                                                   id: "urRzfVoZ4",
-                                                  isMixedBorderRadius: !0,
+                                                  isMixedBorderRadius: true,
                                                   layoutId: "urRzfVoZ4",
-                                                  loop: !0,
-                                                  muted: !0,
+                                                  loop: true,
+                                                  muted: true,
                                                   objectFit: "cover",
-                                                  playing: !0,
-                                                  posterEnabled: !1,
+                                                  playing: true,
+                                                  posterEnabled: false,
                                                   srcFile:
                                                     "./assets/ij4dgbll0n3cer9t7dvotemfvwy.mp4",
                                                   srcType: "Upload",
@@ -2222,7 +2222,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           }),
                                         }),
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsxs("p", {
@@ -2240,8 +2240,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     href: {
                                                       webPageId: "H5snp07v4",
                                                     },
-                                                    openInNewTab: !1,
-                                                    smoothScroll: !1,
+                                                    openInNewTab: false,
+                                                    smoothScroll: false,
                                                     children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
@@ -2287,7 +2287,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           className: "framer-9bihrp",
                                           fonts: ["Inter", "Inter-Bold"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                       ],
                                     }),
@@ -2309,7 +2309,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                     R() &&
                       jsx(a, {
                         href: { webPageId: "augiA20Il" },
-                        openInNewTab: !0,
+                        openInNewTab: true,
                         children: jsx(motion.a, {
                           "aria-label": "Framer University logo",
                           className:
@@ -2325,7 +2325,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                             intrinsicWidth: 407,
                             name: "Neoflix_Logo_SVG",
                             svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 406.548 428.788"><defs><style>.cls-1{fill:#48c2c5}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M26.01 307.464c5.39 68.03 63.415 121.324 211.152 121.324-58.907 0-104.765-26.64-130.847-72.367-37.136-11.599-63.256-28.585-80.304-48.957ZM286.307 21.4C163.502-75.529-79.82 181.001 26.01 307.463 16.49 187.289 171.26 21.145 286.307 21.399Zm120.241 210.503c0-154.088-53.418-210.356-120.241-210.504 21.27 16.788 38.913 44.194 50.509 84.701 41.835 26.47 69.732 72.903 69.732 125.803Z"/><path class="cls-1" d="M82.183 255.473c0 39.41 8.53 73.592 24.132 100.947 34.05 10.634 77.32 16.753 131.42 16.753-63.114 0-100.797-43.992-100.797-117.674 0-64.553 53.329-117.069 118.875-117.069 52.924 0 95.98 42.787 95.98 95.376 0-52.356-5.454-94.437-14.977-127.706a149.154 149.154 0 0 0-80.013-23.285c-96.287 0-174.62 77.455-174.62 172.658Z"/><circle class="cls-1" cx="244.366" cy="248.571" r="43.387"/></g></g></svg>',
-                            withExternalLayout: !0,
+                            withExternalLayout: true,
                           }),
                         }),
                       }),
@@ -2335,7 +2335,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                       name: "Links",
                       children: [
                         jsx(RichTextComponent, {
-                          __fromCanvasComponent: !0,
+                          __fromCanvasComponent: true,
                           children: jsx(ReactFragment, {
                             children: jsx("p", {
                               style: {
@@ -2349,8 +2349,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                               },
                               children: jsx(a, {
                                 href: { webPageId: "bzydBB85Y" },
-                                openInNewTab: !1,
-                                smoothScroll: !1,
+                                openInNewTab: false,
+                                smoothScroll: false,
                                 children: jsx("a", {
                                   className: "framer-styles-preset-b5e6zr",
                                   "data-styles-preset": "H9WgrbXMf",
@@ -2364,10 +2364,10 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           fonts: ["GF;Montserrat-500"],
                           name: "Reflection",
                           verticalAlignment: "top",
-                          withExternalLayout: !0,
+                          withExternalLayout: true,
                         }),
                         jsx(RichTextComponent, {
-                          __fromCanvasComponent: !0,
+                          __fromCanvasComponent: true,
                           children: jsx(ReactFragment, {
                             children: jsx("p", {
                               style: {
@@ -2380,8 +2380,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                               },
                               children: jsx(a, {
                                 href: { webPageId: "aLuYbVoBY" },
-                                openInNewTab: !1,
-                                smoothScroll: !1,
+                                openInNewTab: false,
+                                smoothScroll: false,
                                 children: jsx("a", {
                                   className: "framer-styles-preset-b5e6zr",
                                   "data-styles-preset": "H9WgrbXMf",
@@ -2395,7 +2395,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           fonts: ["GF;Montserrat-500"],
                           name: "Reflection",
                           verticalAlignment: "top",
-                          withExternalLayout: !0,
+                          withExternalLayout: true,
                         }),
                         jsx(a, {
                           href: { webPageId: "x05wlhCdy" },
@@ -2403,7 +2403,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                             className: "framer-whs8ci framer-p7mxce",
                             whileHover: gr,
                             children: jsx(RichTextComponent, {
-                              __fromCanvasComponent: !0,
+                              __fromCanvasComponent: true,
                               children: jsx(ReactFragment, {
                                 children: jsx("p", {
                                   style: {
@@ -2424,7 +2424,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                               fonts: ["GF;Montserrat-500"],
                               name: "Toolbox",
                               verticalAlignment: "top",
-                              withExternalLayout: !0,
+                              withExternalLayout: true,
                             }),
                           }),
                         }),
@@ -2469,7 +2469,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             hash: ":WjO84y3BZ",
                                             webPageId: "bzydBB85Y",
                                           },
-                                          implicitPathVariables: void 0,
+                                          implicitPathVariables: undefined,
                                         },
                                       ],
                                       children: (i) =>
@@ -2481,20 +2481,20 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             "data-framer-name": "Item",
                                             name: "Item",
                                             children: jsx(N, {
-                                              __framer__animateOnce: !1,
+                                              __framer__animateOnce: false,
                                               __framer__targets: [
                                                 { ref: _, target: "f7_6jHMU5" },
                                                 { ref: j, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
-                                                !0,
+                                                true,
                                               height: "100%",
                                               id: "MD7Nj1EEZ",
                                               layoutId: "MD7Nj1EEZ",
                                               name: "Item",
                                               PGkyTrycd: "Time-sensitive",
-                                              PvnQG2uF_: !0,
+                                              PvnQG2uF_: true,
                                               S0KhFTFra: i[0],
                                               style: { width: "100%" },
                                               variant: "Rwa3hKEk5",
@@ -2510,7 +2510,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             hash: ":dbtg_NZW8",
                                             webPageId: "bzydBB85Y",
                                           },
-                                          implicitPathVariables: void 0,
+                                          implicitPathVariables: undefined,
                                         },
                                       ],
                                       children: (i) =>
@@ -2522,20 +2522,20 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             "data-framer-name": "Item",
                                             name: "Item",
                                             children: jsx(N, {
-                                              __framer__animateOnce: !1,
+                                              __framer__animateOnce: false,
                                               __framer__targets: [
                                                 { ref: j, target: "f7_6jHMU5" },
                                                 { ref: U, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
-                                                !0,
+                                                true,
                                               height: "100%",
                                               id: "HmNLG1mvV",
                                               layoutId: "HmNLG1mvV",
                                               name: "Item",
                                               PGkyTrycd: "Like a dance",
-                                              PvnQG2uF_: !0,
+                                              PvnQG2uF_: true,
                                               S0KhFTFra: i[0],
                                               style: { width: "100%" },
                                               variant: "Rwa3hKEk5",
@@ -2551,7 +2551,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             hash: ":tftSCv8zZ",
                                             webPageId: "bzydBB85Y",
                                           },
-                                          implicitPathVariables: void 0,
+                                          implicitPathVariables: undefined,
                                         },
                                       ],
                                       children: (i) =>
@@ -2563,21 +2563,21 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             "data-framer-name": "Item",
                                             name: "Item",
                                             children: jsx(N, {
-                                              __framer__animateOnce: !1,
+                                              __framer__animateOnce: false,
                                               __framer__targets: [
                                                 { ref: U, target: "f7_6jHMU5" },
                                                 { ref: F, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
-                                                !0,
+                                                true,
                                               height: "100%",
                                               id: "lVFvNHfUU",
                                               layoutId: "lVFvNHfUU",
                                               name: "Item",
                                               PGkyTrycd:
                                                 "But this comes at a cost",
-                                              PvnQG2uF_: !0,
+                                              PvnQG2uF_: true,
                                               S0KhFTFra: i[0],
                                               style: { width: "100%" },
                                               variant: "Rwa3hKEk5",
@@ -2593,7 +2593,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             hash: ":mRVhqybMB",
                                             webPageId: "bzydBB85Y",
                                           },
-                                          implicitPathVariables: void 0,
+                                          implicitPathVariables: undefined,
                                         },
                                       ],
                                       children: (i) =>
@@ -2605,20 +2605,20 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             "data-framer-name": "Item",
                                             name: "Item",
                                             children: jsx(N, {
-                                              __framer__animateOnce: !1,
+                                              __framer__animateOnce: false,
                                               __framer__targets: [
                                                 { ref: F, target: "f7_6jHMU5" },
                                                 { ref: z, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
-                                                !0,
+                                                true,
                                               height: "100%",
                                               id: "axDyaLLq6",
                                               layoutId: "axDyaLLq6",
                                               name: "Item",
                                               PGkyTrycd: "Sharpening skills",
-                                              PvnQG2uF_: !0,
+                                              PvnQG2uF_: true,
                                               S0KhFTFra: i[0],
                                               style: { width: "100%" },
                                               variant: "Rwa3hKEk5",
@@ -2634,7 +2634,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             hash: ":NYP2seWhD",
                                             webPageId: "bzydBB85Y",
                                           },
-                                          implicitPathVariables: void 0,
+                                          implicitPathVariables: undefined,
                                         },
                                       ],
                                       children: (i) =>
@@ -2646,21 +2646,21 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             "data-framer-name": "Item",
                                             name: "Item",
                                             children: jsx(N, {
-                                              __framer__animateOnce: !1,
+                                              __framer__animateOnce: false,
                                               __framer__targets: [
                                                 { ref: z, target: "f7_6jHMU5" },
                                                 { ref: A, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
-                                                !0,
+                                                true,
                                               height: "100%",
                                               id: "cCGn3tsBd",
                                               layoutId: "cCGn3tsBd",
                                               name: "Item",
                                               PGkyTrycd:
                                                 "Strengthening team dynamics",
-                                              PvnQG2uF_: !0,
+                                              PvnQG2uF_: true,
                                               S0KhFTFra: i[0],
                                               style: { width: "100%" },
                                               variant: "Rwa3hKEk5",
@@ -2676,7 +2676,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             hash: ":DXqsCYt4L",
                                             webPageId: "bzydBB85Y",
                                           },
-                                          implicitPathVariables: void 0,
+                                          implicitPathVariables: undefined,
                                         },
                                       ],
                                       children: (i) =>
@@ -2688,20 +2688,20 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             "data-framer-name": "Item",
                                             name: "Item",
                                             children: jsx(N, {
-                                              __framer__animateOnce: !1,
+                                              __framer__animateOnce: false,
                                               __framer__targets: [
                                                 { ref: A, target: "f7_6jHMU5" },
                                               ],
                                               __framer__threshold: 0,
                                               __framer__variantAppearEffectEnabled:
-                                                !0,
+                                                true,
                                               height: "100%",
                                               id: "oVFbPFs55",
                                               layoutId: "oVFbPFs55",
                                               name: "Item",
                                               PGkyTrycd:
                                                 "Broadening perspectives",
-                                              PvnQG2uF_: !0,
+                                              PvnQG2uF_: true,
                                               S0KhFTFra: i[0],
                                               style: { width: "100%" },
                                               variant: "Rwa3hKEk5",
@@ -2725,7 +2725,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                       jsx("main", {
                         className: "framer-gcvtsl",
                         "data-framer-name": "Main",
-                        "data-hide-scrollbars": !0,
+                        "data-hide-scrollbars": true,
                         name: "Main",
                       }),
                     ],
@@ -2793,7 +2793,7 @@ loadFonts(
   Z,
   [
     {
-      explicitInter: !0,
+      explicitInter: true,
       fonts: [
         {
           family: "Inter",
@@ -2933,7 +2933,7 @@ loadFonts(
     ...normalizeFontConfig(Ae),
     ...normalizeFontConfig(fontConfig),
   ],
-  { supportsExplicitInterCodegen: !0 },
+  { supportsExplicitInterCodegen: true },
 );
 var Yr = {
   exports: {

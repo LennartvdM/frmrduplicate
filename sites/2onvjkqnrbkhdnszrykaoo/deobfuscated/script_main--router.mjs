@@ -306,7 +306,7 @@ var u = {
 async function N({ routeId: n, pathVariables: l, localeId: r }) {
   await u[n].page.preload();
   let i = createElement(FramerRouter, {
-      isWebsite: !0,
+      isWebsite: true,
       routeId: n,
       pathVariables: l,
       routes: u,
@@ -314,20 +314,20 @@ async function N({ routeId: n, pathVariables: l, localeId: r }) {
       framerSiteId:
         "1f896049bc80eeaf847daeda1d5b19e3b628f61340b15f6395e0420ec7a18a50",
       notFoundPage: lazyLoadPage(() => import("./page--404-not-found.mjs")),
-      isReducedMotion: !0,
+      isReducedMotion: true,
       localeId: r,
       locales: V,
-      preserveQueryParams: void 0,
+      preserveQueryParams: undefined,
     }),
     s = createElement(CursorContextProvider, {
       children: i,
-      value: { enableAsyncURLUpdates: !1, useGranularSuspense: !1 },
+      value: { enableAsyncURLUpdates: false, useGranularSuspense: false },
     }),
     a = {
       enter: {
         opacity: 0,
         rotate: 0,
-        rotate3d: !1,
+        rotate3d: false,
         rotateX: 0,
         rotateY: 0,
         scale: 1,
@@ -389,12 +389,12 @@ if (H) {
     })),
     (window.process = {
       ...window.process,
-      env: { ...(window.process ? window.process.env : void 0), NODE_ENV: "production" },
+      env: { ...(window.process ? window.process.env : undefined), NODE_ENV: "production" },
     }),
     (window.__framer_events = window.__framer_events || []),
     initSiteScrollBehavior());
   let n = document.getElementById("main");
-  "framerHydrateV2" in n.dataset ? S(!0, n) : S(!1, n);
+  "framerHydrateV2" in n.dataset ? S(true, n) : S(false, n);
 }
 function Y() {
   H && window.__framer_events.push(arguments);
@@ -413,7 +413,7 @@ async function S(n, l) {
               message: String(t),
               componentStack: _,
               stack: _
-                ? void 0
+                ? undefined
                 : t instanceof Error && typeof t.stack == "string"
                   ? t.stack
                   : null,
@@ -430,7 +430,7 @@ async function S(n, l) {
         (s = t.pathVariables),
         (a = t.breakpoints));
     } else {
-      let t = matchRoute(u, decodeURIComponent(location.pathname), !0, V);
+      let t = matchRoute(u, decodeURIComponent(location.pathname), true, V);
       ((r = t.routeId), (i = t.localeId), (s = t.pathVariables));
     }
     let c = await N({ routeId: r, localeId: i, pathVariables: s });

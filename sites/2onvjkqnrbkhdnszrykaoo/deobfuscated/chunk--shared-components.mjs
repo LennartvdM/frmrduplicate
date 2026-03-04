@@ -49,14 +49,14 @@ var G = class {
     advance(t) {
       var e;
       if (!this.isRunning) return;
-      let i = !1;
+      let i = false;
       if (this.lerp)
         ((this.value =
           ((s = this.value),
           (r = this.to),
           (1 - (o = 1 - Math.exp(-60 * this.lerp * t))) * s + o * r)),
           Math.round(this.value) === this.to &&
-            ((this.value = this.to), (i = !0)));
+            ((this.value = this.to), (i = true)));
       else {
         this.currentTime += t;
         let n = N(0, this.currentTime / this.duration, 1);
@@ -69,7 +69,7 @@ var G = class {
         i && this.stop());
     }
     stop() {
-      this.isRunning = !1;
+      this.isRunning = false;
     }
     fromTo(
       t,
@@ -88,13 +88,13 @@ var G = class {
         (this.duration = s),
         (this.easing = r),
         (this.currentTime = 0),
-        (this.isRunning = !0),
+        (this.isRunning = true),
         o?.(),
         (this.onUpdate = n));
     }
   },
   K = class {
-    constructor({ wrapper: t, content: e, autoResize: i = !0 } = {}) {
+    constructor({ wrapper: t, content: e, autoResize: i = true } = {}) {
       if (
         ((this.resize = () => {
           (this.onWrapperResize(), this.onContentResize());
@@ -159,14 +159,14 @@ var G = class {
         () => {
           var s;
           this.events[t] =
-            (s = this.events[t]) == null ? void 0 : s.filter((r) => e !== r);
+            (s = this.events[t]) == null ? undefined : s.filter((r) => e !== r);
         }
       );
     }
     off(t, e) {
       var i;
       this.events[t] =
-        (i = this.events[t]) == null ? void 0 : i.filter((s) => e !== s);
+        (i = this.events[t]) == null ? undefined : i.filter((s) => e !== s);
     }
     destroy() {
       this.events = {};
@@ -178,7 +178,7 @@ var G = class {
       {
         wheelMultiplier: e = 1,
         touchMultiplier: i = 2,
-        normalizeWheel: s = !1,
+        normalizeWheel: s = false,
       },
     ) {
       ((this.onTouchStart = (r) => {
@@ -221,15 +221,15 @@ var G = class {
         (this.normalizeWheel = s),
         (this.touchStart = { x: null, y: null }),
         (this.emitter = new O()),
-        this.element.addEventListener("wheel", this.onWheel, { passive: !1 }),
+        this.element.addEventListener("wheel", this.onWheel, { passive: false }),
         this.element.addEventListener("touchstart", this.onTouchStart, {
-          passive: !1,
+          passive: false,
         }),
         this.element.addEventListener("touchmove", this.onTouchMove, {
-          passive: !1,
+          passive: false,
         }),
         this.element.addEventListener("touchend", this.onTouchEnd, {
-          passive: !1,
+          passive: false,
         }));
     }
     on(t, e) {
@@ -238,16 +238,16 @@ var G = class {
     destroy() {
       (this.emitter.destroy(),
         this.element.removeEventListener("wheel", this.onWheel, {
-          passive: !1,
+          passive: false,
         }),
         this.element.removeEventListener("touchstart", this.onTouchStart, {
-          passive: !1,
+          passive: false,
         }),
         this.element.removeEventListener("touchmove", this.onTouchMove, {
-          passive: !1,
+          passive: false,
         }),
         this.element.removeEventListener("touchend", this.onTouchEnd, {
-          passive: !1,
+          passive: false,
         }));
     }
   },
@@ -257,22 +257,22 @@ var G = class {
       content: e = document.documentElement,
       wheelEventsTarget: i = t,
       eventsTarget: s = i,
-      smoothWheel: r = !0,
-      smoothTouch: o = !1,
-      syncTouch: n = !1,
+      smoothWheel: r = true,
+      smoothTouch: o = false,
+      syncTouch: n = false,
       syncTouchLerp: l = 0.1,
       __iosNoInertiaSyncTouchLerp: h = 0.4,
       touchInertiaMultiplier: u = 35,
       duration: v,
       easing: p = (d) => Math.min(1, 1.001 - Math.pow(2, -10 * d)),
       lerp: g = !v && 0.1,
-      infinite: w = !1,
+      infinite: w = false,
       orientation: j = "vertical",
       gestureOrientation: q = "vertical",
       touchMultiplier: P = 1,
       wheelMultiplier: M = 1,
-      normalizeWheel: _ = !1,
-      autoResize: L = !0,
+      normalizeWheel: _ = false,
+      autoResize: L = true,
     } = {}) {
       ((this.onVirtualScroll = ({ deltaX: d, deltaY: y, event: S }) => {
         if (S.ctrlKey) return;
@@ -296,17 +296,17 @@ var G = class {
             var Z;
             return (
               (x.hasAttribute == null
-                ? void 0
+                ? undefined
                 : x.hasAttribute("data-lenis-prevent")) ||
               (T &&
                 (x.hasAttribute == null
-                  ? void 0
+                  ? undefined
                   : x.hasAttribute("data-lenis-prevent-touch"))) ||
               (Q &&
                 (x.hasAttribute == null
-                  ? void 0
+                  ? undefined
                   : x.hasAttribute("data-lenis-prevent-wheel"))) ||
-              ((Z = x.classList) == null ? void 0 : Z.contains("lenis"))
+              ((Z = x.classList) == null ? undefined : Z.contains("lenis"))
             );
           }))
         )
@@ -318,7 +318,7 @@ var G = class {
             (this.options.smoothWheel && Q)),
           !this.isSmooth)
         )
-          return ((this.isScrolling = !1), void this.animate.stop());
+          return ((this.isScrolling = false), void this.animate.stop());
         S.preventDefault();
         let k = y;
         this.options.gestureOrientation === "both"
@@ -330,7 +330,7 @@ var G = class {
           this.scrollTo(
             this.targetScroll + k,
             U(
-              { programmatic: !1 },
+              { programmatic: false },
               dt && {
                 lerp: J
                   ? this.syncTouchLerp
@@ -375,15 +375,15 @@ var G = class {
         (this.animate = new G()),
         (this.emitter = new O()),
         (this.dimensions = new K({ wrapper: t, content: e, autoResize: L })),
-        this.toggleClass("lenis", !0),
+        this.toggleClass("lenis", true),
         (this.velocity = 0),
-        (this.isLocked = !1),
-        (this.isStopped = !1),
+        (this.isLocked = false),
+        (this.isStopped = false),
         (this.isSmooth = n || r || o),
-        (this.isScrolling = !1),
+        (this.isScrolling = false),
         (this.targetScroll = this.animatedScroll = this.actualScroll),
         this.options.wrapper.addEventListener("scroll", this.onNativeScroll, {
-          passive: !1,
+          passive: false,
         }),
         (this.virtualScroll = new A(s, {
           touchMultiplier: P,
@@ -397,15 +397,15 @@ var G = class {
         this.options.wrapper.removeEventListener(
           "scroll",
           this.onNativeScroll,
-          { passive: !1 },
+          { passive: false },
         ),
         this.virtualScroll.destroy(),
         this.dimensions.destroy(),
-        this.toggleClass("lenis", !1),
-        this.toggleClass("lenis-smooth", !1),
-        this.toggleClass("lenis-scrolling", !1),
-        this.toggleClass("lenis-stopped", !1),
-        this.toggleClass("lenis-locked", !1));
+        this.toggleClass("lenis", false),
+        this.toggleClass("lenis-smooth", false),
+        this.toggleClass("lenis-scrolling", false),
+        this.toggleClass("lenis-stopped", false),
+        this.toggleClass("lenis-locked", false));
     }
     on(t, e) {
       return this.emitter.on(t, e);
@@ -425,17 +425,17 @@ var G = class {
       this.emitter.emit("scroll", this);
     }
     reset() {
-      ((this.isLocked = !1),
-        (this.isScrolling = !1),
+      ((this.isLocked = false),
+        (this.isScrolling = false),
         (this.animatedScroll = this.targetScroll = this.actualScroll),
         (this.velocity = 0),
         this.animate.stop());
     }
     start() {
-      ((this.isStopped = !1), this.reset());
+      ((this.isStopped = false), this.reset());
     }
     stop() {
-      ((this.isStopped = !0), this.animate.stop(), this.reset());
+      ((this.isStopped = true), this.animate.stop(), this.reset());
     }
     raf(t) {
       let e = t - (this.time || t);
@@ -445,14 +445,14 @@ var G = class {
       t,
       {
         offset: e = 0,
-        immediate: i = !1,
-        lock: s = !1,
+        immediate: i = false,
+        lock: s = false,
         duration: r = this.options.duration,
         easing: o = this.options.easing,
         lerp: n = !r && this.options.lerp,
         onComplete: l = null,
-        force: h = !1,
-        programmatic: u = !0,
+        force: h = false,
+        programmatic: u = true,
       } = {},
     ) {
       if ((!this.isStopped && !this.isLocked) || h) {
@@ -499,10 +499,10 @@ var G = class {
             easing: o,
             lerp: n,
             onStart: () => {
-              (s && (this.isLocked = !0), (this.isScrolling = !0));
+              (s && (this.isLocked = true), (this.isScrolling = true));
             },
             onUpdate: (p, g) => {
-              ((this.isScrolling = !0),
+              ((this.isScrolling = true),
                 (this.velocity = p - this.animatedScroll),
                 (this.direction = Math.sign(this.velocity)),
                 (this.animatedScroll = p),
@@ -513,7 +513,7 @@ var G = class {
                   (this.reset(),
                   this.emit(),
                   l?.(this),
-                  (this.__preventNextScrollEvent = !0),
+                  (this.__preventNextScrollEvent = true),
                   requestAnimationFrame(() => {
                     delete this.__preventNextScrollEvent;
                   })));
@@ -595,7 +595,7 @@ function B(a) {
     e = useRef(null);
   return (
     useEffect(() => {
-      e.current && e.current.scrollTo(0, { immediate: !0 });
+      e.current && e.current.scrollTo(0, { immediate: true });
     }, [e]),
     useEffect(() => {
       let i = document.getElementById("overlay");
@@ -612,7 +612,7 @@ function B(a) {
                 } else e.current.start();
           },
           r = new MutationObserver(s),
-          o = { childList: !0 };
+          o = { childList: true };
         return (r.observe(i, o), () => r.disconnect());
       }
     }, []),
@@ -657,7 +657,7 @@ function B(a) {
 }
 B.displayName = "Smooth Scroll";
 addPropertyControls(B, { intensity: { title: "Intensity", type: ControlType.Number, defaultValue: 10 } });
-var ft = { Rwa3hKEk5: { hover: !0 } },
+var ft = { Rwa3hKEk5: { hover: true } },
   gt = ["Rwa3hKEk5", "f7_6jHMU5"],
   vt = "framer-w2DMm",
   yt = { f7_6jHMU5: "framer-v-omnff2", Rwa3hKEk5: "framer-v-1h7km6n" };
@@ -678,12 +678,12 @@ var xt = { damping: 40, delay: 0, mass: 1, stiffness: 400, type: "spring" /* phy
     var n, l, h, u;
     return {
       ...o,
-      PGkyTrycd: (n = s ?? o.PGkyTrycd) !== null && n !== void 0 ? n : "Title",
-      PvnQG2uF_: (l = i ?? o.PvnQG2uF_) !== null && l !== void 0 ? l : !0,
+      PGkyTrycd: (n = s ?? o.PGkyTrycd) !== null && n !== undefined ? n : "Title",
+      PvnQG2uF_: (l = i ?? o.PvnQG2uF_) !== null && l !== undefined ? l : true,
       S0KhFTFra: e ?? o.S0KhFTFra,
       variant:
-        (u = (h = bt[o.variant]) !== null && h !== void 0 ? h : o.variant) !==
-          null && u !== void 0
+        (u = (h = bt[o.variant]) !== null && h !== undefined ? h : o.variant) !==
+          null && u !== undefined
           ? u
           : "Rwa3hKEk5",
     };
@@ -726,12 +726,12 @@ var xt = { damping: 40, delay: 0, mass: 1, stiffness: 400, type: "spring" /* phy
       id: o ?? d,
       children: jsx(_t, {
         animate: M,
-        initial: !1,
+        initial: false,
         children: jsx(wt, {
           value: xt,
           children: jsx(ct, {
             href: h,
-            openInNewTab: !1,
+            openInNewTab: false,
             smoothScroll: u,
             children: jsxs(motion.a, {
               ...v,
@@ -744,7 +744,7 @@ var xt = { damping: 40, delay: 0, mass: 1, stiffness: 400, type: "spring" /* phy
               style: { ...s },
               ...St(
                 {
-                  "Rwa3hKEk5-hover": { "data-framer-name": void 0 },
+                  "Rwa3hKEk5-hover": { "data-framer-name": undefined },
                   f7_6jHMU5: { "data-framer-name": "Active" },
                 },
                 p,
@@ -771,7 +771,7 @@ var xt = { damping: 40, delay: 0, mass: 1, stiffness: 400, type: "spring" /* phy
                   },
                 }),
                 jsx(RichTextComponent, {
-                  __fromCanvasComponent: !0,
+                  __fromCanvasComponent: true,
                   children: jsx(ReactFragment, {
                     children: jsx(motion.h2, {
                       style: {
@@ -803,7 +803,7 @@ var xt = { damping: 40, delay: 0, mass: 1, stiffness: 400, type: "spring" /* phy
                     f7_6jHMU5: { opacity: 1 },
                   },
                   verticalAlignment: "top",
-                  withExternalLayout: !0,
+                  withExternalLayout: true,
                 }),
               ],
             }),
@@ -836,13 +836,13 @@ addPropertyControls(E, {
   },
   PGkyTrycd: { defaultValue: "Title", title: "Title", type: ControlType.String },
   S0KhFTFra: { title: "Link", type: ControlType.Link },
-  PvnQG2uF_: { defaultValue: !0, title: "Smooth", type: ControlType.Boolean },
+  PvnQG2uF_: { defaultValue: true, title: "Smooth", type: ControlType.Boolean },
 });
 loadFonts(
   E,
   [
     {
-      explicitInter: !0,
+      explicitInter: true,
       fonts: [
         {
           family: "DM Sans",
@@ -854,7 +854,7 @@ loadFonts(
       ],
     },
   ],
-  { supportsExplicitInterCodegen: !0 },
+  { supportsExplicitInterCodegen: true },
 );
 fontLoader.loadWebFontsFromSelectors(["Inter-Medium"]);
 var Kt = [],
@@ -881,7 +881,7 @@ addPropertyControls(Y, {
     title: "Opacity",
     type: ControlType.Number,
     step: 0.1,
-    displayStepper: !0,
+    displayStepper: true,
     max: 1,
     min: 0,
   },
@@ -891,7 +891,7 @@ addPropertyControls(Y, {
     min: 0,
     max: 1e3,
     step: 1,
-    displayStepper: !0,
+    displayStepper: true,
   },
 });
 var Rt = {

@@ -51,20 +51,6 @@ This maps URL paths to their deobfuscated page component files.
 | `chunk-nfm7h27b.mjs` | `chunk--embed-component.mjs` | embed component |
 | `script_main.wb5gsumg.mjs` | `script_main--router.mjs` | router |
 | `sitesnotfoundpage.js@1.1-b76n3trr.mjs` | `page--404-not-found.mjs` | 404 not found |
-| `chunk-42u43nkg.mjs` | `chunk--empty-stub.mjs` | empty/stub (unused) |
-| `chunk-4r3p5dn4.mjs` | `chunk--video-player-component.mjs` | video player with autoplay, loop, controls |
-| `chunk-hvoa2pey.mjs` | `chunk--inter-bold-font-styles.mjs` | Inter-Bold font loader & typography |
-| `chunk-wxiqhdcd.mjs` | `metadata--worldmapgit.mjs` | worldmapgit page metadata |
-
-## Missing Page Files
-
-These routes are defined in the router but their page component files were not included in the site clone:
-- `/worldmapgit` → `page--worldmapgit.mjs`
-- `/toolbox_case_philadelphia` → `page--toolbox_case_philadelphia.mjs`
-- `/toolbox_case_vienna` → `page--toolbox_case_vienna.mjs`
-- `/toolbox_case_australia` → `page--toolbox_case_australia.mjs`
-- `/Toolbox_Tasks_of_the_chair` → `page--Toolbox_Tasks_of_the_chair.mjs`
-- 404 page → `page--404-not-found.mjs`
 
 ## Responsive Breakpoints
 

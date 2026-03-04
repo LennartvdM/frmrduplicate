@@ -21,10 +21,11 @@
  *   Y → loadFonts
  *   x → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as w } from "./chunk-6LBCIK62.mjs";
 import { a as y, b as v } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var M = "framer-J56XT",
                       layoutId: "gVpPrdQAf",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/5.-preparation-and-consent",
+                      url: "https://docs.neoflix.care/level-2-in-action/5.-preparation-and-consent" /* → getDocsUrl("/Toolbox_Preparation_and_Consent") */,
                       width: "100%",
                     }),
                   }),

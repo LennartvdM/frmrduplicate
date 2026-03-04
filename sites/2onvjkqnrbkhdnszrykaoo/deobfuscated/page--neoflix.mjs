@@ -9,7 +9,6 @@
  *   Fe → interExtraBoldFontDefs
  *   ze → interExtraBoldPresetCSS
  *   Te → interExtraBoldCSSScope
- *   c → VideoComponent
  *   Ce → fontConfig
  *   Ne → linkPresetStyles
  *   Re → cssClassScope
@@ -58,11 +57,11 @@ import { SmoothScrollComponent,
   interExtraBoldFontDefs,
   interExtraBoldPresetCSS,
   interExtraBoldCSSScope } from "./chunk--shared-components.mjs";
-import { VideoComponent } from "./chunk--video-player-component.mjs";
+import { a as c } from "./chunk-4R3P5DN4.mjs";
 import { fontConfig,
   linkPresetStyles,
   cssClassScope } from "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { $ as a,
   useRoute,
   useLocale,

@@ -21,10 +21,11 @@
  *   V → loadFonts
  *   x → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as v } from "./chunk-52UH3ZE6.mjs";
 import { a as g, b as w } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var F = "framer-5KLyu",
                       layoutId: "ACXHWfgiT",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-1-fundamentals/3.-safe-simple-and-small",
+                      url: "https://docs.neoflix.care/level-1-fundamentals/3.-safe-simple-and-small" /* → getDocsUrl("/Toolbox-Safe_Simple_Small") */,
                       width: "100%",
                     }),
                   }),

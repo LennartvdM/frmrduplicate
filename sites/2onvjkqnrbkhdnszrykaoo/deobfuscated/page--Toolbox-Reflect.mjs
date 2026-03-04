@@ -21,10 +21,11 @@
  *   B → loadFonts
  *   x → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as v, b as y } from "./chunk--embed-component.mjs";
 import { a as w } from "./chunk-NGBS3FJG.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -134,7 +135,7 @@ var E = "framer-RVGcQ",
                       layoutId: "N4hgVPbyv",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/reflect",
+                      url: "https://docs.neoflix.care/level-2-in-action/reflect" /* → getDocsUrl("/Toolbox-Reflect") */,
                       width: "100%",
                     }),
                   }),

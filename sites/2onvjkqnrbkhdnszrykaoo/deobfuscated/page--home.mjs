@@ -5,7 +5,6 @@
  *   Ye → MapMobile2Component
  *   Rr → withScrollSnapChild
  *   Xr → withScrollSnapContainerAlt
- *   G → VideoComponent
  *   Or → fontConfig
  *   kr → linkPresetStyles
  *   Ur → cssClassScope
@@ -54,12 +53,12 @@ import { withScrollSnapContainer,
   MapMobile2Component,
   withScrollSnapChild,
   withScrollSnapContainerAlt } from "./chunk--framer-motion.mjs";
-import "./chunk--inter-bold-font-styles.mjs";
-import { VideoComponent } from "./chunk--video-player-component.mjs";
+import "./chunk-HVOA2PEY.mjs";
+import { a as G } from "./chunk-4R3P5DN4.mjs";
 import { fontConfig,
   linkPresetStyles,
   cssClassScope } from "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { $ as B,
   useLocale,
   ControlType,

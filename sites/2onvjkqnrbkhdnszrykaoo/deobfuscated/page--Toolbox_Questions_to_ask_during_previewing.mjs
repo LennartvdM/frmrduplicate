@@ -21,10 +21,11 @@
  *   Y → loadFonts
  *   g → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as q } from "./chunk-L7BLQOMP.mjs";
 import { a as y, b as w } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var K = "framer-qFu7e",
                       layoutId: "SWQXLrroy",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/10.-previewing/10.1-questions-to-ask-during-previewing",
+                      url: "https://docs.neoflix.care/level-2-in-action/10.-previewing/10.1-questions-to-ask-during-previewing" /* → getDocsUrl("/Toolbox_Questions_to_ask_during_previewing") */,
                       width: "100%",
                     }),
                   }),

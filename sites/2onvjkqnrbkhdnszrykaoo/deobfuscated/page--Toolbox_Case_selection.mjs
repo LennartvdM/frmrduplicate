@@ -21,10 +21,11 @@
  *   j → loadFonts
  *   u → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as w } from "./chunk-YRUSXTEZ.mjs";
 import { a as g, b } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var L = "framer-ZrI92",
                       layoutId: "ocDNfwszm",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/5.-preparation-and-consent/5.2-case-selection",
+                      url: "https://docs.neoflix.care/level-2-in-action/5.-preparation-and-consent/5.2-case-selection" /* → getDocsUrl("/Toolbox_Case_selection") */,
                       width: "100%",
                     }),
                   }),

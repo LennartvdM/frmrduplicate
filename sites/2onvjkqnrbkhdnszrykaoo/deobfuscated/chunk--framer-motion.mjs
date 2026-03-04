@@ -3,9 +3,6 @@
  */
 /**
  * Import aliases resolved:
- *   rr → interBoldFontDefs
- *   ar → interBoldPresetCSS
- *   tr → interBoldCSSScope
  *   te → useLocale
  *   Ge → RenderTarget
  *   y → ControlType
@@ -39,9 +36,7 @@
  *   er → normalizeFontConfig
  *   A → window
  */
-import { interBoldFontDefs,
-  interBoldPresetCSS,
-  interBoldCSSScope } from "./chunk--inter-bold-font-styles.mjs";
+import { a as rr, b as ar, c as tr } from "./chunk-HVOA2PEY.mjs";
 import { $ as O,
   useLocale,
   RenderTarget,
@@ -2383,7 +2378,7 @@ var Nr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     useOnVariantChange(F, { default: K, TvAVq9uug: void 0 });
     let he = M(null),
       ge = useId(),
-      ce = [interBoldCSSScope],
+      ce = [tr],
       Ie = useDeviceSize();
     return e(LayoutGroup, {
       id: c ?? ge,
@@ -2579,7 +2574,7 @@ loadFonts(
         },
       ],
     },
-    ...er(interBoldFontDefs),
+    ...er(rr),
   ],
   { supportsExplicitInterCodegen: !0 },
 );

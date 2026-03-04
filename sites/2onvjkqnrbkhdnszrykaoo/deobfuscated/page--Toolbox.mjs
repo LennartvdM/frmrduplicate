@@ -21,10 +21,11 @@
  *   D → loadFonts
  *   g → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as v } from "./chunk-VWDC27UW.mjs";
 import { a as b, b as y } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var W = "framer-EFuj8",
                       layoutId: "g9Nb1x6b3",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/",
+                      url: "https://docs.neoflix.care/" /* → getDocsUrl("/Toolbox") */,
                       width: "100%",
                     }),
                   }),

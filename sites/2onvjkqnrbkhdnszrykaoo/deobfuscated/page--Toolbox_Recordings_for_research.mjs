@@ -21,10 +21,11 @@
  *   X → loadFonts
  *   h → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as w } from "./chunk-TU3JLHPG.mjs";
 import { a as b, b as y } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var Y = "framer-QWLgG",
                       layoutId: "ReYPKfwB9",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/15.-recordings-for-research",
+                      url: "https://docs.neoflix.care/level-2-in-action/15.-recordings-for-research" /* → getDocsUrl("/Toolbox_Recordings_for_research") */,
                       width: "100%",
                     }),
                   }),

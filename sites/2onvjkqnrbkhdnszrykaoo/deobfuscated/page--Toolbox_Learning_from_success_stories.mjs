@@ -21,10 +21,11 @@
  *   Y → loadFonts
  *   y → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as w } from "./chunk-754TJW2I.mjs";
 import { a as g, b } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var z = "framer-RIKqV",
                       layoutId: "bKbetxR5R",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-1-fundamentals/4.-learning-from-success-stories",
+                      url: "https://docs.neoflix.care/level-1-fundamentals/4.-learning-from-success-stories" /* → getDocsUrl("/Toolbox_Learning_from_success_stories") */,
                       width: "100%",
                     }),
                   }),

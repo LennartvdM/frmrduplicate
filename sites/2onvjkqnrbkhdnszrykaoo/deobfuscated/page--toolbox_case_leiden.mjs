@@ -22,10 +22,11 @@
  *   L → loadFonts
  *   y → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as m } from "./chunk-VQAURQE6.mjs";
 import { a as g, b as w } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -211,7 +212,7 @@ var P = "framer-vWnxi",
                       layoutId: "tQZ4VpKHB",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-1-fundamentals/4.-learning-from-success-stories/nicu-in-leiden-the-netherlands",
+                      url: "https://docs.neoflix.care/level-1-fundamentals/4.-learning-from-success-stories/nicu-in-leiden-the-netherlands" /* → getDocsUrl("/toolbox_case_leiden") */,
                       width: "100%",
                     }),
                   }),

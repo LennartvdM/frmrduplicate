@@ -21,10 +21,11 @@
  *   V → loadFonts
  *   g → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as b } from "./chunk-7ATIRYTW.mjs";
 import { a as y, b as w } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var j = "framer-BfSxY",
                       layoutId: "AAhRwG2sz",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/welcome/neoflix/how-it-works",
+                      url: "https://docs.neoflix.care/welcome/neoflix/how-it-works" /* → getDocsUrl("/Toolbox_How_it_works") */,
                       width: "100%",
                     }),
                   }),

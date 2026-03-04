@@ -21,10 +21,11 @@
  *   Y → loadFonts
  *   x → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as v } from "./chunk-VH44VBV6.mjs";
 import { a as h, b as y } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var V = "framer-mOQw3",
                       layoutId: "W2CcC9PWg",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-1-fundamentals/1.-preproduction/1.4-unburdening-the-process",
+                      url: "https://docs.neoflix.care/level-1-fundamentals/1.-preproduction/1.4-unburdening-the-process" /* → getDocsUrl("/Toolbox_Unburdening_the_process") */,
                       width: "100%",
                     }),
                   }),

@@ -21,10 +21,11 @@
  *   F → loadFonts
  *   g → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as w } from "./chunk-N6UKUD43.mjs";
 import { a as y, b as v } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var I = "framer-VuNhp",
                       layoutId: "EPf5Xgh0S",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/11.-lets-neoflix/11.2-a-safe-learning-environment",
+                      url: "https://docs.neoflix.care/level-2-in-action/11.-lets-neoflix/11.2-a-safe-learning-environment" /* → getDocsUrl("/Toolbox_A_Safe_Learning_Environment") */,
                       width: "100%",
                     }),
                   }),

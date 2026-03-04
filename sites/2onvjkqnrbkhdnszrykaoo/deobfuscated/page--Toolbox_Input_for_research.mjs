@@ -21,10 +21,11 @@
  *   V → loadFonts
  *   v → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as y } from "./chunk-DH5M4XTH.mjs";
 import { a as w, b as g } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var Y = "framer-fOcvM",
                       layoutId: "Yzx0TUFq3",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/13.1-the-neoflix-approach/13.2-input-for-research",
+                      url: "https://docs.neoflix.care/level-2-in-action/13.1-the-neoflix-approach/13.2-input-for-research" /* → getDocsUrl("/Toolbox_Input_for_research") */,
                       width: "100%",
                     }),
                   }),

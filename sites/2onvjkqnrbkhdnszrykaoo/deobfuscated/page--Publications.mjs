@@ -1,4 +1,16 @@
 /* CSS extracted to: page--Publications.1.css, page--Publications.2.css */
+/*
+ * ============ FILE STRUCTURE ============
+ * Backdrop2 component:                    ~lines 57-233
+ * Scroll Section (page root) component:   ~lines 491-2562
+ *   Nav bar:                              ~lines 600-760
+ *   Sidebar nav:                          ~lines 790-920
+ *   Section 1 "Narrative Review":         ~lines 960-1450
+ *   Section 2 "Provider's Perspective":   ~lines 1450-1890
+ *   Section 3 "Record, Reflect, Refine":  ~lines 1890-2490
+ * Font loading:                           ~lines 2564-2827
+ * ========================================
+ */
 import { a as _ } from "./metadata--publications.mjs";
 import { ReactFragment as br, cssSSRMinifiedHelper as vr, c as Hr } from "./chunk--inter-bold-font-loader.mjs";
 import { SmoothScrollComponent,
@@ -54,6 +66,14 @@ import { $ as o,
   normalizeFontConfig } from "./chunk--react-and-framer-runtime.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
+import { mergeVariantProps, TransitionProvider, AnimatedFragment, CSS_ASPECT_RATIO_SUPPORT, SPRING_STANDARD } from "./chunk--page-helpers.mjs";
+import { interNamedFontDefs as _r, interHashedFontDefs } from "./chunk--font-data.mjs";
+var ICON_BG = {
+  alt: "", fit: "fit", loading: "lazy",
+  pixelHeight: 150, pixelWidth: 150,
+  positionX: "center", positionY: "center",
+  src: "./images/jnafhdwhe1hq6wcabqba0y1km.svg",
+};
 var Lr = getFonts(W),
   Mr = getFonts(NoiseOverlayComponent),
   Tr = withFXWrapper(motion.div),
@@ -237,254 +257,7 @@ fontLoader.loadFonts([
   "Inter-BoldItalic",
   "Inter-Italic",
 ]);
-var _r = [
-    {
-      explicitInter: true,
-      fonts: [
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange:
-            "U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F",
-          url: "./assets/fonts/Inter-Medium.cyrillic-ext.woff2",
-          weight: "500",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange: "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
-          url: "./assets/fonts/Inter-Medium.cyrillic.woff2",
-          weight: "500",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange: "U+1F00-1FFF",
-          url: "./assets/fonts/Inter-Medium.greek-ext.woff2",
-          weight: "500",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange: "U+0370-03FF",
-          url: "./assets/fonts/Inter-Medium.greek.woff2",
-          weight: "500",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange:
-            "U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF",
-          url: "./assets/fonts/Inter-Medium.latin-ext.woff2",
-          weight: "500",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange:
-            "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
-          url: "./assets/fonts/Inter-Medium.latin.woff2",
-          weight: "500",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange:
-            "U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB",
-          url: "./assets/fonts/Inter-Medium.vietnamese.woff2",
-          weight: "500",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange:
-            "U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F",
-          url: "./assets/fonts/Inter-Bold.cyrillic-ext.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange: "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
-          url: "./assets/fonts/Inter-Bold.cyrillic.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange: "U+1F00-1FFF",
-          url: "./assets/fonts/Inter-Bold.greek-ext.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange: "U+0370-03FF",
-          url: "./assets/fonts/Inter-Bold.greek.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange:
-            "U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF",
-          url: "./assets/fonts/Inter-Bold.latin-ext.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange:
-            "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
-          url: "./assets/fonts/Inter-Bold.latin.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange:
-            "U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB",
-          url: "./assets/fonts/Inter-Bold.vietnamese.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange:
-            "U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F",
-          url: "./assets/fonts/Inter-BoldItalic.cyrillic-ext.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange: "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
-          url: "./assets/fonts/Inter-BoldItalic.cyrillic.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange: "U+1F00-1FFF",
-          url: "./assets/fonts/Inter-BoldItalic.greek-ext.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange: "U+0370-03FF",
-          url: "./assets/fonts/Inter-BoldItalic.greek.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange:
-            "U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF",
-          url: "./assets/fonts/Inter-BoldItalic.latin-ext.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange:
-            "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
-          url: "./assets/fonts/Inter-BoldItalic.latin.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange:
-            "U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB",
-          url: "./assets/fonts/Inter-BoldItalic.vietnamese.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange:
-            "U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F",
-          url: "./assets/fonts/Inter-Italic.cyrillic-ext.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange: "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
-          url: "./assets/fonts/Inter-Italic.cyrillic.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange: "U+1F00-1FFF",
-          url: "./assets/fonts/Inter-Italic.greek-ext.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange: "U+0370-03FF",
-          url: "./assets/fonts/Inter-Italic.greek.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange:
-            "U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF",
-          url: "./assets/fonts/Inter-Italic.latin-ext.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange:
-            "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
-          url: "./assets/fonts/Inter-Italic.latin.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange:
-            "U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB",
-          url: "./assets/fonts/Inter-Italic.vietnamese.woff2",
-          weight: "400",
-        },
-      ],
-    },
-  ],
-  jr = [
+var jr = [
     '.framer-URl6O .framer-styles-preset-1411uq:not(.rich-text-wrapper), .framer-URl6O .framer-styles-preset-1411uq.rich-text-wrapper p { --framer-font-family: "Inter", "Inter Placeholder", sans-serif; --framer-font-family-bold: "Inter", "Inter Placeholder", sans-serif; --framer-font-family-bold-italic: "Inter", "Inter Placeholder", sans-serif; --framer-font-family-italic: "Inter", "Inter Placeholder", sans-serif; --framer-font-size: 14px; --framer-font-style: normal; --framer-font-style-bold: normal; --framer-font-style-bold-italic: italic; --framer-font-style-italic: italic; --framer-font-weight: 500; --framer-font-weight-bold: 700; --framer-font-weight-bold-italic: 700; --framer-font-weight-italic: 400; --framer-letter-spacing: 0em; --framer-line-height: 1.5em; --framer-paragraph-spacing: 20px; --framer-text-alignment: start; --framer-text-color: #666666; --framer-text-decoration: none; --framer-text-stroke-color: initial; --framer-text-stroke-width: initial; --framer-text-transform: none; }',
   ],
   qr = "framer-URl6O";
@@ -1035,15 +808,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                   className: "framer-o6qgw6",
                                                   children: [
                                                     jsx(FrameComponent, {
-                                                      background: {
-                                                        alt: "",
-                                                        fit: "fit",
-                                                        pixelHeight: 150,
-                                                        pixelWidth: 150,
-                                                        positionX: "center",
-                                                        positionY: "center",
-                                                        src: "./images/jnafhdwhe1hq6wcabqba0y1km.svg",
-                                                      },
+                                                      background: ICON_BG,
                                                       className:
                                                         "framer-j1nrrw",
                                                     }),
@@ -1378,16 +1143,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                   className: "framer-3tcrxo",
                                                   children: [
                                                     jsx(FrameComponent, {
-                                                      background: {
-                                                        alt: "",
-                                                        fit: "fit",
-                                                        loading: "lazy",
-                                                        pixelHeight: 150,
-                                                        pixelWidth: 150,
-                                                        positionX: "center",
-                                                        positionY: "center",
-                                                        src: "./images/jnafhdwhe1hq6wcabqba0y1km.svg",
-                                                      },
+                                                      background: ICON_BG,
                                                       className:
                                                         "framer-xttfno",
                                                     }),
@@ -1519,16 +1275,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                   className: "framer-15dymi2",
                                                   children: [
                                                     jsx(FrameComponent, {
-                                                      background: {
-                                                        alt: "",
-                                                        fit: "fit",
-                                                        loading: "lazy",
-                                                        pixelHeight: 150,
-                                                        pixelWidth: 150,
-                                                        positionX: "center",
-                                                        positionY: "center",
-                                                        src: "./images/jnafhdwhe1hq6wcabqba0y1km.svg",
-                                                      },
+                                                      background: ICON_BG,
                                                       className:
                                                         "framer-137v9yk",
                                                     }),
@@ -1822,16 +1569,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                   className: "framer-1yk1f7b",
                                                   children: [
                                                     jsx(FrameComponent, {
-                                                      background: {
-                                                        alt: "",
-                                                        fit: "fit",
-                                                        loading: "lazy",
-                                                        pixelHeight: 150,
-                                                        pixelWidth: 150,
-                                                        positionX: "center",
-                                                        positionY: "center",
-                                                        src: "./images/jnafhdwhe1hq6wcabqba0y1km.svg",
-                                                      },
+                                                      background: ICON_BG,
                                                       className:
                                                         "framer-1rwum1q",
                                                     }),
@@ -1963,16 +1701,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                   className: "framer-qcxgco",
                                                   children: [
                                                     jsx(FrameComponent, {
-                                                      background: {
-                                                        alt: "",
-                                                        fit: "fit",
-                                                        loading: "lazy",
-                                                        pixelHeight: 150,
-                                                        pixelWidth: 150,
-                                                        positionX: "center",
-                                                        positionY: "center",
-                                                        src: "./images/jnafhdwhe1hq6wcabqba0y1km.svg",
-                                                      },
+                                                      background: ICON_BG,
                                                       className:
                                                         "framer-b6uk4r",
                                                     }),
@@ -2419,16 +2148,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                   className: "framer-18kx7rp",
                                                   children: [
                                                     jsx(FrameComponent, {
-                                                      background: {
-                                                        alt: "",
-                                                        fit: "fit",
-                                                        loading: "lazy",
-                                                        pixelHeight: 150,
-                                                        pixelWidth: 150,
-                                                        positionX: "center",
-                                                        positionY: "center",
-                                                        src: "./images/jnafhdwhe1hq6wcabqba0y1km.svg",
-                                                      },
+                                                      background: ICON_BG,
                                                       className:
                                                         "framer-11d2my",
                                                     }),
@@ -2564,258 +2284,7 @@ q.defaultProps = { height: 7273, width: 1200 };
 loadFonts(
   q,
   [
-    {
-      explicitInter: true,
-      fonts: [
-        {
-          family: "Montserrat",
-          source: "google",
-          style: "normal",
-          url: "./assets/fonts/montserrat-v26-latin-bold.woff2",
-          weight: "500",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange:
-            "U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F",
-          url: "./assets/5vvr9vy74if2i6bqbjvbw7sy1pq.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange: "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
-          url: "./assets/eor0mi4hntlgwnn9if640ezzxco.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange: "U+1F00-1FFF",
-          url: "./assets/y9k9qrlzaqio88klkmbd8vomqc.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange: "U+0370-03FF",
-          url: "./assets/oyrd2tbibpvojxiihnlooxny9m.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange:
-            "U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF",
-          url: "./assets/jeywfuapfzhqheg8u5gtpdz7wq.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange:
-            "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
-          url: "./assets/vqyevyayhtarfwpquzqgpnds.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange:
-            "U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB",
-          url: "./assets/b6y37fthzealdunqhicbt6futy.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange:
-            "U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F",
-          url: "./assets/dppbyi0sl4fylgakx8kxopvt7c.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange: "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
-          url: "./assets/4raeqdeorcndkhhiicbjow92lk.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange: "U+1F00-1FFF",
-          url: "./assets/1k3w8dizy3v4emk8mb08yhxtbs.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange: "U+0370-03FF",
-          url: "./assets/tusctfyvm1i1ichuycwz9gddq.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange:
-            "U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF",
-          url: "./assets/vgyfwiwsac5oyxaycrxxvhze58.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange:
-            "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
-          url: "./assets/dxd0q7lsl7hevdzucnylngbhm.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "normal",
-          unicodeRange:
-            "U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB",
-          url: "./assets/giryzetix4ifypco5pyzonkhjio.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange:
-            "U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F",
-          url: "./assets/h89bbhkbhdzlxzzxi8upztsp90.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange: "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
-          url: "./assets/u6gjwduwb143kpnk1t1mdkdwkmc.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange: "U+1F00-1FFF",
-          url: "./assets/43sj6mfoph1lcjt46ovydusba6o.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange: "U+0370-03FF",
-          url: "./assets/wcchg0r4gbdairhfhiolq6oekqw.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange:
-            "U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF",
-          url: "./assets/wz367jpwf9brw6ldthn8rxgsjw.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange:
-            "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
-          url: "./assets/qxmhnwtzltyjiizcfalij8efbxu.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange:
-            "U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB",
-          url: "./assets/2a4xx7cngadfglvv4xro06obhy.woff2",
-          weight: "700",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange:
-            "U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F",
-          url: "./assets/cfmzu8w2e7thgf4t4ratmpuwosa.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange: "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
-          url: "./assets/867qobyax8ansfx4tgevu9yicm.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange: "U+1F00-1FFF",
-          url: "./assets/oyn2zbenfdnw7mt2lzjk1h9zb9k.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange: "U+0370-03FF",
-          url: "./assets/cdae8hgz1cmylu9g005paw3xmo.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange:
-            "U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF",
-          url: "./assets/dofvtme1uplcq161m6hj8csqyg.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange:
-            "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
-          url: "./assets/vfzujy0c65av44uhekb6vyjfmg.woff2",
-          weight: "400",
-        },
-        {
-          family: "Inter",
-          source: "framer",
-          style: "italic",
-          unicodeRange:
-            "U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB",
-          url: "./assets/tktbcdnbmevseejkdnghhklzyo.woff2",
-          weight: "400",
-        },
-      ],
-    },
+    ...interHashedFontDefs,
     ...ne,
     ...fe,
     ...oe,

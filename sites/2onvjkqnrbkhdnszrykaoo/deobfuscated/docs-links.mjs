@@ -33,6 +33,10 @@ export const DOCS_LINKS = {
   "/Toolbox_Unburdening_the_process": "/level-1-fundamentals/1.-preproduction/1.4-unburdening-the-process",
   "/toolbox_case_leiden": "/level-1-fundamentals/4.-learning-from-success-stories/nicu-in-leiden-the-netherlands",
   "/toolbox_case_succcessstories": "/level-1-fundamentals/4.-learning-from-success-stories",
+  "/Toolbox_Tasks_of_the_chair": "/level-1-fundamentals/2.-planning-your-initiative/2.2-tasks-of-the-chair",
+  "/toolbox_case_philadelphia": "/level-1-fundamentals/4.-learning-from-success-stories/nicu-in-philadelphia",
+  "/toolbox_case_vienna": "/level-1-fundamentals/4.-learning-from-success-stories/nicu-in-vienna",
+  "/toolbox_case_australia": "/level-1-fundamentals/4.-learning-from-success-stories/nicu-in-australia",
 };
 
 /**

@@ -1,38 +1,11 @@
 /**
- * Page metadata chunk - contains responsive breakpoints, SEO metadata, and page title.
- * breakpoints define responsive behavior at different screen widths.
+ * Metadata: Planning Your Initiative
+ * Thin wrapper — all logic lives in toolbox-page-factory.mjs
  */
-import { getSiteMetadata } from "./chunk--site-metadata.mjs";
-function r(e, a) {
-  return {
-    bodyClassName: "framer-body-IDh2dRb_U",
-    breakpoints: [
-      { hash: "c7ar5q", mediaQuery: "(min-width: 1200px)" },
-      {
-        hash: "gevwu",
-        mediaQuery: "(min-width: 810px) and (max-width: 1199px)",
-      },
-      { hash: "6dmx1r", mediaQuery: "(max-width: 809px)" },
-    ],
-    description: getSiteMetadata(e, a).description,
-    elements: {},
-    robots: "max-image-preview:large",
-    title: getSiteMetadata(e, a).title || "Toolbox Planning_Your_Initiative",
-    viewport: "width=device-width",
-  };
-}
-var m = 1,
-  s = {
-    exports: {
-      metadataVersion: {
-        type: "variable",
-        annotations: { framerContractVersion: "1" },
-      },
-      default: {
-        type: "function",
-        annotations: { framerContractVersion: "1" },
-      },
-      __FramerMetadata__: { type: "variable" },
-    },
-  };
-export { r as a, m as b, s as c };
+import { createToolboxMetadata } from "./toolbox-page-factory.mjs";
+
+var meta = createToolboxMetadata("/Toolbox-Planning_Your_Initiative", "Planning Your Initiative");
+
+export { meta as a };
+export var b = meta.version;
+export var c = meta.__FramerMetadata__;

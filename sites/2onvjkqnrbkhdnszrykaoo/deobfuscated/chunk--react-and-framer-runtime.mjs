@@ -35391,10 +35391,10 @@ function eN(e) {
 function tN(e) {
   let t;
   return (
-    e.url.startsWith("https://fonts.gstatic.com/s/")
+    (e.url.startsWith("https://fonts.gstatic.com/s/") || e.url.startsWith("./assets/fonts/"))
       ? (t = "google")
       : e.url.startsWith(
-            "https://framerusercontent.com/third-party-assets/fontshare/",
+            "./assets/fonts/fontshare/",
           )
         ? (t = "fontshare")
         : (t = "custom"),

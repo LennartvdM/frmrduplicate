@@ -6,10 +6,10 @@ function t(e, a) {
     description:
       "Empower your medical team to reach their full potential with video-based reflection and collaboration.",
     favicon:
-      "https://framerusercontent.com/assets/9pFd7vvquDS5eplYFkw551yUBPs.png",
+      "./assets/9pfd7vvquds5eplyfkw551yubps.png",
     robots: "max-image-preview:large",
     socialImage:
-      "https://framerusercontent.com/assets/D5E2dEtF0UoDhvOzeXvMy3W1Zc.png",
+      "./assets/d5e2detf0uodhvozexvmy3w1zc.png",
     title: "Neoflix",
   };
 }

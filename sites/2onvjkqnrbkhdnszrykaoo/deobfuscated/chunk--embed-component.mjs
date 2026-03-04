@@ -87,19 +87,11 @@ function se({ url: t, style: r }) {
       let l = !0;
       f(void 0);
       async function p() {
-        let n = await fetch(
-          "https://api.framer.com/functions/check-iframe-url?url=" +
-            encodeURIComponent(t),
-        );
-        if (n.status == 200) {
-          let { isBlocked: i } = await n.json();
-          l && f(i);
-        } else {
-          let i = await n.text();
-          console.error(i);
-          let m = new Error("This site can\u2019t be reached.");
-          f(m);
-        }
+        // Framer API dependency removed — skip iframe URL check.
+        // In the exported site useIsOnCanvas() is always false,
+        // so this code path is never reached. If it were, we
+        // optimistically allow the embed (isBlocked = false).
+        l && f(false);
       }
       return (
         p().catch((n) => {
@@ -342,7 +334,7 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                     fit: "fill",
                     pixelHeight: 150,
                     pixelWidth: 142,
-                    src: "https://framerusercontent.com/images/YF46j8fFMKZbQy8dqlCCzeOzItk.svg",
+                    src: "./images/yf46j8ffmkzbqy8dqlcczeozitk.svg",
                   },
                   className: "framer-14v6odq framer-cee5wl",
                   "data-framer-name": "Logo",
@@ -504,7 +496,7 @@ loadFonts(
           family: "Montserrat",
           source: "google",
           style: "normal",
-          url: "https://fonts.gstatic.com/s/montserrat/v26/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtZ6Ew7Y3tcoqK5.woff2",
+          url: "./assets/fonts/montserrat-v26-latin-bold.woff2",
           weight: "500",
         },
       ],

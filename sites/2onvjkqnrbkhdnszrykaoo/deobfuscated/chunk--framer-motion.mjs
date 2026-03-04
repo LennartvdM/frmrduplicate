@@ -2026,7 +2026,7 @@ function Ye(t) {
         preserveAspectRatio: "xMidYMid slice",
         viewBox: s,
         children: jsx("image", {
-          href: "https://raw.githubusercontent.com/LennartvdM/kaart/main/worldmap.svg",
+          href: "./assets/worldmap.svg",
           width: o,
           height: L,
         }),
@@ -2484,7 +2484,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F",
-          url: "https://framerusercontent.com/assets/5vvr9Vy74if2I6bQbJvbw7SY1pQ.woff2",
+          url: "./assets/5vvr9vy74if2i6bqbjvbw7sy1pq.woff2",
           weight: "400",
         },
         {
@@ -2492,7 +2492,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
-          url: "https://framerusercontent.com/assets/EOr0mi4hNtlgWNn9if640EZzXCo.woff2",
+          url: "./assets/eor0mi4hntlgwnn9if640ezzxco.woff2",
           weight: "400",
         },
         {
@@ -2500,7 +2500,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+1F00-1FFF",
-          url: "https://framerusercontent.com/assets/Y9k9QrlZAqio88Klkmbd8VoMQc.woff2",
+          url: "./assets/y9k9qrlzaqio88klkmbd8vomqc.woff2",
           weight: "400",
         },
         {
@@ -2508,7 +2508,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+0370-03FF",
-          url: "https://framerusercontent.com/assets/OYrD2tBIBPvoJXiIHnLoOXnY9M.woff2",
+          url: "./assets/oyrd2tbibpvojxiihnlooxny9m.woff2",
           weight: "400",
         },
         {
@@ -2517,7 +2517,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF",
-          url: "https://framerusercontent.com/assets/JeYwfuaPfZHQhEG8U5gtPDZ7WQ.woff2",
+          url: "./assets/jeywfuapfzhqheg8u5gtpdz7wq.woff2",
           weight: "400",
         },
         {
@@ -2526,7 +2526,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
-          url: "https://framerusercontent.com/assets/vQyevYAyHtARFwPqUzQGpnDs.woff2",
+          url: "./assets/vqyevyayhtarfwpquzqgpnds.woff2",
           weight: "400",
         },
         {
@@ -2535,7 +2535,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB",
-          url: "https://framerusercontent.com/assets/b6Y37FthZeALduNqHicBT6FutY.woff2",
+          url: "./assets/b6y37fthzealdunqhicbt6futy.woff2",
           weight: "400",
         },
       ],
@@ -4071,7 +4071,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F",
-          url: "https://framerusercontent.com/assets/PONfPc6h4EPYwJliXQBmjVx7QxI.woff2",
+          url: "./assets/ponfpc6h4epywjlixqbmjvx7qxi.woff2",
           weight: "800",
         },
         {
@@ -4079,7 +4079,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
-          url: "https://framerusercontent.com/assets/zsnJN7Z1wdzUvepJniD3rbvJIyU.woff2",
+          url: "./assets/zsnjn7z1wdzuvepjnid3rbvjiyu.woff2",
           weight: "800",
         },
         {
@@ -4087,7 +4087,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+1F00-1FFF",
-          url: "https://framerusercontent.com/assets/UrzZBOy7RyJEWAZGduzOeHiHuY.woff2",
+          url: "./assets/urzzboy7ryjewazgduzoehihuy.woff2",
           weight: "800",
         },
         {
@@ -4095,7 +4095,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+0370-03FF",
-          url: "https://framerusercontent.com/assets/996sR9SfSDuYELz8oHhDOcErkY.woff2",
+          url: "./assets/996sr9sfsduyelz8ohhdocerky.woff2",
           weight: "800",
         },
         {
@@ -4104,7 +4104,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF",
-          url: "https://framerusercontent.com/assets/ftN1HpyPVJEoEb4q36SOrNdLXU.woff2",
+          url: "./assets/ftn1hpypvjeoeb4q36sorndlxu.woff2",
           weight: "800",
         },
         {
@@ -4113,7 +4113,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
-          url: "https://framerusercontent.com/assets/jN39PDxZWEwjG7Csryx3JN2r2Y.woff2",
+          url: "./assets/jn39pdxzwewjg7csryx3jn2r2y.woff2",
           weight: "800",
         },
         {
@@ -4122,7 +4122,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB",
-          url: "https://framerusercontent.com/assets/JAur4lGGSGRGyrFi59JSIKqVgU.woff2",
+          url: "./assets/jaur4lggsgrgyrfi59jsikqvgu.woff2",
           weight: "800",
         },
         {
@@ -4131,7 +4131,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F",
-          url: "https://framerusercontent.com/assets/DpPBYI0sL4fYLgAkX8KXOPVt7c.woff2",
+          url: "./assets/dppbyi0sl4fylgakx8kxopvt7c.woff2",
           weight: "700",
         },
         {
@@ -4139,7 +4139,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
-          url: "https://framerusercontent.com/assets/4RAEQdEOrcnDkhHiiCbJOw92Lk.woff2",
+          url: "./assets/4raeqdeorcndkhhiicbjow92lk.woff2",
           weight: "700",
         },
         {
@@ -4147,7 +4147,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+1F00-1FFF",
-          url: "https://framerusercontent.com/assets/1K3W8DizY3v4emK8Mb08YHxTbs.woff2",
+          url: "./assets/1k3w8dizy3v4emk8mb08yhxtbs.woff2",
           weight: "700",
         },
         {
@@ -4155,7 +4155,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+0370-03FF",
-          url: "https://framerusercontent.com/assets/tUSCtfYVM1I1IchuyCwz9gDdQ.woff2",
+          url: "./assets/tusctfyvm1i1ichuycwz9gddq.woff2",
           weight: "700",
         },
         {
@@ -4164,7 +4164,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF",
-          url: "https://framerusercontent.com/assets/VgYFWiwsAC5OYxAycRXXvhze58.woff2",
+          url: "./assets/vgyfwiwsac5oyxaycrxxvhze58.woff2",
           weight: "700",
         },
         {
@@ -4173,7 +4173,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
-          url: "https://framerusercontent.com/assets/DXD0Q7LSl7HEvDzucnyLnGBHM.woff2",
+          url: "./assets/dxd0q7lsl7hevdzucnylngbhm.woff2",
           weight: "700",
         },
         {
@@ -4182,7 +4182,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB",
-          url: "https://framerusercontent.com/assets/GIryZETIX4IFypco5pYZONKhJIo.woff2",
+          url: "./assets/giryzetix4ifypco5pyzonkhjio.woff2",
           weight: "700",
         },
       ],
@@ -5778,7 +5778,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F",
-          url: "https://framerusercontent.com/assets/DpPBYI0sL4fYLgAkX8KXOPVt7c.woff2",
+          url: "./assets/dppbyi0sl4fylgakx8kxopvt7c.woff2",
           weight: "700",
         },
         {
@@ -5786,7 +5786,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
-          url: "https://framerusercontent.com/assets/4RAEQdEOrcnDkhHiiCbJOw92Lk.woff2",
+          url: "./assets/4raeqdeorcndkhhiicbjow92lk.woff2",
           weight: "700",
         },
         {
@@ -5794,7 +5794,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+1F00-1FFF",
-          url: "https://framerusercontent.com/assets/1K3W8DizY3v4emK8Mb08YHxTbs.woff2",
+          url: "./assets/1k3w8dizy3v4emk8mb08yhxtbs.woff2",
           weight: "700",
         },
         {
@@ -5802,7 +5802,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+0370-03FF",
-          url: "https://framerusercontent.com/assets/tUSCtfYVM1I1IchuyCwz9gDdQ.woff2",
+          url: "./assets/tusctfyvm1i1ichuycwz9gddq.woff2",
           weight: "700",
         },
         {
@@ -5811,7 +5811,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF",
-          url: "https://framerusercontent.com/assets/VgYFWiwsAC5OYxAycRXXvhze58.woff2",
+          url: "./assets/vgyfwiwsac5oyxaycrxxvhze58.woff2",
           weight: "700",
         },
         {
@@ -5820,7 +5820,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
-          url: "https://framerusercontent.com/assets/DXD0Q7LSl7HEvDzucnyLnGBHM.woff2",
+          url: "./assets/dxd0q7lsl7hevdzucnylngbhm.woff2",
           weight: "700",
         },
         {
@@ -5829,7 +5829,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB",
-          url: "https://framerusercontent.com/assets/GIryZETIX4IFypco5pYZONKhJIo.woff2",
+          url: "./assets/giryzetix4ifypco5pyzonkhjio.woff2",
           weight: "700",
         },
         {
@@ -5838,7 +5838,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F",
-          url: "https://framerusercontent.com/assets/PONfPc6h4EPYwJliXQBmjVx7QxI.woff2",
+          url: "./assets/ponfpc6h4epywjlixqbmjvx7qxi.woff2",
           weight: "800",
         },
         {
@@ -5846,7 +5846,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
-          url: "https://framerusercontent.com/assets/zsnJN7Z1wdzUvepJniD3rbvJIyU.woff2",
+          url: "./assets/zsnjn7z1wdzuvepjnid3rbvjiyu.woff2",
           weight: "800",
         },
         {
@@ -5854,7 +5854,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+1F00-1FFF",
-          url: "https://framerusercontent.com/assets/UrzZBOy7RyJEWAZGduzOeHiHuY.woff2",
+          url: "./assets/urzzboy7ryjewazgduzoehihuy.woff2",
           weight: "800",
         },
         {
@@ -5862,7 +5862,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+0370-03FF",
-          url: "https://framerusercontent.com/assets/996sR9SfSDuYELz8oHhDOcErkY.woff2",
+          url: "./assets/996sr9sfsduyelz8ohhdocerky.woff2",
           weight: "800",
         },
         {
@@ -5871,7 +5871,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF",
-          url: "https://framerusercontent.com/assets/ftN1HpyPVJEoEb4q36SOrNdLXU.woff2",
+          url: "./assets/ftn1hpypvjeoeb4q36sorndlxu.woff2",
           weight: "800",
         },
         {
@@ -5880,7 +5880,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
-          url: "https://framerusercontent.com/assets/jN39PDxZWEwjG7Csryx3JN2r2Y.woff2",
+          url: "./assets/jn39pdxzwewjg7csryx3jn2r2y.woff2",
           weight: "800",
         },
         {
@@ -5889,7 +5889,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB",
-          url: "https://framerusercontent.com/assets/JAur4lGGSGRGyrFi59JSIKqVgU.woff2",
+          url: "./assets/jaur4lggsgrgyrfi59jsikqvgu.woff2",
           weight: "800",
         },
       ],

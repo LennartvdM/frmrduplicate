@@ -848,7 +848,7 @@ loadFonts(
           family: "DM Sans",
           source: "google",
           style: "normal",
-          url: "https://fonts.gstatic.com/s/dmsans/v15/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAkJxhS2f3ZGMZpg.woff2",
+          url: "./assets/fonts/dmsans-v15-latin-regular.woff2",
           weight: "500",
         },
       ],
@@ -900,7 +900,7 @@ var Rt = {
   backgroundSize: "256px 256px",
   backgroundRepeat: "repeat",
   backgroundImage:
-    "url('https://framerusercontent.com/images/rR6HYXBrMmX4cRpXfXUOvpvpB0.png')",
+    "url('./images/rr6hyxbrmmx4crpxfxuovpvpb0.png')",
 };
 export {
   B as a,

@@ -60,7 +60,7 @@
 
 .framer-qO1UX .framer-vsn0zu { align-content: center; align-items: center; background: linear-gradient(180deg, var(--token-b73f7c2a-3920-4d15-bb22-d8016da87d50, #f5f9fc) /* {"name":"Greywhite"} */ 0%, rgba(245, 249, 252, 1) 72.97297297297297%, rgb(120, 142, 158) 88.78877656953829%, var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59)) /* {"name":"Mobile background"} */ 100%); display: flex; flex: none; flex-direction: row; flex-wrap: nowrap; gap: 10px; height: 100vh; justify-content: center; overflow: hidden; padding: 0px; position: relative; width: 100%; }
 
-.framer-qO1UX .framer-1xzh66h { -webkit-mask: url('https://framerusercontent.com/images/4kxSxVU7zT8SExmEswpNojMkQ.svg') alpha no-repeat center / cover add; box-shadow: 0px -2px 5px 0px rgba(0, 0, 0, 0.25); flex: none; height: 50.125vh; left: 188px; mask: url('https://framerusercontent.com/images/4kxSxVU7zT8SExmEswpNojMkQ.svg') alpha no-repeat center / cover add; overflow: hidden; position: absolute; top: calc(49.12500000000002% - 50.125vh / 2); width: 658px; }
+.framer-qO1UX .framer-1xzh66h { -webkit-mask: url('./images/4kxsxvu7zt8sexmeswpnojmkq.svg') alpha no-repeat center / cover add; box-shadow: 0px -2px 5px 0px rgba(0, 0, 0, 0.25); flex: none; height: 50.125vh; left: 188px; mask: url('./images/4kxsxvu7zt8sexmeswpnojmkq.svg') alpha no-repeat center / cover add; overflow: hidden; position: absolute; top: calc(49.12500000000002% - 50.125vh / 2); width: 658px; }
 
 .framer-qO1UX .framer-u2hhht-container { aspect-ratio: 3.269230769230769 / 1; flex: none; height: var(--framer-aspect-ratio-supported, 61px); pointer-events: auto; position: absolute; right: 0px; top: 30px; width: 99%; z-index: 1; }
 

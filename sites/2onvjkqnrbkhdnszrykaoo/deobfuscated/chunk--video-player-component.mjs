@@ -217,7 +217,7 @@ B.displayName = "Video";
 B.defaultProps = {
   srcType: "URL",
   srcUrl:
-    "https://assets.mixkit.co/videos/preview/mixkit-shining-sun-in-the-sky-surrounded-by-moving-clouds-31793-small.mp4",
+    "./assets/mixkit-clouds-sky.mp4",
   srcFile: "",
   posterEnabled: !1,
   controls: !1,

@@ -193,10 +193,10 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         playing: !0,
                         posterEnabled: !1,
                         srcFile:
-                          "https://framerusercontent.com/assets/3KRVWM0969ThuiryJ2Na4KdAuw.webm",
+                          "./assets/3krvwm0969thuiryj2na4kdauw.webm",
                         srcType: "Upload",
                         srcUrl:
-                          "https://assets.mixkit.co/videos/preview/mixkit-shining-sun-in-the-sky-surrounded-by-moving-clouds-31793-small.mp4",
+                          "./assets/mixkit-clouds-sky.mp4",
                         startTime: 0,
                         style: { height: "100%", width: "100%" },
                         topLeftRadius: 0,
@@ -240,10 +240,10 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         playing: !0,
                         posterEnabled: !1,
                         srcFile:
-                          "https://framerusercontent.com/assets/NWFWQm9VeBbWCrqKomUJfkkMA.webm",
+                          "./assets/nwfwqm9vebbwcrqkomujfkkma.webm",
                         srcType: "Upload",
                         srcUrl:
-                          "https://assets.mixkit.co/videos/preview/mixkit-shining-sun-in-the-sky-surrounded-by-moving-clouds-31793-small.mp4",
+                          "./assets/mixkit-clouds-sky.mp4",
                         startTime: 0,
                         style: { height: "100%", width: "100%" },
                         topLeftRadius: 0,
@@ -287,10 +287,10 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         playing: !0,
                         posterEnabled: !1,
                         srcFile:
-                          "https://framerusercontent.com/assets/jm9eE97tcdcEFSStDS6W6jp0e1w.webm",
+                          "./assets/jm9ee97tcdcefsstds6w6jp0e1w.webm",
                         srcType: "Upload",
                         srcUrl:
-                          "https://assets.mixkit.co/videos/preview/mixkit-shining-sun-in-the-sky-surrounded-by-moving-clouds-31793-small.mp4",
+                          "./assets/mixkit-clouds-sky.mp4",
                         startTime: 0,
                         style: { height: "100%", width: "100%" },
                         topLeftRadius: 0,
@@ -334,10 +334,10 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         playing: !0,
                         posterEnabled: !1,
                         srcFile:
-                          "https://framerusercontent.com/assets/Td3yuMpa2nfPPlQmXPZ9jlbJyM.webm",
+                          "./assets/td3yumpa2nfpplqmxpz9jlbjym.webm",
                         srcType: "Upload",
                         srcUrl:
-                          "https://assets.mixkit.co/videos/preview/mixkit-shining-sun-in-the-sky-surrounded-by-moving-clouds-31793-small.mp4",
+                          "./assets/mixkit-clouds-sky.mp4",
                         startTime: 0,
                         style: { height: "100%", width: "100%" },
                         topLeftRadius: 0,
@@ -386,10 +386,10 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         playing: !0,
                         posterEnabled: !1,
                         srcFile:
-                          "https://framerusercontent.com/assets/nwkGJaoCYeLPIfxMZrvXBowWIus.webm",
+                          "./assets/nwkgjaocyelpifxmzrvxbowwius.webm",
                         srcType: "Upload",
                         srcUrl:
-                          "https://assets.mixkit.co/videos/preview/mixkit-shining-sun-in-the-sky-surrounded-by-moving-clouds-31793-small.mp4",
+                          "./assets/mixkit-clouds-sky.mp4",
                         startTime: 0,
                         style: { height: "100%", width: "100%" },
                         topLeftRadius: 0,
@@ -442,10 +442,10 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         playing: !0,
                         posterEnabled: !1,
                         srcFile:
-                          "https://framerusercontent.com/assets/nwkGJaoCYeLPIfxMZrvXBowWIus.webm",
+                          "./assets/nwkgjaocyelpifxmzrvxbowwius.webm",
                         srcType: "Upload",
                         srcUrl:
-                          "https://assets.mixkit.co/videos/preview/mixkit-shining-sun-in-the-sky-surrounded-by-moving-clouds-31793-small.mp4",
+                          "./assets/mixkit-clouds-sky.mp4",
                         startTime: 0,
                         style: { height: "100%", width: "100%" },
                         topLeftRadius: 0,
@@ -457,7 +457,7 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                             DkxmDygok: { srcFile: void 0 },
                             gRcraNE8T: {
                               srcFile:
-                                "https://framerusercontent.com/assets/79AjxJOlJJurDtgiqVvuGW34pAI.webm",
+                                "./assets/79ajxjoljjurdtgiqvvugw34pai.webm",
                             },
                           },
                           h,
@@ -904,7 +904,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 overrides: {
                                                   AlOztWgAm: {
                                                     srcFile:
-                                                      "https://framerusercontent.com/assets/94FGIKDXviN3xJyP51X5YDq5hw.mp4",
+                                                      "./assets/94fgikdxvin3xjyp51x5ydq5hw.mp4",
                                                   },
                                                 },
                                                 children: jsx(c, {
@@ -924,10 +924,10 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   playing: !0,
                                                   posterEnabled: !1,
                                                   srcFile:
-                                                    "https://framerusercontent.com/assets/VVN9eNnNBxaXeBaoKH17jHgiJg.mp4",
+                                                    "./assets/vvn9ennnbxaxebaokh17jhgijg.mp4",
                                                   srcType: "Upload",
                                                   srcUrl:
-                                                    "https://assets.mixkit.co/videos/preview/mixkit-shining-sun-in-the-sky-surrounded-by-moving-clouds-31793-small.mp4",
+                                                    "./assets/mixkit-clouds-sky.mp4",
                                                   startTime: 0,
                                                   style: {
                                                     height: "100%",
@@ -1155,7 +1155,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 overrides: {
                                                   AlOztWgAm: {
                                                     srcFile:
-                                                      "https://framerusercontent.com/assets/AsfMI1YIuCOQ4pfzbVw61U2T0d0.mp4",
+                                                      "./assets/asfmi1yiucoq4pfzbvw61u2t0d0.mp4",
                                                   },
                                                 },
                                                 children: jsx(c, {
@@ -1175,10 +1175,10 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   playing: !0,
                                                   posterEnabled: !1,
                                                   srcFile:
-                                                    "https://framerusercontent.com/assets/YAHq7DplZB3DU76ZSORV03P8Y.mp4",
+                                                    "./assets/yahq7dplzb3du76zsorv03p8y.mp4",
                                                   srcType: "Upload",
                                                   srcUrl:
-                                                    "https://assets.mixkit.co/videos/preview/mixkit-shining-sun-in-the-sky-surrounded-by-moving-clouds-31793-small.mp4",
+                                                    "./assets/mixkit-clouds-sky.mp4",
                                                   startTime: 0,
                                                   style: {
                                                     height: "100%",
@@ -1369,7 +1369,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 overrides: {
                                                   AlOztWgAm: {
                                                     srcFile:
-                                                      "https://framerusercontent.com/assets/4EQcQDQ3npZd3gwjcKO6sENyQG0.mp4",
+                                                      "./assets/4eqcqdq3npzd3gwjcko6senyqg0.mp4",
                                                   },
                                                 },
                                                 children: jsx(c, {
@@ -1389,10 +1389,10 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   playing: !0,
                                                   posterEnabled: !1,
                                                   srcFile:
-                                                    "https://framerusercontent.com/assets/iYTbAuik57o8JZn3y2UfYugl8s.webm",
+                                                    "./assets/iytbauik57o8jzn3y2ufyugl8s.webm",
                                                   srcType: "Upload",
                                                   srcUrl:
-                                                    "https://assets.mixkit.co/videos/preview/mixkit-shining-sun-in-the-sky-surrounded-by-moving-clouds-31793-small.mp4",
+                                                    "./assets/mixkit-clouds-sky.mp4",
                                                   startTime: 0,
                                                   style: {
                                                     height: "100%",
@@ -1663,7 +1663,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 overrides: {
                                                   AlOztWgAm: {
                                                     srcFile:
-                                                      "https://framerusercontent.com/assets/DmivDyww4OxLLV34oV7ac24l2Q.mp4",
+                                                      "./assets/dmivdyww4oxllv34ov7ac24l2q.mp4",
                                                   },
                                                 },
                                                 children: jsx(c, {
@@ -1683,10 +1683,10 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   playing: !0,
                                                   posterEnabled: !1,
                                                   srcFile:
-                                                    "https://framerusercontent.com/assets/lwhbyca3SIAUTdycQSuEDXMs9k.mp4",
+                                                    "./assets/lwhbyca3siautdycqsuedxms9k.mp4",
                                                   srcType: "Upload",
                                                   srcUrl:
-                                                    "https://assets.mixkit.co/videos/preview/mixkit-shining-sun-in-the-sky-surrounded-by-moving-clouds-31793-small.mp4",
+                                                    "./assets/mixkit-clouds-sky.mp4",
                                                   startTime: 0,
                                                   style: {
                                                     height: "100%",
@@ -1925,7 +1925,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 overrides: {
                                                   AlOztWgAm: {
                                                     srcFile:
-                                                      "https://framerusercontent.com/assets/vwo4RiwL3gvpTSfYWhwtOZLTmhU.mp4",
+                                                      "./assets/vwo4riwl3gvptsfywhwtozltmhu.mp4",
                                                   },
                                                 },
                                                 children: jsx(c, {
@@ -1945,10 +1945,10 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   playing: !0,
                                                   posterEnabled: !1,
                                                   srcFile:
-                                                    "https://framerusercontent.com/assets/iwaVLcZgCGinuOBBBe6yoz9e4U.mp4",
+                                                    "./assets/iwavlczgcginuobbbe6yoz9e4u.mp4",
                                                   srcType: "Upload",
                                                   srcUrl:
-                                                    "https://assets.mixkit.co/videos/preview/mixkit-shining-sun-in-the-sky-surrounded-by-moving-clouds-31793-small.mp4",
+                                                    "./assets/mixkit-clouds-sky.mp4",
                                                   startTime: 0,
                                                   style: {
                                                     height: "100%",
@@ -2183,7 +2183,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 overrides: {
                                                   AlOztWgAm: {
                                                     srcFile:
-                                                      "https://framerusercontent.com/assets/4NGDIFKnqSawyWIzI61eP17UVsQ.mp4",
+                                                      "./assets/4ngdifknqsawywizi61ep17uvsq.mp4",
                                                   },
                                                 },
                                                 children: jsx(c, {
@@ -2203,10 +2203,10 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   playing: !0,
                                                   posterEnabled: !1,
                                                   srcFile:
-                                                    "https://framerusercontent.com/assets/iJ4dgBLL0n3cEr9t7DvoTeMFVwY.mp4",
+                                                    "./assets/ij4dgbll0n3cer9t7dvotemfvwy.mp4",
                                                   srcType: "Upload",
                                                   srcUrl:
-                                                    "https://assets.mixkit.co/videos/preview/mixkit-shining-sun-in-the-sky-surrounded-by-moving-clouds-31793-small.mp4",
+                                                    "./assets/mixkit-clouds-sky.mp4",
                                                   startTime: 0,
                                                   style: {
                                                     height: "100%",
@@ -2801,7 +2801,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F",
-          url: "https://framerusercontent.com/assets/5vvr9Vy74if2I6bQbJvbw7SY1pQ.woff2",
+          url: "./assets/5vvr9vy74if2i6bqbjvbw7sy1pq.woff2",
           weight: "400",
         },
         {
@@ -2809,7 +2809,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
-          url: "https://framerusercontent.com/assets/EOr0mi4hNtlgWNn9if640EZzXCo.woff2",
+          url: "./assets/eor0mi4hntlgwnn9if640ezzxco.woff2",
           weight: "400",
         },
         {
@@ -2817,7 +2817,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+1F00-1FFF",
-          url: "https://framerusercontent.com/assets/Y9k9QrlZAqio88Klkmbd8VoMQc.woff2",
+          url: "./assets/y9k9qrlzaqio88klkmbd8vomqc.woff2",
           weight: "400",
         },
         {
@@ -2825,7 +2825,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+0370-03FF",
-          url: "https://framerusercontent.com/assets/OYrD2tBIBPvoJXiIHnLoOXnY9M.woff2",
+          url: "./assets/oyrd2tbibpvojxiihnlooxny9m.woff2",
           weight: "400",
         },
         {
@@ -2834,7 +2834,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF",
-          url: "https://framerusercontent.com/assets/JeYwfuaPfZHQhEG8U5gtPDZ7WQ.woff2",
+          url: "./assets/jeywfuapfzhqheg8u5gtpdz7wq.woff2",
           weight: "400",
         },
         {
@@ -2843,7 +2843,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
-          url: "https://framerusercontent.com/assets/vQyevYAyHtARFwPqUzQGpnDs.woff2",
+          url: "./assets/vqyevyayhtarfwpquzqgpnds.woff2",
           weight: "400",
         },
         {
@@ -2852,7 +2852,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB",
-          url: "https://framerusercontent.com/assets/b6Y37FthZeALduNqHicBT6FutY.woff2",
+          url: "./assets/b6y37fthzealdunqhicbt6futy.woff2",
           weight: "400",
         },
         {
@@ -2861,7 +2861,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F",
-          url: "https://framerusercontent.com/assets/DpPBYI0sL4fYLgAkX8KXOPVt7c.woff2",
+          url: "./assets/dppbyi0sl4fylgakx8kxopvt7c.woff2",
           weight: "700",
         },
         {
@@ -2869,7 +2869,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
-          url: "https://framerusercontent.com/assets/4RAEQdEOrcnDkhHiiCbJOw92Lk.woff2",
+          url: "./assets/4raeqdeorcndkhhiicbjow92lk.woff2",
           weight: "700",
         },
         {
@@ -2877,7 +2877,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+1F00-1FFF",
-          url: "https://framerusercontent.com/assets/1K3W8DizY3v4emK8Mb08YHxTbs.woff2",
+          url: "./assets/1k3w8dizy3v4emk8mb08yhxtbs.woff2",
           weight: "700",
         },
         {
@@ -2885,7 +2885,7 @@ loadFonts(
           source: "framer",
           style: "normal",
           unicodeRange: "U+0370-03FF",
-          url: "https://framerusercontent.com/assets/tUSCtfYVM1I1IchuyCwz9gDdQ.woff2",
+          url: "./assets/tusctfyvm1i1ichuycwz9gddq.woff2",
           weight: "700",
         },
         {
@@ -2894,7 +2894,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF",
-          url: "https://framerusercontent.com/assets/VgYFWiwsAC5OYxAycRXXvhze58.woff2",
+          url: "./assets/vgyfwiwsac5oyxaycrxxvhze58.woff2",
           weight: "700",
         },
         {
@@ -2903,7 +2903,7 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
-          url: "https://framerusercontent.com/assets/DXD0Q7LSl7HEvDzucnyLnGBHM.woff2",
+          url: "./assets/dxd0q7lsl7hevdzucnylngbhm.woff2",
           weight: "700",
         },
         {
@@ -2912,14 +2912,14 @@ loadFonts(
           style: "normal",
           unicodeRange:
             "U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB",
-          url: "https://framerusercontent.com/assets/GIryZETIX4IFypco5pYZONKhJIo.woff2",
+          url: "./assets/giryzetix4ifypco5pyzonkhjio.woff2",
           weight: "700",
         },
         {
           family: "Montserrat",
           source: "google",
           style: "normal",
-          url: "https://fonts.gstatic.com/s/montserrat/v26/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtZ6Ew7Y3tcoqK5.woff2",
+          url: "./assets/fonts/montserrat-v26-latin-bold.woff2",
           weight: "500",
         },
       ],

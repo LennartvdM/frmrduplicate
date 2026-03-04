@@ -1,4 +1,35 @@
 /* CSS extracted to: page--neoflix.1.css, page--neoflix.2.css */
+/*
+ * === STRUCTURAL NAVIGATION ===
+ *
+ * IMPORTS & SETUP .................. lines 2-55
+ * SHARED HELPERS & CONSTANTS ....... lines 56-94
+ *   - TrailingBreak component
+ *   - Pe (mergeVariantProps), Ge (TransitionProvider), Je (AnimatedFragment)
+ *   - Variant mappings (We, He, Ke, Qe)
+ *   - Transition config (Xe)
+ *
+ * BACKDROP COMPONENT (q/te) ........ lines 95-529
+ *   - forwardRef(rr): 6 video layers (Six/Five/Four/Three/Two/One)
+ *   - Noise overlay
+ *   - CSS rules (ar)
+ *   - Property controls & font loading
+ *
+ * PAGE COMPONENT (Z/Or) ............ lines 530-2960
+ *   - Font setup & responsive config (mr, fr, dr, hr, pr, De, ur, gr)
+ *   - forwardRef(kr): main page layout
+ *     - SmoothScroll + fixed Backdrop
+ *     - Section-Time ............... lines 736-1039
+ *     - Section-Dance .............. lines 1040-1302
+ *     - Section-Cost ............... lines 1303-1567
+ *     - Section-Skills ............. lines 1568-1831
+ *     - Section-Team ............... lines 1832-2040
+ *     - Section-Perspectives ....... lines 2041-2299
+ *     - Nav bar .................... lines 2304-2434
+ *     - Dummy Stack (desktop sidebar) lines 2435-2732
+ *   - CSS rules (br)
+ *   - Property controls, font loading, metadata export
+ */
 import { SmoothScrollComponent,
   NoiseOverlayComponent,
   NavItemComponent,
@@ -50,9 +81,16 @@ import { $ as a,
   loadFonts,
   getFonts,
   normalizeFontConfig } from "./chunk--react-and-framer-runtime.mjs";
+import { mergeVariantProps, TransitionProvider, AnimatedFragment, BASE_VIDEO_PROPS, VIDEO_PROPS_FLAT, VIDEO_PROPS_ROUNDED, CSS_ASPECT_RATIO_SUPPORT } from "./chunk--page-helpers.mjs";
 import { a as Y } from "./metadata--neoflix.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
+var TrailingBreak = () => jsx("p", {
+  className: "framer-styles-preset-21ogod",
+  "data-styles-preset": "xZndidUCt",
+  style: { "--framer-text-alignment": "left" },
+  children: jsx("br", { className: "trailing-break" }),
+});
 var Ye = getFonts(c),
   Ze = getFonts(NoiseOverlayComponent),
   We = [
@@ -72,18 +110,10 @@ var Ye = getFonts(c),
     sJR17n1rz: "framer-v-1evn86j",
     tcTKLfIBw: "framer-v-424790",
   };
-function Pe(f, ...n) {
-  let u = {};
-  return (n?.forEach((d) => d && Object.assign(u, f[d])), u);
-}
+var Pe = mergeVariantProps;
 var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
-  Ge = ({ value: f, children: n }) => {
-    let u = useContext(MotionContext),
-      d = f ?? u.transition,
-      g = useMemo(() => ({ ...u, transition: d }), [JSON.stringify(d)]);
-    return jsx(MotionContext.Provider, { value: g, children: n });
-  },
-  Je = motion(ReactFragment),
+  Ge = TransitionProvider,
+  Je = AnimatedFragment,
   Qe = {
     Cost: "tcTKLfIBw",
     Dance: "DkxmDygok",
@@ -178,31 +208,11 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       layoutDependency: l,
                       layoutId: "EumH2pnmK-container",
                       children: jsx(c, {
-                        backgroundColor: "rgba(0, 0, 0, 0)",
-                        borderRadius: 0,
-                        bottomLeftRadius: 0,
-                        bottomRightRadius: 0,
-                        controls: false,
-                        height: "100%",
+                        ...VIDEO_PROPS_FLAT,
                         id: "EumH2pnmK",
-                        isMixedBorderRadius: false,
                         layoutId: "EumH2pnmK",
-                        loop: true,
-                        muted: true,
-                        objectFit: "cover",
-                        playing: true,
-                        posterEnabled: false,
                         srcFile:
                           "./assets/3krvwm0969thuiryj2na4kdauw.webm",
-                        srcType: "Upload",
-                        srcUrl:
-                          "./assets/mixkit-clouds-sky.mp4",
-                        startTime: 0,
-                        style: { height: "100%", width: "100%" },
-                        topLeftRadius: 0,
-                        topRightRadius: 0,
-                        volume: 25,
-                        width: "100%",
                       }),
                     }),
                   }),
@@ -225,31 +235,11 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       layoutDependency: l,
                       layoutId: "Q4Ut8FyxB-container",
                       children: jsx(c, {
-                        backgroundColor: "rgba(0, 0, 0, 0)",
-                        borderRadius: 0,
-                        bottomLeftRadius: 0,
-                        bottomRightRadius: 0,
-                        controls: false,
-                        height: "100%",
+                        ...VIDEO_PROPS_FLAT,
                         id: "Q4Ut8FyxB",
-                        isMixedBorderRadius: false,
                         layoutId: "Q4Ut8FyxB",
-                        loop: true,
-                        muted: true,
-                        objectFit: "cover",
-                        playing: true,
-                        posterEnabled: false,
                         srcFile:
                           "./assets/nwfwqm9vebbwcrqkomujfkkma.webm",
-                        srcType: "Upload",
-                        srcUrl:
-                          "./assets/mixkit-clouds-sky.mp4",
-                        startTime: 0,
-                        style: { height: "100%", width: "100%" },
-                        topLeftRadius: 0,
-                        topRightRadius: 0,
-                        volume: 25,
-                        width: "100%",
                       }),
                     }),
                   }),
@@ -272,31 +262,11 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       layoutDependency: l,
                       layoutId: "Ocb0EpzC7-container",
                       children: jsx(c, {
-                        backgroundColor: "rgba(0, 0, 0, 0)",
-                        borderRadius: 0,
-                        bottomLeftRadius: 0,
-                        bottomRightRadius: 0,
-                        controls: false,
-                        height: "100%",
+                        ...VIDEO_PROPS_FLAT,
                         id: "Ocb0EpzC7",
-                        isMixedBorderRadius: false,
                         layoutId: "Ocb0EpzC7",
-                        loop: true,
-                        muted: true,
-                        objectFit: "cover",
-                        playing: true,
-                        posterEnabled: false,
                         srcFile:
                           "./assets/jm9ee97tcdcefsstds6w6jp0e1w.webm",
-                        srcType: "Upload",
-                        srcUrl:
-                          "./assets/mixkit-clouds-sky.mp4",
-                        startTime: 0,
-                        style: { height: "100%", width: "100%" },
-                        topLeftRadius: 0,
-                        topRightRadius: 0,
-                        volume: 25,
-                        width: "100%",
                       }),
                     }),
                   }),
@@ -319,31 +289,11 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       layoutDependency: l,
                       layoutId: "kFS3ppAvv-container",
                       children: jsx(c, {
-                        backgroundColor: "rgba(0, 0, 0, 0)",
-                        borderRadius: 0,
-                        bottomLeftRadius: 0,
-                        bottomRightRadius: 0,
-                        controls: false,
-                        height: "100%",
+                        ...VIDEO_PROPS_FLAT,
                         id: "kFS3ppAvv",
-                        isMixedBorderRadius: false,
                         layoutId: "kFS3ppAvv",
-                        loop: true,
-                        muted: true,
-                        objectFit: "cover",
-                        playing: true,
-                        posterEnabled: false,
                         srcFile:
                           "./assets/td3yumpa2nfpplqmxpz9jlbjym.webm",
-                        srcType: "Upload",
-                        srcUrl:
-                          "./assets/mixkit-clouds-sky.mp4",
-                        startTime: 0,
-                        style: { height: "100%", width: "100%" },
-                        topLeftRadius: 0,
-                        topRightRadius: 0,
-                        volume: 25,
-                        width: "100%",
                       }),
                     }),
                   }),
@@ -371,31 +321,11 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       layoutDependency: l,
                       layoutId: "NRZzc9_Zy-container",
                       children: jsx(c, {
-                        backgroundColor: "rgba(0, 0, 0, 0)",
-                        borderRadius: 0,
-                        bottomLeftRadius: 0,
-                        bottomRightRadius: 0,
-                        controls: false,
-                        height: "100%",
+                        ...VIDEO_PROPS_FLAT,
                         id: "NRZzc9_Zy",
-                        isMixedBorderRadius: false,
                         layoutId: "NRZzc9_Zy",
-                        loop: true,
-                        muted: true,
-                        objectFit: "cover",
-                        playing: true,
-                        posterEnabled: false,
                         srcFile:
                           "./assets/nwkgjaocyelpifxmzrvxbowwius.webm",
-                        srcType: "Upload",
-                        srcUrl:
-                          "./assets/mixkit-clouds-sky.mp4",
-                        startTime: 0,
-                        style: { height: "100%", width: "100%" },
-                        topLeftRadius: 0,
-                        topRightRadius: 0,
-                        volume: 25,
-                        width: "100%",
                       }),
                     }),
                   }),
@@ -427,31 +357,11 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       layoutDependency: l,
                       layoutId: "DRu3_2xH9-container",
                       children: jsx(c, {
-                        backgroundColor: "rgba(0, 0, 0, 0)",
-                        borderRadius: 0,
-                        bottomLeftRadius: 0,
-                        bottomRightRadius: 0,
-                        controls: false,
-                        height: "100%",
+                        ...VIDEO_PROPS_FLAT,
                         id: "DRu3_2xH9",
-                        isMixedBorderRadius: false,
                         layoutId: "DRu3_2xH9",
-                        loop: true,
-                        muted: true,
-                        objectFit: "cover",
-                        playing: true,
-                        posterEnabled: false,
                         srcFile:
                           "./assets/nwkgjaocyelpifxmzrvxbowwius.webm",
-                        srcType: "Upload",
-                        srcUrl:
-                          "./assets/mixkit-clouds-sky.mp4",
-                        startTime: 0,
-                        style: { height: "100%", width: "100%" },
-                        topLeftRadius: 0,
-                        topRightRadius: 0,
-                        volume: 25,
-                        width: "100%",
                         ...Pe(
                           {
                             DkxmDygok: { srcFile: undefined },
@@ -774,15 +684,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 children:
                                                   "Medical procedures are time-sensitive ",
                                               }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
+                                              jsx(TrailingBreak, {}),
                                               jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
@@ -908,35 +810,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   },
                                                 },
                                                 children: jsx(c, {
-                                                  backgroundColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  borderRadius: 15,
-                                                  bottomLeftRadius: 15,
-                                                  bottomRightRadius: 15,
-                                                  controls: false,
-                                                  height: "100%",
+                                                  ...VIDEO_PROPS_ROUNDED,
                                                   id: "h0JpIKWrU",
-                                                  isMixedBorderRadius: false,
                                                   layoutId: "h0JpIKWrU",
-                                                  loop: true,
-                                                  muted: true,
-                                                  objectFit: "cover",
-                                                  playing: true,
-                                                  posterEnabled: false,
                                                   srcFile:
                                                     "./assets/vvn9ennnbxaxebaokh17jhgijg.mp4",
-                                                  srcType: "Upload",
-                                                  srcUrl:
-                                                    "./assets/mixkit-clouds-sky.mp4",
-                                                  startTime: 0,
-                                                  style: {
-                                                    height: "100%",
-                                                    width: "100%",
-                                                  },
-                                                  topLeftRadius: 15,
-                                                  topRightRadius: 15,
-                                                  volume: 25,
-                                                  width: "100%",
                                                 }),
                                               }),
                                             }),
@@ -996,32 +874,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   "are essential during these time-sensitive moments. The challenges are undeniable, but so are the rewards of providing optimal patient care within these demanding circumstances.",
                                                 ],
                                               }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                style: {
-                                                  "--framer-text-alignment":
-                                                    "left",
-                                                },
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                style: {
-                                                  "--framer-text-alignment":
-                                                    "left",
-                                                },
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
+                                              jsx(TrailingBreak, {}),
+                                              jsx(TrailingBreak, {}),
                                             ],
                                           }),
                                           className: "framer-1u19uqd",
@@ -1074,19 +928,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: "Like a dance",
                                               }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                style: {
-                                                  "--framer-text-alignment":
-                                                    "left",
-                                                },
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
+                                              jsx(TrailingBreak, {}),
                                               jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
@@ -1159,35 +1001,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   },
                                                 },
                                                 children: jsx(c, {
-                                                  backgroundColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  borderRadius: 15,
-                                                  bottomLeftRadius: 15,
-                                                  bottomRightRadius: 15,
-                                                  controls: false,
-                                                  height: "100%",
+                                                  ...VIDEO_PROPS_ROUNDED,
                                                   id: "meqeFY16Y",
-                                                  isMixedBorderRadius: false,
                                                   layoutId: "meqeFY16Y",
-                                                  loop: true,
-                                                  muted: true,
-                                                  objectFit: "cover",
-                                                  playing: true,
-                                                  posterEnabled: false,
                                                   srcFile:
                                                     "./assets/yahq7dplzb3du76zsorv03p8y.mp4",
-                                                  srcType: "Upload",
-                                                  srcUrl:
-                                                    "./assets/mixkit-clouds-sky.mp4",
-                                                  startTime: 0,
-                                                  style: {
-                                                    height: "100%",
-                                                    width: "100%",
-                                                  },
-                                                  topLeftRadius: 15,
-                                                  topRightRadius: 15,
-                                                  volume: 25,
-                                                  width: "100%",
                                                 }),
                                               }),
                                             }),
@@ -1259,32 +1077,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   ", allowing team members to rely on each other's expertise and judgment. This strong foundation becomes crucial in high-pressure situations, enabling the team to deliver exceptional patient care when it matters most.",
                                                 ],
                                               }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                style: {
-                                                  "--framer-text-alignment":
-                                                    "left",
-                                                },
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                style: {
-                                                  "--framer-text-alignment":
-                                                    "left",
-                                                },
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
+                                              jsx(TrailingBreak, {}),
+                                              jsx(TrailingBreak, {}),
                                             ],
                                           }),
                                           className: "framer-11834y9",
@@ -1338,19 +1132,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 children:
                                                   "But this comes at a cost",
                                               }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                style: {
-                                                  "--framer-text-alignment":
-                                                    "left",
-                                                },
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
+                                              jsx(TrailingBreak, {}),
                                             ],
                                           }),
                                           className: "framer-nl13cd",
@@ -1373,35 +1155,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   },
                                                 },
                                                 children: jsx(c, {
-                                                  backgroundColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  borderRadius: 15,
-                                                  bottomLeftRadius: 15,
-                                                  bottomRightRadius: 15,
-                                                  controls: false,
-                                                  height: "100%",
+                                                  ...VIDEO_PROPS_ROUNDED,
                                                   id: "hFaYa_W3V",
-                                                  isMixedBorderRadius: false,
                                                   layoutId: "hFaYa_W3V",
-                                                  loop: true,
-                                                  muted: true,
-                                                  objectFit: "cover",
-                                                  playing: true,
-                                                  posterEnabled: false,
                                                   srcFile:
                                                     "./assets/iytbauik57o8jzn3y2ufyugl8s.webm",
-                                                  srcType: "Upload",
-                                                  srcUrl:
-                                                    "./assets/mixkit-clouds-sky.mp4",
-                                                  startTime: 0,
-                                                  style: {
-                                                    height: "100%",
-                                                    width: "100%",
-                                                  },
-                                                  topLeftRadius: 15,
-                                                  topRightRadius: 15,
-                                                  volume: 25,
-                                                  width: "100%",
                                                 }),
                                               }),
                                             }),
@@ -1524,32 +1282,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 children:
                                                   "The emphasis on individual expertise risks obscuring the collaborative nature of effective medical care. This narrow focus can make it difficult to maintain a shared understanding of the situation and overall patient needs. Missed opportunities for support or a lack of resource reallocation where necessary may occur, potentially impacting patient outcomes.",
                                               }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                style: {
-                                                  "--framer-text-alignment":
-                                                    "left",
-                                                },
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                style: {
-                                                  "--framer-text-alignment":
-                                                    "left",
-                                                },
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
+                                              jsx(TrailingBreak, {}),
+                                              jsx(TrailingBreak, {}),
                                             ],
                                           }),
                                           className: "framer-1ejabff",
@@ -1602,15 +1336,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: "Sharpening skills ",
                                               }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
+                                              jsx(TrailingBreak, {}),
                                               jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
@@ -1667,35 +1393,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   },
                                                 },
                                                 children: jsx(c, {
-                                                  backgroundColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  borderRadius: 15,
-                                                  bottomLeftRadius: 15,
-                                                  bottomRightRadius: 15,
-                                                  controls: false,
-                                                  height: "100%",
+                                                  ...VIDEO_PROPS_ROUNDED,
                                                   id: "EhgsuZXgp",
-                                                  isMixedBorderRadius: false,
                                                   layoutId: "EhgsuZXgp",
-                                                  loop: true,
-                                                  muted: true,
-                                                  objectFit: "cover",
-                                                  playing: true,
-                                                  posterEnabled: false,
                                                   srcFile:
                                                     "./assets/lwhbyca3siautdycqsuedxms9k.mp4",
-                                                  srcType: "Upload",
-                                                  srcUrl:
-                                                    "./assets/mixkit-clouds-sky.mp4",
-                                                  startTime: 0,
-                                                  style: {
-                                                    height: "100%",
-                                                    width: "100%",
-                                                  },
-                                                  topLeftRadius: 15,
-                                                  topRightRadius: 15,
-                                                  volume: 25,
-                                                  width: "100%",
                                                 }),
                                               }),
                                             }),
@@ -1788,32 +1490,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   " helps medical providers effectively handle the challenges of the dynamic medical environment. It fosters a culture of careful self-assessment and a drive for continuous improvement, benefiting healthcare practitioners and their patients.",
                                                 ],
                                               }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                style: {
-                                                  "--framer-text-alignment":
-                                                    "left",
-                                                },
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                style: {
-                                                  "--framer-text-alignment":
-                                                    "left",
-                                                },
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
+                                              jsx(TrailingBreak, {}),
+                                              jsx(TrailingBreak, {}),
                                             ],
                                           }),
                                           className: "framer-ysem9e",
@@ -1867,15 +1545,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 children:
                                                   "Strenghtening team dynamics",
                                               }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
+                                              jsx(TrailingBreak, {}),
                                               jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
@@ -1929,35 +1599,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   },
                                                 },
                                                 children: jsx(c, {
-                                                  backgroundColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  borderRadius: 15,
-                                                  bottomLeftRadius: 15,
-                                                  bottomRightRadius: 15,
-                                                  controls: false,
-                                                  height: "100%",
+                                                  ...VIDEO_PROPS_ROUNDED,
                                                   id: "i_fLUmv7t",
-                                                  isMixedBorderRadius: false,
                                                   layoutId: "i_fLUmv7t",
-                                                  loop: true,
-                                                  muted: true,
-                                                  objectFit: "cover",
-                                                  playing: true,
-                                                  posterEnabled: false,
                                                   srcFile:
                                                     "./assets/iwavlczgcginuobbbe6yoz9e4u.mp4",
-                                                  srcType: "Upload",
-                                                  srcUrl:
-                                                    "./assets/mixkit-clouds-sky.mp4",
-                                                  startTime: 0,
-                                                  style: {
-                                                    height: "100%",
-                                                    width: "100%",
-                                                  },
-                                                  topLeftRadius: 15,
-                                                  topRightRadius: 15,
-                                                  volume: 25,
-                                                  width: "100%",
                                                 }),
                                               }),
                                             }),
@@ -2010,19 +1656,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 children:
                                                   "Regularly reviewing cases in this structured format can lead to improved patient outcomes, optimized team efficiency, and stronger professional relationships. It fosters a culture of learning, growth, and mutual support throughout the medical team.",
                                               }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                style: {
-                                                  "--framer-text-alignment":
-                                                    "left",
-                                                },
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
+                                              jsx(TrailingBreak, {}),
                                             ],
                                           }),
                                           className: "framer-1llnw04",
@@ -2076,15 +1710,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 children:
                                                   "Broadening perspectives",
                                               }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
+                                              jsx(TrailingBreak, {}),
                                               jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
@@ -2187,35 +1813,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   },
                                                 },
                                                 children: jsx(c, {
-                                                  backgroundColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  borderRadius: 15,
-                                                  bottomLeftRadius: 15,
-                                                  bottomRightRadius: 15,
-                                                  controls: false,
-                                                  height: "100%",
+                                                  ...VIDEO_PROPS_ROUNDED,
                                                   id: "urRzfVoZ4",
-                                                  isMixedBorderRadius: true,
                                                   layoutId: "urRzfVoZ4",
-                                                  loop: true,
-                                                  muted: true,
-                                                  objectFit: "cover",
-                                                  playing: true,
-                                                  posterEnabled: false,
                                                   srcFile:
                                                     "./assets/ij4dgbll0n3cer9t7dvotemfvwy.mp4",
-                                                  srcType: "Upload",
-                                                  srcUrl:
-                                                    "./assets/mixkit-clouds-sky.mp4",
-                                                  startTime: 0,
-                                                  style: {
-                                                    height: "100%",
-                                                    width: "100%",
-                                                  },
-                                                  topLeftRadius: 15,
-                                                  topRightRadius: 15,
-                                                  volume: 25,
-                                                  width: "100%",
                                                 }),
                                               }),
                                             }),
@@ -2256,32 +1858,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   " challenges and establishing clear expectations, the team can work together effectively for the best possible patient outcomes.",
                                                 ],
                                               }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                style: {
-                                                  "--framer-text-alignment":
-                                                    "left",
-                                                },
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
-                                              jsx("p", {
-                                                className:
-                                                  "framer-styles-preset-21ogod",
-                                                "data-styles-preset":
-                                                  "xZndidUCt",
-                                                style: {
-                                                  "--framer-text-alignment":
-                                                    "left",
-                                                },
-                                                children: jsx("br", {
-                                                  className: "trailing-break",
-                                                }),
-                                              }),
+                                              jsx(TrailingBreak, {}),
+                                              jsx(TrailingBreak, {}),
                                             ],
                                           }),
                                           className: "framer-9bihrp",

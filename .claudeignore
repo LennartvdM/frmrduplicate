@@ -1,0 +1,33 @@
+# Files that should never be loaded into AI context
+# (vendor libraries, archives, redundant copies)
+
+# Vendor runtime — 41K lines of React + Framer SDK + Framer Motion
+sites/2onvjkqnrbkhdnszrykaoo/deobfuscated/chunk--react-and-framer-runtime.mjs
+sites/2onvjkqnrbkhdnszrykaoo/deobfuscated/chunk--framer-motion.mjs
+
+# Original obfuscated source files (superseded by deobfuscated/)
+sites/2onvjkqnrbkhdnszrykaoo/*.mjs
+
+# Formatted HTML dumps (redundant with root *.html)
+formatted/
+
+# Superseded CSS (replaced by base.css + *.page.css)
+extracted/*.style2.css
+
+# Large data dump (not used at runtime)
+toolbox-page-data.json
+
+# Build tooling scripts (only relevant if re-running deobfuscation)
+deobfuscate.mjs
+deobfuscate-deep.mjs
+deobfuscate-phase3.mjs
+cleanup-html.mjs
+rewrite-urls.mjs
+fix-case-refs.mjs
+generate-toolbox-pages.mjs
+
+# Binary assets
+assets/
+s/
+images/
+lennartvdm/

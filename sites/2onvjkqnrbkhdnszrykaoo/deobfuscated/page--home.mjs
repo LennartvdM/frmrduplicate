@@ -52,6 +52,62 @@ import { $ as B,
   normalizeFontConfig } from "./chunk--react-and-framer-runtime.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
+import { mergeVariantProps, TransitionProvider, AnimatedFragment } from "./chunk--page-helpers.mjs";
+
+/* ============================================================================
+ * STRUCTURAL NAVIGATION — page--home.mjs component index
+ * ============================================================================
+ *
+ * Shared utilities / scroll-snap setup ................ ~57–61
+ *
+ * COMPONENT: "Neoflix anim" (ve/Be) ................... ~62–269
+ *   - Animated SVG logo with hover variant (2 variants)
+ *
+ * COMPONENT: "Record Reflect Refine Copy" (be) ........ ~270–547
+ *   - 3-variant tabbed component (copy variant)
+ *
+ * COMPONENT: "Record Reflect Refine" (we) ............. ~590–932
+ *   - 3-variant tabbed component (original)
+ *
+ * COMPONENT: "Trigger" (Ce) ........................... ~981–1088
+ *   - Scroll-trigger animation component
+ *
+ * COMPONENT: "Decisiveness" (qe) ...................... ~1108–1280
+ *   - 3-variant card (Active/Inactive/Main) with tap
+ *
+ * COMPONENT: "Quiet Reflection" (Re) .................. ~1317–1503
+ *   - 3-variant card (Active/Inactive/Main) with tap
+ *
+ * COMPONENT: "Team Dynamics" (Xe) ..................... ~1540–1714
+ *   - 3-variant card (Active/Inactive/Main) with tap
+ *
+ * COMPONENT: "Team Dynamics" continued / tab section ... ~1743–2429
+ *   - Multi-tab content with video and rich text
+ *
+ * COMPONENT: "Story Right" (Oe) ....................... ~2440–2451
+ *   - Font loader bridge
+ *
+ * COMPONENT: "Tunnel vision" (ke) ..................... ~2451–2636
+ *   - 3-variant card (inactive/Main/Raised)
+ *
+ * COMPONENT: "Urgency" (Ue) ........................... ~2673–2860
+ *   - 3-variant card (Inactive/Main/Raised)
+ *
+ * COMPONENT: "Coordination" (Ie) ...................... ~2897–3089
+ *   - 3-variant card (Inactive/Main/Raised)
+ *
+ * COMPONENT: "Story Left2" (_e) ....................... ~3118–3901
+ *   - Multi-tab content with video and rich text
+ *
+ * COMPONENT: "Neoflix anim" (cr = Be, duplicate removed) ~3902
+ *   - Alias to first "Neoflix anim" — duplicate was removed
+ *
+ * PAGE ASSEMBLY: "Home" (De) .......................... ~3903–5466
+ *   - Main page component, scroll-snap sections, font loading
+ *
+ * EXPORTS / page metadata ............................. ~5466–end
+ * ============================================================================ */
+
 var $r = {
     scrollSnapAlign: "start",
     scrollSnapStop: "always",
@@ -63,10 +119,7 @@ var ea = withFXWrapper(motion.div),
   aa = ["I5QaL6oi8", "h9tfYk7K5"],
   ta = "framer-Kv8wc",
   na = { h9tfYk7K5: "framer-v-1kdysgy", I5QaL6oi8: "framer-v-yyb023" };
-function ia(t, ...a) {
-  let n = {};
-  return (a?.forEach((i) => i && Object.assign(n, t[i])), n);
-}
+var ia = mergeVariantProps;
 var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   _r = { damping: 30, delay: 0, mass: 1, stiffness: 400, type: "spring" /* physics-based spring animation */ },
   sa = {
@@ -104,13 +157,8 @@ var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
     x: 0,
     y: 0,
   },
-  ma = ({ value: t, children: a }) => {
-    let n = useContext(MotionContext),
-      i = t ?? n.transition,
-      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return jsx(MotionContext.Provider, { value: o, children: a });
-  },
-  da = motion(ReactFragment),
+  ma = TransitionProvider,
+  da = AnimatedFragment,
   ca = { "Variant 1": "I5QaL6oi8", "Variant 2": "h9tfYk7K5" },
   pa = ({ height: t, id: a, width: n, ...i }) => {
     var o, f;
@@ -281,18 +329,10 @@ var xa = ["jPAyFUDCD", "KVq4FzV2g", "ak_u9yeBh"],
     jPAyFUDCD: "framer-v-1mo43e9",
     KVq4FzV2g: "framer-v-1xs1f2",
   };
-function Nr(t, ...a) {
-  let n = {};
-  return (a?.forEach((i) => i && Object.assign(n, t[i])), n);
-}
+var Nr = mergeVariantProps;
 var jr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
-  zr = ({ value: t, children: a }) => {
-    let n = useContext(MotionContext),
-      i = t ?? n.transition,
-      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return jsx(MotionContext.Provider, { value: o, children: a });
-  },
-  ba = motion(ReactFragment),
+  zr = TransitionProvider,
+  ba = AnimatedFragment,
   wa = {
     "Variant 1": "jPAyFUDCD",
     "Variant 2": "KVq4FzV2g",
@@ -601,18 +641,10 @@ var Oa = ["Aa5IjJyQQ", "Ds7IWPpXk", "wtxEodMdN"],
     Ds7IWPpXk: "framer-v-wbkwq0",
     wtxEodMdN: "framer-v-10ybi4f",
   };
-function Vr(t, ...a) {
-  let n = {};
-  return (a?.forEach((i) => i && Object.assign(n, t[i])), n);
-}
+var Vr = mergeVariantProps;
 var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
-  Mr = ({ value: t, children: a }) => {
-    let n = useContext(MotionContext),
-      i = t ?? n.transition,
-      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return jsx(MotionContext.Provider, { value: o, children: a });
-  },
-  Ia = motion(ReactFragment),
+  Mr = TransitionProvider,
+  Ia = AnimatedFragment,
   _a = {
     "Variant 1": "Aa5IjJyQQ",
     "Variant 2": "Ds7IWPpXk",
@@ -1000,10 +1032,7 @@ var La = ["xKACItaHS", "rgX5PDpQJ", "xeZKtnsQM"],
     xeZKtnsQM: "framer-v-n8ebt9",
     xKACItaHS: "framer-v-4hw3vi",
   };
-function Fa(t, ...a) {
-  let n = {};
-  return (a?.forEach((i) => i && Object.assign(n, t[i])), n);
-}
+var Fa = mergeVariantProps;
 var Sa = {
     "Variant 1": "xKACItaHS",
     "Variant 2": "rgX5PDpQJ",
@@ -1130,19 +1159,11 @@ var Ya = ["QCVLxQKOQ", "XVQi0W0KO", "Xwn3H48jY"],
     XVQi0W0KO: "framer-v-1r41h02",
     Xwn3H48jY: "framer-v-548aw2",
   };
-function Fr(t, ...a) {
-  let n = {};
-  return (a?.forEach((i) => i && Object.assign(n, t[i])), n);
-}
+var Fr = mergeVariantProps;
 var Ha = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   Ea = (t, a) => `translateX(-50%) ${a}`,
-  Ka = ({ value: t, children: a }) => {
-    let n = useContext(MotionContext),
-      i = t ?? n.transition,
-      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return jsx(MotionContext.Provider, { value: o, children: a });
-  },
-  Wa = motion(ReactFragment),
+  Ka = TransitionProvider,
+  Wa = AnimatedFragment,
   Qa = { Active: "XVQi0W0KO", Inactive: "Xwn3H48jY", Main: "QCVLxQKOQ" },
   Za = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -1347,19 +1368,11 @@ var et = ["A73BIfYrH", "yFu0ego46", "Bq4Oqy1P7"],
     Bq4Oqy1P7: "framer-v-11x7aqu",
     yFu0ego46: "framer-v-tr7mnx",
   };
-function Sr(t, ...a) {
-  let n = {};
-  return (a?.forEach((i) => i && Object.assign(n, t[i])), n);
-}
+var Sr = mergeVariantProps;
 var tt = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   nt = (t, a) => `translateX(-50%) ${a}`,
-  it = ({ value: t, children: a }) => {
-    let n = useContext(MotionContext),
-      i = t ?? n.transition,
-      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return jsx(MotionContext.Provider, { value: o, children: a });
-  },
-  ot = motion(ReactFragment),
+  it = TransitionProvider,
+  ot = AnimatedFragment,
   st = { Active: "yFu0ego46", Inactive: "Bq4Oqy1P7", Main: "A73BIfYrH" },
   ft = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -1578,19 +1591,11 @@ var ct = ["HkR7N8JHH", "qFD4z7zh2", "uLTZzDf3c"],
     qFD4z7zh2: "framer-v-13j692f",
     uLTZzDf3c: "framer-v-1ws1zva",
   };
-function Tr(t, ...a) {
-  let n = {};
-  return (a?.forEach((i) => i && Object.assign(n, t[i])), n);
-}
+var Tr = mergeVariantProps;
 var ut = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   gt = (t, a) => `translate(-50%, -50%) ${a}`,
-  xt = ({ value: t, children: a }) => {
-    let n = useContext(MotionContext),
-      i = t ?? n.transition,
-      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return jsx(MotionContext.Provider, { value: o, children: a });
-  },
-  yt = motion(ReactFragment),
+  xt = TransitionProvider,
+  yt = AnimatedFragment,
   vt = { Active: "qFD4z7zh2", Inactive: "uLTZzDf3c", Main: "HkR7N8JHH" },
   bt = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -1804,10 +1809,7 @@ var Qe = withFXWrapper(motion.div),
     ggKLLEo3O: "framer-v-8q1l2i",
     SoQlwVPaX: "framer-v-1gwjjt4",
   };
-function ue(t, ...a) {
-  let n = {};
-  return (a?.forEach((i) => i && Object.assign(n, t[i])), n);
-}
+var ue = mergeVariantProps;
 var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
   zt = { delay: 0, duration: 2, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
   Je = {
@@ -1871,13 +1873,8 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
     transition: Vt,
     y: -4,
   },
-  Mt = ({ value: t, children: a }) => {
-    let n = useContext(MotionContext),
-      i = t ?? n.transition,
-      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return jsx(MotionContext.Provider, { value: o, children: a });
-  },
-  Ft = motion(ReactFragment),
+  Mt = TransitionProvider,
+  Ft = AnimatedFragment,
   St = {
     "First Tab": "SoQlwVPaX",
     "Variant 2": "CuHIQOWnA",
@@ -2505,19 +2502,11 @@ var Bt = ["NFc0G3jDM", "NH6OUC_9N", "Bx08xEGah"],
     NFc0G3jDM: "framer-v-r8ywzq",
     NH6OUC_9N: "framer-v-3v0an8",
   };
-function Dr(t, ...a) {
-  let n = {};
-  return (a?.forEach((i) => i && Object.assign(n, t[i])), n);
-}
+var Dr = mergeVariantProps;
 var Et = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   Kt = (t, a) => `translateX(-50%) ${a}`,
-  Wt = ({ value: t, children: a }) => {
-    let n = useContext(MotionContext),
-      i = t ?? n.transition,
-      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return jsx(MotionContext.Provider, { value: o, children: a });
-  },
-  Qt = motion(ReactFragment),
+  Wt = TransitionProvider,
+  Qt = AnimatedFragment,
   Zt = { "Variant 1": "NFc0G3jDM", Inactive: "Bx08xEGah", Raised: "NH6OUC_9N" },
   Jt = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -2735,19 +2724,11 @@ var rn = ["zsZ4Z5z6N", "j8drpudA2", "gO1Oy0ksh"],
     j8drpudA2: "framer-v-1elz6w7",
     zsZ4Z5z6N: "framer-v-1g1moqd",
   };
-function Pr(t, ...a) {
-  let n = {};
-  return (a?.forEach((i) => i && Object.assign(n, t[i])), n);
-}
+var Pr = mergeVariantProps;
 var nn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   on = (t, a) => `translateY(-50%) ${a}`,
-  sn = ({ value: t, children: a }) => {
-    let n = useContext(MotionContext),
-      i = t ?? n.transition,
-      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return jsx(MotionContext.Provider, { value: o, children: a });
-  },
-  fn = motion(ReactFragment),
+  sn = TransitionProvider,
+  fn = AnimatedFragment,
   ln = { inactive: "gO1Oy0ksh", Main: "zsZ4Z5z6N", Raised: "j8drpudA2" },
   mn = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -2967,19 +2948,11 @@ var hn = ["S3kYznUP4", "xZIBSRPrK", "aJO1FcIHC"],
     S3kYznUP4: "framer-v-11b0mpr",
     xZIBSRPrK: "framer-v-327s0c",
   };
-function Yr(t, ...a) {
-  let n = {};
-  return (a?.forEach((i) => i && Object.assign(n, t[i])), n);
-}
+var Yr = mergeVariantProps;
 var xn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   yn = (t, a) => `translateY(-50%) ${a}`,
-  vn = ({ value: t, children: a }) => {
-    let n = useContext(MotionContext),
-      i = t ?? n.transition,
-      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return jsx(MotionContext.Provider, { value: o, children: a });
-  },
-  bn = motion(ReactFragment),
+  vn = TransitionProvider,
+  bn = AnimatedFragment,
   wn = { Inactive: "aJO1FcIHC", Main: "S3kYznUP4", Raised: "xZIBSRPrK" },
   Cn = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -3211,10 +3184,7 @@ var ir = withFXWrapper(motion.div),
     Q1DJ9ntwf: "framer-v-khfq23",
     qvmKCdJXN: "framer-v-1m0rm34",
   };
-function oe(t, ...a) {
-  let n = {};
-  return (a?.forEach((i) => i && Object.assign(n, t[i])), n);
-}
+var oe = mergeVariantProps;
 var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
   Ln = { delay: 0, duration: 2, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
   Br = {
@@ -3302,13 +3272,8 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
     transition: Ar,
     y: -4,
   },
-  Tn = ({ value: t, children: a }) => {
-    let n = useContext(MotionContext),
-      i = t ?? n.transition,
-      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return jsx(MotionContext.Provider, { value: o, children: a });
-  },
-  Dn = motion(ReactFragment),
+  Tn = TransitionProvider,
+  Dn = AnimatedFragment,
   Pn = {
     "First tab": "Q1DJ9ntwf",
     "SECOND TAB": "qvmKCdJXN",
@@ -3989,222 +3954,7 @@ addPropertyControls(_e, {
 loadFonts(_e, [{ explicitInter: true, fonts: [] }, ...On, ...kn, ...Un, ...In, ..._n], {
   supportsExplicitInterCodegen: true,
 });
-var En = withFXWrapper(motion.div),
-  Kn = { h9tfYk7K5: { hover: true } },
-  Wn = ["I5QaL6oi8", "h9tfYk7K5"],
-  Qn = "framer-Kv8wc",
-  Zn = { h9tfYk7K5: "framer-v-1kdysgy", I5QaL6oi8: "framer-v-yyb023" };
-function Jn(t, ...a) {
-  let n = {};
-  return (a?.forEach((i) => i && Object.assign(n, t[i])), n);
-}
-var Gn = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* physics-based spring animation */ },
-  Hr = { damping: 30, delay: 0, mass: 1, stiffness: 400, type: "spring" /* physics-based spring animation */ },
-  $n = {
-    opacity: 0,
-    rotate: 0,
-    rotateX: 0,
-    rotateY: 0,
-    scale: 1.01,
-    skewX: 0,
-    skewY: 0,
-    transition: Hr,
-    x: 0,
-    y: 0,
-  },
-  ei = {
-    opacity: 1,
-    rotate: 0,
-    rotateX: 0,
-    rotateY: 0,
-    scale: 1,
-    skewX: 0,
-    skewY: 0,
-    transition: Hr,
-    x: 0,
-    y: 0,
-  },
-  ri = {
-    opacity: 0.001,
-    rotate: 0,
-    rotateX: 0,
-    rotateY: 0,
-    scale: 1.01,
-    skewX: 0,
-    skewY: 0,
-    x: 0,
-    y: 0,
-  },
-  ai = ({ value: t, children: a }) => {
-    let n = useContext(MotionContext),
-      i = t ?? n.transition,
-      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return jsx(MotionContext.Provider, { value: o, children: a });
-  },
-  ti = motion(ReactFragment),
-  ni = { "Variant 1": "I5QaL6oi8", "Variant 2": "h9tfYk7K5" },
-  ii = ({ height: t, id: a, width: n, ...i }) => {
-    var o, f;
-    return {
-      ...i,
-      variant:
-        (f = (o = ni[i.variant]) !== null && o !== undefined ? o : i.variant) !==
-          null && f !== undefined
-          ? f
-          : "I5QaL6oi8",
-    };
-  },
-  oi = (t, a) => a.join("-") + t.layoutDependency,
-  si = forwardRef(function (t, a) {
-    let { activeLocale: n, setLocale: i } = useLocale(),
-      { style: o, className: f, layoutId: s, variant: U, ...C } = ii(t),
-      {
-        baseVariant: l,
-        classNames: p,
-        gestureVariant: L,
-        setGestureState: y,
-        setVariant: d,
-        variants: R,
-      } = useComponentVariantState({
-        cycleOrder: Wn,
-        defaultVariant: "I5QaL6oi8",
-        enabledGestures: Kn,
-        variant: U,
-        variantClassNames: Zn,
-      }),
-      v = oi(t, R),
-      { activeVariantCallback: x, delay: u } = useVariantAnimationCallbacks(l),
-      m = x(async (...Y) => {
-        await u(() => d("h9tfYk7K5"), 400);
-      }),
-      h = x(async (...Y) => {
-        (y({ isPressed: false }), d("I5QaL6oi8"));
-      });
-    useOnVariantChange(l, { default: m });
-    let b = useRef(null),
-      V = useId(),
-      M = [],
-      A = useDeviceSize();
-    return jsx(LayoutGroup, {
-      id: s ?? V,
-      children: jsx(ti, {
-        animate: R,
-        initial: false,
-        children: jsx(ai, {
-          value: Gn,
-          children: jsxs(En, {
-            ...C,
-            className: cx(Qn, ...M, "framer-yyb023", f, p),
-            "data-framer-name": "Variant 1",
-            "data-highlight": true,
-            layoutDependency: v,
-            layoutId: "I5QaL6oi8",
-            onHoverEnd: () => y({ isHovered: false }),
-            onHoverStart: () => y({ isHovered: true }),
-            onTap: () => y({ isPressed: false }),
-            onTapCancel: () => y({ isPressed: false }),
-            onTapStart: () => y({ isPressed: true }),
-            ref: a ?? b,
-            style: { ...o },
-            ...Jn(
-              {
-                "h9tfYk7K5-hover": {
-                  __framer__presenceAnimate: setAppearAnimationValues(
-                    "animate",
-                    "pbltdq",
-                    ei,
-                    undefined,
-                  ),
-                  __framer__presenceExit: $n,
-                  __framer__presenceInitial: setAppearAnimationValues(
-                    "initial",
-                    "pbltdq",
-                    ri,
-                    undefined,
-                  ),
-                  __perspectiveFX: false,
-                  __smartComponentFX: true,
-                  __targetOpacity: 1,
-                  "data-framer-appear-id": "pbltdq",
-                  "data-framer-name": undefined,
-                },
-                h9tfYk7K5: { "data-framer-name": "Variant 2", onTap: h },
-              },
-              l,
-              L,
-            ),
-            children: [
-              jsx(SVGComponent, {
-                className: "framer-1nwrmj9",
-                "data-framer-name": "Inner Ring",
-                fill: "black",
-                intrinsicHeight: 395,
-                intrinsicWidth: 395,
-                layoutDependency: v,
-                layoutId: "GpQarFo4G",
-                style: { rotate: -62 },
-                svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 395.143 395.143"><defs><style>.cls-1{fill:#48c1c4}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M68.664 203.057c0 31.323 6.78 58.493 19.181 80.236 27.063 8.452 61.456 13.315 104.457 13.315-50.166 0-80.117-34.965-80.117-93.53 0-51.308 42.387-93.05 94.485-93.05 42.066 0 76.288 34.008 76.288 75.808 0-41.614-4.335-75.061-11.905-101.505a118.552 118.552 0 0 0-63.596-18.507c-76.531 0-138.793 61.563-138.793 137.233Z"/><circle cx="197.571" cy="197.571" r="197.571" style="fill:none"/><circle class="cls-1" cx="197.571" cy="197.571" r="34.485"/></g></g></svg>',
-                variants: {
-                  "h9tfYk7K5-hover": { rotate: -6 },
-                  h9tfYk7K5: { rotate: 0 },
-                },
-                withExternalLayout: true,
-              }),
-              jsx(SVGComponent, {
-                className: "framer-1fz3tc2",
-                "data-framer-name": "Outer Ring",
-                fill: "black",
-                intrinsicHeight: 395,
-                intrinsicWidth: 395,
-                layoutDependency: v,
-                layoutId: "bxUtsItPi",
-                style: { rotate: 97 },
-                svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 395.143 395.143"><defs><style>.cls-1{fill:#48c1c4}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M24.017 244.38c4.284 54.074 50.404 96.432 167.829 96.432-46.821 0-83.27-21.173-104.001-57.52-29.517-9.218-50.277-22.719-63.828-38.911Zm206.89-227.371C133.3-60.031-60.1 143.865 24.017 244.38c-7.567-95.518 115.45-227.574 206.89-227.372Zm95.571 167.314c0-122.473-42.457-167.197-95.57-167.314 16.905 13.343 30.929 35.126 40.145 67.322 33.252 21.039 55.425 57.945 55.425 99.992Z"/><circle cx="197.571" cy="197.571" r="197.571" style="fill:none"/><circle class="cls-1" cx="197.571" cy="197.571" r="34.485"/></g></g></svg>',
-                variants: {
-                  "h9tfYk7K5-hover": { rotate: 5 },
-                  h9tfYk7K5: { rotate: 0 },
-                },
-                withExternalLayout: true,
-              }),
-              jsx(SVGComponent, {
-                className: "framer-v5bumn",
-                "data-framer-name": "Neoflix",
-                fill: "black",
-                intrinsicHeight: 198,
-                intrinsicWidth: 895,
-                layoutDependency: v,
-                layoutId: "hFmAPTsEi",
-                svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 894.846 198.191"><g data-name="Layer 2"><path d="M129.67 137.377 26.207 3.003H0v192.458h32.486V60.476l103.736 134.985h25.934V3.003H129.67v134.374zm163.518-69.949q-13.654-8.19-32.759-8.19-19.387 0-34.534 8.873a63.203 63.203 0 0 0-23.75 24.433q-8.6 15.56-8.599 36.307 0 21.294 8.872 36.854a60.123 60.123 0 0 0 25.252 24.024q16.38 8.464 39.038 8.462a94.357 94.357 0 0 0 28.936-4.64q14.467-4.64 24.024-12.558l-9.555-22.931a61.517 61.517 0 0 1-20.474 10.783 76.356 76.356 0 0 1-22.385 3.412q-13.655 0-22.932-4.914a31.287 31.287 0 0 1-13.922-14.741 50.002 50.002 0 0 1-4.183-16.107h95.635v-10.1q0-20.743-7.507-35.762a55.137 55.137 0 0 0-21.158-23.204Zm-50.913 20.338q8.049-5.323 19.519-5.323 15.285 0 23.477 9.964 7.26 8.838 8.08 24.433h-67.052a50.525 50.525 0 0 1 3.691-14.06 33.567 33.567 0 0 1 12.285-15.014Zm203.512-20.064q-15.292-8.46-36.035-8.463-20.749 0-36.035 8.463a59.168 59.168 0 0 0-23.75 24.023q-8.465 15.56-8.462 36.853 0 21.294 8.463 36.99a58.914 58.914 0 0 0 23.75 24.16q15.285 8.464 36.034 8.463 20.743 0 36.035-8.463a58.966 58.966 0 0 0 23.75-24.16q8.459-15.694 8.463-36.99 0-21.293-8.463-36.853a59.22 59.22 0 0 0-23.75-24.023ZM434.321 161.2q-9.284 11.055-24.569 11.056-15.291 0-24.57-11.056-9.283-11.056-9.28-32.623 0-21.837 9.28-32.622 9.279-10.781 24.57-10.783 15.285 0 24.57 10.783 9.277 10.787 9.281 32.622 0 21.569-9.282 32.623ZM552.25 40.949a21.29 21.29 0 0 1 9.555-9.419q6.552-3.41 17.471-3.958l12.558-.819-2.184-25.115-13.377.819q-31.396 1.913-46.272 16.38-14.882 14.472-14.877 42.86v.272h-25.661V87.63h25.661v107.831h34.123V87.63h36.308V61.969h-36.308v-5.733q0-9.277 3.004-15.287Zm108.104 129.124a22.255 22.255 0 0 1-11.465-2.73 16.656 16.656 0 0 1-6.961-8.327 35.192 35.192 0 0 1-2.32-13.512V3.003h-34.125v144.139q0 25.119 11.33 38.083 11.324 12.968 35.08 12.966a70.83 70.83 0 0 0 9.963-.683q4.773-.683 9.691-1.774l.547-27.026a28.85 28.85 0 0 1-5.734 1.092q-3.007.275-6.006.273Zm32.209-108.104h34.124v133.493h-34.124zM690.379 0h38.219v33.305h-38.219zm204.467 195.461-56.274-68.807 52.725-64.685H851.44l-32.213 41.186-32.213-41.186h-39.856l52.426 64.562-55.975 68.93h39.856l35.508-45.148 35.743 45.148h40.13z" style="fill:#1c3664" data-name="Layer 1"/></g></svg>',
-                withExternalLayout: true,
-              }),
-            ],
-          }),
-        }),
-      }),
-    });
-  }),
-  fi = [
-    "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
-    ".framer-Kv8wc.framer-1lhwvl1, .framer-Kv8wc .framer-1lhwvl1 { display: block; }",
-    ".framer-Kv8wc.framer-yyb023 { height: 287px; overflow: visible; position: relative; width: 935px; }",
-    ".framer-Kv8wc .framer-1nwrmj9 { aspect-ratio: 1 / 1; bottom: -42px; flex: none; left: -43px; position: absolute; top: -43px; width: var(--framer-aspect-ratio-supported, 372px); z-index: 1; }",
-    ".framer-Kv8wc .framer-1fz3tc2 { aspect-ratio: 1 / 1; bottom: -43px; flex: none; left: -43px; position: absolute; top: -42px; width: var(--framer-aspect-ratio-supported, 372px); z-index: 1; }",
-    ".framer-Kv8wc .framer-v5bumn { aspect-ratio: 4.52020202020202 / 1; bottom: 0px; flex: none; height: 50%; position: absolute; right: 0px; width: var(--framer-aspect-ratio-supported, 646px); z-index: 1; }",
-    ".framer-Kv8wc.framer-v-1kdysgy.framer-yyb023 { cursor: pointer; }",
-  ],
-  Ne = withCSS(si, fi, "framer-Kv8wc"),
-  cr = Ne;
-Ne.displayName = "Neoflix anim";
-Ne.defaultProps = { height: 287, width: 935 };
-addPropertyControls(Ne, {
-  variant: {
-    options: ["I5QaL6oi8", "h9tfYk7K5"],
-    optionTitles: ["Variant 1", "Variant 2"],
-    title: "Variant",
-    type: ControlType.Enum,
-  },
-});
-loadFonts(Ne, [{ explicitInter: true, fonts: [] }], { supportsExplicitInterCodegen: true });
+var cr = Be; // Reuse first "Neoflix anim" component (was an exact duplicate)
 var li = getFonts(MapMobile2Component),
   ge = withScrollSnapChild(motion.section),
   me = Ir(motion.section),

@@ -31,8 +31,8 @@
 ## What to Skip
 
 **NEVER load these into context** (41,441 lines of vendor code):
-- `src/chunk--react-and-framer-runtime.mjs` (35,529 lines) — bundled React 18 + Framer SDK
-- `src/chunk--framer-motion.mjs` (5,912 lines) — Framer Motion + world map + scroll-snap HOCs
+- `src/vendor/chunk--react-and-framer-runtime.mjs` (35,529 lines) — bundled React 18 + Framer SDK
+- `src/vendor/chunk--framer-motion.mjs` (5,912 lines) — Framer Motion + world map + scroll-snap HOCs
 
 **Skip entire directories:**
 - `archive/` — superseded files, original obfuscated chunks, formatted HTML
@@ -112,8 +112,9 @@ frmrduplicate/
 │   ├── chunk--page-helpers.mjs        ← shared utilities (extracted patterns)
 │   ├── chunk--font-data.mjs           ← font loading declarations
 │   ├── chunk--framer-components.mjs   ← font config, link styles
-│   ├── chunk--react-and-framer-runtime.mjs  ← [VENDOR — skip]
-│   ├── chunk--framer-motion.mjs       ← [VENDOR — skip]
+│   └── vendor/                        ← [NEVER LOAD — 41K lines]
+│       ├── chunk--react-and-framer-runtime.mjs
+│       └── chunk--framer-motion.mjs
 │   ├── docs-links.mjs                 ← GitBook URL lookup table
 │   ├── metadata--*.mjs                ← page metadata (SEO, breakpoints)
 │   └── css/                           ← extracted inline CSS per component
@@ -241,7 +242,7 @@ Common utilities extracted from repeated patterns across all pages:
 5. **For shared utilities:** `src/chunk--page-helpers.mjs` (common patterns)
 6. **For Toolbox changes:** `src/toolbox-page-factory.mjs` + `src/docs-links.mjs`
 7. **For CSS:** `css/base.css` (shared) + `css/*.page.css` (per-page)
-8. **Never:** `src/chunk--react-and-framer-runtime.mjs`, `src/chunk--framer-motion.mjs`
+8. **Never:** `src/vendor/` (React + Framer runtime, 41K lines)
 
 ## Context Budget Estimate
 

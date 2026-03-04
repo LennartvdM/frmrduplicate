@@ -21,10 +21,11 @@
  *   M → loadFonts
  *   x → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as w } from "./chunk-MKICQTGL.mjs";
 import { a as y, b as k } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var T = "framer-QEIkD",
                       layoutId: "Qo0L4KhuZ",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-1-fundamentals/1.-preproduction/1.1-beyond-the-procedure#taking-a-different-approach",
+                      url: "https://docs.neoflix.care/level-1-fundamentals/1.-preproduction/1.1-beyond-the-procedure#taking-a-different-approach" /* → getDocsUrl("/Toolbox_Different_Approach") */,
                       width: "100%",
                     }),
                   }),

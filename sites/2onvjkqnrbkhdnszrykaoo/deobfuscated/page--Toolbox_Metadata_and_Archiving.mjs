@@ -21,10 +21,11 @@
  *   F → loadFonts
  *   M → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as v } from "./chunk-ICFSHZDI.mjs";
 import { a as g, b as y } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var P = "framer-lSDMM",
                       layoutId: "IPc28XIeN",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/9.-after-the-intervention/9.3-metadata-and-archiving",
+                      url: "https://docs.neoflix.care/level-2-in-action/9.-after-the-intervention/9.3-metadata-and-archiving" /* → getDocsUrl("/Toolbox_Metadata_and_Archiving") */,
                       width: "100%",
                     }),
                   }),

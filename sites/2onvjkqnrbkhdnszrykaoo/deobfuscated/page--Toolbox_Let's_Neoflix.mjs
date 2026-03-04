@@ -21,10 +21,11 @@
  *   P → loadFonts
  *   g → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as v } from "./chunk-73I4LY3P.mjs";
 import { a as b, b as y } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var I = "framer-Y76EM",
                       layoutId: "ccsrc1zVB",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/11.-lets-neoflix",
+                      url: "https://docs.neoflix.care/level-2-in-action/11.-lets-neoflix" /* → getDocsUrl("/Toolbox_Let's_Neoflix") */,
                       width: "100%",
                     }),
                   }),

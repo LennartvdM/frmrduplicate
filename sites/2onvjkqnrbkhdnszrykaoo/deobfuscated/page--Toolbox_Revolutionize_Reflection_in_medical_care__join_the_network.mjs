@@ -21,10 +21,11 @@
  *   q → loadFonts
  *   x → getFonts
  */
-import { a as w } from "./metadata--worldmapgit.mjs";
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
+import { a as w } from "./chunk-WXIQHDCD.mjs";
 import { a as y, b as g } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var T = "framer-OPuMG",
                       layoutId: "B8mawHaFp",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-3-growth/18.-expanding-your-video-program/18.1-revolutionize-reflection-in-medical-care-join-the-network",
+                      url: "https://docs.neoflix.care/level-3-growth/18.-expanding-your-video-program/18.1-revolutionize-reflection-in-medical-care-join-the-network" /* → getDocsUrl("/Toolbox_Revolutionize_Reflection_in_medical_care:_join_the_network") */,
                       width: "100%",
                     }),
                   }),

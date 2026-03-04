@@ -21,10 +21,11 @@
  *   A → loadFonts
  *   h → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as w } from "./chunk-B2TZBTZ4.mjs";
 import { a as y, b } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var F = "framer-Cj4Yg",
                       layoutId: "NzrUgED_k",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/14.-education-and-training",
+                      url: "https://docs.neoflix.care/level-2-in-action/14.-education-and-training" /* → getDocsUrl("/Toolbox_Education_And_Training") */,
                       width: "100%",
                     }),
                   }),

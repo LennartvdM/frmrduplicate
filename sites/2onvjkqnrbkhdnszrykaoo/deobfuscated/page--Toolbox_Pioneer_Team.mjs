@@ -21,10 +21,11 @@
  *   j → loadFonts
  *   h → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as v } from "./chunk-LJ5XF2QK.mjs";
 import { a as y, b as w } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var Z = "framer-naWga",
                       layoutId: "qdrRMfkW4",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-1-fundamentals/2.-planning-your-initiative/2.1-pioneer-team",
+                      url: "https://docs.neoflix.care/level-1-fundamentals/2.-planning-your-initiative/2.1-pioneer-team" /* → getDocsUrl("/Toolbox_Pioneer_Team") */,
                       width: "100%",
                     }),
                   }),

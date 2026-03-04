@@ -21,10 +21,11 @@
  *   P → loadFonts
  *   x → getFonts
  */
+import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as v } from "./chunk-7ZLY6PO3.mjs";
 import { a as g, b as w } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -204,7 +205,7 @@ var T = "framer-jR5ry",
                       layoutId: "Bx2tCSwWx",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-1-fundamentals/4.-learning-from-success-stories/4.1-share-your-experience",
+                      url: "https://docs.neoflix.care/level-1-fundamentals/4.-learning-from-success-stories/4.1-share-your-experience" /* → getDocsUrl("/Toolbox_Share_your_experience") */,
                       width: "100%",
                     }),
                   }),

@@ -1,8 +1,5 @@
 /**
  * Import aliases resolved:
- *   br → interBoldFontDefs
- *   vr → interBoldPresetCSS
- *   Hr → interBoldCSSScope
  *   G → SmoothScrollComponent
  *   O → NoiseOverlayComponent
  *   Z → NavItemComponent
@@ -12,7 +9,6 @@
  *   Cr → interExtraBoldFontDefs
  *   Ar → interExtraBoldPresetCSS
  *   Rr → interExtraBoldCSSScope
- *   W → VideoComponent
  *   Yr → fontConfig
  *   Ur → linkPresetStyles
  *   kr → cssClassScope
@@ -54,9 +50,7 @@
  *   v → normalizeFontConfig
  */
 import { a as _ } from "./chunk-3W7P62CN.mjs";
-import { interBoldFontDefs,
-  interBoldPresetCSS,
-  interBoldCSSScope } from "./chunk--inter-bold-font-styles.mjs";
+import { a as br, b as vr, c as Hr } from "./chunk-HVOA2PEY.mjs";
 import { SmoothScrollComponent,
   NoiseOverlayComponent,
   NavItemComponent,
@@ -66,11 +60,11 @@ import { SmoothScrollComponent,
   interExtraBoldFontDefs,
   interExtraBoldPresetCSS,
   interExtraBoldCSSScope } from "./chunk--shared-components.mjs";
-import { VideoComponent } from "./chunk--video-player-component.mjs";
+import { a as W } from "./chunk-4R3P5DN4.mjs";
 import { fontConfig,
   linkPresetStyles,
   cssClassScope } from "./chunk--framer-components.mjs";
-import "./chunk--empty-stub.mjs";
+import "./chunk-42U43NKG.mjs";
 import { $ as o,
   useRoute,
   useLocale,
@@ -645,7 +639,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
       S = R("zQbFj9_vB"),
       ar = R("Y8dEgTIYh"),
       Vr = N(),
-      tr = [cssClassScope, interExtraBoldCSSScope, interMediumCSSScope, qr, interBoldCSSScope];
+      tr = [cssClassScope, interExtraBoldCSSScope, interMediumCSSScope, qr, Hr];
     return (
       registerCursors({}),
       r(CursorContext.Provider, {
@@ -2879,7 +2873,7 @@ z(
     ...v(interExtraBoldFontDefs),
     ...v(interMediumFontDefs),
     ...v(_r),
-    ...v(interBoldFontDefs),
+    ...v(br),
   ],
   { supportsExplicitInterCodegen: !0 },
 );

@@ -85,6 +85,8 @@ const REACT_EXPORTS = {
   startTransition: "startTransition", Suspense: "Suspense",
 };
 
+const DOCS_BASE = "https://docs.neoflix.care";
+
 function pathToName(path) {
   return path.replace(/^\//, "").replace(/[/:]/g, "_") || "home";
 }
@@ -171,6 +173,13 @@ async function processFile(filePath) {
   code = annotateMetadata(code);
   code = annotateAnimations(code);
 
+  // Extract docs.neoflix.care URL if present (GitBook iframe embed)
+  let docsUrl = null;
+  const docsMatch = code.match(/url:\s*"(https:\/\/docs\.neoflix\.care[^"]*)"/);
+  if (docsMatch) {
+    docsUrl = docsMatch[1];
+  }
+
   // Determine output filename
   let outName = CHUNK_NAMES[fileName] || FILE_RENAME_MAP[fileName] || fileName;
 
@@ -206,7 +215,7 @@ async function processFile(filePath) {
     }
   }
 
-  return { outName, code };
+  return { outName, code, docsUrl };
 }
 
 async function main() {
@@ -282,6 +291,53 @@ async function main() {
     result.code = code;
   }
 
+  // Third pass: extract docs links and replace hardcoded URLs with import from shared module
+  const docsLinks = {};
+  for (const result of results) {
+    if (result.docsUrl) {
+      // Find the route path for this page file
+      const routePath = Object.values(ROUTE_MAP).find(
+        (info) => FILE_RENAME_MAP[info.file.toLowerCase()] === result.outName
+      );
+      if (routePath) {
+        docsLinks[routePath.path] = result.docsUrl;
+        // Add import from docs-links.mjs and annotate the hardcoded URL
+        if (!result.code.includes("docs-links.mjs")) {
+          result.code = `import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["${routePath.path}"] */\n` + result.code;
+        }
+        result.code = result.code.replace(
+          `url: "${result.docsUrl}"`,
+          `url: DOCS_LINKS["${routePath.path}"] /* ${result.docsUrl} */`
+        );
+      }
+    }
+  }
+
+  // Generate the centralized docs-links.mjs module
+  let docsLinksContent = `/**\n`;
+  docsLinksContent += ` * Centralized GitBook documentation links for all Toolbox pages.\n`;
+  docsLinksContent += ` *\n`;
+  docsLinksContent += ` * Each key corresponds to a route path from the ROUTE_MAP.\n`;
+  docsLinksContent += ` * Each value is the docs.neoflix.care URL embedded as an iframe on that page.\n`;
+  docsLinksContent += ` *\n`;
+  docsLinksContent += ` * To add a new toolbox page, add its route path and docs URL here.\n`;
+  docsLinksContent += ` * The page components import their URL from this module instead of hardcoding it.\n`;
+  docsLinksContent += ` */\n\n`;
+  docsLinksContent += `const DOCS_BASE = "${DOCS_BASE}";\n\n`;
+  docsLinksContent += `export const DOCS_LINKS = {\n`;
+  for (const [routePath, url] of Object.entries(docsLinks).sort()) {
+    const suffix = url.replace(DOCS_BASE, "");
+    docsLinksContent += `  "${routePath}": \`\${DOCS_BASE}${suffix}\`,\n`;
+  }
+  docsLinksContent += `};\n\n`;
+  docsLinksContent += `/**\n * Get the docs URL for a given route path.\n */\n`;
+  docsLinksContent += `export function getDocsUrl(routePath) {\n`;
+  docsLinksContent += `  return DOCS_LINKS[routePath] ?? null;\n`;
+  docsLinksContent += `}\n\n`;
+  docsLinksContent += `export { DOCS_BASE };\n`;
+
+  writeFileSync(join(OUT_DIR, "docs-links.mjs"), docsLinksContent);
+
   // Write all files
   for (const { outName, code } of results) {
     writeFileSync(join(OUT_DIR, outName), code);
@@ -323,6 +379,7 @@ async function main() {
 
   console.log(`\n✓ Deobfuscated ${results.length} files to ${OUT_DIR}/`);
   console.log(`✓ Generated ROUTE_MAP.md`);
+  console.log(`✓ Generated docs-links.mjs with ${Object.keys(docsLinks).length} GitBook URLs`);
 }
 
 main().catch(console.error);

@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_Questions_to_ask_during_previewing"] */
 import { a as q } from "./chunk-L7BLQOMP.mjs";
 import { a as y, b as w } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var K = "framer-qFu7e",
                       layoutId: "SWQXLrroy",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/10.-previewing/10.1-questions-to-ask-during-previewing",
+                      url: DOCS_LINKS["/Toolbox_Questions_to_ask_during_previewing"] /* https://docs.neoflix.care/level-2-in-action/10.-previewing/10.1-questions-to-ask-during-previewing */,
                       width: "100%",
                     }),
                   }),

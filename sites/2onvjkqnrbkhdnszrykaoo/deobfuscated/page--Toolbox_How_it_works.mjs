@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_How_it_works"] */
 import { a as b } from "./chunk-7ATIRYTW.mjs";
 import { a as y, b as w } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var j = "framer-BfSxY",
                       layoutId: "AAhRwG2sz",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/welcome/neoflix/how-it-works",
+                      url: DOCS_LINKS["/Toolbox_How_it_works"] /* https://docs.neoflix.care/welcome/neoflix/how-it-works */,
                       width: "100%",
                     }),
                   }),

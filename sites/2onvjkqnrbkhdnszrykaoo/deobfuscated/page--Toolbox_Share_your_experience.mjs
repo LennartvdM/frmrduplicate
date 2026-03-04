@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_Share_your_experience"] */
 import { a as v } from "./chunk-7ZLY6PO3.mjs";
 import { a as g, b as w } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var T = "framer-jR5ry",
                       layoutId: "Bx2tCSwWx",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-1-fundamentals/4.-learning-from-success-stories/4.1-share-your-experience",
+                      url: DOCS_LINKS["/Toolbox_Share_your_experience"] /* https://docs.neoflix.care/level-1-fundamentals/4.-learning-from-success-stories/4.1-share-your-experience */,
                       width: "100%",
                     }),
                   }),

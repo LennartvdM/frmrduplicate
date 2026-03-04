@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_After_the_Intervention"] */
 import { a as w } from "./chunk-IPH6AA6U.mjs";
 import { a as g, b as v } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var z = "framer-ahKFB",
                       layoutId: "gdm7LJ2Ok",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/9.-after-the-intervention",
+                      url: DOCS_LINKS["/Toolbox_After_the_Intervention"] /* https://docs.neoflix.care/level-2-in-action/9.-after-the-intervention */,
                       width: "100%",
                     }),
                   }),

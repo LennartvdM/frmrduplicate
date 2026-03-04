@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_A_Safe_Learning_Environment"] */
 import { a as w } from "./chunk-N6UKUD43.mjs";
 import { a as y, b as v } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var I = "framer-VuNhp",
                       layoutId: "EPf5Xgh0S",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/11.-lets-neoflix/11.2-a-safe-learning-environment",
+                      url: DOCS_LINKS["/Toolbox_A_Safe_Learning_Environment"] /* https://docs.neoflix.care/level-2-in-action/11.-lets-neoflix/11.2-a-safe-learning-environment */,
                       width: "100%",
                     }),
                   }),

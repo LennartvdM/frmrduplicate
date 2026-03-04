@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox-Planning_Your_Initiative"] */
 import { a as v } from "./chunk-WSPWSMCG.mjs";
 import { a as g, b as w } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var Z = "framer-XTO77",
                       layoutId: "eiUJNDpWn",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-1-fundamentals/2.-planning-your-initiative",
+                      url: DOCS_LINKS["/Toolbox-Planning_Your_Initiative"] /* https://docs.neoflix.care/level-1-fundamentals/2.-planning-your-initiative */,
                       width: "100%",
                     }),
                   }),

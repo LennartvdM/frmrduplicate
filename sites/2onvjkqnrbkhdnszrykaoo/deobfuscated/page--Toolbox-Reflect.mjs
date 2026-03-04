@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox-Reflect"] */
 import { a as v, b as y } from "./chunk--embed-component.mjs";
 import { a as w } from "./chunk-NGBS3FJG.mjs";
 import "./chunk--framer-components.mjs";
@@ -113,7 +114,7 @@ var E = "framer-RVGcQ",
                       layoutId: "N4hgVPbyv",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/reflect",
+                      url: DOCS_LINKS["/Toolbox-Reflect"] /* https://docs.neoflix.care/level-2-in-action/reflect */,
                       width: "100%",
                     }),
                   }),

@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/toolbox_case_leiden"] */
 import { a as m } from "./chunk-VQAURQE6.mjs";
 import { a as g, b as w } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -189,7 +190,7 @@ var P = "framer-vWnxi",
                       layoutId: "tQZ4VpKHB",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-1-fundamentals/4.-learning-from-success-stories/nicu-in-leiden-the-netherlands",
+                      url: DOCS_LINKS["/toolbox_case_leiden"] /* https://docs.neoflix.care/level-1-fundamentals/4.-learning-from-success-stories/nicu-in-leiden-the-netherlands */,
                       width: "100%",
                     }),
                   }),

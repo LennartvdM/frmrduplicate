@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_Pioneer_Team"] */
 import { a as v } from "./chunk-LJ5XF2QK.mjs";
 import { a as y, b as w } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var Z = "framer-naWga",
                       layoutId: "qdrRMfkW4",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-1-fundamentals/2.-planning-your-initiative/2.1-pioneer-team",
+                      url: DOCS_LINKS["/Toolbox_Pioneer_Team"] /* https://docs.neoflix.care/level-1-fundamentals/2.-planning-your-initiative/2.1-pioneer-team */,
                       width: "100%",
                     }),
                   }),

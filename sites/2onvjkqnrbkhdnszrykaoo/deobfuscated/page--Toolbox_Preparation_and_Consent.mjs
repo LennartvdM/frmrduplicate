@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_Preparation_and_Consent"] */
 import { a as w } from "./chunk-6LBCIK62.mjs";
 import { a as y, b as v } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var M = "framer-J56XT",
                       layoutId: "gVpPrdQAf",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/5.-preparation-and-consent",
+                      url: DOCS_LINKS["/Toolbox_Preparation_and_Consent"] /* https://docs.neoflix.care/level-2-in-action/5.-preparation-and-consent */,
                       width: "100%",
                     }),
                   }),

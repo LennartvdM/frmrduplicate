@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_Case_selection"] */
 import { a as w } from "./chunk-YRUSXTEZ.mjs";
 import { a as g, b } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var L = "framer-ZrI92",
                       layoutId: "ocDNfwszm",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/5.-preparation-and-consent/5.2-case-selection",
+                      url: DOCS_LINKS["/Toolbox_Case_selection"] /* https://docs.neoflix.care/level-2-in-action/5.-preparation-and-consent/5.2-case-selection */,
                       width: "100%",
                     }),
                   }),

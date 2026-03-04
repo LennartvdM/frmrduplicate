@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_Education_And_Training"] */
 import { a as w } from "./chunk-B2TZBTZ4.mjs";
 import { a as y, b } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var F = "framer-Cj4Yg",
                       layoutId: "NzrUgED_k",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/14.-education-and-training",
+                      url: DOCS_LINKS["/Toolbox_Education_And_Training"] /* https://docs.neoflix.care/level-2-in-action/14.-education-and-training */,
                       width: "100%",
                     }),
                   }),

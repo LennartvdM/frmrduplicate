@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_Input_for_research"] */
 import { a as y } from "./chunk-DH5M4XTH.mjs";
 import { a as w, b as g } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var Y = "framer-fOcvM",
                       layoutId: "Yzx0TUFq3",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/13.1-the-neoflix-approach/13.2-input-for-research",
+                      url: DOCS_LINKS["/Toolbox_Input_for_research"] /* https://docs.neoflix.care/level-2-in-action/13.1-the-neoflix-approach/13.2-input-for-research */,
                       width: "100%",
                     }),
                   }),

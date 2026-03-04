@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox"] */
 import { a as v } from "./chunk-VWDC27UW.mjs";
 import { a as b, b as y } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var W = "framer-EFuj8",
                       layoutId: "g9Nb1x6b3",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/",
+                      url: DOCS_LINKS["/Toolbox"] /* https://docs.neoflix.care/ */,
                       width: "100%",
                     }),
                   }),

@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_Let's_Neoflix"] */
 import { a as v } from "./chunk-73I4LY3P.mjs";
 import { a as b, b as y } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var I = "framer-Y76EM",
                       layoutId: "ccsrc1zVB",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/11.-lets-neoflix",
+                      url: DOCS_LINKS["/Toolbox_Let's_Neoflix"] /* https://docs.neoflix.care/level-2-in-action/11.-lets-neoflix */,
                       width: "100%",
                     }),
                   }),

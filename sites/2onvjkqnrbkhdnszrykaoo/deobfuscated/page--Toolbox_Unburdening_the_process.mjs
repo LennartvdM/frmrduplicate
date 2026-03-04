@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_Unburdening_the_process"] */
 import { a as v } from "./chunk-VH44VBV6.mjs";
 import { a as h, b as y } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var V = "framer-mOQw3",
                       layoutId: "W2CcC9PWg",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-1-fundamentals/1.-preproduction/1.4-unburdening-the-process",
+                      url: DOCS_LINKS["/Toolbox_Unburdening_the_process"] /* https://docs.neoflix.care/level-1-fundamentals/1.-preproduction/1.4-unburdening-the-process */,
                       width: "100%",
                     }),
                   }),

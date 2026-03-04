@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_Learning_From_Variety"] */
 import { a as k } from "./chunk-37MWMNGK.mjs";
 import { a as y, b as g } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var Y = "framer-hNFvu",
                       layoutId: "OXzJbg44E",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-1-fundamentals/4.-learning-from-success-stories",
+                      url: DOCS_LINKS["/Toolbox_Learning_From_Variety"] /* https://docs.neoflix.care/level-1-fundamentals/4.-learning-from-success-stories */,
                       width: "100%",
                     }),
                   }),

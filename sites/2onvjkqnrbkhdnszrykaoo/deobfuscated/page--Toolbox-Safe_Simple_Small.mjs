@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox-Safe_Simple_Small"] */
 import { a as v } from "./chunk-52UH3ZE6.mjs";
 import { a as g, b as w } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var F = "framer-5KLyu",
                       layoutId: "ACXHWfgiT",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-1-fundamentals/3.-safe-simple-and-small",
+                      url: DOCS_LINKS["/Toolbox-Safe_Simple_Small"] /* https://docs.neoflix.care/level-1-fundamentals/3.-safe-simple-and-small */,
                       width: "100%",
                     }),
                   }),

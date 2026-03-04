@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_Metadata_and_Archiving"] */
 import { a as v } from "./chunk-ICFSHZDI.mjs";
 import { a as g, b as y } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var P = "framer-lSDMM",
                       layoutId: "IPc28XIeN",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/9.-after-the-intervention/9.3-metadata-and-archiving",
+                      url: DOCS_LINKS["/Toolbox_Metadata_and_Archiving"] /* https://docs.neoflix.care/level-2-in-action/9.-after-the-intervention/9.3-metadata-and-archiving */,
                       width: "100%",
                     }),
                   }),

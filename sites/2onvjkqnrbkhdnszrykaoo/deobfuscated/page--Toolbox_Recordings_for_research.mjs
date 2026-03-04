@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_Recordings_for_research"] */
 import { a as w } from "./chunk-TU3JLHPG.mjs";
 import { a as b, b as y } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var Y = "framer-QWLgG",
                       layoutId: "ReYPKfwB9",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/15.-recordings-for-research",
+                      url: DOCS_LINKS["/Toolbox_Recordings_for_research"] /* https://docs.neoflix.care/level-2-in-action/15.-recordings-for-research */,
                       width: "100%",
                     }),
                   }),

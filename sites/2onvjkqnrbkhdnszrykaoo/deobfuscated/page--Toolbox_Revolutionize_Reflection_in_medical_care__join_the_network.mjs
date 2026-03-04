@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_Revolutionize_Reflection_in_medical_care:_join_the_network"] */
 import { a as w } from "./metadata--worldmapgit.mjs";
 import { a as y, b as g } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var T = "framer-OPuMG",
                       layoutId: "B8mawHaFp",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-3-growth/18.-expanding-your-video-program/18.1-revolutionize-reflection-in-medical-care-join-the-network",
+                      url: DOCS_LINKS["/Toolbox_Revolutionize_Reflection_in_medical_care:_join_the_network"] /* https://docs.neoflix.care/level-3-growth/18.-expanding-your-video-program/18.1-revolutionize-reflection-in-medical-care-join-the-network */,
                       width: "100%",
                     }),
                   }),

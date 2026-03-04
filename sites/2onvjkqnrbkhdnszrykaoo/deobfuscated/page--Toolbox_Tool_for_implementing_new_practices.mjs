@@ -1,3 +1,4 @@
+import { DOCS_LINKS } from "./docs-links.mjs"; /* docs URL: DOCS_LINKS["/Toolbox_Tool_for_implementing_new_practices"] */
 import { a as w } from "./chunk-MKJHVUWN.mjs";
 import { a as y, b as g } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
@@ -183,7 +184,7 @@ var H = "framer-ob5l4",
                       layoutId: "EcbA1he5d",
                       style: { height: "100%", width: "100%" },
                       type: "url",
-                      url: "https://docs.neoflix.care/level-2-in-action/16.-tool-for-implementing-new-practices",
+                      url: DOCS_LINKS["/Toolbox_Tool_for_implementing_new_practices"] /* https://docs.neoflix.care/level-2-in-action/16.-tool-for-implementing-new-practices */,
                       width: "100%",
                     }),
                   }),

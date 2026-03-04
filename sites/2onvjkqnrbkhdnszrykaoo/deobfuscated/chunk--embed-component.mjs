@@ -45,7 +45,7 @@ addPropertyControls($, {
   type: {
     type: ControlType.Enum,
     defaultValue: "url",
-    displaySegmentedControl: !0,
+    displaySegmentedControl: true,
     options: ["url", "html"],
     optionTitles: ["URL", "HTML"],
   },
@@ -60,7 +60,7 @@ addPropertyControls($, {
   html: {
     title: "HTML",
     type: ControlType.String,
-    displayTextArea: !0,
+    displayTextArea: true,
     hidden(t) {
       return t.type !== "html";
     },
@@ -80,12 +80,12 @@ function se({ url: t, style: r }) {
   let o = !r.height;
   /[a-z]+:\/\//.test(t) || (t = "https://" + t);
   let a = useIsOnCanvas(),
-    [s, f] = useState(a ? void 0 : !1);
+    [s, f] = useState(a ? undefined : false);
   if (
     (useEffect(() => {
       if (!a) return;
-      let l = !0;
-      f(void 0);
+      let l = true;
+      f(undefined);
       async function p() {
         // Framer API dependency removed — skip iframe URL check.
         // In the exported site useIsOnCanvas() is always false,
@@ -98,7 +98,7 @@ function se({ url: t, style: r }) {
           (console.error(n), f(n));
         }),
         () => {
-          l = !1;
+          l = false;
         }
       );
     }, [t]),
@@ -110,9 +110,9 @@ function se({ url: t, style: r }) {
     });
   if (!t.startsWith("https://"))
     return jsx(k, { message: "Unsupported protocol.", style: r });
-  if (s === void 0) return jsx(de, {});
+  if (s === undefined) return jsx(de, {});
   if (s instanceof Error) return jsx(k, { message: s.message, style: r });
-  if (s === !0) {
+  if (s === true) {
     let l = `Can\u2019t embed ${t} due to its content security policy.`;
     return jsx(k, { message: l, style: r });
   }
@@ -155,7 +155,7 @@ function ce({ html: t, style: r }) {
     (useEffect(() => {
       var n;
       let i =
-        (n = o.current) === null || n === void 0 ? void 0 : n.contentWindow;
+        (n = o.current) === null || n === undefined ? undefined : n.contentWindow;
       function m(S) {
         if (S.source !== i) return;
         let u = S.data;
@@ -307,7 +307,7 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
       id: l ?? ne,
       children: jsx(ve, {
         animate: N,
-        initial: !1,
+        initial: false,
         children: jsx(be, {
           value: he,
           children: jsxs(motion.nav, {
@@ -326,7 +326,7 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
             children: [
               jsx(y, {
                 href: { webPageId: "augiA20Il" },
-                openInNewTab: !0,
+                openInNewTab: true,
                 children: jsx(FrameComponent, {
                   as: "a",
                   background: {
@@ -350,7 +350,7 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                 layoutId: "toQUyBvN4",
                 children: [
                   jsx(RichTextComponent, {
-                    __fromCanvasComponent: !0,
+                    __fromCanvasComponent: true,
                     children: jsx(ReactFragment, {
                       children: jsx(motion.p, {
                         style: {
@@ -364,8 +364,8 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                         },
                         children: jsx(y, {
                           href: { webPageId: "bzydBB85Y" },
-                          openInNewTab: !1,
-                          smoothScroll: !1,
+                          openInNewTab: false,
+                          smoothScroll: false,
                           children: jsx(motion.a, {
                             className: "framer-styles-preset-b5e6zr",
                             "data-styles-preset": "H9WgrbXMf",
@@ -381,10 +381,10 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                     layoutId: "lb639xMPV",
                     style: { "--extracted-r6o4lv": "rgb(33, 33, 33)" },
                     verticalAlignment: "top",
-                    withExternalLayout: !0,
+                    withExternalLayout: true,
                   }),
                   jsx(RichTextComponent, {
-                    __fromCanvasComponent: !0,
+                    __fromCanvasComponent: true,
                     children: jsx(ReactFragment, {
                       children: jsx(motion.p, {
                         style: {
@@ -398,8 +398,8 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                         },
                         children: jsx(y, {
                           href: { webPageId: "aLuYbVoBY" },
-                          openInNewTab: !1,
-                          smoothScroll: !1,
+                          openInNewTab: false,
+                          smoothScroll: false,
                           children: jsx(motion.a, {
                             className: "framer-styles-preset-b5e6zr",
                             "data-styles-preset": "H9WgrbXMf",
@@ -415,7 +415,7 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                     layoutId: "qLwYpwiQm",
                     style: { "--extracted-r6o4lv": "rgb(33, 33, 33)" },
                     verticalAlignment: "top",
-                    withExternalLayout: !0,
+                    withExternalLayout: true,
                   }),
                   jsx(y, {
                     href: { webPageId: "x05wlhCdy" },
@@ -433,7 +433,7 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                       },
                       whileHover: ye,
                       children: jsx(RichTextComponent, {
-                        __fromCanvasComponent: !0,
+                        __fromCanvasComponent: true,
                         children: jsx(ReactFragment, {
                           children: jsx(motion.p, {
                             style: {
@@ -458,7 +458,7 @@ var he = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                             "var(--token-d076bbbf-e059-45dd-8d76-40c9c3daac97, rgba(245, 249, 252, 0.9))",
                         },
                         verticalAlignment: "top",
-                        withExternalLayout: !0,
+                        withExternalLayout: true,
                       }),
                     }),
                   }),
@@ -490,7 +490,7 @@ loadFonts(
   V,
   [
     {
-      explicitInter: !0,
+      explicitInter: true,
       fonts: [
         {
           family: "Montserrat",
@@ -503,6 +503,6 @@ loadFonts(
     },
     ...normalizeFontConfig(fontConfig),
   ],
-  { supportsExplicitInterCodegen: !0 },
+  { supportsExplicitInterCodegen: true },
 );
 export { $ as a, _t as b };

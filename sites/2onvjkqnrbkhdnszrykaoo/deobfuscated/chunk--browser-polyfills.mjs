@@ -3,11 +3,11 @@
  */
 var e = Object.defineProperty;
 var d = (n, t) => {
-  for (var o in t) e(n, o, { get: t[o], enumerable: !0 });
+  for (var o in t) e(n, o, { get: t[o], enumerable: true });
 };
-var f = typeof document < "u" ? globalThis.navigator : void 0,
-  r = typeof document < "u" ? globalThis.window : void 0,
-  i = typeof document > "u" ? {} : void 0;
+var f = typeof document < "u" ? globalThis.navigator : undefined,
+  r = typeof document < "u" ? globalThis.window : undefined,
+  i = typeof document > "u" ? {} : undefined;
 if (typeof document > "u") {
   let n = Object.prototype.toString;
   Object.prototype.toString = function (...t) {

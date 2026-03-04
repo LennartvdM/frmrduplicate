@@ -1,5 +1,5 @@
 /* CSS extracted to: page--Publications.1.css, page--Publications.2.css */
-import { ReactFragment as _ } from "./chunk-3W7P62CN.mjs";
+import { a as _ } from "./metadata--publications.mjs";
 import { ReactFragment as br, cssSSRMinifiedHelper as vr, c as Hr } from "./chunk--inter-bold-font-loader.mjs";
 import { SmoothScrollComponent,
   NoiseOverlayComponent,
@@ -71,8 +71,8 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
     skewY: 0,
     transformPerspective: 1200,
     transition: Zr,
-    useRef: 0,
-    FrameComponent: 0,
+    x: 0,
+    y: 0,
   },
   Jr = {
     opacity: 0.001,
@@ -83,8 +83,8 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
     skewX: 0,
     skewY: 0,
     transformPerspective: 1200,
-    useRef: 0,
-    FrameComponent: 0,
+    x: 0,
+    y: 0,
   },
   Qr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   Kr = ({ value: m, children: f }) => {
@@ -123,16 +123,16 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
       id: u ?? V,
       children: jsx($r, {
         animate: U,
-        initial: !1,
+        initial: false,
         children: jsx(Kr, {
           value: Qr,
           children: jsxs(Tr, {
             ...D,
             ...rr,
-            __framer__presenceAnimate: setAppearAnimationValues("animate", "2yaxv0", Xr, void 0),
-            __framer__presenceInitial: setAppearAnimationValues("initial", "2yaxv0", Jr, void 0),
-            __perspectiveFX: !1,
-            __smartComponentFX: !0,
+            __framer__presenceAnimate: setAppearAnimationValues("animate", "2yaxv0", Xr, undefined),
+            __framer__presenceInitial: setAppearAnimationValues("initial", "2yaxv0", Jr, undefined),
+            __perspectiveFX: false,
+            __smartComponentFX: true,
             __targetOpacity: 1,
             className: cx(Gr, ...S, "framer-2yaxv0", g, $),
             "data-framer-appear-id": "2yaxv0",
@@ -163,16 +163,16 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
                       borderRadius: 0,
                       bottomLeftRadius: 0,
                       bottomRightRadius: 0,
-                      controls: !1,
+                      controls: false,
                       height: "100%",
                       id: "KTeG9FLCH",
-                      isMixedBorderRadius: !1,
+                      isMixedBorderRadius: false,
                       layoutId: "KTeG9FLCH",
-                      loop: !0,
-                      muted: !0,
+                      loop: true,
+                      muted: true,
                       objectFit: "cover",
-                      playing: !0,
-                      posterEnabled: !1,
+                      playing: true,
+                      posterEnabled: false,
                       srcFile:
                         "./assets/td3yumpa2nfpplqmxpz9jlbjym.webm",
                       srcType: "Upload",
@@ -228,8 +228,8 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
   X = j;
 j.displayName = "Backdrop2";
 j.defaultProps = { height: 800, width: 1200 };
-loadFonts(j, [{ explicitInter: !0, fonts: [] }, ...Lr, ...Mr], {
-  supportsExplicitInterCodegen: !0,
+loadFonts(j, [{ explicitInter: true, fonts: [] }, ...Lr, ...Mr], {
+  supportsExplicitInterCodegen: true,
 });
 fontLoader.loadFonts([
   "Inter-Medium",
@@ -239,7 +239,7 @@ fontLoader.loadFonts([
 ]);
 var _r = [
     {
-      explicitInter: !0,
+      explicitInter: true,
       fonts: [
         {
           family: "Inter",
@@ -526,7 +526,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     skewX: 0,
     skewY: 0,
     transition: Q,
-    FrameComponent: -4,
+    y: -4,
   },
   qe = _(),
   pe = { Desktop: "QhSlAYPb_", Phone: "LKrog5PlS" },
@@ -535,8 +535,8 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     return {
       ...l,
       variant:
-        (g = (d = pe[l.variant]) !== null && d !== void 0 ? d : l.variant) !==
-          null && g !== void 0
+        (g = (d = pe[l.variant]) !== null && d !== undefined ? d : l.variant) !==
+          null && g !== undefined
           ? g
           : "QhSlAYPb_",
     };
@@ -545,7 +545,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     let { activeLocale: s, setLocale: l } = useLocale(),
       { style: d, className: g, layoutId: u, variant: P, ...D } = he(m);
     (useEffect(() => {
-      let n = _(void 0, s);
+      let n = _(undefined, s);
       if (n.robots) {
         let c = document.querySelector('meta[name="robots"]');
         c
@@ -555,13 +555,13 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
             c.setAttribute("content", n.robots),
             document.head.appendChild(c));
       }
-    }, [void 0, s]),
+    }, [undefined, s]),
       useInsertionEffect(() => {
-        let n = _(void 0, s);
+        let n = _(undefined, s);
         if (((document.title = n.title || ""), n.viewport)) {
           var c;
           (c = document.querySelector('meta[name="viewport"]')) === null ||
-            c === void 0 ||
+            c === undefined ||
             c.setAttribute("content", n.viewport);
         }
         let ir = n.bodyClassName;
@@ -576,11 +576,11 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
           ir &&
             document.body.classList.remove(`${n.bodyClassName}-framer-9Y9Hr`);
         };
-      }, [void 0, s]));
-    let [K, $] = useVariantState(P, me, !1),
-      rr = void 0,
+      }, [undefined, s]));
+    let [K, $] = useVariantState(P, me, false),
+      rr = undefined,
       er = useRef(null),
-      Y = () => (se() ? K !== "LKrog5PlS" : !0),
+      Y = () => (se() ? K !== "LKrog5PlS" : true),
       Dr = useRoute(),
       U = useRef(null),
       p = useRef(null),
@@ -619,7 +619,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                   width: "100vw",
                   children: jsx(cssSSRMinifiedHelper, {
                     className: "framer-f5p7wh-container",
-                    layoutScroll: !0,
+                    layoutScroll: true,
                     children: jsx(X, {
                       height: "100%",
                       id: "bysoL_VhR",
@@ -637,7 +637,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                     Y() &&
                       jsx(o, {
                         href: { webPageId: "augiA20Il" },
-                        openInNewTab: !0,
+                        openInNewTab: true,
                         children: jsx(motion.ReactFragment, {
                           "aria-label": "Framer University logo",
                           className:
@@ -653,7 +653,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                             intrinsicWidth: 407,
                             name: "Neoflix_Logo_SVG",
                             svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 406.548 428.788"><defs><style>.cls-1{fill:#48c2c5}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M26.01 307.464c5.39 68.03 63.415 121.324 211.152 121.324-58.907 0-104.765-26.64-130.847-72.367-37.136-11.599-63.256-28.585-80.304-48.957ZM286.307 21.4C163.502-75.529-79.82 181.001 26.01 307.463 16.49 187.289 171.26 21.145 286.307 21.399Zm120.241 210.503c0-154.088-53.418-210.356-120.241-210.504 21.27 16.788 38.913 44.194 50.509 84.701 41.835 26.47 69.732 72.903 69.732 125.803Z"/><path class="cls-1" d="M82.183 255.473c0 39.41 8.53 73.592 24.132 100.947 34.05 10.634 77.32 16.753 131.42 16.753-63.114 0-100.797-43.992-100.797-117.674 0-64.553 53.329-117.069 118.875-117.069 52.924 0 95.98 42.787 95.98 95.376 0-52.356-5.454-94.437-14.977-127.706a149.154 149.154 0 0 0-80.013-23.285c-96.287 0-174.62 77.455-174.62 172.658Z"/><circle class="cls-1" cx="244.366" cy="248.571" r="43.387"/></g></g></svg>',
-                            withExternalLayout: !0,
+                            withExternalLayout: true,
                           }),
                         }),
                       }),
@@ -663,7 +663,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                       name: "Links",
                       children: [
                         jsx(RichTextComponent, {
-                          __fromCanvasComponent: !0,
+                          __fromCanvasComponent: true,
                           children: jsx(ReactFragment, {
                             children: jsx("p", {
                               style: {
@@ -677,8 +677,8 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                               },
                               children: jsx(o, {
                                 href: { webPageId: "bzydBB85Y" },
-                                openInNewTab: !1,
-                                smoothScroll: !1,
+                                openInNewTab: false,
+                                smoothScroll: false,
                                 children: jsx("a", {
                                   className: "framer-styles-preset-b5e6zr",
                                   "data-styles-preset": "H9WgrbXMf",
@@ -692,10 +692,10 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                           fonts: ["GF;Montserrat-500"],
                           name: "Reflection",
                           verticalAlignment: "top",
-                          withExternalLayout: !0,
+                          withExternalLayout: true,
                         }),
                         jsx(RichTextComponent, {
-                          __fromCanvasComponent: !0,
+                          __fromCanvasComponent: true,
                           children: jsx(ReactFragment, {
                             children: jsx("p", {
                               style: {
@@ -708,8 +708,8 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                               },
                               children: jsx(o, {
                                 href: { webPageId: "aLuYbVoBY" },
-                                openInNewTab: !1,
-                                smoothScroll: !1,
+                                openInNewTab: false,
+                                smoothScroll: false,
                                 children: jsx("a", {
                                   className: "framer-styles-preset-b5e6zr",
                                   "data-styles-preset": "H9WgrbXMf",
@@ -723,7 +723,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                           fonts: ["GF;Montserrat-500"],
                           name: "Reflection",
                           verticalAlignment: "top",
-                          withExternalLayout: !0,
+                          withExternalLayout: true,
                         }),
                         jsx(o, {
                           href: { webPageId: "x05wlhCdy" },
@@ -731,7 +731,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                             className: "framer-1tigvyz framer-1gbufye",
                             whileHover: de,
                             children: jsx(RichTextComponent, {
-                              __fromCanvasComponent: !0,
+                              __fromCanvasComponent: true,
                               children: jsx(ReactFragment, {
                                 children: jsx("p", {
                                   style: {
@@ -752,7 +752,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                               fonts: ["GF;Montserrat-500"],
                               name: "Toolbox",
                               verticalAlignment: "top",
-                              withExternalLayout: !0,
+                              withExternalLayout: true,
                             }),
                           }),
                         }),
@@ -797,7 +797,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             hash: ":DSPosq1GU",
                                             webPageId: "aLuYbVoBY",
                                           },
-                                          implicitPathVariables: void 0,
+                                          implicitPathVariables: undefined,
                                         },
                                       ],
                                       children: (n) =>
@@ -809,20 +809,20 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             "data-framer-name": "Item",
                                             name: "Item",
                                             children: jsx(J, {
-                                              __framer__animateOnce: !1,
+                                              __framer__animateOnce: false,
                                               __framer__targets: [
                                                 { ref: U, target: "f7_6jHMU5" },
                                                 { ref: p, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
-                                                !0,
+                                                true,
                                               height: "100%",
                                               id: "a4Fh42tCx",
                                               layoutId: "a4Fh42tCx",
                                               name: "Item",
                                               PGkyTrycd: "Narrative Review",
-                                              PvnQG2uF_: !0,
+                                              PvnQG2uF_: true,
                                               S0KhFTFra: n[0],
                                               style: { width: "100%" },
                                               variant: "Rwa3hKEk5",
@@ -838,7 +838,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             hash: ":zQbFj9_vB",
                                             webPageId: "aLuYbVoBY",
                                           },
-                                          implicitPathVariables: void 0,
+                                          implicitPathVariables: undefined,
                                         },
                                       ],
                                       children: (n) =>
@@ -850,21 +850,21 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             "data-framer-name": "Item",
                                             name: "Item",
                                             children: jsx(J, {
-                                              __framer__animateOnce: !1,
+                                              __framer__animateOnce: false,
                                               __framer__targets: [
                                                 { ref: p, target: "f7_6jHMU5" },
                                                 { ref: k, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
-                                                !0,
+                                                true,
                                               height: "100%",
                                               id: "GhPuoGw5T",
                                               layoutId: "GhPuoGw5T",
                                               name: "Item",
                                               PGkyTrycd:
                                                 "Provider's Perspective",
-                                              PvnQG2uF_: !0,
+                                              PvnQG2uF_: true,
                                               S0KhFTFra: n[0],
                                               style: { width: "100%" },
                                               variant: "Rwa3hKEk5",
@@ -880,7 +880,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             hash: ":Y8dEgTIYh",
                                             webPageId: "aLuYbVoBY",
                                           },
-                                          implicitPathVariables: void 0,
+                                          implicitPathVariables: undefined,
                                         },
                                       ],
                                       children: (n) =>
@@ -892,20 +892,20 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             "data-framer-name": "Item",
                                             name: "Item",
                                             children: jsx(J, {
-                                              __framer__animateOnce: !1,
+                                              __framer__animateOnce: false,
                                               __framer__targets: [
                                                 { ref: k, target: "f7_6jHMU5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
-                                                !0,
+                                                true,
                                               height: "100%",
                                               id: "ZmON6Ciu1",
                                               layoutId: "ZmON6Ciu1",
                                               name: "Item",
                                               PGkyTrycd:
                                                 "Record, Reflect, Refine",
-                                              PvnQG2uF_: !0,
+                                              PvnQG2uF_: true,
                                               S0KhFTFra: n[0],
                                               style: { width: "100%" },
                                               variant: "Rwa3hKEk5",
@@ -929,7 +929,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                       jsx("main", {
                         className: "framer-j3fe16",
                         "data-framer-name": "Main",
-                        "data-hide-scrollbars": !0,
+                        "data-hide-scrollbars": true,
                         name: "Main",
                       }),
                     ],
@@ -958,13 +958,13 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                     jsxs("main", {
                       className: "framer-nz2wz5",
                       "data-framer-name": "Main",
-                      "data-hide-scrollbars": !0,
+                      "data-hide-scrollbars": true,
                       name: "Main",
                       children: [
                         jsx("section", {
                           className: "framer-setclj",
                           "data-framer-name": "Narrative Review",
-                          "data-hide-scrollbars": !0,
+                          "data-hide-scrollbars": true,
                           id: V,
                           name: "Narrative Review",
                           ref: U,
@@ -986,7 +986,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                       className: "framer-ac2kfo",
                                       children: [
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsx("h1", {
@@ -1019,7 +1019,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           className: "framer-1j9qxoy",
                                           fonts: ["Inter"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                         jsx("div", {
                                           className: "framer-1yb7r33",
@@ -1048,7 +1048,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                         "framer-j1nrrw",
                                                     }),
                                                     jsx(RichTextComponent, {
-                                                      __fromCanvasComponent: !0,
+                                                      __fromCanvasComponent: true,
                                                       children: jsx(ReactFragment, {
                                                         children: jsx("p", {
                                                           className:
@@ -1077,7 +1077,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                         "Inter-Bold",
                                                       ],
                                                       verticalAlignment: "top",
-                                                      withExternalLayout: !0,
+                                                      withExternalLayout: true,
                                                     }),
                                                     jsx("div", {
                                                       className:
@@ -1104,7 +1104,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                 children: jsx("div", {
                                                   className: "framer-rkkvfj",
                                                   children: jsx(RichTextComponent, {
-                                                    __fromCanvasComponent: !0,
+                                                    __fromCanvasComponent: true,
                                                     children: jsx(ReactFragment, {
                                                       children: jsxs("p", {
                                                         className:
@@ -1146,7 +1146,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       "Inter-Italic",
                                                     ],
                                                     verticalAlignment: "top",
-                                                    withExternalLayout: !0,
+                                                    withExternalLayout: true,
                                                   }),
                                                 }),
                                               }),
@@ -1154,7 +1154,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           }),
                                         }),
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsx("h2", {
@@ -1361,13 +1361,13 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           className: "framer-1xk7bys",
                                           fonts: ["Inter", "Inter-Bold"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                         jsx("div", {
                                           className: "framer-cw9d6k",
                                           children: jsx(o, {
                                             href: "https://fn.bmj.com/content/early/2024/02/07/archdischild-2023-326528",
-                                            openInNewTab: !0,
+                                            openInNewTab: true,
                                             children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-phk48i framer-1gbufye",
@@ -1392,7 +1392,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                         "framer-xttfno",
                                                     }),
                                                     jsx(RichTextComponent, {
-                                                      __fromCanvasComponent: !0,
+                                                      __fromCanvasComponent: true,
                                                       children: jsx(ReactFragment, {
                                                         children: jsx("p", {
                                                           className:
@@ -1421,7 +1421,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                         "Inter-Bold",
                                                       ],
                                                       verticalAlignment: "top",
-                                                      withExternalLayout: !0,
+                                                      withExternalLayout: true,
                                                     }),
                                                     jsx("div", {
                                                       className:
@@ -1450,7 +1450,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                         jsx("section", {
                           className: "framer-tjnoo6",
                           "data-framer-name": "Provider's Perspective",
-                          "data-hide-scrollbars": !0,
+                          "data-hide-scrollbars": true,
                           id: S,
                           name: "Provider's Perspective",
                           ref: p,
@@ -1468,7 +1468,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                       className: "framer-1hfomlj",
                                       children: [
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsx("h1", {
@@ -1502,13 +1502,13 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           className: "framer-fvmy9p",
                                           fonts: ["Inter"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                         jsx("div", {
                                           className: "framer-1mge6kk",
                                           children: jsx(o, {
                                             href: "https://fn.bmj.com/content/early/2024/02/07/archdischild-2023-326528",
-                                            openInNewTab: !0,
+                                            openInNewTab: true,
                                             children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-1kkp7lb framer-1gbufye",
@@ -1533,7 +1533,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                         "framer-137v9yk",
                                                     }),
                                                     jsx(RichTextComponent, {
-                                                      __fromCanvasComponent: !0,
+                                                      __fromCanvasComponent: true,
                                                       children: jsx(ReactFragment, {
                                                         children: jsx("p", {
                                                           className:
@@ -1562,7 +1562,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                         "Inter-Bold",
                                                       ],
                                                       verticalAlignment: "top",
-                                                      withExternalLayout: !0,
+                                                      withExternalLayout: true,
                                                     }),
                                                     jsx("div", {
                                                       className:
@@ -1589,7 +1589,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                 children: jsx("div", {
                                                   className: "framer-irniv5",
                                                   children: jsx(RichTextComponent, {
-                                                    __fromCanvasComponent: !0,
+                                                    __fromCanvasComponent: true,
                                                     children: jsx(ReactFragment, {
                                                       children: jsxs("p", {
                                                         className:
@@ -1631,7 +1631,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       "Inter-Italic",
                                                     ],
                                                     verticalAlignment: "top",
-                                                    withExternalLayout: !0,
+                                                    withExternalLayout: true,
                                                   }),
                                                 }),
                                               }),
@@ -1639,7 +1639,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           }),
                                         }),
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsx("h2", {
@@ -1806,7 +1806,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           className: "framer-8u4dtf",
                                           fonts: ["Inter", "Inter-Bold"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                         jsx("div", {
                                           className: "framer-184mff4",
@@ -1836,7 +1836,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                         "framer-1rwum1q",
                                                     }),
                                                     jsx(RichTextComponent, {
-                                                      __fromCanvasComponent: !0,
+                                                      __fromCanvasComponent: true,
                                                       children: jsx(ReactFragment, {
                                                         children: jsx("p", {
                                                           className:
@@ -1865,7 +1865,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                         "Inter-Bold",
                                                       ],
                                                       verticalAlignment: "top",
-                                                      withExternalLayout: !0,
+                                                      withExternalLayout: true,
                                                     }),
                                                     jsx("div", {
                                                       className:
@@ -1894,7 +1894,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                         jsx("section", {
                           className: "framer-lo36es",
                           "data-framer-name": "Section-Narrative review",
-                          "data-hide-scrollbars": !0,
+                          "data-hide-scrollbars": true,
                           id: ar,
                           name: "Section-Narrative review",
                           ref: k,
@@ -1912,7 +1912,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                       className: "framer-1righlt",
                                       children: [
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsx("h1", {
@@ -1946,13 +1946,13 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           className: "framer-1e235ug",
                                           fonts: ["Inter"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                         jsx("div", {
                                           className: "framer-1eoi0ip",
                                           children: jsx(o, {
                                             href: "https://www.nature.com/articles/s41390-024-03083-w",
-                                            openInNewTab: !0,
+                                            openInNewTab: true,
                                             children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-1cwcgh1 framer-1gbufye",
@@ -1977,7 +1977,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                         "framer-b6uk4r",
                                                     }),
                                                     jsx(RichTextComponent, {
-                                                      __fromCanvasComponent: !0,
+                                                      __fromCanvasComponent: true,
                                                       children: jsx(ReactFragment, {
                                                         children: jsx("p", {
                                                           className:
@@ -2006,7 +2006,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                         "Inter-Bold",
                                                       ],
                                                       verticalAlignment: "top",
-                                                      withExternalLayout: !0,
+                                                      withExternalLayout: true,
                                                     }),
                                                     jsx("div", {
                                                       className:
@@ -2033,7 +2033,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                 children: jsx("div", {
                                                   className: "framer-1mb4ijl",
                                                   children: jsx(RichTextComponent, {
-                                                    __fromCanvasComponent: !0,
+                                                    __fromCanvasComponent: true,
                                                     children: jsx(ReactFragment, {
                                                       children: jsxs("p", {
                                                         className:
@@ -2075,7 +2075,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       "Inter-Italic",
                                                     ],
                                                     verticalAlignment: "top",
-                                                    withExternalLayout: !0,
+                                                    withExternalLayout: true,
                                                   }),
                                                 }),
                                               }),
@@ -2083,7 +2083,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           }),
                                         }),
                                         jsx(RichTextComponent, {
-                                          __fromCanvasComponent: !0,
+                                          __fromCanvasComponent: true,
                                           children: jsxs(ReactFragment, {
                                             children: [
                                               jsx("h2", {
@@ -2402,13 +2402,13 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           className: "framer-2vp77m",
                                           fonts: ["Inter", "Inter-Bold"],
                                           verticalAlignment: "top",
-                                          withExternalLayout: !0,
+                                          withExternalLayout: true,
                                         }),
                                         jsx("div", {
                                           className: "framer-peqvd",
                                           children: jsx(o, {
                                             href: "https://www.nature.com/articles/s41390-024-03083-w",
-                                            openInNewTab: !0,
+                                            openInNewTab: true,
                                             children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-13n7zzq framer-1gbufye",
@@ -2433,7 +2433,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                         "framer-11d2my",
                                                     }),
                                                     jsx(RichTextComponent, {
-                                                      __fromCanvasComponent: !0,
+                                                      __fromCanvasComponent: true,
                                                       children: jsx(ReactFragment, {
                                                         children: jsx("p", {
                                                           className:
@@ -2462,7 +2462,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                         "Inter-Bold",
                                                       ],
                                                       verticalAlignment: "top",
-                                                      withExternalLayout: !0,
+                                                      withExternalLayout: true,
                                                     }),
                                                     jsx("div", {
                                                       className:
@@ -2565,7 +2565,7 @@ loadFonts(
   q,
   [
     {
-      explicitInter: !0,
+      explicitInter: true,
       fonts: [
         {
           family: "Montserrat",
@@ -2825,7 +2825,7 @@ loadFonts(
     ...normalizeFontConfig(_r),
     ...normalizeFontConfig(br),
   ],
-  { supportsExplicitInterCodegen: !0 },
+  { supportsExplicitInterCodegen: true },
 );
 var De = {
   exports: {

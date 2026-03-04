@@ -233,7 +233,7 @@ export function createToolboxPage(routePath, displayName) {
 
     // Set document metadata
     useInsertionEffect(() => {
-      var meta = getMetadata(void 0, activeLocale);
+      var meta = getMetadata(undefined, activeLocale);
       document.title = meta.title || "";
 
       if (meta.viewport) {
@@ -262,7 +262,7 @@ export function createToolboxPage(routePath, displayName) {
           document.body.classList.remove(`${meta.bodyClassName}-${CSS_NS}`);
         };
       }
-    }, [void 0, activeLocale]);
+    }, [undefined, activeLocale]);
 
     var [breakpoint] = useVariantState(variantProp, BREAKPOINTS, false);
     var localRef = useRef(null);

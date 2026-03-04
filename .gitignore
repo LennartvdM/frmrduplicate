@@ -1,0 +1,3 @@
+# Generated toolbox pages (run `node generate-toolbox-pages.mjs` to rebuild)
+toolbox_*.html
+toolbox-*.html

@@ -1,0 +1,39 @@
+/**
+ * Page metadata chunk - contains responsive breakpoints, SEO metadata, and page title.
+ * breakpoints define responsive behavior at different screen widths.
+ */
+import { a as e } from "./chunk--site-metadata.mjs";
+function r(t, a) {
+  return {
+    bodyClassName: "framer-body-f7Ah01sPh",
+    breakpoints: [
+      { hash: "17k0d8c", mediaQuery: "(min-width: 1200px)" },
+      {
+        hash: "1lr8pxy",
+        mediaQuery: "(min-width: 810px) and (max-width: 1199px)",
+      },
+      { hash: "1v5ewf1", mediaQuery: "(max-width: 809px)" },
+    ],
+    description: e(t, a).description,
+    elements: {},
+    robots: "max-image-preview:large",
+    serializationId: "framer-jICDJ",
+    title: e(t, a).title || "Toolbox_case_succcessstories",
+    viewport: "width=device-width",
+  };
+}
+var d = 1,
+  m = {
+    exports: {
+      default: {
+        type: "function",
+        annotations: { framerContractVersion: "1" },
+      },
+      metadataVersion: {
+        type: "variable",
+        annotations: { framerContractVersion: "1" },
+      },
+      __FramerMetadata__: { type: "variable" },
+    },
+  };
+export { r as a, d as b, m as c };

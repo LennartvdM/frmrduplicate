@@ -1,56 +1,105 @@
-import {
-  a as ee,
-  b as re,
-  c as ae,
-  d as _e,
-  e as je,
-  f as Ue,
-  g as Fe,
-  h as ze,
-  i as Te,
-} from "./chunk--shared-components.mjs";
-import { a as c } from "./chunk--video-player-component.mjs";
-import { j as Ce, k as Ne, l as Re } from "./chunk--framer-components.mjs";
+/**
+ * Import aliases resolved:
+ *   ee → SmoothScrollComponent
+ *   re → NoiseOverlayComponent
+ *   ae → NavItemComponent
+ *   _e → interMediumFontDefs
+ *   je → interMediumPresetCSS
+ *   Ue → interMediumCSSScope
+ *   Fe → interExtraBoldFontDefs
+ *   ze → interExtraBoldPresetCSS
+ *   Te → interExtraBoldCSSScope
+ *   c → VideoComponent
+ *   Ce → fontConfig
+ *   Ne → linkPresetStyles
+ *   Re → cssClassScope
+ *   pe → useRoute
+ *   D → useLocale
+ *   w → resolveLinks
+ *   ue → ControlType
+ *   ge → addPropertyControls
+ *   T → cx
+ *   ye → useDeviceSize
+ *   t → DeviceSizeContainer
+ *   p → cssSSRMinifiedHelper
+ *   M → withCSS
+ *   xe → registerCursors
+ *   ke → CursorContext
+ *   o → ReactFragment
+ *   I → PropertyOverridesProvider
+ *   C → withScrollSection
+ *   V → forwardRef
+ *   ce → useContext
+ *   fe → useEffect
+ *   B → useId
+ *   de → useInsertionEffect
+ *   he → useMemo
+ *   be → useVariantState
+ *   k → useRef
+ *   ve → useVariantState
+ *   e → jsx
+ *   r → jsxs
+ *   we → fontLoader
+ *   Q → MotionContext
+ *   m → RichTextComponent
+ *   s → motion
+ *   L → LayoutGroup
+ *   Ie → SVGComponent
+ *   O → loadFonts
+ *   b → getFonts
+ *   P → normalizeFontConfig
+ */
+import { SmoothScrollComponent,
+  NoiseOverlayComponent,
+  NavItemComponent,
+  interMediumFontDefs,
+  interMediumPresetCSS,
+  interMediumCSSScope,
+  interExtraBoldFontDefs,
+  interExtraBoldPresetCSS,
+  interExtraBoldCSSScope } from "./chunk--shared-components.mjs";
+import { VideoComponent } from "./chunk--video-player-component.mjs";
+import { fontConfig,
+  linkPresetStyles,
+  cssClassScope } from "./chunk--framer-components.mjs";
 import "./chunk--empty-stub.mjs";
-import {
-  $ as a,
-  G as pe,
-  H as D,
-  J as w,
-  M as ue,
-  P as ge,
-  R as T,
-  T as ye,
-  U as t,
-  V as p,
-  X as M,
-  Y as xe,
-  Z as ke,
-  b as o,
-  ba as I,
-  ca as C,
-  d as V,
-  h as ce,
-  i as fe,
-  j as B,
-  k as de,
-  l as he,
-  la as be,
-  m as k,
-  pa as ve,
-  q as e,
+import { $ as a,
+  useRoute,
+  useLocale,
+  resolveLinks,
+  ControlType,
+  addPropertyControls,
+  cx,
+  useDeviceSize,
+  DeviceSizeContainer,
+  cssSSRMinifiedHelper,
+  withCSS,
+  registerCursors,
+  CursorContext,
+  ReactFragment,
+  PropertyOverridesProvider,
+  withScrollSection,
+  forwardRef,
+  useContext,
+  useEffect,
+  useId,
+  useInsertionEffect,
+  useMemo,
+  useVariantState,
+  useRef,
+  useVariantState,
+  jsx,
   qa as $,
-  r,
-  ra as we,
-  s as Q,
-  ta as m,
-  u as s,
-  v as L,
-  va as Ie,
-  wa as O,
-  xa as b,
-  ya as P,
-} from "./chunk--react-and-framer-runtime.mjs";
+  jsxs,
+  fontLoader,
+  MotionContext,
+  RichTextComponent,
+  motion,
+  LayoutGroup,
+  SVGComponent,
+  loadFonts,
+  getFonts,
+  normalizeFontConfig } from "./chunk--react-and-framer-runtime.mjs";
 import { a as Y } from "./chunk-QPIK4HVB.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
@@ -79,9 +128,9 @@ function Pe(f, ...n) {
 }
 var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
   Ge = ({ value: f, children: n }) => {
-    let u = ce(Q),
+    let u = useContext(Q),
       d = f ?? u.transition,
-      g = he(() => ({ ...u, transition: d }), [JSON.stringify(d)]);
+      g = useMemo(() => ({ ...u, transition: d }), [JSON.stringify(d)]);
     return e(Q.Provider, { value: g, children: n });
   },
   Je = s(o),
@@ -117,7 +166,7 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
         setGestureState: R,
         setVariant: ne,
         variants: _,
-      } = ve({
+      } = useVariantState({
         cycleOrder: We,
         defaultVariant: "Rre_u8WuV",
         variant: W,
@@ -132,7 +181,7 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
       X = () => !["sJR17n1rz", "gRcraNE8T"].includes(h),
       z = B(),
       G = [],
-      A = ye();
+      A = useDeviceSize();
     return e(L, {
       id: v ?? z,
       children: e(Je, {
@@ -478,7 +527,7 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                     className: "framer-1d40tbl-container",
                     layoutDependency: l,
                     layoutId: "d4DRh0AXt-container",
-                    children: e(re, {
+                    children: e(NoiseOverlayComponent, {
                       backgroundSize: 64,
                       borderRadius: 0,
                       height: "100%",
@@ -510,7 +559,7 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
   te = q;
 q.displayName = "Backdrop";
 q.defaultProps = { height: 600, width: 800 };
-ge(q, {
+addPropertyControls(q, {
   variant: {
     options: [
       "Rre_u8WuV",
@@ -522,24 +571,24 @@ ge(q, {
     ],
     optionTitles: ["Time", "Dance", "Skills", "Cost", "Team", "Perspective"],
     title: "Variant",
-    type: ue.Enum,
+    type: ControlType.Enum,
   },
 });
 O(q, [{ explicitInter: !0, fonts: [] }, ...Ye, ...Ze], {
   supportsExplicitInterCodegen: !0,
 });
-we.loadFonts([]);
+fontLoader.loadFonts([]);
 var Ae = [{ explicitInter: !0, fonts: [] }],
   Ve = [
     ".framer-1BPWo .framer-styles-preset-1wicq5s:not(.rich-text-wrapper), .framer-1BPWo .framer-styles-preset-1wicq5s.rich-text-wrapper a { --framer-link-current-text-color: var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, #383437); --framer-link-current-text-decoration: none; --framer-link-hover-text-color: var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, #529c9c); --framer-link-hover-text-decoration: underline; --framer-link-text-color: var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, #00333b); --framer-link-text-decoration: none; }",
   ],
   Be = "framer-1BPWo";
-var ir = b(ee),
+var ir = b(SmoothScrollComponent),
   sr = b(te),
   nr = $(te),
   or = b(c),
-  lr = b(ae),
-  N = $(ae);
+  lr = b(NavItemComponent),
+  N = $(NavItemComponent);
 var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
   cr = () => typeof document < "u",
   Le = "framer-CacIk",
@@ -607,7 +656,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
   kr = V(function (f, n) {
     let { activeLocale: u, setLocale: d } = D(),
       { style: g, className: y, layoutId: v, variant: W, ...H } = xr(f);
-    (fe(() => {
+    (useEffect(() => {
       let i = Y(void 0, u);
       if (i.robots) {
         let x = document.querySelector('meta[name="robots"]');
@@ -619,7 +668,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
             document.head.appendChild(x));
       }
     }, [void 0, u]),
-      de(() => {
+      useInsertionEffect(() => {
         let i = Y(void 0, u);
         if (((document.title = i.title || ""), i.viewport)) {
           var x;
@@ -640,7 +689,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
             document.body.classList.remove(`${i.bodyClassName}-framer-CacIk`);
         };
       }, [void 0, u]));
-    let [h, ie] = be(W, mr, !1),
+    let [h, ie] = useVariantState(W, mr, !1),
       se = void 0,
       E = k(null),
       R = () => (cr() ? h !== "AlOztWgAm" : !0),
@@ -656,12 +705,12 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
       z = k(null),
       G = w("DXqsCYt4L"),
       A = k(null),
-      vr = pe(),
+      vr = useRoute(),
       Me = B(),
-      oe = [Te, Ue, Be, Re];
+      oe = [interExtraBoldCSSScope, interMediumCSSScope, Be, cssClassScope];
     return (
-      xe({}),
-      e(ke.Provider, {
+      registerCursors({}),
+      e(CursorContext.Provider, {
         value: { primaryVariantId: "vtnUon983", variantClassNames: fr },
         children: r(L, {
           id: v ?? Me,
@@ -675,7 +724,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                 e(t, {
                   children: e(p, {
                     className: "framer-1xxbq53-container",
-                    children: e(ee, {
+                    children: e(SmoothScrollComponent, {
                       height: "100%",
                       id: "n2mjdAzVc",
                       intensity: 15,
@@ -2318,7 +2367,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           "data-framer-name": "Logo",
                           name: "Logo",
                           whileHover: ur,
-                          children: e(Ie, {
+                          children: e(SVGComponent, {
                             className: "framer-13rf3nq",
                             "data-framer-name": "Neoflix_Logo_SVG",
                             fill: "black",
@@ -2929,10 +2978,10 @@ O(
     ...sr,
     ...or,
     ...lr,
-    ...P(Fe),
-    ...P(_e),
+    ...P(interExtraBoldFontDefs),
+    ...P(interMediumFontDefs),
     ...P(Ae),
-    ...P(Ce),
+    ...P(fontConfig),
   ],
   { supportsExplicitInterCodegen: !0 },
 );

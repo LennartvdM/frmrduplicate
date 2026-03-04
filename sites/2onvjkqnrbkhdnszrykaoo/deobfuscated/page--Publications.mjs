@@ -1,63 +1,118 @@
+/**
+ * Import aliases resolved:
+ *   br → interBoldFontDefs
+ *   vr → interBoldPresetCSS
+ *   Hr → interBoldCSSScope
+ *   G → SmoothScrollComponent
+ *   O → NoiseOverlayComponent
+ *   Z → NavItemComponent
+ *   Fr → interMediumFontDefs
+ *   Ir → interMediumPresetCSS
+ *   Nr → interMediumCSSScope
+ *   Cr → interExtraBoldFontDefs
+ *   Ar → interExtraBoldPresetCSS
+ *   Rr → interExtraBoldCSSScope
+ *   W → VideoComponent
+ *   Yr → fontConfig
+ *   Ur → linkPresetStyles
+ *   kr → cssClassScope
+ *   lr → useRoute
+ *   A → useLocale
+ *   R → resolveLinks
+ *   F → cx
+ *   cr → withFXWrapper
+ *   dr → useDeviceSize
+ *   h → DeviceSizeContainer
+ *   b → cssSSRMinifiedHelper
+ *   B → withCSS
+ *   pr → registerCursors
+ *   hr → CursorContext
+ *   a → ReactFragment
+ *   E → withScrollSection
+ *   I → forwardRef
+ *   T → setAppearAnimationValues
+ *   fr → useContext
+ *   or → useEffect
+ *   N → useId
+ *   mr → useInsertionEffect
+ *   sr → useMemo
+ *   gr → useVariantState
+ *   x → useRef
+ *   ur → useVariantState
+ *   r → jsx
+ *   xr → withScrollAnimation
+ *   e → jsxs
+ *   yr → fontLoader
+ *   M → MotionContext
+ *   y → FrameComponent
+ *   t → RichTextComponent
+ *   i → motion
+ *   C → LayoutGroup
+ *   wr → SVGComponent
+ *   z → loadFonts
+ *   w → getFonts
+ *   v → normalizeFontConfig
+ */
 import { a as _ } from "./chunk-3W7P62CN.mjs";
-import { a as br, b as vr, c as Hr } from "./chunk--inter-bold-font-styles.mjs";
-import {
-  a as G,
-  b as O,
-  c as Z,
-  d as Fr,
-  e as Ir,
-  f as Nr,
-  g as Cr,
-  h as Ar,
-  i as Rr,
-} from "./chunk--shared-components.mjs";
-import { a as W } from "./chunk--video-player-component.mjs";
-import { j as Yr, k as Ur, l as kr } from "./chunk--framer-components.mjs";
+import { interBoldFontDefs,
+  interBoldPresetCSS,
+  interBoldCSSScope } from "./chunk--inter-bold-font-styles.mjs";
+import { SmoothScrollComponent,
+  NoiseOverlayComponent,
+  NavItemComponent,
+  interMediumFontDefs,
+  interMediumPresetCSS,
+  interMediumCSSScope,
+  interExtraBoldFontDefs,
+  interExtraBoldPresetCSS,
+  interExtraBoldCSSScope } from "./chunk--shared-components.mjs";
+import { VideoComponent } from "./chunk--video-player-component.mjs";
+import { fontConfig,
+  linkPresetStyles,
+  cssClassScope } from "./chunk--framer-components.mjs";
 import "./chunk--empty-stub.mjs";
-import {
-  $ as o,
-  G as lr,
-  H as A,
-  J as R,
-  R as F,
-  S as cr,
-  T as dr,
-  U as h,
-  V as b,
-  X as B,
-  Y as pr,
-  Z as hr,
-  b as a,
-  ca as E,
-  d as I,
-  ga as T,
-  h as fr,
-  i as or,
-  j as N,
-  k as mr,
-  l as sr,
-  la as gr,
-  m as x,
-  pa as ur,
-  q as r,
-  qa as xr,
-  r as e,
-  ra as yr,
-  s as M,
-  sa as y,
-  ta as t,
-  u as i,
-  v as C,
-  va as wr,
-  wa as z,
-  xa as w,
-  ya as v,
-} from "./chunk--react-and-framer-runtime.mjs";
+import { $ as o,
+  useRoute,
+  useLocale,
+  resolveLinks,
+  cx,
+  withFXWrapper,
+  useDeviceSize,
+  DeviceSizeContainer,
+  cssSSRMinifiedHelper,
+  withCSS,
+  registerCursors,
+  CursorContext,
+  ReactFragment,
+  withScrollSection,
+  forwardRef,
+  setAppearAnimationValues,
+  useContext,
+  useEffect,
+  useId,
+  useInsertionEffect,
+  useMemo,
+  useVariantState,
+  useRef,
+  useVariantState,
+  jsx,
+  withScrollAnimation,
+  jsxs,
+  fontLoader,
+  MotionContext,
+  FrameComponent,
+  RichTextComponent,
+  motion,
+  LayoutGroup,
+  SVGComponent,
+  loadFonts,
+  getFonts,
+  normalizeFontConfig } from "./chunk--react-and-framer-runtime.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
 var Lr = w(W),
   Mr = w(O),
-  Tr = cr(i.div),
+  Tr = withFXWrapper(i.div),
   Wr = ["htUh18eRJ"],
   Gr = "framer-zeXf1",
   Or = { htUh18eRJ: "framer-v-2yaxv0" };
@@ -89,9 +144,9 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
   },
   Qr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   Kr = ({ value: m, children: f }) => {
-    let s = fr(M),
+    let s = useContext(M),
       l = m ?? s.transition,
-      d = sr(() => ({ ...s, transition: l }), [JSON.stringify(l)]);
+      d = useMemo(() => ({ ...s, transition: l }), [JSON.stringify(l)]);
     return r(M.Provider, { value: d, children: f });
   },
   $r = i(a),
@@ -109,7 +164,7 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
         setGestureState: Y,
         setVariant: Dr,
         variants: U,
-      } = ur({
+      } = useVariantState({
         cycleOrder: Wr,
         defaultVariant: "htUh18eRJ",
         variant: P,
@@ -119,7 +174,7 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
       k = x(null),
       V = N(),
       S = [],
-      ar = dr();
+      ar = useDeviceSize();
     return r(C, {
       id: u ?? V,
       children: r($r, {
@@ -232,7 +287,7 @@ j.defaultProps = { height: 800, width: 1200 };
 z(j, [{ explicitInter: !0, fonts: [] }, ...Lr, ...Mr], {
   supportsExplicitInterCodegen: !0,
 });
-yr.loadFonts([
+fontLoader.loadFonts([
   "Inter-Medium",
   "Inter-Bold",
   "Inter-BoldItalic",
@@ -492,7 +547,7 @@ var _r = [
 var ne = w(G),
   fe = w(X),
   oe = w(Z),
-  J = xr(Z);
+  J = withScrollAnimation(Z);
 var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
   se = () => typeof document < "u",
   Pr = "framer-9Y9Hr",
@@ -545,7 +600,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
   ge = I(function (m, f) {
     let { activeLocale: s, setLocale: l } = A(),
       { style: d, className: g, layoutId: u, variant: P, ...D } = he(m);
-    (or(() => {
+    (useEffect(() => {
       let n = _(void 0, s);
       if (n.robots) {
         let c = document.querySelector('meta[name="robots"]');
@@ -557,7 +612,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
             document.head.appendChild(c));
       }
     }, [void 0, s]),
-      mr(() => {
+      useInsertionEffect(() => {
         let n = _(void 0, s);
         if (((document.title = n.title || ""), n.viewport)) {
           var c;
@@ -578,11 +633,11 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
             document.body.classList.remove(`${n.bodyClassName}-framer-9Y9Hr`);
         };
       }, [void 0, s]));
-    let [K, $] = gr(P, me, !1),
+    let [K, $] = useVariantState(P, me, !1),
       rr = void 0,
       er = x(null),
       Y = () => (se() ? K !== "LKrog5PlS" : !0),
-      Dr = lr(),
+      Dr = useRoute(),
       U = x(null),
       p = x(null),
       k = x(null),
@@ -590,10 +645,10 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
       S = R("zQbFj9_vB"),
       ar = R("Y8dEgTIYh"),
       Vr = N(),
-      tr = [kr, Rr, Nr, qr, Hr];
+      tr = [cssClassScope, interExtraBoldCSSScope, interMediumCSSScope, qr, interBoldCSSScope];
     return (
-      pr({}),
-      r(hr.Provider, {
+      registerCursors({}),
+      r(CursorContext.Provider, {
         value: { primaryVariantId: "QhSlAYPb_", variantClassNames: le },
         children: e(C, {
           id: u ?? Vr,
@@ -646,7 +701,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                           "data-framer-name": "Logo",
                           name: "Logo",
                           whileHover: ce,
-                          children: r(wr, {
+                          children: r(SVGComponent, {
                             className: "framer-12ryuvk",
                             "data-framer-name": "Neoflix_Logo_SVG",
                             fill: "black",
@@ -2820,11 +2875,11 @@ z(
     ...ne,
     ...fe,
     ...oe,
-    ...v(Yr),
-    ...v(Cr),
-    ...v(Fr),
+    ...v(fontConfig),
+    ...v(interExtraBoldFontDefs),
+    ...v(interMediumFontDefs),
     ...v(_r),
-    ...v(br),
+    ...v(interBoldFontDefs),
   ],
   { supportsExplicitInterCodegen: !0 },
 );

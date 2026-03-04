@@ -1,26 +1,44 @@
-import {
-  c as U,
-  d as A,
-  e as O,
-  f as L,
-  g as _,
-  h as N,
-  i as R,
-} from "./chunk--framer-components.mjs";
-import {
-  M as t,
-  P as W,
-  Q as G,
-  e as Y,
-  g as V,
-  i as f,
-  l as q,
-  m as v,
-  n as I,
-  q as k,
-  t as F,
-  y as Z,
-} from "./chunk--react-and-framer-runtime.mjs";
+/**
+ * Import aliases resolved:
+ *   U → mouseEventControls
+ *   A → useOnAppear
+ *   O → useOnDisappear
+ *   L → useIsSafari
+ *   _ → useIsOnCanvas
+ *   N → useBorderRadius
+ *   R → borderRadiusControls
+ *   t → ControlType
+ *   W → addPropertyControls
+ *   G → useIsOnFramerCanvas
+ *   Y → memo
+ *   V → useCallback
+ *   f → useEffect
+ *   q → useMemo
+ *   v → useRef
+ *   I → useState
+ *   k → jsx
+ *   F → isMotionValue
+ *   Z → useInView
+ */
+import { mouseEventControls,
+  useOnAppear,
+  useOnDisappear,
+  useIsSafari,
+  useIsOnCanvas,
+  useBorderRadius,
+  borderRadiusControls } from "./chunk--framer-components.mjs";
+import { ControlType,
+  addPropertyControls,
+  useIsOnFramerCanvas,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  jsx,
+  isMotionValue,
+  useInView } from "./chunk--react-and-framer-runtime.mjs";
 var J;
 (function (e) {
   ((e.Fill = "fill"),

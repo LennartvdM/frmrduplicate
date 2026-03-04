@@ -1,42 +1,72 @@
 /**
  * embed component
  */
-import {
-  a as C,
-  b as L,
-  g as w,
-  j as X,
-  k as G,
-  l as K,
-} from "./chunk--framer-components.mjs";
-import {
-  $ as y,
-  H as F,
-  M as v,
-  P as j,
-  R as O,
-  T as z,
-  X as U,
-  b as g,
-  d as T,
-  h as E,
-  i as M,
-  j as D,
-  l as A,
-  m as b,
-  n as W,
-  pa as Y,
-  q as e,
-  r as R,
-  s as H,
-  sa as q,
-  ta as x,
-  u as c,
-  v as P,
-  wa as B,
-  ya as J,
-} from "./chunk--react-and-framer-runtime.mjs";
-import { c as h } from "./chunk--browser-polyfills.mjs";
+/**
+ * Import aliases resolved:
+ *   C → containerStyle
+ *   L → placeholderStyle
+ *   w → useIsOnCanvas
+ *   X → fontConfig
+ *   G → linkPresetStyles
+ *   K → cssClassScope
+ *   F → useLocale
+ *   v → ControlType
+ *   j → addPropertyControls
+ *   O → cx
+ *   z → useDeviceSize
+ *   U → withCSS
+ *   g → ReactFragment
+ *   T → forwardRef
+ *   E → useContext
+ *   M → useEffect
+ *   D → useId
+ *   A → useMemo
+ *   b → useRef
+ *   W → useState
+ *   Y → useVariantState
+ *   e → jsx
+ *   R → jsxs
+ *   H → MotionContext
+ *   q → FrameComponent
+ *   x → RichTextComponent
+ *   c → motion
+ *   P → LayoutGroup
+ *   B → loadFonts
+ *   J → normalizeFontConfig
+ *   h → window
+ */
+import { containerStyle,
+  placeholderStyle,
+  useIsOnCanvas,
+  fontConfig,
+  linkPresetStyles,
+  cssClassScope } from "./chunk--framer-components.mjs";
+import { $ as y,
+  useLocale,
+  ControlType,
+  addPropertyControls,
+  cx,
+  useDeviceSize,
+  withCSS,
+  ReactFragment,
+  forwardRef,
+  useContext,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  useVariantState,
+  jsx,
+  jsxs,
+  MotionContext,
+  FrameComponent,
+  RichTextComponent,
+  motion,
+  LayoutGroup,
+  loadFonts,
+  normalizeFontConfig } from "./chunk--react-and-framer-runtime.mjs";
+import { window } from "./chunk--browser-polyfills.mjs";
 function $({ type: t, url: r, html: o, style: a = {} }) {
   return t === "url" && r
     ? e(se, { url: r, style: a })

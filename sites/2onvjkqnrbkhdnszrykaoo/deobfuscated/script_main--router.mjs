@@ -1,26 +1,6 @@
 /**
  * script_main  router
  */
-/**
- * Import aliases resolved:
- *   g → ReactDOMExports
- *   e → lazyLoadPage
- *   y → RoutingContext
- *   b → markHydrationStart
- *   F → enableEventHandling
- *   I → setReducedMotion
- *   R → matchRoute
- *   x → ComponentErrorBoundary
- *   z → initSiteScrollBehavior
- *   A → CursorContextProvider
- *   T → FramerRouter
- *   m → createElement
- *   h → startTransition
- *   v → cleanupSSRVariants
- *   f → ReactDOMDefault
- *   E → withPerformanceMark
- *   o → window
- */
 import { ReactDOMExports,
   lazyLoadPage,
   RoutingContext,
@@ -38,7 +18,7 @@ import { ReactDOMExports,
   ReactDOMDefault,
   withPerformanceMark } from "./chunk--react-and-framer-runtime.mjs";
 import { window } from "./chunk--browser-polyfills.mjs";
-var D = "default" in g ? f : g,
+var D = "default" in ReactDOMExports ? ReactDOMDefault : ReactDOMExports,
   p = {},
   P = D;
 p.createRoot = P.createRoot;
@@ -48,7 +28,7 @@ var k = p.createRoot,
 var u = {
     augiA20Il: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--home.mjs"),
       ),
@@ -56,7 +36,7 @@ var u = {
     },
     wbG3mjw6l: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--worldmapgit.mjs"),
       ),
@@ -71,7 +51,7 @@ var u = {
         tftSCv8zZ: "cost1",
         WjO84y3BZ: "time1",
       },
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--neoflix.mjs"),
       ),
@@ -83,7 +63,7 @@ var u = {
         Y8dEgTIYh: "recordfelectrefine",
         zQbFj9_vB: "providers",
       },
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Publications.mjs"),
       ),
@@ -91,7 +71,7 @@ var u = {
     },
     x05wlhCdy: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox.mjs"),
       ),
@@ -99,7 +79,7 @@ var u = {
     },
     IDh2dRb_U: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox-Planning_Your_Initiative.mjs"),
       ),
@@ -107,7 +87,7 @@ var u = {
     },
     cASgO3jWQ: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox-Reflect.mjs"),
       ),
@@ -115,7 +95,7 @@ var u = {
     },
     pcYRXVdRv: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox-Safe_Simple_Small.mjs"),
       ),
@@ -123,7 +103,7 @@ var u = {
     },
     HtIN1t6ER: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Learning_From_Variety.mjs"),
       ),
@@ -131,7 +111,7 @@ var u = {
     },
     KgHIqfucs: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Pioneer_Team.mjs"),
       ),
@@ -139,7 +119,7 @@ var u = {
     },
     S5cL1K0Pb: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Education_And_Training.mjs"),
       ),
@@ -147,7 +127,7 @@ var u = {
     },
     zI2CbZmPJ: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Metadata_and_Archiving.mjs"),
       ),
@@ -155,7 +135,7 @@ var u = {
     },
     uQs2bgVcT: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Recordings_for_research.mjs"),
       ),
@@ -163,7 +143,7 @@ var u = {
     },
     fN3izV_im: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Revolutionize_Reflection_in_medical_care__join_the_network.mjs"),
       ),
@@ -171,7 +151,7 @@ var u = {
     },
     IiCllyrxA: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Tasks_of_the_chair.mjs"),
       ),
@@ -179,7 +159,7 @@ var u = {
     },
     sEYnG8vfd: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_A_Safe_Learning_Environment.mjs"),
       ),
@@ -187,7 +167,7 @@ var u = {
     },
     MrFemP8j0: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Different_Approach.mjs"),
       ),
@@ -195,7 +175,7 @@ var u = {
     },
     EY4hH_Y7j: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_How_it_works.mjs"),
       ),
@@ -203,7 +183,7 @@ var u = {
     },
     X8n9MxBBr: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Unburdening_the_process.mjs"),
       ),
@@ -211,7 +191,7 @@ var u = {
     },
     N3WZmbqwm: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Learning_from_success_stories.mjs"),
       ),
@@ -219,7 +199,7 @@ var u = {
     },
     ut1mnZVW1: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Questions_to_ask_during_previewing.mjs"),
       ),
@@ -227,7 +207,7 @@ var u = {
     },
     t97unZiTK: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Preparation_and_Consent.mjs"),
       ),
@@ -235,7 +215,7 @@ var u = {
     },
     rC8gH4Mco: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Tool_for_implementing_new_practices.mjs"),
       ),
@@ -243,7 +223,7 @@ var u = {
     },
     nzfaDOFRY: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Let's_Neoflix.mjs"),
       ),
@@ -251,7 +231,7 @@ var u = {
     },
     mRVtT24DH: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Input_for_research.mjs"),
       ),
@@ -259,7 +239,7 @@ var u = {
     },
     ymL2yz5Md: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Share_your_experience.mjs"),
       ),
@@ -267,7 +247,7 @@ var u = {
     },
     NM8YGpOE1: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_After_the_Intervention.mjs"),
       ),
@@ -275,7 +255,7 @@ var u = {
     },
     H5snp07v4: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--Toolbox_Case_selection.mjs"),
       ),
@@ -283,7 +263,7 @@ var u = {
     },
     KeW3JpTIh: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--toolbox_case_leiden.mjs"),
       ),
@@ -291,7 +271,7 @@ var u = {
     },
     lwdo_bYrZ: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--toolbox_case_philadelphia.mjs"),
       ),
@@ -299,7 +279,7 @@ var u = {
     },
     unjEzXKKB: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--toolbox_case_vienna.mjs"),
       ),
@@ -307,7 +287,7 @@ var u = {
     },
     xRLjTQZCl: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--toolbox_case_australia.mjs"),
       ),
@@ -315,7 +295,7 @@ var u = {
     },
     f7Ah01sPh: {
       elements: {},
-      page: e(
+      page: lazyLoadPage(
         () =>
           import("./page--toolbox_case_succcessstories.mjs"),
       ),
@@ -325,7 +305,7 @@ var u = {
   V = [{ code: "en-US", id: "default", name: "English", slug: "" }];
 async function N({ routeId: n, pathVariables: l, localeId: r }) {
   await u[n].page.preload();
-  let i = m(T, {
+  let i = createElement(FramerRouter, {
       isWebsite: !0,
       routeId: n,
       pathVariables: l,
@@ -333,13 +313,13 @@ async function N({ routeId: n, pathVariables: l, localeId: r }) {
       collectionUtils: {},
       framerSiteId:
         "1f896049bc80eeaf847daeda1d5b19e3b628f61340b15f6395e0420ec7a18a50",
-      notFoundPage: e(() => import("./page--404-not-found.mjs")),
+      notFoundPage: lazyLoadPage(() => import("./page--404-not-found.mjs")),
       isReducedMotion: !0,
       localeId: r,
       locales: V,
       preserveQueryParams: void 0,
     }),
-    s = m(A, {
+    s = createElement(CursorContextProvider, {
       children: i,
       value: { enableAsyncURLUpdates: !1, useGranularSuspense: !1 },
     }),
@@ -360,11 +340,11 @@ async function N({ routeId: n, pathVariables: l, localeId: r }) {
           stiffness: 400,
           type: "tween" /* CSS-like easing animation */,
         },
-        x: "0px",
-        y: "0px",
+        ComponentErrorBoundary: "0px",
+        RoutingContext: "0px",
       },
     };
-  return m(y, {
+  return createElement(RoutingContext, {
     children: s,
     value: {
       routes: {
@@ -403,21 +383,21 @@ async function N({ routeId: n, pathVariables: l, localeId: r }) {
 }
 var H = typeof document < "u";
 if (H) {
-  ((o.__framer_importFromPackage = (l, r) => () =>
-    m(x, {
+  ((window.__framer_importFromPackage = (l, r) => () =>
+    createElement(ComponentErrorBoundary, {
       error: 'Package component not supported: "' + r + '" in "' + l + '"',
     })),
-    (o.process = {
-      ...o.process,
-      env: { ...(o.process ? o.process.env : void 0), NODE_ENV: "production" },
+    (window.process = {
+      ...window.process,
+      env: { ...(window.process ? window.process.env : void 0), NODE_ENV: "production" },
     }),
-    (o.__framer_events = o.__framer_events || []),
-    z());
+    (window.__framer_events = window.__framer_events || []),
+    initSiteScrollBehavior());
   let n = document.getElementById("main");
   "framerHydrateV2" in n.dataset ? S(!0, n) : S(!1, n);
 }
 function Y() {
-  H && o.__framer_events.push(arguments);
+  H && window.__framer_events.push(arguments);
 }
 async function S(n, l) {
   try {
@@ -450,16 +430,16 @@ async function S(n, l) {
         (s = t.pathVariables),
         (a = t.breakpoints));
     } else {
-      let t = R(u, decodeURIComponent(location.pathname), !0, V);
+      let t = matchRoute(u, decodeURIComponent(location.pathname), !0, V);
       ((r = t.routeId), (i = t.localeId), (s = t.pathVariables));
     }
     let c = await N({ routeId: r, localeId: i, pathVariables: s });
     n
-      ? (E("framer-rewrite-breakpoints", () => {
-          (v(a), o.__framer_onRewriteBreakpoints?.(a));
+      ? (withPerformanceMark("framer-rewrite-breakpoints", () => {
+          (cleanupSSRVariants(a), window.__framer_onRewriteBreakpoints?.(a));
         }),
-        h(() => {
-          (b(), I(), F(), w(l, c, { onRecoverableError: d }));
+        startTransition(() => {
+          (markHydrationStart(), setReducedMotion(), enableEventHandling(), w(l, c, { onRecoverableError: d }));
         }))
       : k(l, { onRecoverableError: d }).render(c);
   } catch (r) {

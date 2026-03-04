@@ -1,42 +1,8 @@
+/* CSS extracted to: chunk--framer-motion.1.css, chunk--framer-motion.2.css, chunk--framer-motion.3.css, chunk--framer-motion.4.css */
 /**
  * framer motion
  */
-/**
- * Import aliases resolved:
- *   te → useLocale
- *   Ge → RenderTarget
- *   y → ControlType
- *   E → addPropertyControls
- *   ne → cx
- *   Fe → withFXWrapper
- *   oe → useDeviceSize
- *   v → DeviceSizeContainer
- *   ie → withCSS
- *   m → ReactFragment
- *   Z → forwardRef
- *   Re → scheduleAppearAnimation
- *   be → useEffect
- *   ee → useId
- *   le → useVariantAnimationCallbacks
- *   V → useMemo
- *   M → useRef
- *   Se → useState
- *   pe → useOnVariantChange
- *   re → ReactModule
- *   fe → useVariantState
- *   e → jsx
- *   g → jsxs
- *   N → MotionContext
- *   I → RichTextComponent
- *   r → motion
- *   ae → LayoutGroup
- *   me → loadFonts
- *   Te → useSpring
- *   G → getFonts
- *   er → normalizeFontConfig
- *   A → window
- */
-import { a as rr, b as ar, c as tr } from "./chunk-HVOA2PEY.mjs";
+import { a as rr, b as ar, c as tr } from "./chunk--inter-bold-font-loader.mjs";
 import { $ as O,
   useLocale,
   RenderTarget,
@@ -73,7 +39,7 @@ import { $ as O,
   normalizeFontConfig } from "./chunk--react-and-framer-runtime.mjs";
 import { window } from "./chunk--browser-polyfills.mjs";
 var pr = { scrollSnapType: "y mandatory" },
-  Aa = (t) => (n) => e(t, { ...n, style: pr });
+  Aa = (t) => (n) => jsx(t, { ...n, style: pr });
 var ur = {
   width: "100%",
   height: "100%",
@@ -89,7 +55,7 @@ var hr = {
     color: "#a5a5a5",
     flexDirection: "column",
   },
-  nr = Z((t, n) => e("div", { style: hr, ref: n }));
+  nr = forwardRef((t, n) => jsx("div", { style: hr, ref: n }));
 var gr = (t) => t,
   Qe,
   or = (t) => (
@@ -101,11 +67,11 @@ var gr = (t) => t,
     Qe
   );
 var ir = {
-    onClick: { type: y.EventHandler },
-    onMouseDown: { type: y.EventHandler },
-    onMouseUp: { type: y.EventHandler },
-    onMouseEnter: { type: y.EventHandler },
-    onMouseLeave: { type: y.EventHandler },
+    onClick: { type: ControlType.EventHandler },
+    onMouseDown: { type: ControlType.EventHandler },
+    onMouseUp: { type: ControlType.EventHandler },
+    onMouseEnter: { type: ControlType.EventHandler },
+    onMouseLeave: { type: ControlType.EventHandler },
   },
   lr = (t, n) => t.find((i) => i.toLowerCase().includes(n));
 function fr(t, n, i = "", l, d) {
@@ -116,7 +82,7 @@ function fr(t, n, i = "", l, d) {
   return (c = d[h]) !== null && c !== void 0 ? c : lr(t, h);
 }
 function mr(t, n, i = "", l, d) {
-  let h = V(() => {
+  let h = useMemo(() => {
     if (i == null || i?.length === 0) return null;
     let b = i.toLowerCase().replace(/-|\s/g, "");
     var k;
@@ -1869,10 +1835,10 @@ function C(t) {
       mirrored: o,
       style: L,
     } = t,
-    F = M(!1),
+    F = useRef(!1),
     R = mr(Ae, i, l, d, dr),
     p = xr.map((u) => t[u]),
-    D = V(() => {
+    D = useMemo(() => {
       let u = Pe[R];
       if (!u) return;
       let T = t[`iconStyle${u}`];
@@ -1901,8 +1867,8 @@ function C(t) {
     ),
     [R, ...p],
   );
-  let f = RenderTarget.current() === RenderTarget.canvas ? e(nr, {}) : null;
-  return e(r.div, {
+  let f = RenderTarget.current() === RenderTarget.canvas ? jsx(nr, {}) : null;
+  return jsx(motion.div, {
     style: { display: "contents" },
     onClick: h,
     onMouseEnter: k,
@@ -1910,7 +1876,7 @@ function C(t) {
     onMouseDown: c,
     onMouseUp: b,
     children: _
-      ? e("svg", {
+      ? jsx("svg", {
           xmlns: "http://www.w3.org/2000/svg",
           style: {
             userSelect: "none",
@@ -1948,16 +1914,16 @@ function vr(t, n) {
     b = Pe[c];
   return !b || h === 0 ? !0 : b !== h;
 }
-E(C, {
+addPropertyControls(C, {
   selectByList: {
-    type: y.Boolean,
+    type: ControlType.Boolean,
     title: "Select",
     enabledTitle: "List",
     disabledTitle: "Search",
     defaultValue: C.defaultProps.selectByList,
   },
   iconSelection: {
-    type: y.Enum,
+    type: ControlType.Enum,
     options: Ae,
     defaultValue: C.defaultProps.iconSelection,
     title: "Name",
@@ -1966,22 +1932,22 @@ E(C, {
       "Find every icon name on the [Material site](https://fonts.google.com/icons)",
   },
   iconSearch: {
-    type: y.String,
+    type: ControlType.String,
     title: "Name",
     placeholder: "Menu, Wifi, Box\u2026",
     hidden: ({ selectByList: t }) => t,
   },
   mirrored: {
-    type: y.Boolean,
+    type: ControlType.Boolean,
     enabledTitle: "Yes",
     disabledTitle: "No",
     defaultValue: C.defaultProps.mirrored,
   },
-  color: { type: y.Color, title: "Color", defaultValue: C.defaultProps.color },
+  color: { type: ControlType.Color, title: "Color", defaultValue: C.defaultProps.color },
   ...Object.keys(Ke).reduce(
     (t, n) => (
       (t[`iconStyle${n}`] = {
-        type: y.Enum,
+        type: ControlType.Enum,
         title: "Style",
         defaultValue: "Filled",
         options: Ke[n],
@@ -1994,17 +1960,17 @@ E(C, {
   ...ir,
 });
 var kr = { scrollSnapType: "y mandatory" },
-  Ue = (t) => (n) => e(t, { ...n, style: kr });
+  Ue = (t) => (n) => jsx(t, { ...n, style: kr });
 function Ye(t) {
   let {
       x: n,
-      y: i,
+      ControlType: i,
       zoom: l,
       showCrosshair: d,
       transitionDuration: h,
       peakZoom: c,
     } = t,
-    b = M(null),
+    b = useRef(null),
     [k, S] = useState({ width: 0, height: 0 }),
     o = 1440,
     L = 700,
@@ -2029,8 +1995,8 @@ function Ye(t) {
       };
       return (
         w(),
-        A.addEventListener("resize", w),
-        () => A.removeEventListener("resize", w)
+        window.addEventListener("resize", w),
+        () => window.removeEventListener("resize", w)
       );
     }, []));
   let _ = (w, a, f) => {
@@ -2045,7 +2011,7 @@ function Ye(t) {
       return `0 0 ${o} ${L}`;
     },
     s = $e([R, p, D], (w) => _(...w));
-  return g("div", {
+  return jsxs("div", {
     ref: b,
     style: {
       width: "100%",
@@ -2054,19 +2020,19 @@ function Ye(t) {
       position: "relative",
     },
     children: [
-      e(r.svg, {
+      jsx(motion.svg, {
         width: "100%",
         height: "100%",
         preserveAspectRatio: "xMidYMid slice",
         viewBox: s,
-        children: e("image", {
+        children: jsx("image", {
           href: "https://raw.githubusercontent.com/LennartvdM/kaart/main/worldmap.svg",
           width: o,
           height: L,
         }),
       }),
       d &&
-        g("svg", {
+        jsxs("svg", {
           style: {
             position: "absolute",
             top: 0,
@@ -2076,7 +2042,7 @@ function Ye(t) {
             pointerEvents: "none",
           },
           children: [
-            e("line", {
+            jsx("line", {
               x1: "49.5%",
               y1: "0",
               x2: "49.5%",
@@ -2084,7 +2050,7 @@ function Ye(t) {
               stroke: "red",
               strokeWidth: "1",
             }),
-            e("line", {
+            jsx("line", {
               x1: "0",
               y1: "49.5%",
               x2: "100%",
@@ -2099,19 +2065,19 @@ function Ye(t) {
 }
 Ye.defaultProps = {
   x: 720,
-  y: 350,
+  ControlType: 350,
   zoom: 1,
   showCrosshair: !1,
   transitionDuration: 1,
   peakZoom: 0.8,
 };
-E(Ye, {
-  x: { type: y.Number, title: "X Coordinate", min: 0, max: 1440, step: 1 },
-  y: { type: y.Number, title: "Y Coordinate", min: 0, max: 700, step: 1 },
-  zoom: { type: y.Number, title: "Zoom Level", min: 0.1, max: 20, step: 0.1 },
-  showCrosshair: { type: y.Boolean, title: "Show Crosshair" },
+addPropertyControls(Ye, {
+  x: { type: ControlType.Number, title: "X Coordinate", min: 0, max: 1440, step: 1 },
+  ControlType: { type: ControlType.Number, title: "Y Coordinate", min: 0, max: 700, step: 1 },
+  zoom: { type: ControlType.Number, title: "Zoom Level", min: 0.1, max: 20, step: 0.1 },
+  showCrosshair: { type: ControlType.Boolean, title: "Show Crosshair" },
   transitionDuration: {
-    type: y.Number,
+    type: ControlType.Number,
     title: "Transition Duration",
     min: 0.1,
     max: 10,
@@ -2119,7 +2085,7 @@ E(Ye, {
     defaultValue: 1,
   },
   peakZoom: {
-    type: y.Number,
+    type: ControlType.Number,
     title: "Peak Zoom",
     min: 0.1,
     max: 20,
@@ -2141,12 +2107,12 @@ function Sr(t, ...n) {
 }
 var Tr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   Fr = ({ value: t, children: n }) => {
-    let i = $(N),
+    let i = $(MotionContext),
       l = t ?? i.transition,
-      d = V(() => ({ ...i, transition: l }), [JSON.stringify(l)]);
-    return e(N.Provider, { value: d, children: n });
+      d = useMemo(() => ({ ...i, transition: l }), [JSON.stringify(l)]);
+    return jsx(MotionContext.Provider, { value: d, children: n });
   },
-  Rr = r(m),
+  Rr = motion(ReactFragment),
   Pr = {
     "Variant 1": "OllsPURNS",
     "Variant 2": "BrLRwcxoa",
@@ -2165,7 +2131,7 @@ var Tr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
   },
   Ur = (t, n) =>
     t.layoutDependency ? n.join("-") + t.layoutDependency : n.join("-"),
-  Br = Z(function (t, n) {
+  Br = forwardRef(function (t, n) {
     let { activeLocale: i, setLocale: l } = useLocale(),
       { style: d, className: h, layoutId: c, variant: b, ...k } = Ar(t),
       {
@@ -2192,18 +2158,18 @@ var Tr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
       T = a(async (...de) => {
         (D({ isHovered: !1 }), _("sNIP7jJgo"));
       }),
-      X = M(null),
+      X = useRef(null),
       Q = useId(),
       K = [],
       se = useDeviceSize();
-    return e(LayoutGroup, {
+    return jsx(LayoutGroup, {
       id: c ?? Q,
-      children: e(Rr, {
+      children: jsx(Rr, {
         animate: s,
         initial: !1,
-        children: e(Fr, {
+        children: jsx(Fr, {
           value: Tr,
-          children: e(r.div, {
+          children: jsx(motion.div, {
             ...k,
             ...F,
             className: cx(Ir, ...K, "framer-xrdmqj", h, o),
@@ -2266,19 +2232,19 @@ var Tr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-OQDhK.framer-xrdmqj { gap: 0px; } .framer-OQDhK.framer-xrdmqj > * { margin: 0px; margin-left: calc(10px / 2); margin-right: calc(10px / 2); } .framer-OQDhK.framer-xrdmqj > :first-child { margin-left: 0px; } .framer-OQDhK.framer-xrdmqj > :last-child { margin-right: 0px; } }",
     '.framer-OQDhK[data-border="true"]::after, .framer-OQDhK [data-border="true"]::after { content: ""; border-width: var(--border-top-width, 0) var(--border-right-width, 0) var(--border-bottom-width, 0) var(--border-left-width, 0); border-color: var(--border-color, none); border-style: var(--border-style, none); width: 100%; height: 100%; position: absolute; box-sizing: border-box; left: 0; top: 0; border-radius: inherit; pointer-events: none; }',
   ],
-  xe = ie(Br, Lr, "framer-OQDhK"),
+  xe = withCSS(Br, Lr, "framer-OQDhK"),
   B = xe;
 xe.displayName = "mappin";
 xe.defaultProps = { height: 62, width: 242 };
-E(xe, {
+addPropertyControls(xe, {
   variant: {
     options: ["OllsPURNS", "BrLRwcxoa", "sNIP7jJgo"],
     optionTitles: ["Variant 1", "Variant 2", "Variant 3"],
     title: "Variant",
-    type: y.Enum,
+    type: ControlType.Enum,
   },
 });
-me(xe, [{ explicitInter: !0, fonts: [] }], {
+loadFonts(xe, [{ explicitInter: !0, fonts: [] }], {
   supportsExplicitInterCodegen: !0,
 });
 var Dr = ["go4zJRoIL", "t31inIwkv", "O7UZDCuex", "TvAVq9uug"],
@@ -2296,12 +2262,12 @@ function Mr(t, ...n) {
 var Nr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   Er = (t, n) => `translateX(-50%) ${n}`,
   Or = ({ value: t, children: n }) => {
-    let i = $(N),
+    let i = $(MotionContext),
       l = t ?? i.transition,
-      d = V(() => ({ ...i, transition: l }), [JSON.stringify(l)]);
-    return e(N.Provider, { value: d, children: n });
+      d = useMemo(() => ({ ...i, transition: l }), [JSON.stringify(l)]);
+    return jsx(MotionContext.Provider, { value: d, children: n });
   },
-  Jr = r(m),
+  Jr = motion(ReactFragment),
   jr = {
     "Variant 1": "go4zJRoIL",
     "Variant 2": "t31inIwkv",
@@ -2333,7 +2299,7 @@ var Nr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
   },
   qr = (t, n) =>
     t.layoutDependency ? n.join("-") + t.layoutDependency : n.join("-"),
-  _r = Z(function (t, n) {
+  _r = forwardRef(function (t, n) {
     let { activeLocale: i, setLocale: l } = useLocale(),
       {
         style: d,
@@ -2376,18 +2342,18 @@ var Nr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
         (w({ isHovered: !1 }), a("O7UZDCuex"));
       });
     useOnVariantChange(F, { default: K, TvAVq9uug: void 0 });
-    let he = M(null),
+    let he = useRef(null),
       ge = useId(),
       ce = [tr],
       Ie = useDeviceSize();
-    return e(LayoutGroup, {
+    return jsx(LayoutGroup, {
       id: c ?? ge,
-      children: e(Jr, {
+      children: jsx(Jr, {
         animate: f,
         initial: !1,
-        children: e(Or, {
+        children: jsx(Or, {
           value: Nr,
-          children: e(r.div, {
+          children: jsx(motion.div, {
             ...L,
             ...D,
             className: cx(zr, ...ce, "framer-7w45hl", h, R),
@@ -2449,10 +2415,10 @@ var Nr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
               F,
               _,
             ),
-            children: e(I, {
+            children: jsx(RichTextComponent, {
               __fromCanvasComponent: !0,
-              children: e(m, {
-                children: e(r.h2, {
+              children: jsx(ReactFragment, {
+                children: jsx(motion.h2, {
                   className: "framer-styles-preset-1wml6uu",
                   "data-styles-preset": "fVxnimdqP",
                   children: "NICU Melbourne",
@@ -2486,24 +2452,24 @@ var Nr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     ...ar,
     '.framer-n6VA4[data-border="true"]::after, .framer-n6VA4 [data-border="true"]::after { content: ""; border-width: var(--border-top-width, 0) var(--border-right-width, 0) var(--border-bottom-width, 0) var(--border-left-width, 0); border-color: var(--border-color, none); border-style: var(--border-style, none); width: 100%; height: 100%; position: absolute; box-sizing: border-box; left: 0; top: 0; border-radius: inherit; pointer-events: none; }',
   ],
-  ve = ie(_r, Xr, "framer-n6VA4"),
+  ve = withCSS(_r, Xr, "framer-n6VA4"),
   W = ve;
 ve.displayName = "legendalable";
 ve.defaultProps = { height: 51, width: 313 };
-E(ve, {
+addPropertyControls(ve, {
   variant: {
     options: ["go4zJRoIL", "t31inIwkv", "O7UZDCuex", "TvAVq9uug"],
     optionTitles: ["Variant 1", "Variant 2", "Variant 3", "Variant 4"],
     title: "Variant",
-    type: y.Enum,
+    type: ControlType.Enum,
   },
-  hXGr96wAc: { title: "Click", type: y.EventHandler },
-  Ww1EfIwDE: { title: "Appear", type: y.EventHandler },
+  hXGr96wAc: { title: "Click", type: ControlType.EventHandler },
+  Ww1EfIwDE: { title: "Appear", type: ControlType.EventHandler },
   bPIuE13EX: {
     defaultValue: "NICU Melbourne",
     displayTextArea: !1,
     title: "Title",
-    type: y.String,
+    type: ControlType.String,
   },
 });
 loadFonts(
@@ -2574,16 +2540,16 @@ loadFonts(
         },
       ],
     },
-    ...er(rr),
+    ...normalizeFontConfig(rr),
   ],
   { supportsExplicitInterCodegen: !0 },
 );
-var Hr = G(ue),
+var Hr = getFonts(ue),
   Zr = Ue(ue),
-  Gr = G(W),
-  Qr = G(C),
-  Kr = G(B),
-  Be = scheduleAppearAnimation(withFXWrapper(r.div)),
+  Gr = getFonts(W),
+  Qr = getFonts(C),
+  Kr = getFonts(B),
+  Be = scheduleAppearAnimation(withFXWrapper(motion.div)),
   Yr = [
     "JxNX4Rz95",
     "xKuwJW1Uo",
@@ -2633,7 +2599,7 @@ var ra = {
     skewY: 0,
     transition: ra,
     x: 0,
-    y: 0,
+    ControlType: 0,
   },
   De = {
     opacity: 0.001,
@@ -2644,17 +2610,17 @@ var ra = {
     skewX: 0,
     skewY: 0,
     x: 0,
-    y: 0,
+    ControlType: 0,
   },
   q = (t, n) => `translate(-50%, -50%) ${n}`,
   aa = (t, n) => `translateY(-50%) ${n}`,
   ta = ({ value: t, children: n }) => {
-    let i = $(N),
+    let i = $(MotionContext),
       l = t ?? i.transition,
-      d = V(() => ({ ...i, transition: l }), [JSON.stringify(l)]);
-    return e(N.Provider, { value: d, children: n });
+      d = useMemo(() => ({ ...i, transition: l }), [JSON.stringify(l)]);
+    return jsx(MotionContext.Provider, { value: d, children: n });
   },
-  na = r(m),
+  na = motion(ReactFragment),
   oa = {
     "Australia Zoomed": "bcMqa8ndK",
     "Leiden Zoomed": "xKuwJW1Uo",
@@ -2694,7 +2660,7 @@ var ra = {
   },
   la = (t, n) =>
     t.layoutDependency ? n.join("-") + t.layoutDependency : n.join("-"),
-  fa = Z(function (t, n) {
+  fa = forwardRef(function (t, n) {
     let { activeLocale: i, setLocale: l } = useLocale(),
       {
         style: d,
@@ -2784,7 +2750,7 @@ var ra = {
       V7QOBUaOQ: de,
       xKuwJW1Uo: X,
     });
-    let Je = M(null),
+    let Je = useRef(null),
       je = () =>
         ![
           "EvvqCP6nV",
@@ -2802,17 +2768,17 @@ var ra = {
       qe = () => o === "EvvqCP6nV",
       _e = () => !!["jnA617SP9", "V7QOBUaOQ", "mve4REzqz"].includes(o),
       Xe = () => !!["MVG35Wb9S", "bcMqa8ndK", "l1W_ZZ_U4"].includes(o),
-      He = ee(),
+      He = useId(),
       Ze = [],
       cr = useDeviceSize();
-    return e(LayoutGroup, {
+    return jsx(LayoutGroup, {
       id: c ?? He,
-      children: e(na, {
+      children: jsx(na, {
         animate: w,
         initial: !1,
-        children: e(ta, {
+        children: jsx(ta, {
           value: k,
-          children: g(r.div, {
+          children: jsxs(motion.div, {
             ...S,
             ...R,
             className: cx($r, ...Ze, "framer-vz95n3", h, L),
@@ -2844,13 +2810,13 @@ var ra = {
               p,
             ),
             children: [
-              e(v, {
-                children: e(r.div, {
+              jsx(DeviceSizeContainer, {
+                children: jsx(motion.div, {
                   className: "framer-12t7qkg-container",
                   layoutDependency: a,
                   layoutId: "i6_NfGd6P-container",
                   style: { opacity: 0.77 },
-                  children: e(Zr, {
+                  children: jsx(Zr, {
                     height: "100%",
                     id: "i6_NfGd6P",
                     layoutId: "i6_NfGd6P",
@@ -2860,25 +2826,25 @@ var ra = {
                     transitionDuration: 6.4,
                     width: "100%",
                     x: 696,
-                    y: 164,
+                    ControlType: 164,
                     zoom: 5,
                     ...U(
                       {
-                        bcMqa8ndK: { x: 1259, y: 573, zoom: 20 },
-                        EvvqCP6nV: { x: 377, y: 235, zoom: 6 },
-                        jnA617SP9: { x: 742, y: 190, zoom: 7 },
-                        l1W_ZZ_U4: { x: 1259, y: 573, zoom: 20 },
-                        mve4REzqz: { x: 742, y: 190, zoom: 20 },
+                        bcMqa8ndK: { x: 1259, ControlType: 573, zoom: 20 },
+                        EvvqCP6nV: { x: 377, ControlType: 235, zoom: 6 },
+                        jnA617SP9: { x: 742, ControlType: 190, zoom: 7 },
+                        l1W_ZZ_U4: { x: 1259, ControlType: 573, zoom: 20 },
+                        mve4REzqz: { x: 742, ControlType: 190, zoom: 20 },
                         MVG35Wb9S: {
                           transitionDuration: 6.3,
                           x: 1257,
-                          y: 573,
+                          ControlType: 573,
                           zoom: 4,
                         },
                         oDhxVJ9Pi: { zoom: 20 },
-                        OrRe_HT0C: { x: 377, y: 235, zoom: 20 },
-                        SU3ycjUmU: { x: 377, y: 235, zoom: 20 },
-                        V7QOBUaOQ: { x: 742, y: 190, zoom: 20 },
+                        OrRe_HT0C: { x: 377, ControlType: 235, zoom: 20 },
+                        SU3ycjUmU: { x: 377, ControlType: 235, zoom: 20 },
+                        V7QOBUaOQ: { x: 742, ControlType: 190, zoom: 20 },
                         xKuwJW1Uo: { zoom: 20 },
                       },
                       o,
@@ -2887,7 +2853,7 @@ var ra = {
                   }),
                 }),
               }),
-              g(r.div, {
+              jsxs(motion.div, {
                 className: "framer-9ium0n",
                 "data-border": !0,
                 "data-framer-name": "Leganda",
@@ -2906,7 +2872,7 @@ var ra = {
                   borderTopRightRadius: 15,
                 },
                 children: [
-                  e(r.div, {
+                  jsx(motion.div, {
                     className: "framer-sfrczr",
                     "data-framer-name": "Leiden",
                     "data-highlight": !0,
@@ -2921,12 +2887,12 @@ var ra = {
                       borderTopRightRadius: 12,
                       WebkitBackdropFilter: "blur(5px)",
                     },
-                    children: e(v, {
-                      children: e(r.div, {
+                    children: jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-l0oahl-container",
                         layoutDependency: a,
                         layoutId: "rXyPY8Whz-container",
-                        children: e(W, {
+                        children: jsx(W, {
                           bPIuE13EX: "NICU Leiden",
                           height: "100%",
                           id: "rXyPY8Whz",
@@ -2952,7 +2918,7 @@ var ra = {
                       }),
                     }),
                   }),
-                  e(r.div, {
+                  jsx(motion.div, {
                     className: "framer-1d2aerj",
                     "data-framer-name": "Philadelphia",
                     "data-highlight": !0,
@@ -2967,12 +2933,12 @@ var ra = {
                       borderTopRightRadius: 12,
                       WebkitBackdropFilter: "blur(5px)",
                     },
-                    children: e(v, {
-                      children: e(r.div, {
+                    children: jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-oiwq8w-container",
                         layoutDependency: a,
                         layoutId: "AR6dYD5i5-container",
-                        children: e(W, {
+                        children: jsx(W, {
                           bPIuE13EX: "NICU Philadelphia",
                           height: "100%",
                           id: "AR6dYD5i5",
@@ -2992,7 +2958,7 @@ var ra = {
                       }),
                     }),
                   }),
-                  e(r.div, {
+                  jsx(motion.div, {
                     className: "framer-4321u4",
                     "data-framer-name": "Vienna",
                     "data-highlight": !0,
@@ -3007,12 +2973,12 @@ var ra = {
                       borderTopRightRadius: 12,
                       WebkitBackdropFilter: "blur(5px)",
                     },
-                    children: e(v, {
-                      children: e(r.div, {
+                    children: jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-177du4g-container",
                         layoutDependency: a,
                         layoutId: "A9IIPnBs8-container",
-                        children: e(W, {
+                        children: jsx(W, {
                           bPIuE13EX: "NICU Vienna",
                           height: "100%",
                           id: "A9IIPnBs8",
@@ -3032,7 +2998,7 @@ var ra = {
                       }),
                     }),
                   }),
-                  e(r.div, {
+                  jsx(motion.div, {
                     className: "framer-9z86d2",
                     "data-framer-name": "Melbourne",
                     "data-highlight": !0,
@@ -3047,12 +3013,12 @@ var ra = {
                       borderTopRightRadius: 12,
                       WebkitBackdropFilter: "blur(5px)",
                     },
-                    children: e(v, {
-                      children: e(r.div, {
+                    children: jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-16lk77e-container",
                         layoutDependency: a,
                         layoutId: "eAV2E_7tI-container",
-                        children: e(W, {
+                        children: jsx(W, {
                           bPIuE13EX: "NICU Melbourne",
                           height: "100%",
                           id: "eAV2E_7tI",
@@ -3075,7 +3041,7 @@ var ra = {
                 ],
               }),
               je() &&
-                g(Be, {
+                jsxs(Be, {
                   __perspectiveFX: !1,
                   __smartComponentFX: !0,
                   __targetOpacity: 1,
@@ -3088,16 +3054,16 @@ var ra = {
                   layoutId: "SWepjTNqw",
                   optimized: !0,
                   children: [
-                    g(r.div, {
+                    jsxs(motion.div, {
                       className: "framer-v9jrb0",
                       layoutDependency: a,
                       layoutId: "H2QVDBeiz",
                       style: { opacity: 0 },
                       children: [
-                        e(I, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(m, {
-                            children: e(r.h1, {
+                          children: jsx(ReactFragment, {
+                            children: jsx(motion.h1, {
                               style: {
                                 "--font-selector": "SW50ZXItRXh0cmFCb2xk",
                                 "--framer-font-family":
@@ -3125,7 +3091,7 @@ var ra = {
                           verticalAlignment: "top",
                           withExternalLayout: !0,
                         }),
-                        e(r.div, {
+                        jsx(motion.div, {
                           className: "framer-12rwse4",
                           layoutDependency: a,
                           layoutId: "fgXWgI8CF",
@@ -3143,12 +3109,12 @@ var ra = {
                         }),
                       ],
                     }),
-                    e(v, {
-                      children: e(r.div, {
+                    jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-yfyxce-container",
                         layoutDependency: a,
                         layoutId: "oyS8jhPaw-container",
-                        children: e(C, {
+                        children: jsx(C, {
                           color: "rgb(255, 130, 102)",
                           height: "100%",
                           iconSearch: "Home",
@@ -3165,17 +3131,17 @@ var ra = {
                         }),
                       }),
                     }),
-                    e(O, {
+                    jsx(O, {
                       href: { webPageId: "KeW3JpTIh" },
-                      children: g(r.a, {
+                      children: jsxs(motion.a, {
                         className: "framer-ds84g3 framer-12lqqzh",
                         layoutDependency: a,
                         layoutId: "Nmh6p1F7t",
                         children: [
-                          e(I, {
+                          jsx(RichTextComponent, {
                             __fromCanvasComponent: !0,
-                            children: e(m, {
-                              children: e(r.h1, {
+                            children: jsx(ReactFragment, {
+                              children: jsx(motion.h1, {
                                 style: {
                                   "--font-selector": "SW50ZXItQm9sZA==",
                                   "--framer-font-family":
@@ -3202,13 +3168,13 @@ var ra = {
                             verticalAlignment: "top",
                             withExternalLayout: !0,
                           }),
-                          e(v, {
-                            children: e(r.div, {
+                          jsx(DeviceSizeContainer, {
+                            children: jsx(motion.div, {
                               className: "framer-120glej-container",
                               layoutDependency: a,
                               layoutId: "tScv0Rjhi-container",
                               transformTemplate: q,
-                              children: e(B, {
+                              children: jsx(B, {
                                 height: "100%",
                                 id: "tScv0Rjhi",
                                 layoutId: "tScv0Rjhi",
@@ -3223,7 +3189,7 @@ var ra = {
                   ],
                 }),
               Ce() &&
-                g(Be, {
+                jsxs(Be, {
                   __perspectiveFX: !1,
                   __smartComponentFX: !0,
                   __targetOpacity: 1,
@@ -3236,16 +3202,16 @@ var ra = {
                   layoutId: "BZ13YxJzn",
                   optimized: !0,
                   children: [
-                    g(r.div, {
+                    jsxs(motion.div, {
                       className: "framer-c93ywr",
                       layoutDependency: a,
                       layoutId: "PidobdDl5",
                       style: { opacity: 0 },
                       children: [
-                        e(I, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(m, {
-                            children: e(r.h1, {
+                          children: jsx(ReactFragment, {
+                            children: jsx(motion.h1, {
                               style: {
                                 "--font-selector": "SW50ZXItRXh0cmFCb2xk",
                                 "--framer-font-family":
@@ -3273,7 +3239,7 @@ var ra = {
                           verticalAlignment: "top",
                           withExternalLayout: !0,
                         }),
-                        e(r.div, {
+                        jsx(motion.div, {
                           className: "framer-y9q4sq",
                           layoutDependency: a,
                           layoutId: "AaK5xtzJR",
@@ -3291,12 +3257,12 @@ var ra = {
                         }),
                       ],
                     }),
-                    e(v, {
-                      children: e(r.div, {
+                    jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-4qix8v-container",
                         layoutDependency: a,
                         layoutId: "Qe4YKpNPQ-container",
-                        children: e(C, {
+                        children: jsx(C, {
                           color: "rgb(255, 130, 102)",
                           height: "100%",
                           iconSearch: "Home",
@@ -3313,15 +3279,15 @@ var ra = {
                         }),
                       }),
                     }),
-                    g(r.div, {
+                    jsxs(motion.div, {
                       className: "framer-1naa98p",
                       layoutDependency: a,
                       layoutId: "Ay7vndq2d",
                       children: [
-                        e(I, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(m, {
-                            children: e(r.h1, {
+                          children: jsx(ReactFragment, {
+                            children: jsx(motion.h1, {
                               style: {
                                 "--font-selector": "SW50ZXItRXh0cmFCb2xk",
                                 "--framer-font-family":
@@ -3350,8 +3316,8 @@ var ra = {
                           ...U(
                             {
                               EvvqCP6nV: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -3368,8 +3334,8 @@ var ra = {
                                 fonts: ["Inter-Bold"],
                               },
                               OrRe_HT0C: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -3386,8 +3352,8 @@ var ra = {
                                 fonts: ["Inter-Bold"],
                               },
                               SU3ycjUmU: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -3409,7 +3375,7 @@ var ra = {
                           ),
                         }),
                         We() &&
-                          e(O, {
+                          jsx(O, {
                             href: { webPageId: "KeW3JpTIh" },
                             openInNewTab: !0,
                             ...U(
@@ -3419,7 +3385,7 @@ var ra = {
                               o,
                               p,
                             ),
-                            children: e(r.a, {
+                            children: jsx(motion.a, {
                               className: "framer-qro7v5 framer-12lqqzh",
                               layoutDependency: a,
                               layoutId: "DYIceF9rt",
@@ -3440,13 +3406,13 @@ var ra = {
                                   backgroundColor: "rgba(0, 0, 0, 0)",
                                 },
                               },
-                              children: e(v, {
-                                children: e(r.div, {
+                              children: jsx(DeviceSizeContainer, {
+                                children: jsx(motion.div, {
                                   className: "framer-nnylvd-container",
                                   layoutDependency: a,
                                   layoutId: "XFi2h4KTY-container",
                                   transformTemplate: q,
-                                  children: e(B, {
+                                  children: jsx(B, {
                                     height: "100%",
                                     id: "XFi2h4KTY",
                                     layoutId: "XFi2h4KTY",
@@ -3466,20 +3432,20 @@ var ra = {
                             }),
                           }),
                         qe() &&
-                          e(O, {
+                          jsx(O, {
                             href: { webPageId: "lwdo_bYrZ" },
-                            children: e(r.a, {
+                            children: jsx(motion.a, {
                               className: "framer-112xuj5 framer-12lqqzh",
                               layoutDependency: a,
                               layoutId: "vQ2XsYxY3",
                               transformTemplate: aa,
-                              children: e(v, {
-                                children: e(r.div, {
+                              children: jsx(DeviceSizeContainer, {
+                                children: jsx(motion.div, {
                                   className: "framer-5uki69-container",
                                   layoutDependency: a,
                                   layoutId: "HBuC1El0m-container",
                                   transformTemplate: q,
-                                  children: e(B, {
+                                  children: jsx(B, {
                                     height: "100%",
                                     id: "HBuC1El0m",
                                     layoutId: "HBuC1El0m",
@@ -3502,7 +3468,7 @@ var ra = {
                   ],
                 }),
               _e() &&
-                g(Be, {
+                jsxs(Be, {
                   __perspectiveFX: !1,
                   __smartComponentFX: !0,
                   __targetOpacity: 1,
@@ -3515,16 +3481,16 @@ var ra = {
                   layoutId: "rShGC2Bz7",
                   optimized: !0,
                   children: [
-                    g(r.div, {
+                    jsxs(motion.div, {
                       className: "framer-1nd79oc",
                       layoutDependency: a,
                       layoutId: "R6LWPmmrp",
                       style: { opacity: 0 },
                       children: [
-                        e(I, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(m, {
-                            children: e(r.h1, {
+                          children: jsx(ReactFragment, {
+                            children: jsx(motion.h1, {
                               style: {
                                 "--font-selector": "SW50ZXItRXh0cmFCb2xk",
                                 "--framer-font-family":
@@ -3552,7 +3518,7 @@ var ra = {
                           verticalAlignment: "top",
                           withExternalLayout: !0,
                         }),
-                        e(r.div, {
+                        jsx(motion.div, {
                           className: "framer-sf3r5r",
                           layoutDependency: a,
                           layoutId: "FADDGIdYV",
@@ -3570,12 +3536,12 @@ var ra = {
                         }),
                       ],
                     }),
-                    e(v, {
-                      children: e(r.div, {
+                    jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-1xu2emt-container",
                         layoutDependency: a,
                         layoutId: "SNvpqkzYr-container",
-                        children: e(C, {
+                        children: jsx(C, {
                           color: "rgb(255, 130, 102)",
                           height: "100%",
                           iconSearch: "Home",
@@ -3592,15 +3558,15 @@ var ra = {
                         }),
                       }),
                     }),
-                    g(r.div, {
+                    jsxs(motion.div, {
                       className: "framer-1jsyuru",
                       layoutDependency: a,
                       layoutId: "aLGD4vfQp",
                       children: [
-                        e(I, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(m, {
-                            children: e(r.h1, {
+                          children: jsx(ReactFragment, {
+                            children: jsx(motion.h1, {
                               style: {
                                 "--font-selector": "SW50ZXItRXh0cmFCb2xk",
                                 "--framer-font-family":
@@ -3629,8 +3595,8 @@ var ra = {
                           ...U(
                             {
                               jnA617SP9: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -3647,8 +3613,8 @@ var ra = {
                                 fonts: ["Inter-Bold"],
                               },
                               mve4REzqz: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -3665,8 +3631,8 @@ var ra = {
                                 fonts: ["Inter-Bold"],
                               },
                               V7QOBUaOQ: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -3687,7 +3653,7 @@ var ra = {
                             p,
                           ),
                         }),
-                        e(O, {
+                        jsx(O, {
                           href: { webPageId: "KeW3JpTIh" },
                           openInNewTab: !0,
                           ...U(
@@ -3698,7 +3664,7 @@ var ra = {
                             o,
                             p,
                           ),
-                          children: e(r.a, {
+                          children: jsx(motion.a, {
                             className: "framer-159ur1k framer-12lqqzh",
                             layoutDependency: a,
                             layoutId: "Gsh2Brus0",
@@ -3725,13 +3691,13 @@ var ra = {
                                 boxShadow: "none",
                               },
                             },
-                            children: e(v, {
-                              children: e(r.div, {
+                            children: jsx(DeviceSizeContainer, {
+                              children: jsx(motion.div, {
                                 className: "framer-1nsks02-container",
                                 layoutDependency: a,
                                 layoutId: "A5xd7X6ZQ-container",
                                 transformTemplate: q,
-                                children: e(B, {
+                                children: jsx(B, {
                                   height: "100%",
                                   id: "A5xd7X6ZQ",
                                   layoutId: "A5xd7X6ZQ",
@@ -3747,7 +3713,7 @@ var ra = {
                   ],
                 }),
               Xe() &&
-                g(Be, {
+                jsxs(Be, {
                   __perspectiveFX: !1,
                   __smartComponentFX: !0,
                   __targetOpacity: 1,
@@ -3760,16 +3726,16 @@ var ra = {
                   layoutId: "lr40aSRlE",
                   optimized: !0,
                   children: [
-                    g(r.div, {
+                    jsxs(motion.div, {
                       className: "framer-g9jd47",
                       layoutDependency: a,
                       layoutId: "e4Vbz1Z2S",
                       style: { opacity: 0 },
                       children: [
-                        e(I, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(m, {
-                            children: e(r.h1, {
+                          children: jsx(ReactFragment, {
+                            children: jsx(motion.h1, {
                               style: {
                                 "--font-selector": "SW50ZXItRXh0cmFCb2xk",
                                 "--framer-font-family":
@@ -3797,7 +3763,7 @@ var ra = {
                           verticalAlignment: "top",
                           withExternalLayout: !0,
                         }),
-                        e(r.div, {
+                        jsx(motion.div, {
                           className: "framer-1csv4r9",
                           layoutDependency: a,
                           layoutId: "GktTXLlcl",
@@ -3815,12 +3781,12 @@ var ra = {
                         }),
                       ],
                     }),
-                    e(v, {
-                      children: e(r.div, {
+                    jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-177ja1i-container",
                         layoutDependency: a,
                         layoutId: "fh9LnwgrK-container",
-                        children: e(C, {
+                        children: jsx(C, {
                           color: "rgb(255, 130, 102)",
                           height: "100%",
                           iconSearch: "Home",
@@ -3837,15 +3803,15 @@ var ra = {
                         }),
                       }),
                     }),
-                    g(r.div, {
+                    jsxs(motion.div, {
                       className: "framer-6nec28",
                       layoutDependency: a,
                       layoutId: "ngnrzrnC6",
                       children: [
-                        e(I, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(m, {
-                            children: e(r.h1, {
+                          children: jsx(ReactFragment, {
+                            children: jsx(motion.h1, {
                               style: {
                                 "--font-selector": "SW50ZXItRXh0cmFCb2xk",
                                 "--framer-font-family":
@@ -3874,8 +3840,8 @@ var ra = {
                           ...U(
                             {
                               bcMqa8ndK: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -3892,8 +3858,8 @@ var ra = {
                                 fonts: ["Inter-Bold"],
                               },
                               l1W_ZZ_U4: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -3910,8 +3876,8 @@ var ra = {
                                 fonts: ["Inter-Bold"],
                               },
                               MVG35Wb9S: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -3932,7 +3898,7 @@ var ra = {
                             p,
                           ),
                         }),
-                        e(O, {
+                        jsx(O, {
                           href: { webPageId: "KeW3JpTIh" },
                           openInNewTab: !0,
                           ...U(
@@ -3943,7 +3909,7 @@ var ra = {
                             o,
                             p,
                           ),
-                          children: e(r.a, {
+                          children: jsx(motion.a, {
                             className: "framer-1dwsbrn framer-12lqqzh",
                             layoutDependency: a,
                             layoutId: "EKoeBKtPS",
@@ -3973,13 +3939,13 @@ var ra = {
                                 WebkitBackdropFilter: "blur(5px)",
                               },
                             },
-                            children: e(v, {
-                              children: e(r.div, {
+                            children: jsx(DeviceSizeContainer, {
+                              children: jsx(motion.div, {
                                 className: "framer-1eh5hf5-container",
                                 layoutDependency: a,
                                 layoutId: "XIHptcaKT-container",
                                 transformTemplate: q,
-                                children: e(B, {
+                                children: jsx(B, {
                                   height: "100%",
                                   id: "XIHptcaKT",
                                   layoutId: "XIHptcaKT",
@@ -4042,11 +4008,11 @@ var ra = {
     ".framer-TJnpI.framer-v-ugt6d0 .framer-yfyxce-container { height: var(--framer-aspect-ratio-supported, 70px); }",
     '.framer-TJnpI[data-border="true"]::after, .framer-TJnpI [data-border="true"]::after { content: ""; border-width: var(--border-top-width, 0) var(--border-right-width, 0) var(--border-bottom-width, 0) var(--border-left-width, 0); border-color: var(--border-color, none); border-style: var(--border-style, none); width: 100%; height: 100%; position: absolute; box-sizing: border-box; left: 0; top: 0; border-radius: inherit; pointer-events: none; }',
   ],
-  ke = ie(fa, ma, "framer-TJnpI"),
+  ke = withCSS(fa, ma, "framer-TJnpI"),
   Ct = ke;
 ke.displayName = "Map";
 ke.defaultProps = { height: 800, width: 1200 };
-E(ke, {
+addPropertyControls(ke, {
   variant: {
     options: [
       "JxNX4Rz95",
@@ -4077,7 +4043,7 @@ E(ke, {
       "ClickzoomAustralia",
     ],
     title: "Variant",
-    type: y.Enum,
+    type: ControlType.Enum,
   },
   U61PmbVVJ: {
     defaultValue: {
@@ -4090,7 +4056,7 @@ E(ke, {
       type: "tween" /* CSS-like easing animation */,
     },
     title: "Camera ",
-    type: y.Transition,
+    type: ControlType.Transition,
   },
 });
 loadFonts(
@@ -4228,12 +4194,12 @@ loadFonts(
   ],
   { supportsExplicitInterCodegen: !0 },
 );
-var da = G(ue),
+var da = getFonts(ue),
   sa = Ue(ue),
-  ca = G(B),
-  pa = G(C),
-  ze = scheduleAppearAnimation(withFXWrapper(r.div)),
-  ua = G(W),
+  ca = getFonts(B),
+  pa = getFonts(C),
+  ze = scheduleAppearAnimation(withFXWrapper(motion.div)),
+  ua = getFonts(W),
   ha = [
     "ldXzQ12pX",
     "bOuLzzMjd",
@@ -4283,7 +4249,7 @@ var ba = {
     skewY: 0,
     transition: ba,
     x: 0,
-    y: 0,
+    ControlType: 0,
   },
   Me = {
     opacity: 0.001,
@@ -4294,18 +4260,18 @@ var ba = {
     skewX: 0,
     skewY: 0,
     x: 0,
-    y: 0,
+    ControlType: 0,
   },
   sr = (t, n) => `translateX(-50%) ${n}`,
   H = (t, n) => `translate(-50%, -50%) ${n}`,
   xa = (t, n) => `translateY(-50%) ${n}`,
   va = ({ value: t, children: n }) => {
-    let i = $(N),
+    let i = $(MotionContext),
       l = t ?? i.transition,
-      d = V(() => ({ ...i, transition: l }), [JSON.stringify(l)]);
-    return e(N.Provider, { value: d, children: n });
+      d = useMemo(() => ({ ...i, transition: l }), [JSON.stringify(l)]);
+    return jsx(MotionContext.Provider, { value: d, children: n });
   },
-  ka = r(m),
+  ka = motion(ReactFragment),
   wa = {
     "Australia Zoomed": "M0Et4gTFx",
     "Leiden Zoomed": "bOuLzzMjd",
@@ -4345,7 +4311,7 @@ var ba = {
   },
   Ca = (t, n) =>
     t.layoutDependency ? n.join("-") + t.layoutDependency : n.join("-"),
-  Sa = Z(function (t, n) {
+  Sa = forwardRef(function (t, n) {
     let { activeLocale: i, setLocale: l } = useLocale(),
       {
         style: d,
@@ -4435,7 +4401,7 @@ var ba = {
       u98bvkZxw: de,
       v3rSsXCMB: ce,
     });
-    let Je = M(null),
+    let Je = useRef(null),
       je = () =>
         ![
           "azG3hWBh4",
@@ -4453,17 +4419,17 @@ var ba = {
       qe = () => o === "azG3hWBh4",
       _e = () => !!["khufnQi62", "u98bvkZxw", "gp3RrFWbI"].includes(o),
       Xe = () => !!["EFypIGXHL", "M0Et4gTFx", "RXHfPsP4Y"].includes(o),
-      He = ee(),
+      He = useId(),
       Ze = [],
       cr = useDeviceSize();
-    return e(LayoutGroup, {
+    return jsx(LayoutGroup, {
       id: c ?? He,
-      children: e(ka, {
+      children: jsx(ka, {
         animate: w,
         initial: !1,
-        children: e(va, {
+        children: jsx(va, {
           value: k,
-          children: g(r.div, {
+          children: jsxs(motion.div, {
             ...S,
             ...R,
             className: cx(ga, ...Ze, "framer-npkfjt", h, L),
@@ -4495,13 +4461,13 @@ var ba = {
               p,
             ),
             children: [
-              e(v, {
-                children: e(r.div, {
+              jsx(DeviceSizeContainer, {
+                children: jsx(motion.div, {
                   className: "framer-1l1vu5j-container",
                   layoutDependency: a,
                   layoutId: "otMz8tZRS-container",
                   style: { opacity: 0.77 },
-                  children: e(sa, {
+                  children: jsx(sa, {
                     height: "100%",
                     id: "otMz8tZRS",
                     layoutId: "otMz8tZRS",
@@ -4511,35 +4477,35 @@ var ba = {
                     transitionDuration: 6.4,
                     width: "100%",
                     x: 696,
-                    y: 164,
+                    ControlType: 164,
                     zoom: 3,
                     ...P(
                       {
-                        azG3hWBh4: { x: 377, y: 235, zoom: 2 },
+                        azG3hWBh4: { x: 377, ControlType: 235, zoom: 2 },
                         bOuLzzMjd: { zoom: 8 },
                         EFypIGXHL: {
                           transitionDuration: 6.3,
                           x: 1257,
-                          y: 573,
+                          ControlType: 573,
                           zoom: 1,
                         },
                         gp3RrFWbI: {
                           transitionDuration: 3,
                           x: 742,
-                          y: 190,
+                          ControlType: 190,
                           zoom: 5,
                         },
-                        jkUj5YCWt: { x: 377, y: 235, zoom: 8 },
-                        khufnQi62: { x: 742, y: 190, zoom: 2 },
-                        M0Et4gTFx: { x: 1259, y: 573, zoom: 8 },
-                        RXHfPsP4Y: { x: 1259, y: 569, zoom: 5 },
+                        jkUj5YCWt: { x: 377, ControlType: 235, zoom: 8 },
+                        khufnQi62: { x: 742, ControlType: 190, zoom: 2 },
+                        M0Et4gTFx: { x: 1259, ControlType: 573, zoom: 8 },
+                        RXHfPsP4Y: { x: 1259, ControlType: 569, zoom: 5 },
                         TsvnB3zwu: {
                           transitionDuration: 3,
                           x: 377,
-                          y: 235,
+                          ControlType: 235,
                           zoom: 5,
                         },
-                        u98bvkZxw: { x: 742, y: 190, zoom: 8 },
+                        u98bvkZxw: { x: 742, ControlType: 190, zoom: 8 },
                         v3rSsXCMB: { transitionDuration: 3, zoom: 5 },
                       },
                       o,
@@ -4549,7 +4515,7 @@ var ba = {
                 }),
               }),
               je() &&
-                g(ze, {
+                jsxs(ze, {
                   __perspectiveFX: !1,
                   __smartComponentFX: !0,
                   __targetOpacity: 1,
@@ -4562,20 +4528,20 @@ var ba = {
                   layoutId: "B05HtpbdX",
                   optimized: !0,
                   children: [
-                    e(O, {
+                    jsx(O, {
                       href: { webPageId: "KeW3JpTIh" },
-                      children: g(r.a, {
+                      children: jsxs(motion.a, {
                         className: "framer-ahusfa framer-1in2lod",
                         layoutDependency: a,
                         layoutId: "kPcYqJoST",
                         children: [
-                          e(v, {
-                            children: e(r.div, {
+                          jsx(DeviceSizeContainer, {
+                            children: jsx(motion.div, {
                               className: "framer-gufn4n-container",
                               layoutDependency: a,
                               layoutId: "R5YfT1PIS-container",
                               transformTemplate: sr,
-                              children: e(B, {
+                              children: jsx(B, {
                                 height: "100%",
                                 id: "R5YfT1PIS",
                                 layoutId: "R5YfT1PIS",
@@ -4584,10 +4550,10 @@ var ba = {
                               }),
                             }),
                           }),
-                          e(I, {
+                          jsx(RichTextComponent, {
                             __fromCanvasComponent: !0,
-                            children: e(m, {
-                              children: e(r.h1, {
+                            children: jsx(ReactFragment, {
+                              children: jsx(motion.h1, {
                                 style: {
                                   "--font-selector": "SW50ZXItQm9sZA==",
                                   "--framer-font-family":
@@ -4616,8 +4582,8 @@ var ba = {
                             ...P(
                               {
                                 v3rSsXCMB: {
-                                  children: e(m, {
-                                    children: e(r.h1, {
+                                  children: jsx(ReactFragment, {
+                                    children: jsx(motion.h1, {
                                       style: {
                                         "--font-selector":
                                           "SW50ZXItRXh0cmFCb2xk",
@@ -4642,12 +4608,12 @@ var ba = {
                         ],
                       }),
                     }),
-                    e(v, {
-                      children: e(r.div, {
+                    jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-1mdym93-container",
                         layoutDependency: a,
                         layoutId: "pWVuvjrbz-container",
-                        children: e(C, {
+                        children: jsx(C, {
                           color: "rgb(255, 130, 102)",
                           height: "100%",
                           iconSearch: "Home",
@@ -4664,16 +4630,16 @@ var ba = {
                         }),
                       }),
                     }),
-                    g(r.div, {
+                    jsxs(motion.div, {
                       className: "framer-e9qds4",
                       layoutDependency: a,
                       layoutId: "fwMFnWkge",
                       style: { opacity: 0 },
                       children: [
-                        e(I, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(m, {
-                            children: e(r.h1, {
+                          children: jsx(ReactFragment, {
+                            children: jsx(motion.h1, {
                               style: {
                                 "--font-selector": "SW50ZXItRXh0cmFCb2xk",
                                 "--framer-font-family":
@@ -4701,7 +4667,7 @@ var ba = {
                           verticalAlignment: "top",
                           withExternalLayout: !0,
                         }),
-                        e(r.div, {
+                        jsx(motion.div, {
                           className: "framer-8r8ndq",
                           layoutDependency: a,
                           layoutId: "rtfIBBo0K",
@@ -4721,7 +4687,7 @@ var ba = {
                     }),
                   ],
                 }),
-              g(r.div, {
+              jsxs(motion.div, {
                 className: "framer-b9vk3d",
                 "data-border": !0,
                 "data-framer-name": "Leganda",
@@ -4741,7 +4707,7 @@ var ba = {
                 },
                 transformTemplate: sr,
                 children: [
-                  e(r.div, {
+                  jsx(motion.div, {
                     className: "framer-1te417n",
                     "data-framer-name": "Leiden",
                     "data-highlight": !0,
@@ -4756,12 +4722,12 @@ var ba = {
                       borderTopRightRadius: 12,
                       WebkitBackdropFilter: "blur(5px)",
                     },
-                    children: e(v, {
-                      children: e(r.div, {
+                    children: jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-hud1fr-container",
                         layoutDependency: a,
                         layoutId: "LF9qijk5Z-container",
-                        children: e(W, {
+                        children: jsx(W, {
                           bPIuE13EX: "NICU Leiden",
                           height: "100%",
                           id: "LF9qijk5Z",
@@ -4789,7 +4755,7 @@ var ba = {
                       }),
                     }),
                   }),
-                  e(r.div, {
+                  jsx(motion.div, {
                     className: "framer-nofxq9",
                     "data-framer-name": "Philadelphia",
                     "data-highlight": !0,
@@ -4804,12 +4770,12 @@ var ba = {
                       borderTopRightRadius: 12,
                       WebkitBackdropFilter: "blur(5px)",
                     },
-                    children: e(v, {
-                      children: e(r.div, {
+                    children: jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-brlnui-container",
                         layoutDependency: a,
                         layoutId: "QSd3chKo_-container",
-                        children: e(W, {
+                        children: jsx(W, {
                           bPIuE13EX: "NICU Philadelphia",
                           height: "100%",
                           id: "QSd3chKo_",
@@ -4829,7 +4795,7 @@ var ba = {
                       }),
                     }),
                   }),
-                  e(r.div, {
+                  jsx(motion.div, {
                     className: "framer-1lpd28d",
                     "data-framer-name": "Vienna",
                     "data-highlight": !0,
@@ -4844,12 +4810,12 @@ var ba = {
                       borderTopRightRadius: 12,
                       WebkitBackdropFilter: "blur(5px)",
                     },
-                    children: e(v, {
-                      children: e(r.div, {
+                    children: jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-mhxrq2-container",
                         layoutDependency: a,
                         layoutId: "rFUa1fxSv-container",
-                        children: e(W, {
+                        children: jsx(W, {
                           bPIuE13EX: "NICU Vienna",
                           height: "100%",
                           id: "rFUa1fxSv",
@@ -4869,7 +4835,7 @@ var ba = {
                       }),
                     }),
                   }),
-                  e(r.div, {
+                  jsx(motion.div, {
                     className: "framer-1t7tyhv",
                     "data-framer-name": "Melbourne",
                     "data-highlight": !0,
@@ -4884,12 +4850,12 @@ var ba = {
                       borderTopRightRadius: 12,
                       WebkitBackdropFilter: "blur(5px)",
                     },
-                    children: e(v, {
-                      children: e(r.div, {
+                    children: jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-qrxf3h-container",
                         layoutDependency: a,
                         layoutId: "Or9Gi7NG6-container",
-                        children: e(W, {
+                        children: jsx(W, {
                           bPIuE13EX: "NICU Melbourne",
                           height: "100%",
                           id: "Or9Gi7NG6",
@@ -4912,7 +4878,7 @@ var ba = {
                 ],
               }),
               Ce() &&
-                g(ze, {
+                jsxs(ze, {
                   __perspectiveFX: !1,
                   __smartComponentFX: !0,
                   __targetOpacity: 1,
@@ -4925,16 +4891,16 @@ var ba = {
                   layoutId: "v_lR4sN_X",
                   optimized: !0,
                   children: [
-                    g(r.div, {
+                    jsxs(motion.div, {
                       className: "framer-pt3ixl",
                       layoutDependency: a,
                       layoutId: "C_N0TqQIQ",
                       style: { opacity: 0 },
                       children: [
-                        e(I, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(m, {
-                            children: e(r.h1, {
+                          children: jsx(ReactFragment, {
+                            children: jsx(motion.h1, {
                               style: {
                                 "--font-selector": "SW50ZXItRXh0cmFCb2xk",
                                 "--framer-font-family":
@@ -4962,7 +4928,7 @@ var ba = {
                           verticalAlignment: "top",
                           withExternalLayout: !0,
                         }),
-                        e(r.div, {
+                        jsx(motion.div, {
                           className: "framer-1tz4smm",
                           layoutDependency: a,
                           layoutId: "Qpn1Hfo4F",
@@ -4981,12 +4947,12 @@ var ba = {
                       ],
                     }),
                     Ce() &&
-                      e(v, {
-                        children: e(r.div, {
+                      jsx(DeviceSizeContainer, {
+                        children: jsx(motion.div, {
                           className: "framer-3ye91t-container",
                           layoutDependency: a,
                           layoutId: "uj2R8fT1d-container",
-                          children: e(C, {
+                          children: jsx(C, {
                             color: "rgb(255, 130, 102)",
                             height: "100%",
                             iconSearch: "Home",
@@ -5003,15 +4969,15 @@ var ba = {
                           }),
                         }),
                       }),
-                    g(r.div, {
+                    jsxs(motion.div, {
                       className: "framer-1ehjis4",
                       layoutDependency: a,
                       layoutId: "RWXzM8a9b",
                       children: [
-                        e(I, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(m, {
-                            children: e(r.h1, {
+                          children: jsx(ReactFragment, {
+                            children: jsx(motion.h1, {
                               style: {
                                 "--font-selector": "SW50ZXItRXh0cmFCb2xk",
                                 "--framer-font-family":
@@ -5040,8 +5006,8 @@ var ba = {
                           ...P(
                             {
                               azG3hWBh4: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -5058,8 +5024,8 @@ var ba = {
                                 fonts: ["Inter-Bold"],
                               },
                               jkUj5YCWt: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -5076,8 +5042,8 @@ var ba = {
                                 fonts: ["Inter-Bold"],
                               },
                               TsvnB3zwu: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -5099,7 +5065,7 @@ var ba = {
                           ),
                         }),
                         We() &&
-                          e(O, {
+                          jsx(O, {
                             href: { webPageId: "KeW3JpTIh" },
                             openInNewTab: !0,
                             ...P(
@@ -5110,7 +5076,7 @@ var ba = {
                               o,
                               p,
                             ),
-                            children: e(r.a, {
+                            children: jsx(motion.a, {
                               className: "framer-1c45hom framer-1in2lod",
                               layoutDependency: a,
                               layoutId: "hvBbqggau",
@@ -5131,13 +5097,13 @@ var ba = {
                                   backgroundColor: "rgba(0, 0, 0, 0)",
                                 },
                               },
-                              children: e(v, {
-                                children: e(r.div, {
+                              children: jsx(DeviceSizeContainer, {
+                                children: jsx(motion.div, {
                                   className: "framer-1y4vphs-container",
                                   layoutDependency: a,
                                   layoutId: "VgWtmQHDX-container",
                                   transformTemplate: H,
-                                  children: e(B, {
+                                  children: jsx(B, {
                                     height: "100%",
                                     id: "VgWtmQHDX",
                                     layoutId: "VgWtmQHDX",
@@ -5157,20 +5123,20 @@ var ba = {
                             }),
                           }),
                         qe() &&
-                          e(O, {
+                          jsx(O, {
                             href: { webPageId: "lwdo_bYrZ" },
-                            children: e(r.a, {
+                            children: jsx(motion.a, {
                               className: "framer-1rhkmjw framer-1in2lod",
                               layoutDependency: a,
                               layoutId: "hvP7PcRTR",
                               transformTemplate: xa,
-                              children: e(v, {
-                                children: e(r.div, {
+                              children: jsx(DeviceSizeContainer, {
+                                children: jsx(motion.div, {
                                   className: "framer-15nvz7j-container",
                                   layoutDependency: a,
                                   layoutId: "KCH6u39Y0-container",
                                   transformTemplate: H,
-                                  children: e(B, {
+                                  children: jsx(B, {
                                     height: "100%",
                                     id: "KCH6u39Y0",
                                     layoutId: "KCH6u39Y0",
@@ -5193,7 +5159,7 @@ var ba = {
                   ],
                 }),
               _e() &&
-                g(ze, {
+                jsxs(ze, {
                   __perspectiveFX: !1,
                   __smartComponentFX: !0,
                   __targetOpacity: 1,
@@ -5206,16 +5172,16 @@ var ba = {
                   layoutId: "A_DlZ7dhh",
                   optimized: !0,
                   children: [
-                    g(r.div, {
+                    jsxs(motion.div, {
                       className: "framer-mvdrk1",
                       layoutDependency: a,
                       layoutId: "NIpag3wT5",
                       style: { opacity: 0 },
                       children: [
-                        e(I, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(m, {
-                            children: e(r.h1, {
+                          children: jsx(ReactFragment, {
+                            children: jsx(motion.h1, {
                               style: {
                                 "--font-selector": "SW50ZXItRXh0cmFCb2xk",
                                 "--framer-font-family":
@@ -5243,7 +5209,7 @@ var ba = {
                           verticalAlignment: "top",
                           withExternalLayout: !0,
                         }),
-                        e(r.div, {
+                        jsx(motion.div, {
                           className: "framer-1gx4yom",
                           layoutDependency: a,
                           layoutId: "GhaHyTnGd",
@@ -5261,12 +5227,12 @@ var ba = {
                         }),
                       ],
                     }),
-                    e(v, {
-                      children: e(r.div, {
+                    jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-64udts-container",
                         layoutDependency: a,
                         layoutId: "EVonYIip_-container",
-                        children: e(C, {
+                        children: jsx(C, {
                           color: "rgb(255, 130, 102)",
                           height: "100%",
                           iconSearch: "Home",
@@ -5283,15 +5249,15 @@ var ba = {
                         }),
                       }),
                     }),
-                    g(r.div, {
+                    jsxs(motion.div, {
                       className: "framer-17crzj9",
                       layoutDependency: a,
                       layoutId: "ibsBmrHII",
                       children: [
-                        e(I, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(m, {
-                            children: e(r.h1, {
+                          children: jsx(ReactFragment, {
+                            children: jsx(motion.h1, {
                               style: {
                                 "--font-selector": "SW50ZXItRXh0cmFCb2xk",
                                 "--framer-font-family":
@@ -5320,8 +5286,8 @@ var ba = {
                           ...P(
                             {
                               gp3RrFWbI: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -5338,8 +5304,8 @@ var ba = {
                                 fonts: ["Inter-Bold"],
                               },
                               khufnQi62: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -5356,8 +5322,8 @@ var ba = {
                                 fonts: ["Inter-Bold"],
                               },
                               u98bvkZxw: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -5378,7 +5344,7 @@ var ba = {
                             p,
                           ),
                         }),
-                        e(O, {
+                        jsx(O, {
                           href: { webPageId: "KeW3JpTIh" },
                           openInNewTab: !0,
                           ...P(
@@ -5390,7 +5356,7 @@ var ba = {
                             o,
                             p,
                           ),
-                          children: e(r.a, {
+                          children: jsx(motion.a, {
                             className: "framer-m3seph framer-1in2lod",
                             layoutDependency: a,
                             layoutId: "lCJNyQP8Q",
@@ -5417,13 +5383,13 @@ var ba = {
                                 boxShadow: "none",
                               },
                             },
-                            children: e(v, {
-                              children: e(r.div, {
+                            children: jsx(DeviceSizeContainer, {
+                              children: jsx(motion.div, {
                                 className: "framer-1ojfcwv-container",
                                 layoutDependency: a,
                                 layoutId: "OdfSL_9tm-container",
                                 transformTemplate: H,
-                                children: e(B, {
+                                children: jsx(B, {
                                   height: "100%",
                                   id: "OdfSL_9tm",
                                   layoutId: "OdfSL_9tm",
@@ -5439,7 +5405,7 @@ var ba = {
                   ],
                 }),
               Xe() &&
-                g(ze, {
+                jsxs(ze, {
                   __perspectiveFX: !1,
                   __smartComponentFX: !0,
                   __targetOpacity: 1,
@@ -5452,16 +5418,16 @@ var ba = {
                   layoutId: "bPZQn4cMD",
                   optimized: !0,
                   children: [
-                    g(r.div, {
+                    jsxs(motion.div, {
                       className: "framer-b4znhv",
                       layoutDependency: a,
                       layoutId: "OPVoTF9Yl",
                       style: { opacity: 0 },
                       children: [
-                        e(I, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(m, {
-                            children: e(r.h1, {
+                          children: jsx(ReactFragment, {
+                            children: jsx(motion.h1, {
                               style: {
                                 "--font-selector": "SW50ZXItRXh0cmFCb2xk",
                                 "--framer-font-family":
@@ -5489,7 +5455,7 @@ var ba = {
                           verticalAlignment: "top",
                           withExternalLayout: !0,
                         }),
-                        e(r.div, {
+                        jsx(motion.div, {
                           className: "framer-1h4cega",
                           layoutDependency: a,
                           layoutId: "Aa9K2b7wc",
@@ -5507,12 +5473,12 @@ var ba = {
                         }),
                       ],
                     }),
-                    e(v, {
-                      children: e(r.div, {
+                    jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-1nu4269-container",
                         layoutDependency: a,
                         layoutId: "p8Y4RJsNL-container",
-                        children: e(C, {
+                        children: jsx(C, {
                           color: "rgb(255, 130, 102)",
                           height: "100%",
                           iconSearch: "Home",
@@ -5529,15 +5495,15 @@ var ba = {
                         }),
                       }),
                     }),
-                    g(r.div, {
+                    jsxs(motion.div, {
                       className: "framer-ngc1t1",
                       layoutDependency: a,
                       layoutId: "gFYhQMcwZ",
                       children: [
-                        e(I, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(m, {
-                            children: e(r.h1, {
+                          children: jsx(ReactFragment, {
+                            children: jsx(motion.h1, {
                               style: {
                                 "--font-selector": "SW50ZXItRXh0cmFCb2xk",
                                 "--framer-font-family":
@@ -5566,8 +5532,8 @@ var ba = {
                           ...P(
                             {
                               EFypIGXHL: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -5584,8 +5550,8 @@ var ba = {
                                 fonts: ["Inter-Bold"],
                               },
                               M0Et4gTFx: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -5602,8 +5568,8 @@ var ba = {
                                 fonts: ["Inter-Bold"],
                               },
                               RXHfPsP4Y: {
-                                children: e(m, {
-                                  children: e(r.h1, {
+                                children: jsx(ReactFragment, {
+                                  children: jsx(motion.h1, {
                                     style: {
                                       "--font-selector": "SW50ZXItQm9sZA==",
                                       "--framer-font-family":
@@ -5624,7 +5590,7 @@ var ba = {
                             p,
                           ),
                         }),
-                        e(O, {
+                        jsx(O, {
                           href: { webPageId: "KeW3JpTIh" },
                           openInNewTab: !0,
                           ...P(
@@ -5636,7 +5602,7 @@ var ba = {
                             o,
                             p,
                           ),
-                          children: e(r.a, {
+                          children: jsx(motion.a, {
                             className: "framer-zocbwt framer-1in2lod",
                             layoutDependency: a,
                             layoutId: "VN6HQKeE5",
@@ -5666,13 +5632,13 @@ var ba = {
                                 backgroundColor: "rgba(0, 0, 0, 0)",
                               },
                             },
-                            children: e(v, {
-                              children: e(r.div, {
+                            children: jsx(DeviceSizeContainer, {
+                              children: jsx(motion.div, {
                                 className: "framer-1bfvwiu-container",
                                 layoutDependency: a,
                                 layoutId: "idmzrgsyJ-container",
                                 transformTemplate: H,
-                                children: e(B, {
+                                children: jsx(B, {
                                   height: "100%",
                                   id: "idmzrgsyJ",
                                   layoutId: "idmzrgsyJ",
@@ -5749,11 +5715,11 @@ var ba = {
     ".framer-u1akf.framer-v-1nz7xst .framer-1mdym93-container { height: var(--framer-aspect-ratio-supported, 40px); }",
     '.framer-u1akf[data-border="true"]::after, .framer-u1akf [data-border="true"]::after { content: ""; border-width: var(--border-top-width, 0) var(--border-right-width, 0) var(--border-bottom-width, 0) var(--border-left-width, 0); border-color: var(--border-color, none); border-style: var(--border-style, none); width: 100%; height: 100%; position: absolute; box-sizing: border-box; left: 0; top: 0; border-radius: inherit; pointer-events: none; }',
   ],
-  we = ie(Sa, Ta, "framer-u1akf"),
+  we = withCSS(Sa, Ta, "framer-u1akf"),
   zt = we;
 we.displayName = "Map mobile 2";
 we.defaultProps = { height: 800, width: 1200 };
-E(we, {
+addPropertyControls(we, {
   variant: {
     options: [
       "ldXzQ12pX",
@@ -5784,7 +5750,7 @@ E(we, {
       "ClickedLeiden",
     ],
     title: "Variant",
-    type: y.Enum,
+    type: ControlType.Enum,
   },
   U61PmbVVJ: {
     defaultValue: {
@@ -5797,7 +5763,7 @@ E(we, {
       type: "tween" /* CSS-like easing animation */,
     },
     title: "Camera ",
-    type: y.Transition,
+    type: ControlType.Transition,
   },
 });
 loadFonts(
@@ -5940,7 +5906,7 @@ var Fa = {
     scrollSnapStop: "always",
     transition: "scroll-snap-align 1.0s ease-in-out",
   },
-  Et = (t) => (n) => e(t, { ...n, style: Fa });
+  Et = (t) => (n) => jsx(t, { ...n, style: Fa });
 var Ra = { scrollSnapType: "y mandatory" },
-  Wt = (t) => (n) => e(t, { ...n, style: Ra });
-export { Aa as a, Ct as b, zt as c, Et as d, Wt as e };
+  Wt = (t) => (n) => jsx(t, { ...n, style: Ra });
+export { Aa as a, Ct as b, zt as c, Et as d, Wt as jsx };

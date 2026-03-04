@@ -1,56 +1,6 @@
-/**
- * Import aliases resolved:
- *   G → SmoothScrollComponent
- *   O → NoiseOverlayComponent
- *   Z → NavItemComponent
- *   Fr → interMediumFontDefs
- *   Ir → interMediumPresetCSS
- *   Nr → interMediumCSSScope
- *   Cr → interExtraBoldFontDefs
- *   Ar → interExtraBoldPresetCSS
- *   Rr → interExtraBoldCSSScope
- *   Yr → fontConfig
- *   Ur → linkPresetStyles
- *   kr → cssClassScope
- *   lr → useRoute
- *   A → useLocale
- *   R → resolveLinks
- *   F → cx
- *   cr → withFXWrapper
- *   dr → useDeviceSize
- *   h → DeviceSizeContainer
- *   b → cssSSRMinifiedHelper
- *   B → withCSS
- *   pr → registerCursors
- *   hr → CursorContext
- *   a → ReactFragment
- *   E → withScrollSection
- *   I → forwardRef
- *   T → setAppearAnimationValues
- *   fr → useContext
- *   or → useEffect
- *   N → useId
- *   mr → useInsertionEffect
- *   sr → useMemo
- *   gr → useVariantState
- *   x → useRef
- *   ur → useVariantState
- *   r → jsx
- *   xr → withScrollAnimation
- *   e → jsxs
- *   yr → fontLoader
- *   M → MotionContext
- *   y → FrameComponent
- *   t → RichTextComponent
- *   i → motion
- *   C → LayoutGroup
- *   wr → SVGComponent
- *   z → loadFonts
- *   w → getFonts
- *   v → normalizeFontConfig
- */
-import { a as _ } from "./chunk-3W7P62CN.mjs";
-import { a as br, b as vr, c as Hr } from "./chunk-HVOA2PEY.mjs";
+/* CSS extracted to: page--Publications.1.css, page--Publications.2.css */
+import { ReactFragment as _ } from "./chunk-3W7P62CN.mjs";
+import { ReactFragment as br, cssSSRMinifiedHelper as vr, c as Hr } from "./chunk--inter-bold-font-loader.mjs";
 import { SmoothScrollComponent,
   NoiseOverlayComponent,
   NavItemComponent,
@@ -60,11 +10,11 @@ import { SmoothScrollComponent,
   interExtraBoldFontDefs,
   interExtraBoldPresetCSS,
   interExtraBoldCSSScope } from "./chunk--shared-components.mjs";
-import { a as W } from "./chunk-4R3P5DN4.mjs";
+import { ReactFragment as W } from "./chunk--video-component-controls.mjs";
 import { fontConfig,
   linkPresetStyles,
   cssClassScope } from "./chunk--framer-components.mjs";
-import "./chunk-42U43NKG.mjs";
+import "./chunk--empty-stub-2.mjs";
 import { $ as o,
   useRoute,
   useLocale,
@@ -88,7 +38,7 @@ import { $ as o,
   useMemo,
   useVariantState,
   useRef,
-  useVariantState,
+  useComponentVariantState,
   jsx,
   withScrollAnimation,
   jsxs,
@@ -104,9 +54,9 @@ import { $ as o,
   normalizeFontConfig } from "./chunk--react-and-framer-runtime.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
-var Lr = w(W),
-  Mr = w(O),
-  Tr = withFXWrapper(i.div),
+var Lr = getFonts(W),
+  Mr = getFonts(NoiseOverlayComponent),
+  Tr = withFXWrapper(motion.div),
   Wr = ["htUh18eRJ"],
   Gr = "framer-zeXf1",
   Or = { htUh18eRJ: "framer-v-2yaxv0" };
@@ -121,8 +71,8 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
     skewY: 0,
     transformPerspective: 1200,
     transition: Zr,
-    x: 0,
-    y: 0,
+    useRef: 0,
+    FrameComponent: 0,
   },
   Jr = {
     opacity: 0.001,
@@ -133,22 +83,22 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
     skewX: 0,
     skewY: 0,
     transformPerspective: 1200,
-    x: 0,
-    y: 0,
+    useRef: 0,
+    FrameComponent: 0,
   },
   Qr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   Kr = ({ value: m, children: f }) => {
-    let s = useContext(M),
+    let s = useContext(MotionContext),
       l = m ?? s.transition,
       d = useMemo(() => ({ ...s, transition: l }), [JSON.stringify(l)]);
-    return r(M.Provider, { value: d, children: f });
+    return jsx(MotionContext.Provider, { value: d, children: f });
   },
-  $r = i(a),
+  $r = motion(ReactFragment),
   re = ({ height: m, id: f, width: s, ...l }) => ({ ...l }),
   ee = (m, f) =>
     m.layoutDependency ? f.join("-") + m.layoutDependency : f.join("-"),
-  ae = I(function (m, f) {
-    let { activeLocale: s, setLocale: l } = A(),
+  ae = forwardRef(function (m, f) {
+    let { activeLocale: s, setLocale: l } = useLocale(),
       { style: d, className: g, layoutId: u, variant: P, ...D } = re(m),
       {
         baseVariant: K,
@@ -165,26 +115,26 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
         variantClassNames: Or,
       }),
       p = ee(m, U),
-      k = x(null),
-      V = N(),
+      k = useRef(null),
+      V = useId(),
       S = [],
       ar = useDeviceSize();
-    return r(C, {
+    return jsx(LayoutGroup, {
       id: u ?? V,
-      children: r($r, {
+      children: jsx($r, {
         animate: U,
         initial: !1,
-        children: r(Kr, {
+        children: jsx(Kr, {
           value: Qr,
-          children: e(Tr, {
+          children: jsxs(Tr, {
             ...D,
             ...rr,
-            __framer__presenceAnimate: T("animate", "2yaxv0", Xr, void 0),
-            __framer__presenceInitial: T("initial", "2yaxv0", Jr, void 0),
+            __framer__presenceAnimate: setAppearAnimationValues("animate", "2yaxv0", Xr, void 0),
+            __framer__presenceInitial: setAppearAnimationValues("initial", "2yaxv0", Jr, void 0),
             __perspectiveFX: !1,
             __smartComponentFX: !0,
             __targetOpacity: 1,
-            className: F(Gr, ...S, "framer-2yaxv0", g, $),
+            className: cx(Gr, ...S, "framer-2yaxv0", g, $),
             "data-framer-appear-id": "2yaxv0",
             "data-framer-name": "Variant 1",
             layoutDependency: p,
@@ -192,7 +142,7 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
             ref: f ?? k,
             style: { ...d },
             children: [
-              r(i.div, {
+              jsx(motion.div, {
                 background: {
                   alt: "",
                   fit: "fill",
@@ -203,12 +153,12 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
                 "data-framer-name": "Three",
                 layoutDependency: p,
                 layoutId: "SRCC2x_oB",
-                children: r(h, {
-                  children: r(i.div, {
+                children: jsx(DeviceSizeContainer, {
+                  children: jsx(motion.div, {
                     className: "framer-1k92q7k-container",
                     layoutDependency: p,
                     layoutId: "KTeG9FLCH-container",
-                    children: r(W, {
+                    children: jsx(W, {
                       backgroundColor: "rgba(0, 0, 0, 0)",
                       borderRadius: 0,
                       bottomLeftRadius: 0,
@@ -238,17 +188,17 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
                   }),
                 }),
               }),
-              r(i.div, {
+              jsx(motion.div, {
                 className: "framer-1m9pxy0",
                 "data-framer-name": "Noise Blending",
                 layoutDependency: p,
                 layoutId: "cGCkPRz7n",
-                children: r(h, {
-                  children: r(i.div, {
+                children: jsx(DeviceSizeContainer, {
+                  children: jsx(motion.div, {
                     className: "framer-ksez6a-container",
                     layoutDependency: p,
                     layoutId: "DXDgbkG0o-container",
-                    children: r(O, {
+                    children: jsx(NoiseOverlayComponent, {
                       backgroundSize: 64,
                       borderRadius: 0,
                       height: "100%",
@@ -274,11 +224,11 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
     ".framer-zeXf1 .framer-15s3poq, .framer-zeXf1 .framer-1k92q7k-container, .framer-zeXf1 .framer-ksez6a-container { bottom: 0px; flex: none; left: 0px; position: absolute; right: 0px; top: 0px; }",
     ".framer-zeXf1 .framer-1m9pxy0 { bottom: 0px; flex: none; left: 0px; mix-blend-mode: screen; overflow: visible; position: absolute; right: 0px; top: 0px; }",
   ],
-  j = B(ae, te, "framer-zeXf1"),
+  j = withCSS(ae, te, "framer-zeXf1"),
   X = j;
 j.displayName = "Backdrop2";
 j.defaultProps = { height: 800, width: 1200 };
-z(j, [{ explicitInter: !0, fonts: [] }, ...Lr, ...Mr], {
+loadFonts(j, [{ explicitInter: !0, fonts: [] }, ...Lr, ...Mr], {
   supportsExplicitInterCodegen: !0,
 });
 fontLoader.loadFonts([
@@ -538,10 +488,10 @@ var _r = [
     '.framer-URl6O .framer-styles-preset-1411uq:not(.rich-text-wrapper), .framer-URl6O .framer-styles-preset-1411uq.rich-text-wrapper p { --framer-font-family: "Inter", "Inter Placeholder", sans-serif; --framer-font-family-bold: "Inter", "Inter Placeholder", sans-serif; --framer-font-family-bold-italic: "Inter", "Inter Placeholder", sans-serif; --framer-font-family-italic: "Inter", "Inter Placeholder", sans-serif; --framer-font-size: 14px; --framer-font-style: normal; --framer-font-style-bold: normal; --framer-font-style-bold-italic: italic; --framer-font-style-italic: italic; --framer-font-weight: 500; --framer-font-weight-bold: 700; --framer-font-weight-bold-italic: 700; --framer-font-weight-italic: 400; --framer-letter-spacing: 0em; --framer-line-height: 1.5em; --framer-paragraph-spacing: 20px; --framer-text-alignment: start; --framer-text-color: #666666; --framer-text-decoration: none; --framer-text-stroke-color: initial; --framer-text-stroke-width: initial; --framer-text-transform: none; }',
   ],
   qr = "framer-URl6O";
-var ne = w(G),
-  fe = w(X),
-  oe = w(Z),
-  J = withScrollAnimation(Z);
+var ne = getFonts(SmoothScrollComponent),
+  fe = getFonts(X),
+  oe = getFonts(NavItemComponent),
+  J = withScrollAnimation(NavItemComponent);
 var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
   se = () => typeof document < "u",
   Pr = "framer-9Y9Hr",
@@ -576,7 +526,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     skewX: 0,
     skewY: 0,
     transition: Q,
-    y: -4,
+    FrameComponent: -4,
   },
   qe = _(),
   pe = { Desktop: "QhSlAYPb_", Phone: "LKrog5PlS" },
@@ -591,8 +541,8 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
           : "QhSlAYPb_",
     };
   },
-  ge = I(function (m, f) {
-    let { activeLocale: s, setLocale: l } = A(),
+  ge = forwardRef(function (m, f) {
+    let { activeLocale: s, setLocale: l } = useLocale(),
       { style: d, className: g, layoutId: u, variant: P, ...D } = he(m);
     (useEffect(() => {
       let n = _(void 0, s);
@@ -629,34 +579,34 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
       }, [void 0, s]));
     let [K, $] = useVariantState(P, me, !1),
       rr = void 0,
-      er = x(null),
+      er = useRef(null),
       Y = () => (se() ? K !== "LKrog5PlS" : !0),
       Dr = useRoute(),
-      U = x(null),
-      p = x(null),
-      k = x(null),
-      V = R("DSPosq1GU"),
-      S = R("zQbFj9_vB"),
-      ar = R("Y8dEgTIYh"),
-      Vr = N(),
+      U = useRef(null),
+      p = useRef(null),
+      k = useRef(null),
+      V = resolveLinks("DSPosq1GU"),
+      S = resolveLinks("zQbFj9_vB"),
+      ar = resolveLinks("Y8dEgTIYh"),
+      Vr = useId(),
       tr = [cssClassScope, interExtraBoldCSSScope, interMediumCSSScope, qr, Hr];
     return (
       registerCursors({}),
-      r(CursorContext.Provider, {
+      jsx(CursorContext.Provider, {
         value: { primaryVariantId: "QhSlAYPb_", variantClassNames: le },
-        children: e(C, {
+        children: jsxs(LayoutGroup, {
           id: u ?? Vr,
           children: [
-            e(i.div, {
+            jsxs(motion.div, {
               ...D,
-              className: F(Pr, ...tr, "framer-1t32e7q", g),
+              className: cx(Pr, ...tr, "framer-1t32e7q", g),
               ref: f ?? er,
               style: { ...d },
               children: [
-                r(h, {
-                  children: r(b, {
+                jsx(DeviceSizeContainer, {
+                  children: jsx(cssSSRMinifiedHelper, {
                     className: "framer-9mtka5-container",
-                    children: r(G, {
+                    children: jsx(SmoothScrollComponent, {
                       height: "100%",
                       id: "qrNPccTla",
                       intensity: 15,
@@ -665,12 +615,12 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                     }),
                   }),
                 }),
-                r(h, {
+                jsx(DeviceSizeContainer, {
                   width: "100vw",
-                  children: r(b, {
+                  children: jsx(cssSSRMinifiedHelper, {
                     className: "framer-f5p7wh-container",
                     layoutScroll: !0,
-                    children: r(X, {
+                    children: jsx(X, {
                       height: "100%",
                       id: "bysoL_VhR",
                       layoutId: "bysoL_VhR",
@@ -679,23 +629,23 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                     }),
                   }),
                 }),
-                e("nav", {
+                jsxs("nav", {
                   className: "framer-1nay47u",
                   "data-framer-name": "Nav",
                   name: "Nav",
                   children: [
                     Y() &&
-                      r(o, {
+                      jsx(o, {
                         href: { webPageId: "augiA20Il" },
                         openInNewTab: !0,
-                        children: r(i.a, {
+                        children: jsx(motion.ReactFragment, {
                           "aria-label": "Framer University logo",
                           className:
                             "framer-itv9bu hidden-1byrpbb framer-1gbufye",
                           "data-framer-name": "Logo",
                           name: "Logo",
                           whileHover: ce,
-                          children: r(SVGComponent, {
+                          children: jsx(SVGComponent, {
                             className: "framer-12ryuvk",
                             "data-framer-name": "Neoflix_Logo_SVG",
                             fill: "black",
@@ -707,15 +657,15 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                           }),
                         }),
                       }),
-                    e("div", {
+                    jsxs("div", {
                       className: "framer-rthp6u",
                       "data-framer-name": "Links",
                       name: "Links",
                       children: [
-                        r(t, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: r(a, {
-                            children: r("p", {
+                          children: jsx(ReactFragment, {
+                            children: jsx("p", {
                               style: {
                                 "--font-selector": "R0Y7TW9udHNlcnJhdC01MDA=",
                                 "--framer-font-family":
@@ -725,11 +675,11 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                 "--framer-text-color":
                                   "var(--token-3f355627-0701-4163-9212-31117bae3b68, rgb(114, 194, 194))",
                               },
-                              children: r(o, {
+                              children: jsx(o, {
                                 href: { webPageId: "bzydBB85Y" },
                                 openInNewTab: !1,
                                 smoothScroll: !1,
-                                children: r("a", {
+                                children: jsx("a", {
                                   className: "framer-styles-preset-b5e6zr",
                                   "data-styles-preset": "H9WgrbXMf",
                                   children: "Neoflix",
@@ -744,10 +694,10 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                           verticalAlignment: "top",
                           withExternalLayout: !0,
                         }),
-                        r(t, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: r(a, {
-                            children: r("p", {
+                          children: jsx(ReactFragment, {
+                            children: jsx("p", {
                               style: {
                                 "--font-selector": "R0Y7TW9udHNlcnJhdC01MDA=",
                                 "--framer-font-family":
@@ -756,11 +706,11 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                 "--framer-font-weight": "500",
                                 "--framer-text-color": "rgb(33, 33, 33)",
                               },
-                              children: r(o, {
+                              children: jsx(o, {
                                 href: { webPageId: "aLuYbVoBY" },
                                 openInNewTab: !1,
                                 smoothScroll: !1,
-                                children: r("a", {
+                                children: jsx("a", {
                                   className: "framer-styles-preset-b5e6zr",
                                   "data-styles-preset": "H9WgrbXMf",
                                   children: "Publications",
@@ -775,15 +725,15 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                           verticalAlignment: "top",
                           withExternalLayout: !0,
                         }),
-                        r(o, {
+                        jsx(o, {
                           href: { webPageId: "x05wlhCdy" },
-                          children: r(i.a, {
+                          children: jsx(motion.ReactFragment, {
                             className: "framer-1tigvyz framer-1gbufye",
                             whileHover: de,
-                            children: r(t, {
+                            children: jsx(RichTextComponent, {
                               __fromCanvasComponent: !0,
-                              children: r(a, {
-                                children: r("p", {
+                              children: jsx(ReactFragment, {
+                                children: jsx("p", {
                                   style: {
                                     "--font-selector":
                                       "R0Y7TW9udHNlcnJhdC01MDA=",
@@ -811,36 +761,36 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                   ],
                 }),
                 Y() &&
-                  e("div", {
+                  jsxs("div", {
                     className: "framer-pjhq0k hidden-1byrpbb",
                     "data-framer-name": "Dummy Stack",
                     name: "Dummy Stack",
                     children: [
-                      e("div", {
+                      jsxs("div", {
                         className: "framer-1e6uf5o",
                         "data-framer-name": "Sidebarstack",
                         name: "Sidebarstack",
                         children: [
-                          e("div", {
+                          jsxs("div", {
                             className: "framer-1wchfdi",
                             "data-framer-name": "Sidebarstack",
                             name: "Sidebarstack",
                             children: [
-                              r("div", {
+                              jsx("div", {
                                 className: "framer-x2fgke",
                                 "data-framer-name": "navfiller",
                                 name: "navfiller",
                               }),
-                              r("div", {
+                              jsx("div", {
                                 className: "framer-97kj3t",
                                 "data-framer-name": "Sidebar",
                                 name: "Sidebar",
-                                children: e("div", {
+                                children: jsxs("div", {
                                   className: "framer-11hws",
                                   "data-framer-name": "Links",
                                   name: "Links",
                                   children: [
-                                    r(E, {
+                                    jsx(withScrollSection, {
                                       links: [
                                         {
                                           href: {
@@ -851,14 +801,14 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                         },
                                       ],
                                       children: (n) =>
-                                        r(h, {
+                                        jsx(DeviceSizeContainer, {
                                           width: "273.6px",
-                                          children: r(b, {
+                                          children: jsx(cssSSRMinifiedHelper, {
                                             className:
                                               "framer-6qbn0q-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: r(J, {
+                                            children: jsx(J, {
                                               __framer__animateOnce: !1,
                                               __framer__targets: [
                                                 { ref: U, target: "f7_6jHMU5" },
@@ -881,7 +831,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           }),
                                         }),
                                     }),
-                                    r(E, {
+                                    jsx(withScrollSection, {
                                       links: [
                                         {
                                           href: {
@@ -892,14 +842,14 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                         },
                                       ],
                                       children: (n) =>
-                                        r(h, {
+                                        jsx(DeviceSizeContainer, {
                                           width: "273.6px",
-                                          children: r(b, {
+                                          children: jsx(cssSSRMinifiedHelper, {
                                             className:
                                               "framer-1h32ad-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: r(J, {
+                                            children: jsx(J, {
                                               __framer__animateOnce: !1,
                                               __framer__targets: [
                                                 { ref: p, target: "f7_6jHMU5" },
@@ -923,7 +873,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           }),
                                         }),
                                     }),
-                                    r(E, {
+                                    jsx(withScrollSection, {
                                       links: [
                                         {
                                           href: {
@@ -934,14 +884,14 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                         },
                                       ],
                                       children: (n) =>
-                                        r(h, {
+                                        jsx(DeviceSizeContainer, {
                                           width: "273.6px",
-                                          children: r(b, {
+                                          children: jsx(cssSSRMinifiedHelper, {
                                             className:
                                               "framer-19bn9xm-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: r(J, {
+                                            children: jsx(J, {
                                               __framer__animateOnce: !1,
                                               __framer__targets: [
                                                 { ref: k, target: "f7_6jHMU5" },
@@ -969,14 +919,14 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                               }),
                             ],
                           }),
-                          r("div", {
+                          jsx("div", {
                             className: "framer-af8o6x",
                             "data-framer-name": "navfiller",
                             name: "navfiller",
                           }),
                         ],
                       }),
-                      r("main", {
+                      jsx("main", {
                         className: "framer-j3fe16",
                         "data-framer-name": "Main",
                         "data-hide-scrollbars": !0,
@@ -984,62 +934,62 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                       }),
                     ],
                   }),
-                e("div", {
+                jsxs("div", {
                   className: "framer-b7zrk8",
                   children: [
                     Y() &&
-                      e("div", {
+                      jsxs("div", {
                         className: "framer-2yih2w hidden-1byrpbb",
                         "data-framer-name": "Sidebarstack",
                         name: "Sidebarstack",
                         children: [
-                          r("div", {
+                          jsx("div", {
                             className: "framer-tv876i",
                             "data-framer-name": "navfiller",
                             name: "navfiller",
                           }),
-                          r("div", {
+                          jsx("div", {
                             className: "framer-13t76i2",
                             "data-framer-name": "Sidebar",
                             name: "Sidebar",
                           }),
                         ],
                       }),
-                    e("main", {
+                    jsxs("main", {
                       className: "framer-nz2wz5",
                       "data-framer-name": "Main",
                       "data-hide-scrollbars": !0,
                       name: "Main",
                       children: [
-                        r("section", {
+                        jsx("section", {
                           className: "framer-setclj",
                           "data-framer-name": "Narrative Review",
                           "data-hide-scrollbars": !0,
                           id: V,
                           name: "Narrative Review",
                           ref: U,
-                          children: r("div", {
+                          children: jsx("div", {
                             className: "framer-1izvqlh",
-                            children: r("div", {
+                            children: jsx("div", {
                               className: "framer-1m7l4n3",
-                              children: e("div", {
+                              children: jsxs("div", {
                                 className: "framer-1t7546e",
                                 children: [
                                   Y() &&
-                                    r("div", {
+                                    jsx("div", {
                                       className:
                                         "framer-1y4sb1j hidden-1byrpbb",
                                     }),
-                                  r("div", {
+                                  jsx("div", {
                                     className: "framer-mff58u",
-                                    children: e("div", {
+                                    children: jsxs("div", {
                                       className: "framer-ac2kfo",
                                       children: [
-                                        r(t, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: e(a, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              r("h1", {
+                                              jsx("h1", {
                                                 className:
                                                   "framer-styles-preset-3nqyhf",
                                                 "data-styles-preset":
@@ -1052,7 +1002,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                 },
                                                 children: "Narrative review",
                                               }),
-                                              r("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1071,20 +1021,20 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           verticalAlignment: "top",
                                           withExternalLayout: !0,
                                         }),
-                                        r("div", {
+                                        jsx("div", {
                                           className: "framer-1yb7r33",
-                                          children: r(o, {
+                                          children: jsx(o, {
                                             href: "https://www.frontiersin.org/articles/10.3389/fped.2022.931055/full",
-                                            children: r(i.a, {
+                                            children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-1n6fn8e framer-1gbufye",
                                               whileHover: H,
-                                              children: r("div", {
+                                              children: jsx("div", {
                                                 className: "framer-1p4s167",
-                                                children: e("div", {
+                                                children: jsxs("div", {
                                                   className: "framer-o6qgw6",
                                                   children: [
-                                                    r(y, {
+                                                    jsx(FrameComponent, {
                                                       background: {
                                                         alt: "",
                                                         fit: "fit",
@@ -1097,10 +1047,10 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       className:
                                                         "framer-j1nrrw",
                                                     }),
-                                                    r(t, {
+                                                    jsx(RichTextComponent, {
                                                       __fromCanvasComponent: !0,
-                                                      children: r(a, {
-                                                        children: r("p", {
+                                                      children: jsx(ReactFragment, {
+                                                        children: jsx("p", {
                                                           className:
                                                             "framer-styles-preset-21ogod",
                                                           "data-styles-preset":
@@ -1111,7 +1061,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                             "--framer-text-color":
                                                               "var(--token-b73f7c2a-3920-4d15-bb22-d8016da87d50, rgb(245, 249, 252))",
                                                           },
-                                                          children: r(
+                                                          children: jsx(
                                                             "strong",
                                                             {
                                                               children:
@@ -1129,7 +1079,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       verticalAlignment: "top",
                                                       withExternalLayout: !0,
                                                     }),
-                                                    r("div", {
+                                                    jsx("div", {
                                                       className:
                                                         "framer-1k3n45t",
                                                       "data-framer-name":
@@ -1142,21 +1092,21 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             }),
                                           }),
                                         }),
-                                        r("div", {
+                                        jsx("div", {
                                           className: "framer-138vg25",
-                                          children: r(o, {
+                                          children: jsx(o, {
                                             href: "https://www.frontiersin.org/articles/10.3389/fped.2022.931055/full",
-                                            children: r("a", {
+                                            children: jsx("a", {
                                               className:
                                                 "framer-fr0t0f framer-1gbufye",
-                                              children: r("div", {
+                                              children: jsx("div", {
                                                 className: "framer-1o5khj0",
-                                                children: r("div", {
+                                                children: jsx("div", {
                                                   className: "framer-rkkvfj",
-                                                  children: r(t, {
+                                                  children: jsx(RichTextComponent, {
                                                     __fromCanvasComponent: !0,
-                                                    children: r(a, {
-                                                      children: e("p", {
+                                                    children: jsx(ReactFragment, {
+                                                      children: jsxs("p", {
                                                         className:
                                                           "framer-styles-preset-1411uq",
                                                         "data-styles-preset":
@@ -1166,14 +1116,14 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                             "var(--token-947ca9b0-2c83-4d26-befd-e83070b35a6e, rgb(87, 75, 75))",
                                                         },
                                                         children: [
-                                                          r("span", {
+                                                          jsx("span", {
                                                             style: {
                                                               "--framer-text-color":
                                                                 "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                             },
-                                                            children: e("em", {
+                                                            children: jsxs("em", {
                                                               children: [
-                                                                r("strong", {
+                                                                jsx("strong", {
                                                                   children:
                                                                     "Heesters V, Witlox R, van Zanten HA, et al.",
                                                                 }),
@@ -1181,7 +1131,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                               ],
                                                             }),
                                                           }),
-                                                          r("em", {
+                                                          jsx("em", {
                                                             children:
                                                               "Video recording emergency care and video-reflection to improve patient care; a narrative review and case-study of a neonatal intensive care unit. Front Pediatr. 2022;10:931055. Published 2022 Aug 4",
                                                           }),
@@ -1203,21 +1153,21 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             }),
                                           }),
                                         }),
-                                        r(t, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: e(a, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              r("h2", {
+                                              jsx("h2", {
                                                 className:
                                                   "framer-styles-preset-1wml6uu",
                                                 "data-styles-preset":
                                                   "fVxnimdqP",
-                                                children: r("strong", {
+                                                children: jsx("strong", {
                                                   children:
                                                     "Video: A Powerful Tool for Quality Improvement in Emergency Medicine",
                                                 }),
                                               }),
-                                              r("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1229,17 +1179,17 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                 children:
                                                   "Video recordings offer a uniquely insightful and objective lens for evaluating and enhancing the quality of care within the fast-paced world of emergency medicine. This review explores the transformative applications of video in clinical settings, highlighting its potential to improve patient safety and outcomes.",
                                               }),
-                                              r("h2", {
+                                              jsx("h2", {
                                                 className:
                                                   "framer-styles-preset-1wml6uu",
                                                 "data-styles-preset":
                                                   "fVxnimdqP",
-                                                children: r("strong", {
+                                                children: jsx("strong", {
                                                   children:
                                                     "Key Applications of Video",
                                                 }),
                                               }),
-                                              e("ul", {
+                                              jsxs("ul", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1251,8 +1201,8 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                     "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                 },
                                                 children: [
-                                                  r("li", {
-                                                    children: e("p", {
+                                                  jsx("li", {
+                                                    children: jsxs("p", {
                                                       style: {
                                                         "--framer-text-alignment":
                                                           "left",
@@ -1260,13 +1210,13 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                           "var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55))",
                                                       },
                                                       children: [
-                                                        e("span", {
+                                                        jsxs("span", {
                                                           style: {
                                                             "--framer-text-color":
                                                               "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                           },
                                                           children: [
-                                                            r("strong", {
+                                                            jsx("strong", {
                                                               children:
                                                                 "Demystifying Care Delivery:",
                                                             }),
@@ -1277,8 +1227,8 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       ],
                                                     }),
                                                   }),
-                                                  r("li", {
-                                                    children: e("p", {
+                                                  jsx("li", {
+                                                    children: jsxs("p", {
                                                       style: {
                                                         "--framer-text-alignment":
                                                           "left",
@@ -1286,13 +1236,13 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                           "var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55))",
                                                       },
                                                       children: [
-                                                        e("span", {
+                                                        jsxs("span", {
                                                           style: {
                                                             "--framer-text-color":
                                                               "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                           },
                                                           children: [
-                                                            r("strong", {
+                                                            jsx("strong", {
                                                               children:
                                                                 "Evaluating the Intangibles:",
                                                             }),
@@ -1303,8 +1253,8 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       ],
                                                     }),
                                                   }),
-                                                  r("li", {
-                                                    children: e("p", {
+                                                  jsx("li", {
+                                                    children: jsxs("p", {
                                                       style: {
                                                         "--framer-text-alignment":
                                                           "left",
@@ -1312,13 +1262,13 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                           "var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55))",
                                                       },
                                                       children: [
-                                                        e("span", {
+                                                        jsxs("span", {
                                                           style: {
                                                             "--framer-text-color":
                                                               "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                           },
                                                           children: [
-                                                            r("strong", {
+                                                            jsx("strong", {
                                                               children:
                                                                 "Empowering Caregivers Through Reflection:",
                                                             }),
@@ -1329,8 +1279,8 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       ],
                                                     }),
                                                   }),
-                                                  r("li", {
-                                                    children: e("p", {
+                                                  jsx("li", {
+                                                    children: jsxs("p", {
                                                       style: {
                                                         "--framer-text-alignment":
                                                           "left",
@@ -1338,13 +1288,13 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                           "var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55))",
                                                       },
                                                       children: [
-                                                        e("span", {
+                                                        jsxs("span", {
                                                           style: {
                                                             "--framer-text-color":
                                                               "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                           },
                                                           children: [
-                                                            r("strong", {
+                                                            jsx("strong", {
                                                               children:
                                                                 "Driving Collaborative Improvement:",
                                                             }),
@@ -1357,17 +1307,17 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                   }),
                                                 ],
                                               }),
-                                              r("h2", {
+                                              jsx("h2", {
                                                 className:
                                                   "framer-styles-preset-1wml6uu",
                                                 "data-styles-preset":
                                                   "fVxnimdqP",
-                                                children: r("strong", {
+                                                children: jsx("strong", {
                                                   children:
                                                     "Real-World Success: NICU Case Study",
                                                 }),
                                               }),
-                                              r("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1379,17 +1329,17 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                 children:
                                                   "Our Neonatal Intensive Care Unit (NICU) has successfully integrated video review into neonatal stabilization procedures. The results have been positive, including enhanced skills, improved adherence to protocols, and a strengthened culture of feedback. We are now expanding our approach, focusing on multidisciplinary reflexivity sessions, incorporating eye-tracking technology, and adding audio for comprehensive evaluations. Our goal is to develop sustainable models for implementing insights gained from video analysis and to provide guidance for other departments.",
                                               }),
-                                              r("h2", {
+                                              jsx("h2", {
                                                 className:
                                                   "framer-styles-preset-1wml6uu",
                                                 "data-styles-preset":
                                                   "fVxnimdqP",
-                                                children: r("strong", {
+                                                children: jsx("strong", {
                                                   children:
                                                     "The Potential of Video-Driven Transformation",
                                                 }),
                                               }),
-                                              e("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1400,8 +1350,8 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "Video in emergency care is evolving rapidly, transitioning from a research tool to a powerful force for positive change. While optimal implementation practices continue to be refined, ongoing research underscores the undeniable value of video-reflection in driving improvements in patient care.",
-                                                  r("br", {}),
-                                                  r("br", {
+                                                  jsx("br", {}),
+                                                  jsx("br", {
                                                     className: "trailing-break",
                                                   }),
                                                 ],
@@ -1413,21 +1363,21 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           verticalAlignment: "top",
                                           withExternalLayout: !0,
                                         }),
-                                        r("div", {
+                                        jsx("div", {
                                           className: "framer-cw9d6k",
-                                          children: r(o, {
+                                          children: jsx(o, {
                                             href: "https://fn.bmj.com/content/early/2024/02/07/archdischild-2023-326528",
                                             openInNewTab: !0,
-                                            children: r(i.a, {
+                                            children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-phk48i framer-1gbufye",
                                               whileHover: H,
-                                              children: r("div", {
+                                              children: jsx("div", {
                                                 className: "framer-ogdws",
-                                                children: e("div", {
+                                                children: jsxs("div", {
                                                   className: "framer-3tcrxo",
                                                   children: [
-                                                    r(y, {
+                                                    jsx(FrameComponent, {
                                                       background: {
                                                         alt: "",
                                                         fit: "fit",
@@ -1441,10 +1391,10 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       className:
                                                         "framer-xttfno",
                                                     }),
-                                                    r(t, {
+                                                    jsx(RichTextComponent, {
                                                       __fromCanvasComponent: !0,
-                                                      children: r(a, {
-                                                        children: r("p", {
+                                                      children: jsx(ReactFragment, {
+                                                        children: jsx("p", {
                                                           className:
                                                             "framer-styles-preset-21ogod",
                                                           "data-styles-preset":
@@ -1455,7 +1405,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                             "--framer-text-color":
                                                               "var(--token-b73f7c2a-3920-4d15-bb22-d8016da87d50, rgb(245, 249, 252))",
                                                           },
-                                                          children: r(
+                                                          children: jsx(
                                                             "strong",
                                                             {
                                                               children:
@@ -1473,7 +1423,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       verticalAlignment: "top",
                                                       withExternalLayout: !0,
                                                     }),
-                                                    r("div", {
+                                                    jsx("div", {
                                                       className:
                                                         "framer-rdclqq",
                                                       "data-framer-name":
@@ -1486,7 +1436,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             }),
                                           }),
                                         }),
-                                        r("div", {
+                                        jsx("div", {
                                           className: "framer-1wk19ss",
                                         }),
                                       ],
@@ -1497,31 +1447,31 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                             }),
                           }),
                         }),
-                        r("section", {
+                        jsx("section", {
                           className: "framer-tjnoo6",
                           "data-framer-name": "Provider's Perspective",
                           "data-hide-scrollbars": !0,
                           id: S,
                           name: "Provider's Perspective",
                           ref: p,
-                          children: r("div", {
+                          children: jsx("div", {
                             className: "framer-1sqmt7e",
-                            children: r("div", {
+                            children: jsx("div", {
                               className: "framer-1wi5rtn",
-                              children: e("div", {
+                              children: jsxs("div", {
                                 className: "framer-1sig42a",
                                 children: [
-                                  r("div", { className: "framer-1199rgk" }),
-                                  r("div", {
+                                  jsx("div", { className: "framer-1199rgk" }),
+                                  jsx("div", {
                                     className: "framer-gsypmv",
-                                    children: e("div", {
+                                    children: jsxs("div", {
                                       className: "framer-1hfomlj",
                                       children: [
-                                        r(t, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: e(a, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              r("h1", {
+                                              jsx("h1", {
                                                 className:
                                                   "framer-styles-preset-3nqyhf",
                                                 "data-styles-preset":
@@ -1535,7 +1485,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                 children:
                                                   "Providers' perspective",
                                               }),
-                                              r("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1554,21 +1504,21 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           verticalAlignment: "top",
                                           withExternalLayout: !0,
                                         }),
-                                        r("div", {
+                                        jsx("div", {
                                           className: "framer-1mge6kk",
-                                          children: r(o, {
+                                          children: jsx(o, {
                                             href: "https://fn.bmj.com/content/early/2024/02/07/archdischild-2023-326528",
                                             openInNewTab: !0,
-                                            children: r(i.a, {
+                                            children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-1kkp7lb framer-1gbufye",
                                               whileHover: H,
-                                              children: r("div", {
+                                              children: jsx("div", {
                                                 className: "framer-lomv20",
-                                                children: e("div", {
+                                                children: jsxs("div", {
                                                   className: "framer-15dymi2",
                                                   children: [
-                                                    r(y, {
+                                                    jsx(FrameComponent, {
                                                       background: {
                                                         alt: "",
                                                         fit: "fit",
@@ -1582,10 +1532,10 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       className:
                                                         "framer-137v9yk",
                                                     }),
-                                                    r(t, {
+                                                    jsx(RichTextComponent, {
                                                       __fromCanvasComponent: !0,
-                                                      children: r(a, {
-                                                        children: r("p", {
+                                                      children: jsx(ReactFragment, {
+                                                        children: jsx("p", {
                                                           className:
                                                             "framer-styles-preset-21ogod",
                                                           "data-styles-preset":
@@ -1596,7 +1546,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                             "--framer-text-color":
                                                               "var(--token-b73f7c2a-3920-4d15-bb22-d8016da87d50, rgb(245, 249, 252))",
                                                           },
-                                                          children: r(
+                                                          children: jsx(
                                                             "strong",
                                                             {
                                                               children:
@@ -1614,7 +1564,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       verticalAlignment: "top",
                                                       withExternalLayout: !0,
                                                     }),
-                                                    r("div", {
+                                                    jsx("div", {
                                                       className:
                                                         "framer-12dfx29",
                                                       "data-framer-name":
@@ -1627,21 +1577,21 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             }),
                                           }),
                                         }),
-                                        r("div", {
+                                        jsx("div", {
                                           className: "framer-1nk5f0f",
-                                          children: r(o, {
+                                          children: jsx(o, {
                                             href: "https://www.frontiersin.org/articles/10.3389/fped.2022.931055/full",
-                                            children: r("a", {
+                                            children: jsx("a", {
                                               className:
                                                 "framer-nst2wk framer-1gbufye",
-                                              children: r("div", {
+                                              children: jsx("div", {
                                                 className: "framer-1iuz95o",
-                                                children: r("div", {
+                                                children: jsx("div", {
                                                   className: "framer-irniv5",
-                                                  children: r(t, {
+                                                  children: jsx(RichTextComponent, {
                                                     __fromCanvasComponent: !0,
-                                                    children: r(a, {
-                                                      children: e("p", {
+                                                    children: jsx(ReactFragment, {
+                                                      children: jsxs("p", {
                                                         className:
                                                           "framer-styles-preset-1411uq",
                                                         "data-styles-preset":
@@ -1651,13 +1601,13 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                             "var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55))",
                                                         },
                                                         children: [
-                                                          r("span", {
+                                                          jsx("span", {
                                                             style: {
                                                               "--framer-text-color":
                                                                 "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                             },
-                                                            children: r("em", {
-                                                              children: r(
+                                                            children: jsx("em", {
+                                                              children: jsx(
                                                                 "strong",
                                                                 {
                                                                   children:
@@ -1666,7 +1616,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                               ),
                                                             }),
                                                           }),
-                                                          r("em", {
+                                                          jsx("em", {
                                                             children:
                                                               "Using the providers' perspective on video review of neonatal procedures to create a roadmap: a qualitative study. Arch Dis Child Fetal Neonatal Ed. Published online February 7, 2024.",
                                                           }),
@@ -1688,21 +1638,21 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             }),
                                           }),
                                         }),
-                                        r(t, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: e(a, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              r("h2", {
+                                              jsx("h2", {
                                                 className:
                                                   "framer-styles-preset-1wml6uu",
                                                 "data-styles-preset":
                                                   "fVxnimdqP",
-                                                children: r("strong", {
+                                                children: jsx("strong", {
                                                   children:
                                                     "Exploring the Power of Video in the NICU: A Journey of Learning and Improvement",
                                                 }),
                                               }),
-                                              r("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1710,17 +1660,17 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                 children:
                                                   "Video review offers a unique lens for examining how we provide healthcare, especially in the dynamic environment of the neonatal intensive care unit (NICU). It has the potential to reveal opportunities for improvement, but its success depends on how healthcare providers embrace it and whether it's implemented thoughtfully.",
                                               }),
-                                              r("h2", {
+                                              jsx("h2", {
                                                 className:
                                                   "framer-styles-preset-1wml6uu",
                                                 "data-styles-preset":
                                                   "fVxnimdqP",
-                                                children: r("strong", {
+                                                children: jsx("strong", {
                                                   children:
                                                     "Our Study: Learning from Experience",
                                                 }),
                                               }),
-                                              r("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1728,42 +1678,42 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                 children:
                                                   "We wanted to understand how healthcare providers responded to an expanded video review program within our tertiary level NICU. Our program started with a focus on neonatal stabilization, and we broadened it to include:",
                                               }),
-                                              e("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
                                                   "xZndidUCt",
                                                 children: [
-                                                  r("span", {
+                                                  jsx("span", {
                                                     style: {
                                                       "--framer-text-color":
                                                         "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                     },
-                                                    children: r("strong", {
+                                                    children: jsx("strong", {
                                                       children:
                                                         "Wider Applications:",
                                                     }),
                                                   }),
                                                   " Incorporating delivery room procedures and other important NICU processes.",
-                                                  r("br", {}),
-                                                  r("span", {
+                                                  jsx("br", {}),
+                                                  jsx("span", {
                                                     style: {
                                                       "--framer-text-color":
                                                         "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                     },
-                                                    children: r("strong", {
+                                                    children: jsx("strong", {
                                                       children:
                                                         "Enhanced Insights:",
                                                     }),
                                                   }),
                                                   " Adding audio recordings for a more complete view of interactions.",
-                                                  r("br", {}),
-                                                  r("span", {
+                                                  jsx("br", {}),
+                                                  jsx("span", {
                                                     style: {
                                                       "--framer-text-color":
                                                         "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                     },
-                                                    children: r("strong", {
+                                                    children: jsx("strong", {
                                                       children:
                                                         "Fostering Teamwork:",
                                                     }),
@@ -1771,17 +1721,17 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                   " Emphasizing multidisciplinary participation in review sessions.",
                                                 ],
                                               }),
-                                              r("h2", {
+                                              jsx("h2", {
                                                 className:
                                                   "framer-styles-preset-1wml6uu",
                                                 "data-styles-preset":
                                                   "fVxnimdqP",
-                                                children: r("strong", {
+                                                children: jsx("strong", {
                                                   children:
                                                     "Valuable Perspectives",
                                                 }),
                                               }),
-                                              r("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1789,42 +1739,42 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                 children:
                                                   "We interviewed 28 diverse NICU providers to learn about their experiences with video review. Their honest feedback, analyzed carefully, revealed key factors that can contribute to successful implementation:",
                                               }),
-                                              e("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
                                                   "xZndidUCt",
                                                 children: [
-                                                  r("span", {
+                                                  jsx("span", {
                                                     style: {
                                                       "--framer-text-color":
                                                         "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                     },
-                                                    children: r("strong", {
+                                                    children: jsx("strong", {
                                                       children:
                                                         "Empowering Reflection:",
                                                     }),
                                                   }),
                                                   " Providers appreciated how video review encouraged self-awareness and a desire to learn and grow.",
-                                                  r("br", {}),
-                                                  r("span", {
+                                                  jsx("br", {}),
+                                                  jsx("span", {
                                                     style: {
                                                       "--framer-text-color":
                                                         "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                     },
-                                                    children: r("strong", {
+                                                    children: jsx("strong", {
                                                       children:
                                                         "Breaking Down Barriers:",
                                                     }),
                                                   }),
                                                   " Video review created a shared platform for professionals from different disciplines to understand each other better, strengthening teamwork and collaboration.",
-                                                  r("br", {}),
-                                                  r("span", {
+                                                  jsx("br", {}),
+                                                  jsx("span", {
                                                     style: {
                                                       "--framer-text-color":
                                                         "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                     },
-                                                    children: r("strong", {
+                                                    children: jsx("strong", {
                                                       children:
                                                         "Trust and Safety Matter:",
                                                     }),
@@ -1832,18 +1782,18 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                   " Emphasizing consent and creating a non-judgmental space were essential for making providers feel comfortable with the process.",
                                                 ],
                                               }),
-                                              e("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
                                                   "xZndidUCt",
                                                 children: [
-                                                  r("span", {
+                                                  jsx("span", {
                                                     style: {
                                                       "--framer-text-color":
                                                         "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                     },
-                                                    children: r("strong", {
+                                                    children: jsx("strong", {
                                                       children:
                                                         "Sharing What We've Learned",
                                                     }),
@@ -1858,20 +1808,20 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           verticalAlignment: "top",
                                           withExternalLayout: !0,
                                         }),
-                                        r("div", {
+                                        jsx("div", {
                                           className: "framer-184mff4",
-                                          children: r(o, {
+                                          children: jsx(o, {
                                             href: "https://www.frontiersin.org/articles/10.3389/fped.2022.931055/full",
-                                            children: r(i.a, {
+                                            children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-xz94rp framer-1gbufye",
                                               whileHover: H,
-                                              children: r("div", {
+                                              children: jsx("div", {
                                                 className: "framer-1wt5vp3",
-                                                children: e("div", {
+                                                children: jsxs("div", {
                                                   className: "framer-1yk1f7b",
                                                   children: [
-                                                    r(y, {
+                                                    jsx(FrameComponent, {
                                                       background: {
                                                         alt: "",
                                                         fit: "fit",
@@ -1885,10 +1835,10 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       className:
                                                         "framer-1rwum1q",
                                                     }),
-                                                    r(t, {
+                                                    jsx(RichTextComponent, {
                                                       __fromCanvasComponent: !0,
-                                                      children: r(a, {
-                                                        children: r("p", {
+                                                      children: jsx(ReactFragment, {
+                                                        children: jsx("p", {
                                                           className:
                                                             "framer-styles-preset-21ogod",
                                                           "data-styles-preset":
@@ -1899,7 +1849,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                             "--framer-text-color":
                                                               "var(--token-b73f7c2a-3920-4d15-bb22-d8016da87d50, rgb(245, 249, 252))",
                                                           },
-                                                          children: r(
+                                                          children: jsx(
                                                             "strong",
                                                             {
                                                               children:
@@ -1917,7 +1867,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       verticalAlignment: "top",
                                                       withExternalLayout: !0,
                                                     }),
-                                                    r("div", {
+                                                    jsx("div", {
                                                       className:
                                                         "framer-1gee6ls",
                                                       "data-framer-name":
@@ -1930,7 +1880,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             }),
                                           }),
                                         }),
-                                        r("div", {
+                                        jsx("div", {
                                           className: "framer-19zwvar",
                                         }),
                                       ],
@@ -1941,31 +1891,31 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                             }),
                           }),
                         }),
-                        r("section", {
+                        jsx("section", {
                           className: "framer-lo36es",
                           "data-framer-name": "Section-Narrative review",
                           "data-hide-scrollbars": !0,
                           id: ar,
                           name: "Section-Narrative review",
                           ref: k,
-                          children: r("div", {
+                          children: jsx("div", {
                             className: "framer-4crxib",
-                            children: r("div", {
+                            children: jsx("div", {
                               className: "framer-1pg00p8",
-                              children: e("div", {
+                              children: jsxs("div", {
                                 className: "framer-17srw7q",
                                 children: [
-                                  r("div", { className: "framer-1wfqtoe" }),
-                                  r("div", {
+                                  jsx("div", { className: "framer-1wfqtoe" }),
+                                  jsx("div", {
                                     className: "framer-1xvdp61",
-                                    children: e("div", {
+                                    children: jsxs("div", {
                                       className: "framer-1righlt",
                                       children: [
-                                        r(t, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: e(a, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              r("h1", {
+                                              jsx("h1", {
                                                 className:
                                                   "framer-styles-preset-3nqyhf",
                                                 "data-styles-preset":
@@ -1979,7 +1929,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                 children:
                                                   "Record, reflect, and refine",
                                               }),
-                                              r("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1998,21 +1948,21 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           verticalAlignment: "top",
                                           withExternalLayout: !0,
                                         }),
-                                        r("div", {
+                                        jsx("div", {
                                           className: "framer-1eoi0ip",
-                                          children: r(o, {
+                                          children: jsx(o, {
                                             href: "https://www.nature.com/articles/s41390-024-03083-w",
                                             openInNewTab: !0,
-                                            children: r(i.a, {
+                                            children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-1cwcgh1 framer-1gbufye",
                                               whileHover: H,
-                                              children: r("div", {
+                                              children: jsx("div", {
                                                 className: "framer-sxlgbs",
-                                                children: e("div", {
+                                                children: jsxs("div", {
                                                   className: "framer-qcxgco",
                                                   children: [
-                                                    r(y, {
+                                                    jsx(FrameComponent, {
                                                       background: {
                                                         alt: "",
                                                         fit: "fit",
@@ -2026,10 +1976,10 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       className:
                                                         "framer-b6uk4r",
                                                     }),
-                                                    r(t, {
+                                                    jsx(RichTextComponent, {
                                                       __fromCanvasComponent: !0,
-                                                      children: r(a, {
-                                                        children: r("p", {
+                                                      children: jsx(ReactFragment, {
+                                                        children: jsx("p", {
                                                           className:
                                                             "framer-styles-preset-21ogod",
                                                           "data-styles-preset":
@@ -2040,7 +1990,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                             "--framer-text-color":
                                                               "var(--token-b73f7c2a-3920-4d15-bb22-d8016da87d50, rgb(245, 249, 252))",
                                                           },
-                                                          children: r(
+                                                          children: jsx(
                                                             "strong",
                                                             {
                                                               children:
@@ -2058,7 +2008,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       verticalAlignment: "top",
                                                       withExternalLayout: !0,
                                                     }),
-                                                    r("div", {
+                                                    jsx("div", {
                                                       className:
                                                         "framer-1dsw32s",
                                                       "data-framer-name":
@@ -2071,21 +2021,21 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             }),
                                           }),
                                         }),
-                                        r("div", {
+                                        jsx("div", {
                                           className: "framer-1ugpxe6",
-                                          children: r(o, {
+                                          children: jsx(o, {
                                             href: "https://www.frontiersin.org/articles/10.3389/fped.2022.931055/full",
-                                            children: r("a", {
+                                            children: jsx("a", {
                                               className:
                                                 "framer-6zeezc framer-1gbufye",
-                                              children: r("div", {
+                                              children: jsx("div", {
                                                 className: "framer-6o5s5x",
-                                                children: r("div", {
+                                                children: jsx("div", {
                                                   className: "framer-1mb4ijl",
-                                                  children: r(t, {
+                                                  children: jsx(RichTextComponent, {
                                                     __fromCanvasComponent: !0,
-                                                    children: r(a, {
-                                                      children: e("p", {
+                                                    children: jsx(ReactFragment, {
+                                                      children: jsxs("p", {
                                                         className:
                                                           "framer-styles-preset-1411uq",
                                                         "data-styles-preset":
@@ -2095,13 +2045,13 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                             "var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55))",
                                                         },
                                                         children: [
-                                                          r("span", {
+                                                          jsx("span", {
                                                             style: {
                                                               "--framer-text-color":
                                                                 "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                             },
-                                                            children: r("em", {
-                                                              children: r(
+                                                            children: jsx("em", {
+                                                              children: jsx(
                                                                 "strong",
                                                                 {
                                                                   children:
@@ -2110,7 +2060,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                               ),
                                                             }),
                                                           }),
-                                                          r("em", {
+                                                          jsx("em", {
                                                             children:
                                                               "RSGM. Record, reflect and refine: using video review as an initiative to improve neonatal care. Pediatr Res. Published online February 14, 2024.",
                                                           }),
@@ -2132,21 +2082,21 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             }),
                                           }),
                                         }),
-                                        r(t, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: e(a, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              r("h2", {
+                                              jsx("h2", {
                                                 className:
                                                   "framer-styles-preset-1wml6uu",
                                                 "data-styles-preset":
                                                   "fVxnimdqP",
-                                                children: r("strong", {
+                                                children: jsx("strong", {
                                                   children:
                                                     "Video Review: Where Insight Meets Innovation in Neonatal Care",
                                                 }),
                                               }),
-                                              r("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -2154,17 +2104,17 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                 children:
                                                   "In the world of neonatal care, every moment counts. Imagine having a tool that could give you an inside look at those critical procedures, dissecting not just what was done, but the how and the why behind the actions of your healthcare team. Video review offers this unique perspective, creating a powerful catalyst for continuous improvement and innovation.",
                                               }),
-                                              r("h2", {
+                                              jsx("h2", {
                                                 className:
                                                   "framer-styles-preset-1wml6uu",
                                                 "data-styles-preset":
                                                   "fVxnimdqP",
-                                                children: r("strong", {
+                                                children: jsx("strong", {
                                                   children:
                                                     "Our Journey: Harnessing the Power of Video",
                                                 }),
                                               }),
-                                              r("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -2172,16 +2122,16 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                 children:
                                                   "We embarked on a study to explore how video review could elevate our approach to patient care in the neonatal setting. Our focus was on enhancing a broad range of procedures crucial for our smallest patients\u2014from stabilization at birth to intricate intubations and sterile line insertions.",
                                               }),
-                                              r("h2", {
+                                              jsx("h2", {
                                                 className:
                                                   "framer-styles-preset-1wml6uu",
                                                 "data-styles-preset":
                                                   "fVxnimdqP",
-                                                children: r("strong", {
+                                                children: jsx("strong", {
                                                   children: "How We Did It",
                                                 }),
                                               }),
-                                              e("ul", {
+                                              jsxs("ul", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -2191,19 +2141,19 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                     "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                 },
                                                 children: [
-                                                  r("li", {
-                                                    children: e("p", {
+                                                  jsx("li", {
+                                                    children: jsxs("p", {
                                                       style: {
                                                         "--framer-text-color":
                                                           "var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55))",
                                                       },
                                                       children: [
-                                                        r("span", {
+                                                        jsx("span", {
                                                           style: {
                                                             "--framer-text-color":
                                                               "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                           },
-                                                          children: r(
+                                                          children: jsx(
                                                             "strong",
                                                             {
                                                               children:
@@ -2215,20 +2165,20 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       ],
                                                     }),
                                                   }),
-                                                  r("li", {
-                                                    children: e("p", {
+                                                  jsx("li", {
+                                                    children: jsxs("p", {
                                                       style: {
                                                         "--framer-text-color":
                                                           "var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55))",
                                                       },
                                                       children: [
-                                                        e("span", {
+                                                        jsxs("span", {
                                                           style: {
                                                             "--framer-text-color":
                                                               "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                           },
                                                           children: [
-                                                            r("strong", {
+                                                            jsx("strong", {
                                                               children:
                                                                 "Collaborative Insights:",
                                                             }),
@@ -2239,20 +2189,20 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       ],
                                                     }),
                                                   }),
-                                                  r("li", {
-                                                    children: e("p", {
+                                                  jsx("li", {
+                                                    children: jsxs("p", {
                                                       style: {
                                                         "--framer-text-color":
                                                           "var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55))",
                                                       },
                                                       children: [
-                                                        e("span", {
+                                                        jsxs("span", {
                                                           style: {
                                                             "--framer-text-color":
                                                               "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                           },
                                                           children: [
-                                                            r("strong", {
+                                                            jsx("strong", {
                                                               children:
                                                                 "Turning Knowledge into Action:",
                                                             }),
@@ -2265,17 +2215,17 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                   }),
                                                 ],
                                               }),
-                                              r("h2", {
+                                              jsx("h2", {
                                                 className:
                                                   "framer-styles-preset-1wml6uu",
                                                 "data-styles-preset":
                                                   "fVxnimdqP",
-                                                children: r("strong", {
+                                                children: jsx("strong", {
                                                   children:
                                                     "What We Discovered: The Potential of Video Review",
                                                 }),
                                               }),
-                                              e("ul", {
+                                              jsxs("ul", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -2285,20 +2235,20 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                     "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                 },
                                                 children: [
-                                                  r("li", {
-                                                    children: e("p", {
+                                                  jsx("li", {
+                                                    children: jsxs("p", {
                                                       style: {
                                                         "--framer-text-color":
                                                           "var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55))",
                                                       },
                                                       children: [
-                                                        e("span", {
+                                                        jsxs("span", {
                                                           style: {
                                                             "--framer-text-color":
                                                               "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                           },
                                                           children: [
-                                                            r("strong", {
+                                                            jsx("strong", {
                                                               children:
                                                                 "Unveiling Improvement Pathways:",
                                                             }),
@@ -2309,20 +2259,20 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       ],
                                                     }),
                                                   }),
-                                                  r("li", {
-                                                    children: e("p", {
+                                                  jsx("li", {
+                                                    children: jsxs("p", {
                                                       style: {
                                                         "--framer-text-color":
                                                           "var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55))",
                                                       },
                                                       children: [
-                                                        e("span", {
+                                                        jsxs("span", {
                                                           style: {
                                                             "--framer-text-color":
                                                               "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                           },
                                                           children: [
-                                                            r("strong", {
+                                                            jsx("strong", {
                                                               children:
                                                                 "Learning from Expertise:",
                                                             }),
@@ -2333,20 +2283,20 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       ],
                                                     }),
                                                   }),
-                                                  r("li", {
-                                                    children: e("p", {
+                                                  jsx("li", {
+                                                    children: jsxs("p", {
                                                       style: {
                                                         "--framer-text-color":
                                                           "var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55))",
                                                       },
                                                       children: [
-                                                        e("span", {
+                                                        jsxs("span", {
                                                           style: {
                                                             "--framer-text-color":
                                                               "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                           },
                                                           children: [
-                                                            r("strong", {
+                                                            jsx("strong", {
                                                               children:
                                                                 "Fostering a Culture of Collaboration:",
                                                             }),
@@ -2359,17 +2309,17 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                   }),
                                                 ],
                                               }),
-                                              r("h2", {
+                                              jsx("h2", {
                                                 className:
                                                   "framer-styles-preset-1wml6uu",
                                                 "data-styles-preset":
                                                   "fVxnimdqP",
-                                                children: r("strong", {
+                                                children: jsx("strong", {
                                                   children:
                                                     "Implications for Healthcare",
                                                 }),
                                               }),
-                                              e("ul", {
+                                              jsxs("ul", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -2379,20 +2329,20 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                     "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                 },
                                                 children: [
-                                                  r("li", {
-                                                    children: e("p", {
+                                                  jsx("li", {
+                                                    children: jsxs("p", {
                                                       style: {
                                                         "--framer-text-color":
                                                           "var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55))",
                                                       },
                                                       children: [
-                                                        e("span", {
+                                                        jsxs("span", {
                                                           style: {
                                                             "--framer-text-color":
                                                               "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                           },
                                                           children: [
-                                                            r("strong", {
+                                                            jsx("strong", {
                                                               children:
                                                                 "Video Review: A Tool for Continuous Growth:",
                                                             }),
@@ -2403,20 +2353,20 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       ],
                                                     }),
                                                   }),
-                                                  r("li", {
-                                                    children: e("p", {
+                                                  jsx("li", {
+                                                    children: jsxs("p", {
                                                       style: {
                                                         "--framer-text-color":
                                                           "var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55))",
                                                       },
                                                       children: [
-                                                        e("span", {
+                                                        jsxs("span", {
                                                           style: {
                                                             "--framer-text-color":
                                                               "var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, rgb(0, 51, 59))",
                                                           },
                                                           children: [
-                                                            r("strong", {
+                                                            jsx("strong", {
                                                               children:
                                                                 "The Key to Meaningful Change:",
                                                             }),
@@ -2429,17 +2379,17 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                   }),
                                                 ],
                                               }),
-                                              r("h2", {
+                                              jsx("h2", {
                                                 className:
                                                   "framer-styles-preset-1wml6uu",
                                                 "data-styles-preset":
                                                   "fVxnimdqP",
-                                                children: r("strong", {
+                                                children: jsx("strong", {
                                                   children:
                                                     "See the Difference, Drive the Difference",
                                                 }),
                                               }),
-                                              r("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -2454,21 +2404,21 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                           verticalAlignment: "top",
                                           withExternalLayout: !0,
                                         }),
-                                        r("div", {
+                                        jsx("div", {
                                           className: "framer-peqvd",
-                                          children: r(o, {
+                                          children: jsx(o, {
                                             href: "https://www.nature.com/articles/s41390-024-03083-w",
                                             openInNewTab: !0,
-                                            children: r(i.a, {
+                                            children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-13n7zzq framer-1gbufye",
                                               whileHover: H,
-                                              children: r("div", {
+                                              children: jsx("div", {
                                                 className: "framer-b6mfoc",
-                                                children: e("div", {
+                                                children: jsxs("div", {
                                                   className: "framer-18kx7rp",
                                                   children: [
-                                                    r(y, {
+                                                    jsx(FrameComponent, {
                                                       background: {
                                                         alt: "",
                                                         fit: "fit",
@@ -2482,10 +2432,10 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       className:
                                                         "framer-11d2my",
                                                     }),
-                                                    r(t, {
+                                                    jsx(RichTextComponent, {
                                                       __fromCanvasComponent: !0,
-                                                      children: r(a, {
-                                                        children: r("p", {
+                                                      children: jsx(ReactFragment, {
+                                                        children: jsx("p", {
                                                           className:
                                                             "framer-styles-preset-21ogod",
                                                           "data-styles-preset":
@@ -2496,7 +2446,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                             "--framer-text-color":
                                                               "var(--token-b73f7c2a-3920-4d15-bb22-d8016da87d50, rgb(245, 249, 252))",
                                                           },
-                                                          children: r(
+                                                          children: jsx(
                                                             "strong",
                                                             {
                                                               children:
@@ -2514,7 +2464,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                                       verticalAlignment: "top",
                                                       withExternalLayout: !0,
                                                     }),
-                                                    r("div", {
+                                                    jsx("div", {
                                                       className:
                                                         "framer-z9h4di",
                                                       "data-framer-name":
@@ -2527,7 +2477,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             }),
                                           }),
                                         }),
-                                        r("div", {
+                                        jsx("div", {
                                           className: "framer-i3b3zv",
                                         }),
                                       ],
@@ -2544,7 +2494,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                 }),
               ],
             }),
-            r("div", { className: F(Pr, ...tr), id: "overlay" }),
+            jsx("div", { className: cx(Pr, ...tr), id: "overlay" }),
           ],
         }),
       })
@@ -2599,19 +2549,19 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     "@supports (background: -webkit-named-image(i)) and (not (scale:1)) { .framer-9Y9Hr.framer-1t32e7q, .framer-9Y9Hr .framer-itv9bu, .framer-9Y9Hr .framer-rthp6u, .framer-9Y9Hr .framer-1tigvyz, .framer-9Y9Hr .framer-pjhq0k, .framer-9Y9Hr .framer-1e6uf5o, .framer-9Y9Hr .framer-1wchfdi, .framer-9Y9Hr .framer-x2fgke, .framer-9Y9Hr .framer-11hws, .framer-9Y9Hr .framer-af8o6x, .framer-9Y9Hr .framer-j3fe16, .framer-9Y9Hr .framer-b7zrk8, .framer-9Y9Hr .framer-2yih2w, .framer-9Y9Hr .framer-tv876i, .framer-9Y9Hr .framer-nz2wz5, .framer-9Y9Hr .framer-setclj, .framer-9Y9Hr .framer-1izvqlh, .framer-9Y9Hr .framer-1m7l4n3, .framer-9Y9Hr .framer-1t7546e, .framer-9Y9Hr .framer-1y4sb1j, .framer-9Y9Hr .framer-mff58u, .framer-9Y9Hr .framer-ac2kfo, .framer-9Y9Hr .framer-1yb7r33, .framer-9Y9Hr .framer-1p4s167, .framer-9Y9Hr .framer-o6qgw6, .framer-9Y9Hr .framer-j1nrrw, .framer-9Y9Hr .framer-1k3n45t, .framer-9Y9Hr .framer-138vg25, .framer-9Y9Hr .framer-fr0t0f, .framer-9Y9Hr .framer-1o5khj0, .framer-9Y9Hr .framer-rkkvfj, .framer-9Y9Hr .framer-cw9d6k, .framer-9Y9Hr .framer-ogdws, .framer-9Y9Hr .framer-3tcrxo, .framer-9Y9Hr .framer-xttfno, .framer-9Y9Hr .framer-rdclqq, .framer-9Y9Hr .framer-1wk19ss, .framer-9Y9Hr .framer-tjnoo6, .framer-9Y9Hr .framer-1sqmt7e, .framer-9Y9Hr .framer-1wi5rtn, .framer-9Y9Hr .framer-1sig42a, .framer-9Y9Hr .framer-1199rgk, .framer-9Y9Hr .framer-gsypmv, .framer-9Y9Hr .framer-1hfomlj, .framer-9Y9Hr .framer-1mge6kk, .framer-9Y9Hr .framer-lomv20, .framer-9Y9Hr .framer-15dymi2, .framer-9Y9Hr .framer-137v9yk, .framer-9Y9Hr .framer-12dfx29, .framer-9Y9Hr .framer-1nk5f0f, .framer-9Y9Hr .framer-nst2wk, .framer-9Y9Hr .framer-1iuz95o, .framer-9Y9Hr .framer-irniv5, .framer-9Y9Hr .framer-184mff4, .framer-9Y9Hr .framer-1wt5vp3, .framer-9Y9Hr .framer-1yk1f7b, .framer-9Y9Hr .framer-1rwum1q, .framer-9Y9Hr .framer-1gee6ls, .framer-9Y9Hr .framer-19zwvar, .framer-9Y9Hr .framer-lo36es, .framer-9Y9Hr .framer-4crxib, .framer-9Y9Hr .framer-1pg00p8, .framer-9Y9Hr .framer-17srw7q, .framer-9Y9Hr .framer-1wfqtoe, .framer-9Y9Hr .framer-1xvdp61, .framer-9Y9Hr .framer-1righlt, .framer-9Y9Hr .framer-1eoi0ip, .framer-9Y9Hr .framer-sxlgbs, .framer-9Y9Hr .framer-qcxgco, .framer-9Y9Hr .framer-b6uk4r, .framer-9Y9Hr .framer-1dsw32s, .framer-9Y9Hr .framer-1ugpxe6, .framer-9Y9Hr .framer-6zeezc, .framer-9Y9Hr .framer-6o5s5x, .framer-9Y9Hr .framer-1mb4ijl, .framer-9Y9Hr .framer-peqvd, .framer-9Y9Hr .framer-b6mfoc, .framer-9Y9Hr .framer-18kx7rp, .framer-9Y9Hr .framer-11d2my, .framer-9Y9Hr .framer-z9h4di, .framer-9Y9Hr .framer-i3b3zv { gap: 0px; } .framer-9Y9Hr.framer-1t32e7q > *, .framer-9Y9Hr .framer-1e6uf5o > *, .framer-9Y9Hr .framer-1wchfdi > *, .framer-9Y9Hr .framer-j3fe16 > *, .framer-9Y9Hr .framer-2yih2w > *, .framer-9Y9Hr .framer-nz2wz5 > *, .framer-9Y9Hr .framer-1izvqlh > *, .framer-9Y9Hr .framer-1m7l4n3 > *, .framer-9Y9Hr .framer-1t7546e > *, .framer-9Y9Hr .framer-mff58u > *, .framer-9Y9Hr .framer-1sqmt7e > *, .framer-9Y9Hr .framer-1wi5rtn > *, .framer-9Y9Hr .framer-1sig42a > *, .framer-9Y9Hr .framer-gsypmv > *, .framer-9Y9Hr .framer-4crxib > *, .framer-9Y9Hr .framer-1pg00p8 > *, .framer-9Y9Hr .framer-17srw7q > *, .framer-9Y9Hr .framer-1xvdp61 > * { margin: 0px; margin-bottom: calc(0px / 2); margin-top: calc(0px / 2); } .framer-9Y9Hr.framer-1t32e7q > :first-child, .framer-9Y9Hr .framer-1e6uf5o > :first-child, .framer-9Y9Hr .framer-1wchfdi > :first-child, .framer-9Y9Hr .framer-x2fgke > :first-child, .framer-9Y9Hr .framer-11hws > :first-child, .framer-9Y9Hr .framer-af8o6x > :first-child, .framer-9Y9Hr .framer-j3fe16 > :first-child, .framer-9Y9Hr .framer-2yih2w > :first-child, .framer-9Y9Hr .framer-tv876i > :first-child, .framer-9Y9Hr .framer-nz2wz5 > :first-child, .framer-9Y9Hr .framer-1izvqlh > :first-child, .framer-9Y9Hr .framer-1m7l4n3 > :first-child, .framer-9Y9Hr .framer-1t7546e > :first-child, .framer-9Y9Hr .framer-mff58u > :first-child, .framer-9Y9Hr .framer-ac2kfo > :first-child, .framer-9Y9Hr .framer-1sqmt7e > :first-child, .framer-9Y9Hr .framer-1wi5rtn > :first-child, .framer-9Y9Hr .framer-1sig42a > :first-child, .framer-9Y9Hr .framer-gsypmv > :first-child, .framer-9Y9Hr .framer-1hfomlj > :first-child, .framer-9Y9Hr .framer-4crxib > :first-child, .framer-9Y9Hr .framer-1pg00p8 > :first-child, .framer-9Y9Hr .framer-17srw7q > :first-child, .framer-9Y9Hr .framer-1xvdp61 > :first-child, .framer-9Y9Hr .framer-1righlt > :first-child { margin-top: 0px; } .framer-9Y9Hr.framer-1t32e7q > :last-child, .framer-9Y9Hr .framer-1e6uf5o > :last-child, .framer-9Y9Hr .framer-1wchfdi > :last-child, .framer-9Y9Hr .framer-x2fgke > :last-child, .framer-9Y9Hr .framer-11hws > :last-child, .framer-9Y9Hr .framer-af8o6x > :last-child, .framer-9Y9Hr .framer-j3fe16 > :last-child, .framer-9Y9Hr .framer-2yih2w > :last-child, .framer-9Y9Hr .framer-tv876i > :last-child, .framer-9Y9Hr .framer-nz2wz5 > :last-child, .framer-9Y9Hr .framer-1izvqlh > :last-child, .framer-9Y9Hr .framer-1m7l4n3 > :last-child, .framer-9Y9Hr .framer-1t7546e > :last-child, .framer-9Y9Hr .framer-mff58u > :last-child, .framer-9Y9Hr .framer-ac2kfo > :last-child, .framer-9Y9Hr .framer-1sqmt7e > :last-child, .framer-9Y9Hr .framer-1wi5rtn > :last-child, .framer-9Y9Hr .framer-1sig42a > :last-child, .framer-9Y9Hr .framer-gsypmv > :last-child, .framer-9Y9Hr .framer-1hfomlj > :last-child, .framer-9Y9Hr .framer-4crxib > :last-child, .framer-9Y9Hr .framer-1pg00p8 > :last-child, .framer-9Y9Hr .framer-17srw7q > :last-child, .framer-9Y9Hr .framer-1xvdp61 > :last-child, .framer-9Y9Hr .framer-1righlt > :last-child { margin-bottom: 0px; } .framer-9Y9Hr .framer-itv9bu > *, .framer-9Y9Hr .framer-1tigvyz > *, .framer-9Y9Hr .framer-1yb7r33 > *, .framer-9Y9Hr .framer-1p4s167 > *, .framer-9Y9Hr .framer-o6qgw6 > *, .framer-9Y9Hr .framer-j1nrrw > *, .framer-9Y9Hr .framer-1k3n45t > *, .framer-9Y9Hr .framer-138vg25 > *, .framer-9Y9Hr .framer-1o5khj0 > *, .framer-9Y9Hr .framer-rkkvfj > *, .framer-9Y9Hr .framer-cw9d6k > *, .framer-9Y9Hr .framer-ogdws > *, .framer-9Y9Hr .framer-3tcrxo > *, .framer-9Y9Hr .framer-xttfno > *, .framer-9Y9Hr .framer-rdclqq > *, .framer-9Y9Hr .framer-1wk19ss > *, .framer-9Y9Hr .framer-1mge6kk > *, .framer-9Y9Hr .framer-lomv20 > *, .framer-9Y9Hr .framer-15dymi2 > *, .framer-9Y9Hr .framer-137v9yk > *, .framer-9Y9Hr .framer-12dfx29 > *, .framer-9Y9Hr .framer-1nk5f0f > *, .framer-9Y9Hr .framer-1iuz95o > *, .framer-9Y9Hr .framer-irniv5 > *, .framer-9Y9Hr .framer-184mff4 > *, .framer-9Y9Hr .framer-1wt5vp3 > *, .framer-9Y9Hr .framer-1yk1f7b > *, .framer-9Y9Hr .framer-1rwum1q > *, .framer-9Y9Hr .framer-1gee6ls > *, .framer-9Y9Hr .framer-19zwvar > *, .framer-9Y9Hr .framer-1eoi0ip > *, .framer-9Y9Hr .framer-sxlgbs > *, .framer-9Y9Hr .framer-qcxgco > *, .framer-9Y9Hr .framer-b6uk4r > *, .framer-9Y9Hr .framer-1dsw32s > *, .framer-9Y9Hr .framer-1ugpxe6 > *, .framer-9Y9Hr .framer-6o5s5x > *, .framer-9Y9Hr .framer-1mb4ijl > *, .framer-9Y9Hr .framer-peqvd > *, .framer-9Y9Hr .framer-b6mfoc > *, .framer-9Y9Hr .framer-18kx7rp > *, .framer-9Y9Hr .framer-11d2my > *, .framer-9Y9Hr .framer-z9h4di > *, .framer-9Y9Hr .framer-i3b3zv > * { margin: 0px; margin-left: calc(10px / 2); margin-right: calc(10px / 2); } .framer-9Y9Hr .framer-itv9bu > :first-child, .framer-9Y9Hr .framer-rthp6u > :first-child, .framer-9Y9Hr .framer-1tigvyz > :first-child, .framer-9Y9Hr .framer-pjhq0k > :first-child, .framer-9Y9Hr .framer-b7zrk8 > :first-child, .framer-9Y9Hr .framer-setclj > :first-child, .framer-9Y9Hr .framer-1y4sb1j > :first-child, .framer-9Y9Hr .framer-1yb7r33 > :first-child, .framer-9Y9Hr .framer-1p4s167 > :first-child, .framer-9Y9Hr .framer-o6qgw6 > :first-child, .framer-9Y9Hr .framer-j1nrrw > :first-child, .framer-9Y9Hr .framer-1k3n45t > :first-child, .framer-9Y9Hr .framer-138vg25 > :first-child, .framer-9Y9Hr .framer-fr0t0f > :first-child, .framer-9Y9Hr .framer-1o5khj0 > :first-child, .framer-9Y9Hr .framer-rkkvfj > :first-child, .framer-9Y9Hr .framer-cw9d6k > :first-child, .framer-9Y9Hr .framer-ogdws > :first-child, .framer-9Y9Hr .framer-3tcrxo > :first-child, .framer-9Y9Hr .framer-xttfno > :first-child, .framer-9Y9Hr .framer-rdclqq > :first-child, .framer-9Y9Hr .framer-1wk19ss > :first-child, .framer-9Y9Hr .framer-tjnoo6 > :first-child, .framer-9Y9Hr .framer-1199rgk > :first-child, .framer-9Y9Hr .framer-1mge6kk > :first-child, .framer-9Y9Hr .framer-lomv20 > :first-child, .framer-9Y9Hr .framer-15dymi2 > :first-child, .framer-9Y9Hr .framer-137v9yk > :first-child, .framer-9Y9Hr .framer-12dfx29 > :first-child, .framer-9Y9Hr .framer-1nk5f0f > :first-child, .framer-9Y9Hr .framer-nst2wk > :first-child, .framer-9Y9Hr .framer-1iuz95o > :first-child, .framer-9Y9Hr .framer-irniv5 > :first-child, .framer-9Y9Hr .framer-184mff4 > :first-child, .framer-9Y9Hr .framer-1wt5vp3 > :first-child, .framer-9Y9Hr .framer-1yk1f7b > :first-child, .framer-9Y9Hr .framer-1rwum1q > :first-child, .framer-9Y9Hr .framer-1gee6ls > :first-child, .framer-9Y9Hr .framer-19zwvar > :first-child, .framer-9Y9Hr .framer-lo36es > :first-child, .framer-9Y9Hr .framer-1wfqtoe > :first-child, .framer-9Y9Hr .framer-1eoi0ip > :first-child, .framer-9Y9Hr .framer-sxlgbs > :first-child, .framer-9Y9Hr .framer-qcxgco > :first-child, .framer-9Y9Hr .framer-b6uk4r > :first-child, .framer-9Y9Hr .framer-1dsw32s > :first-child, .framer-9Y9Hr .framer-1ugpxe6 > :first-child, .framer-9Y9Hr .framer-6zeezc > :first-child, .framer-9Y9Hr .framer-6o5s5x > :first-child, .framer-9Y9Hr .framer-1mb4ijl > :first-child, .framer-9Y9Hr .framer-peqvd > :first-child, .framer-9Y9Hr .framer-b6mfoc > :first-child, .framer-9Y9Hr .framer-18kx7rp > :first-child, .framer-9Y9Hr .framer-11d2my > :first-child, .framer-9Y9Hr .framer-z9h4di > :first-child, .framer-9Y9Hr .framer-i3b3zv > :first-child { margin-left: 0px; } .framer-9Y9Hr .framer-itv9bu > :last-child, .framer-9Y9Hr .framer-rthp6u > :last-child, .framer-9Y9Hr .framer-1tigvyz > :last-child, .framer-9Y9Hr .framer-pjhq0k > :last-child, .framer-9Y9Hr .framer-b7zrk8 > :last-child, .framer-9Y9Hr .framer-setclj > :last-child, .framer-9Y9Hr .framer-1y4sb1j > :last-child, .framer-9Y9Hr .framer-1yb7r33 > :last-child, .framer-9Y9Hr .framer-1p4s167 > :last-child, .framer-9Y9Hr .framer-o6qgw6 > :last-child, .framer-9Y9Hr .framer-j1nrrw > :last-child, .framer-9Y9Hr .framer-1k3n45t > :last-child, .framer-9Y9Hr .framer-138vg25 > :last-child, .framer-9Y9Hr .framer-fr0t0f > :last-child, .framer-9Y9Hr .framer-1o5khj0 > :last-child, .framer-9Y9Hr .framer-rkkvfj > :last-child, .framer-9Y9Hr .framer-cw9d6k > :last-child, .framer-9Y9Hr .framer-ogdws > :last-child, .framer-9Y9Hr .framer-3tcrxo > :last-child, .framer-9Y9Hr .framer-xttfno > :last-child, .framer-9Y9Hr .framer-rdclqq > :last-child, .framer-9Y9Hr .framer-1wk19ss > :last-child, .framer-9Y9Hr .framer-tjnoo6 > :last-child, .framer-9Y9Hr .framer-1199rgk > :last-child, .framer-9Y9Hr .framer-1mge6kk > :last-child, .framer-9Y9Hr .framer-lomv20 > :last-child, .framer-9Y9Hr .framer-15dymi2 > :last-child, .framer-9Y9Hr .framer-137v9yk > :last-child, .framer-9Y9Hr .framer-12dfx29 > :last-child, .framer-9Y9Hr .framer-1nk5f0f > :last-child, .framer-9Y9Hr .framer-nst2wk > :last-child, .framer-9Y9Hr .framer-1iuz95o > :last-child, .framer-9Y9Hr .framer-irniv5 > :last-child, .framer-9Y9Hr .framer-184mff4 > :last-child, .framer-9Y9Hr .framer-1wt5vp3 > :last-child, .framer-9Y9Hr .framer-1yk1f7b > :last-child, .framer-9Y9Hr .framer-1rwum1q > :last-child, .framer-9Y9Hr .framer-1gee6ls > :last-child, .framer-9Y9Hr .framer-19zwvar > :last-child, .framer-9Y9Hr .framer-lo36es > :last-child, .framer-9Y9Hr .framer-1wfqtoe > :last-child, .framer-9Y9Hr .framer-1eoi0ip > :last-child, .framer-9Y9Hr .framer-sxlgbs > :last-child, .framer-9Y9Hr .framer-qcxgco > :last-child, .framer-9Y9Hr .framer-b6uk4r > :last-child, .framer-9Y9Hr .framer-1dsw32s > :last-child, .framer-9Y9Hr .framer-1ugpxe6 > :last-child, .framer-9Y9Hr .framer-6zeezc > :last-child, .framer-9Y9Hr .framer-6o5s5x > :last-child, .framer-9Y9Hr .framer-1mb4ijl > :last-child, .framer-9Y9Hr .framer-peqvd > :last-child, .framer-9Y9Hr .framer-b6mfoc > :last-child, .framer-9Y9Hr .framer-18kx7rp > :last-child, .framer-9Y9Hr .framer-11d2my > :last-child, .framer-9Y9Hr .framer-z9h4di > :last-child, .framer-9Y9Hr .framer-i3b3zv > :last-child { margin-right: 0px; } .framer-9Y9Hr .framer-rthp6u > * { margin: 0px; margin-left: calc(20px / 2); margin-right: calc(20px / 2); } .framer-9Y9Hr .framer-pjhq0k > *, .framer-9Y9Hr .framer-b7zrk8 > *, .framer-9Y9Hr .framer-setclj > *, .framer-9Y9Hr .framer-1y4sb1j > *, .framer-9Y9Hr .framer-fr0t0f > *, .framer-9Y9Hr .framer-tjnoo6 > *, .framer-9Y9Hr .framer-1199rgk > *, .framer-9Y9Hr .framer-nst2wk > *, .framer-9Y9Hr .framer-lo36es > *, .framer-9Y9Hr .framer-1wfqtoe > *, .framer-9Y9Hr .framer-6zeezc > * { margin: 0px; margin-left: calc(0px / 2); margin-right: calc(0px / 2); } .framer-9Y9Hr .framer-x2fgke > *, .framer-9Y9Hr .framer-11hws > *, .framer-9Y9Hr .framer-af8o6x > *, .framer-9Y9Hr .framer-tv876i > * { margin: 0px; margin-bottom: calc(10px / 2); margin-top: calc(10px / 2); } .framer-9Y9Hr .framer-ac2kfo > *, .framer-9Y9Hr .framer-1hfomlj > *, .framer-9Y9Hr .framer-1righlt > * { margin: 0px; margin-bottom: calc(38px / 2); margin-top: calc(38px / 2); } }",
     "@media (min-width: 1200px) { .framer-9Y9Hr .hidden-1t32e7q { display: none !important; } }",
     "@media (max-width: 1199px) { .framer-9Y9Hr .hidden-1byrpbb { display: none !important; } .framer-9Y9Hr.framer-1t32e7q { width: 390px; } .framer-9Y9Hr .framer-9mtka5-container, .framer-9Y9Hr .framer-setclj { order: 0; } .framer-9Y9Hr .framer-f5p7wh-container, .framer-9Y9Hr .framer-tjnoo6 { order: 1; } .framer-9Y9Hr .framer-1nay47u { align-content: flex-end; align-items: flex-end; background-color: var(--token-b73f7c2a-3920-4d15-bb22-d8016da87d50, #f5f9fc); flex-direction: column; order: 2; z-index: 7; } .framer-9Y9Hr .framer-b7zrk8 { order: 4; padding: 80px 0px 0px 0px; } .framer-9Y9Hr .framer-mff58u, .framer-9Y9Hr .framer-gsypmv { align-content: center; align-items: center; } .framer-9Y9Hr .framer-ac2kfo, .framer-9Y9Hr .framer-1righlt { gap: 42px; width: 100%; } .framer-9Y9Hr .framer-1yb7r33, .framer-9Y9Hr .framer-138vg25, .framer-9Y9Hr .framer-cw9d6k, .framer-9Y9Hr .framer-1mge6kk, .framer-9Y9Hr .framer-1nk5f0f, .framer-9Y9Hr .framer-184mff4, .framer-9Y9Hr .framer-1eoi0ip, .framer-9Y9Hr .framer-1ugpxe6, .framer-9Y9Hr .framer-peqvd { max-width: 632px; } .framer-9Y9Hr .framer-1n6fn8e { flex: 1 0 0px; padding: 18px 24px 18px 20px; width: 1px; } .framer-9Y9Hr .framer-1p4s167, .framer-9Y9Hr .framer-o6qgw6, .framer-9Y9Hr .framer-lfef7i, .framer-9Y9Hr .framer-1o5khj0, .framer-9Y9Hr .framer-rkkvfj, .framer-9Y9Hr .framer-s3lq2h, .framer-9Y9Hr .framer-ogdws, .framer-9Y9Hr .framer-3tcrxo, .framer-9Y9Hr .framer-bu4j1h, .framer-9Y9Hr .framer-lomv20, .framer-9Y9Hr .framer-15dymi2, .framer-9Y9Hr .framer-1guifmw, .framer-9Y9Hr .framer-1iuz95o, .framer-9Y9Hr .framer-irniv5, .framer-9Y9Hr .framer-r6hx56, .framer-9Y9Hr .framer-1wt5vp3, .framer-9Y9Hr .framer-1yk1f7b, .framer-9Y9Hr .framer-1y181hl, .framer-9Y9Hr .framer-sxlgbs, .framer-9Y9Hr .framer-qcxgco, .framer-9Y9Hr .framer-k7k6oo, .framer-9Y9Hr .framer-6o5s5x, .framer-9Y9Hr .framer-1mb4ijl, .framer-9Y9Hr .framer-5pul8l, .framer-9Y9Hr .framer-b6mfoc, .framer-9Y9Hr .framer-18kx7rp, .framer-9Y9Hr .framer-1xy2psi { width: 100%; } .framer-9Y9Hr .framer-fr0t0f, .framer-9Y9Hr .framer-phk48i, .framer-9Y9Hr .framer-1kkp7lb, .framer-9Y9Hr .framer-nst2wk, .framer-9Y9Hr .framer-xz94rp, .framer-9Y9Hr .framer-1cwcgh1, .framer-9Y9Hr .framer-6zeezc, .framer-9Y9Hr .framer-13n7zzq { flex: 1 0 0px; width: 1px; } .framer-9Y9Hr .framer-1wk19ss { height: 119px; } .framer-9Y9Hr .framer-1hfomlj { gap: 42px; order: 0; width: 100%; } .framer-9Y9Hr .framer-lo36es { order: 2; } @supports (background: -webkit-named-image(i)) and (not (scale:1)) { .framer-9Y9Hr .framer-1nay47u, .framer-9Y9Hr .framer-ac2kfo, .framer-9Y9Hr .framer-1hfomlj, .framer-9Y9Hr .framer-1righlt { gap: 0px; } .framer-9Y9Hr .framer-1nay47u > *, .framer-9Y9Hr .framer-1nay47u > :first-child, .framer-9Y9Hr .framer-1nay47u > :last-child { margin: 0px; } .framer-9Y9Hr .framer-ac2kfo > *, .framer-9Y9Hr .framer-1hfomlj > *, .framer-9Y9Hr .framer-1righlt > * { margin: 0px; margin-bottom: calc(42px / 2); margin-top: calc(42px / 2); } .framer-9Y9Hr .framer-ac2kfo > :first-child, .framer-9Y9Hr .framer-1hfomlj > :first-child, .framer-9Y9Hr .framer-1righlt > :first-child { margin-top: 0px; } .framer-9Y9Hr .framer-ac2kfo > :last-child, .framer-9Y9Hr .framer-1hfomlj > :last-child, .framer-9Y9Hr .framer-1righlt > :last-child { margin-bottom: 0px; } }}",
-    ...Ur,
-    ...Ar,
-    ...Ir,
+    ...linkPresetStyles,
+    ...interExtraBoldPresetCSS,
+    ...interMediumPresetCSS,
     ...jr,
     ...vr,
     '.framer-9Y9Hr[data-hide-scrollbars="true"]::-webkit-scrollbar, .framer-9Y9Hr [data-hide-scrollbars="true"]::-webkit-scrollbar { width: 0px; height: 0px; }',
     '.framer-9Y9Hr[data-hide-scrollbars="true"]::-webkit-scrollbar-thumb, .framer-9Y9Hr [data-hide-scrollbars="true"]::-webkit-scrollbar-thumb { background: transparent; }',
   ],
-  q = B(ge, ue, "framer-9Y9Hr"),
+  q = withCSS(ge, ue, "framer-9Y9Hr"),
   Pe = q;
 q.displayName = "Scroll Section";
 q.defaultProps = { height: 7273, width: 1200 };
-z(
+loadFonts(
   q,
   [
     {
@@ -2869,11 +2819,11 @@ z(
     ...ne,
     ...fe,
     ...oe,
-    ...v(fontConfig),
-    ...v(interExtraBoldFontDefs),
-    ...v(interMediumFontDefs),
-    ...v(_r),
-    ...v(br),
+    ...normalizeFontConfig(fontConfig),
+    ...normalizeFontConfig(interExtraBoldFontDefs),
+    ...normalizeFontConfig(interMediumFontDefs),
+    ...normalizeFontConfig(_r),
+    ...normalizeFontConfig(br),
   ],
   { supportsExplicitInterCodegen: !0 },
 );

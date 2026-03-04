@@ -1,31 +1,9 @@
-/**
- * Import aliases resolved:
- *   F → useLocale
- *   p → cx
- *   h → withFXWrapper
- *   x → DeviceSizeContainer
- *   y → cssSSRMinifiedHelper
- *   Y → withCSS
- *   q → registerCursors
- *   X → CursorContext
- *   O → PropertyOverridesProvider
- *   k → forwardRef
- *   Z → useId
- *   C → useInsertionEffect
- *   V → useVariantState
- *   R → useRef
- *   e → jsx
- *   f → jsxs
- *   l → motion
- *   N → LayoutGroup
- *   j → loadFonts
- *   u → getFonts
- */
+/* CSS extracted to: page--Toolbox_Case_selection.css */
 import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as w } from "./chunk-YRUSXTEZ.mjs";
 import { a as g, b } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk-42U43NKG.mjs";
+import "./chunk--empty-stub-2.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -48,10 +26,10 @@ import { useLocale,
   getFonts } from "./chunk--react-and-framer-runtime.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
-var P = h(l.div),
-  S = u(g),
-  A = u(b),
-  J = h(y);
+var P = withFXWrapper(motion.div),
+  S = getFonts(g),
+  A = getFonts(b),
+  J = withFXWrapper(cssSSRMinifiedHelper);
 var Q = {
   O2R29QjFO: "(max-width: 809px)",
   xYaM39J3n: "(min-width: 1200px)",
@@ -76,10 +54,10 @@ var L = "framer-ZrI92",
           : "xYaM39J3n",
     };
   },
-  $ = k(function (_, i) {
-    let { activeLocale: m, setLocale: n } = F(),
+  $ = forwardRef(function (_, i) {
+    let { activeLocale: m, setLocale: n } = useLocale(),
       { style: a, className: o, layoutId: d, variant: M, ...T } = W(_);
-    C(() => {
+    useInsertionEffect(() => {
       let t = w(void 0, m);
       if (((document.title = t.title || ""), t.viewport)) {
         var c;
@@ -107,25 +85,25 @@ var L = "framer-ZrI92",
           }
         );
     }, [void 0, m]);
-    let [z, K] = V(M, Q, !1),
+    let [z, K] = useVariantState(M, Q, !1),
       U = void 0,
-      D = R(null),
-      E = Z(),
+      D = useRef(null),
+      E = useId(),
       I = [];
     return (
-      q({}),
-      e(X.Provider, {
+      registerCursors({}),
+      jsx(CursorContext.Provider, {
         value: { primaryVariantId: "xYaM39J3n", variantClassNames: B },
-        children: f(N, {
+        children: jsxs(LayoutGroup, {
           id: d ?? E,
           children: [
-            f(l.div, {
+            jsxs(motion.div, {
               ...T,
-              className: p(L, ...I, "framer-ei83m9", o),
+              className: cx(L, ...I, "framer-ei83m9", o),
               ref: i ?? D,
               style: { ...a },
               children: [
-                e(O, {
+                jsx(PropertyOverridesProvider, {
                   breakpoint: z,
                   overrides: {
                     O2R29QjFO: {
@@ -139,8 +117,8 @@ var L = "framer-ZrI92",
                             scale: 1,
                             skewX: 0,
                             skewY: 0,
-                            x: 0,
-                            y: 0,
+                            DeviceSizeContainer: 0,
+                            cssSSRMinifiedHelper: 0,
                           },
                         },
                         {
@@ -152,14 +130,14 @@ var L = "framer-ZrI92",
                             scale: 1,
                             skewX: 0,
                             skewY: 0,
-                            x: 0,
-                            y: -60,
+                            DeviceSizeContainer: 0,
+                            cssSSRMinifiedHelper: -60,
                           },
                         },
                       ],
                     },
                   },
-                  children: e(P, {
+                  children: jsx(P, {
                     __framer__styleTransformEffectEnabled: !0,
                     __framer__transformTargets: [
                       {
@@ -171,8 +149,8 @@ var L = "framer-ZrI92",
                           scale: 1,
                           skewX: 0,
                           skewY: 0,
-                          x: 0,
-                          y: 0,
+                          DeviceSizeContainer: 0,
+                          cssSSRMinifiedHelper: 0,
                         },
                       },
                       {
@@ -184,8 +162,8 @@ var L = "framer-ZrI92",
                           scale: 1,
                           skewX: 0,
                           skewY: 0,
-                          x: 0,
-                          y: -60,
+                          DeviceSizeContainer: 0,
+                          cssSSRMinifiedHelper: -60,
                         },
                       },
                     ],
@@ -195,10 +173,10 @@ var L = "framer-ZrI92",
                     className: "framer-tdbkq7",
                   }),
                 }),
-                e(x, {
-                  children: e(y, {
+                jsx(DeviceSizeContainer, {
+                  children: jsx(cssSSRMinifiedHelper, {
                     className: "framer-b0fqsm-container",
-                    children: e(g, {
+                    children: jsx(g, {
                       height: "100%",
                       html: "",
                       id: "ocDNfwszm",
@@ -210,9 +188,9 @@ var L = "framer-ZrI92",
                     }),
                   }),
                 }),
-                e(x, {
+                jsx(DeviceSizeContainer, {
                   width: "100vw",
-                  children: e(J, {
+                  children: jsx(J, {
                     __framer__styleTransformEffectEnabled: !0,
                     __framer__transformTargets: [
                       {
@@ -224,8 +202,8 @@ var L = "framer-ZrI92",
                           scale: 1,
                           skewX: 0,
                           skewY: 0,
-                          x: 0,
-                          y: 0,
+                          DeviceSizeContainer: 0,
+                          cssSSRMinifiedHelper: 0,
                         },
                       },
                       {
@@ -237,8 +215,8 @@ var L = "framer-ZrI92",
                           scale: 1,
                           skewX: 0,
                           skewY: 0,
-                          x: 0,
-                          y: -60,
+                          DeviceSizeContainer: 0,
+                          cssSSRMinifiedHelper: -60,
                         },
                       },
                     ],
@@ -247,7 +225,7 @@ var L = "framer-ZrI92",
                     __targetOpacity: 1,
                     className: "framer-k6lwnz-container",
                     layoutScroll: !0,
-                    children: e(b, {
+                    children: jsx(b, {
                       height: "100%",
                       id: "gBwDz3b0L",
                       layoutId: "gBwDz3b0L",
@@ -258,7 +236,7 @@ var L = "framer-ZrI92",
                 }),
               ],
             }),
-            e("div", { className: p(L, ...I), id: "overlay" }),
+            jsx("div", { className: cx(L, ...I), id: "overlay" }),
           ],
         }),
       })
@@ -277,11 +255,11 @@ var L = "framer-ZrI92",
     `@media (min-width: 810px) and (max-width: 1199px) { .framer-ZrI92 .hidden-8y62k { display: none !important; } .${v.bodyClassName}-framer-ZrI92 { background: white; } .framer-ZrI92.framer-ei83m9 { width: 810px; }}`,
     `@media (max-width: 809px) { .framer-ZrI92 .hidden-toq88q { display: none !important; } .${v.bodyClassName}-framer-ZrI92 { background: white; } .framer-ZrI92.framer-ei83m9 { width: 390px; } .framer-ZrI92 .framer-tdbkq7 { flex-direction: column; } @supports (background: -webkit-named-image(i)) and (not (scale:1)) { .framer-ZrI92 .framer-tdbkq7 { gap: 0px; } .framer-ZrI92 .framer-tdbkq7 > * { margin: 0px; margin-bottom: calc(0px / 2); margin-top: calc(0px / 2); } .framer-ZrI92 .framer-tdbkq7 > :first-child { margin-top: 0px; } .framer-ZrI92 .framer-tdbkq7 > :last-child { margin-bottom: 0px; } }}`,
   ],
-  s = Y($, G, "framer-ZrI92"),
+  s = withCSS($, G, "framer-ZrI92"),
   ce = s;
 s.displayName = "Toolbox_After_the_Intervention";
 s.defaultProps = { height: 1050, width: 1200 };
-j(s, [{ explicitInter: !0, fonts: [] }, ...S, ...A], {
+loadFonts(s, [{ explicitInter: !0, fonts: [] }, ...S, ...A], {
   supportsExplicitInterCodegen: !0,
 });
 var fe = {

@@ -1,0 +1,75 @@
+@supports (aspect-ratio: 1)  {
+   body  {
+   --framer-aspect-ratio-supported: auto;
+  }
+ 
+}
+
+.framer-w2DMm.framer-1d3etll, .framer-w2DMm .framer-1d3etll  {
+   display: block;
+  }
+
+.framer-w2DMm.framer-1h7km6n  {
+   align-content: center;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 10px;
+  height: min-content;
+  justify-content: flex-start;
+  min-width: 200px;
+  padding: 0px;
+  position: relative;
+  text-decoration: none;
+  width: 200px;
+  }
+
+.framer-w2DMm .framer-18dmzzj  {
+   flex: none;
+  height: 2px;
+  overflow: visible;
+  position: relative;
+  width: 2px;
+  }
+
+.framer-w2DMm .framer-mc7b1  {
+   -webkit-user-select: none;
+  flex: none;
+  height: auto;
+  position: relative;
+  user-select: none;
+  white-space: pre;
+  width: auto;
+  }
+
+@supports (background: -webkit-named-image(i)) and (not (font-palette:dark))  {
+   .framer-w2DMm.framer-1h7km6n  {
+   gap: 0px;
+  }
+ .framer-w2DMm.framer-1h7km6n > *  {
+   margin: 0px;
+  margin-left: calc(10px / 2);
+  margin-right: calc(10px / 2);
+  }
+ .framer-w2DMm.framer-1h7km6n > :first-child  {
+   margin-left: 0px;
+  }
+ .framer-w2DMm.framer-1h7km6n > :last-child  {
+   margin-right: 0px;
+  }
+ 
+}
+
+.framer-w2DMm.framer-v-omnff2.framer-1h7km6n  {
+   cursor: unset;
+  }
+
+.framer-w2DMm.framer-v-omnff2 .framer-18dmzzj  {
+   width: 30px;
+  }
+
+.framer-w2DMm.framer-v-1h7km6n.hover .framer-18dmzzj  {
+   width: 11px;
+  }

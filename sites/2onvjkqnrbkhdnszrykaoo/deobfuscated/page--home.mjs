@@ -1,64 +1,16 @@
-/**
- * Import aliases resolved:
- *   qr → withScrollSnapContainer
- *   Pe → MapComponent
- *   Ye → MapMobile2Component
- *   Rr → withScrollSnapChild
- *   Xr → withScrollSnapContainerAlt
- *   Or → fontConfig
- *   kr → linkPresetStyles
- *   Ur → cssClassScope
- *   S → useLocale
- *   X → ControlType
- *   T → addPropertyControls
- *   k → cx
- *   se → withFXWrapper
- *   K → useDeviceSize
- *   q → DeviceSizeContainer
- *   ee → cssSSRMinifiedHelper
- *   j → withCSS
- *   yr → registerCursors
- *   vr → CursorContext
- *   c → ReactFragment
- *   ie → PropertyOverridesProvider
- *   I → forwardRef
- *   pe → scheduleAppearAnimation
- *   he → setAppearAnimationValues
- *   H → useContext
- *   gr → useEffect
- *   _ → useId
- *   xr → useInsertionEffect
- *   D → useVariantAnimationCallbacks
- *   E → useMemo
- *   br → useVariantState
- *   F → useRef
- *   W → useOnVariantChange
- *   ze → CycleSymbol
- *   P → useVariantState
- *   e → jsx
- *   g → jsxs
- *   w → MotionContext
- *   wr → FrameComponent
- *   O → RichTextComponent
- *   r → motion
- *   N → LayoutGroup
- *   fe → SVGComponent
- *   z → loadFonts
- *   Z → getFonts
- *   Cr → normalizeFontConfig
- */
+/* CSS extracted to: page--home.1.css, page--home.2.css, page--home.3.css, page--home.4.css, page--home.5.css, page--home.6.css, page--home.7.css, page--home.8.css, page--home.9.css, page--home.10.css, page--home.11.css, page--home.12.css, page--home.13.css, page--home.14.css */
 import { a as Ve } from "./chunk-7KH5NUCF.mjs";
 import { withScrollSnapContainer,
   MapComponent,
   MapMobile2Component,
   withScrollSnapChild,
   withScrollSnapContainerAlt } from "./chunk--framer-motion.mjs";
-import "./chunk-HVOA2PEY.mjs";
-import { a as G } from "./chunk-4R3P5DN4.mjs";
+import "./chunk--inter-bold-font-loader.mjs";
+import { a as G } from "./chunk--video-component-controls.mjs";
 import { fontConfig,
   linkPresetStyles,
   cssClassScope } from "./chunk--framer-components.mjs";
-import "./chunk-42U43NKG.mjs";
+import "./chunk--empty-stub-2.mjs";
 import { $ as B,
   useLocale,
   ControlType,
@@ -86,7 +38,7 @@ import { $ as B,
   useRef,
   useOnVariantChange,
   CycleSymbol,
-  useVariantState,
+  useComponentVariantState,
   jsx,
   jsxs,
   MotionContext,
@@ -105,8 +57,8 @@ var $r = {
     scrollSnapStop: "always",
     transition: "scroll-snap-align 1s ease-in-out",
   },
-  Ir = (t) => (a) => e(t, { ...a, style: $r });
-var ea = withFXWrapper(r.div),
+  Ir = (t) => (a) => jsx(t, { ...a, style: $r });
+var ea = withFXWrapper(motion.div),
   ra = { h9tfYk7K5: { hover: !0 } },
   aa = ["I5QaL6oi8", "h9tfYk7K5"],
   ta = "framer-Kv8wc",
@@ -153,12 +105,12 @@ var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
     y: 0,
   },
   ma = ({ value: t, children: a }) => {
-    let n = H(w),
+    let n = useContext(MotionContext),
       i = t ?? n.transition,
-      o = E(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return e(w.Provider, { value: o, children: a });
+      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
+    return jsx(MotionContext.Provider, { value: o, children: a });
   },
-  da = r(c),
+  da = motion(ReactFragment),
   ca = { "Variant 1": "I5QaL6oi8", "Variant 2": "h9tfYk7K5" },
   pa = ({ height: t, id: a, width: n, ...i }) => {
     var o, f;
@@ -172,8 +124,8 @@ var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
     };
   },
   ha = (t, a) => a.join("-") + t.layoutDependency,
-  ua = I(function (t, a) {
-    let { activeLocale: n, setLocale: i } = S(),
+  ua = forwardRef(function (t, a) {
+    let { activeLocale: n, setLocale: i } = useLocale(),
       { style: o, className: f, layoutId: s, variant: U, ...C } = pa(t),
       {
         baseVariant: l,
@@ -182,7 +134,7 @@ var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
         setGestureState: y,
         setVariant: d,
         variants: R,
-      } = P({
+      } = useComponentVariantState({
         cycleOrder: aa,
         defaultVariant: "I5QaL6oi8",
         enabledGestures: ra,
@@ -190,28 +142,28 @@ var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
         variantClassNames: na,
       }),
       v = ha(t, R),
-      { activeVariantCallback: x, delay: u } = D(l),
+      { activeVariantCallback: x, delay: u } = useVariantAnimationCallbacks(l),
       m = x(async (...Y) => {
         await u(() => d("h9tfYk7K5"), 400);
       }),
       h = x(async (...Y) => {
         (y({ isPressed: !1 }), d("I5QaL6oi8"));
       });
-    W(l, { default: m });
-    let b = F(null),
-      V = _(),
+    useOnVariantChange(l, { default: m });
+    let b = useRef(null),
+      V = useId(),
       M = [],
-      A = K();
-    return e(N, {
+      A = useDeviceSize();
+    return jsx(LayoutGroup, {
       id: s ?? V,
-      children: e(da, {
+      children: jsx(da, {
         animate: R,
         initial: !1,
-        children: e(ma, {
+        children: jsx(ma, {
           value: oa,
-          children: g(ea, {
+          children: jsxs(ea, {
             ...C,
-            className: k(ta, ...M, "framer-yyb023", f, p),
+            className: cx(ta, ...M, "framer-yyb023", f, p),
             "data-framer-name": "Variant 1",
             "data-highlight": !0,
             layoutDependency: v,
@@ -251,7 +203,7 @@ var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
               L,
             ),
             children: [
-              e(SVGComponent, {
+              jsx(SVGComponent, {
                 className: "framer-1nwrmj9",
                 "data-framer-name": "Inner Ring",
                 fill: "black",
@@ -267,7 +219,7 @@ var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
                 },
                 withExternalLayout: !0,
               }),
-              e(SVGComponent, {
+              jsx(SVGComponent, {
                 className: "framer-1fz3tc2",
                 "data-framer-name": "Outer Ring",
                 fill: "black",
@@ -283,7 +235,7 @@ var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
                 },
                 withExternalLayout: !0,
               }),
-              e(SVGComponent, {
+              jsx(SVGComponent, {
                 className: "framer-v5bumn",
                 "data-framer-name": "Neoflix",
                 fill: "black",
@@ -309,19 +261,19 @@ var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
     ".framer-Kv8wc .framer-v5bumn { aspect-ratio: 4.52020202020202 / 1; bottom: 0px; flex: none; height: 50%; position: absolute; right: 0px; width: var(--framer-aspect-ratio-supported, 646px); z-index: 1; }",
     ".framer-Kv8wc.framer-v-1kdysgy.framer-yyb023 { cursor: pointer; }",
   ],
-  ve = j(ua, ga, "framer-Kv8wc"),
+  ve = withCSS(ua, ga, "framer-Kv8wc"),
   Be = ve;
 ve.displayName = "Neoflix anim";
 ve.defaultProps = { height: 287, width: 935 };
-T(ve, {
+addPropertyControls(ve, {
   variant: {
     options: ["I5QaL6oi8", "h9tfYk7K5"],
     optionTitles: ["Variant 1", "Variant 2"],
     title: "Variant",
-    type: X.Enum,
+    type: ControlType.Enum,
   },
 });
-z(ve, [{ explicitInter: !0, fonts: [] }], { supportsExplicitInterCodegen: !0 });
+loadFonts(ve, [{ explicitInter: !0, fonts: [] }], { supportsExplicitInterCodegen: !0 });
 var xa = ["jPAyFUDCD", "KVq4FzV2g", "ak_u9yeBh"],
   ya = "framer-Kt2aq",
   va = {
@@ -335,12 +287,12 @@ function Nr(t, ...a) {
 }
 var jr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
   zr = ({ value: t, children: a }) => {
-    let n = H(w),
+    let n = useContext(MotionContext),
       i = t ?? n.transition,
-      o = E(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return e(w.Provider, { value: o, children: a });
+      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
+    return jsx(MotionContext.Provider, { value: o, children: a });
   },
-  ba = r(c),
+  ba = motion(ReactFragment),
   wa = {
     "Variant 1": "jPAyFUDCD",
     "Variant 2": "KVq4FzV2g",
@@ -358,8 +310,8 @@ var jr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
     };
   },
   qa = (t, a) => a.join("-") + t.layoutDependency,
-  Ra = I(function (t, a) {
-    let { activeLocale: n, setLocale: i } = S(),
+  Ra = forwardRef(function (t, a) {
+    let { activeLocale: n, setLocale: i } = useLocale(),
       { style: o, className: f, layoutId: s, variant: U, ...C } = Ca(t),
       {
         baseVariant: l,
@@ -368,14 +320,14 @@ var jr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
         setGestureState: y,
         setVariant: d,
         variants: R,
-      } = P({
+      } = useComponentVariantState({
         cycleOrder: xa,
         defaultVariant: "jPAyFUDCD",
         variant: U,
         variantClassNames: va,
       }),
       v = qa(t, R),
-      { activeVariantCallback: x, delay: u } = D(l),
+      { activeVariantCallback: x, delay: u } = useVariantAnimationCallbacks(l),
       m = x(async (...J) => {
         await u(() => d("KVq4FzV2g"), 1800);
       }),
@@ -391,21 +343,21 @@ var jr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
       M = x(async (...J) => {
         d("jPAyFUDCD");
       });
-    W(l, { ak_u9yeBh: b, default: m, KVq4FzV2g: h });
-    let A = F(null),
-      Y = _(),
+    useOnVariantChange(l, { ak_u9yeBh: b, default: m, KVq4FzV2g: h });
+    let A = useRef(null),
+      Y = useId(),
       $ = [],
-      Q = K();
-    return e(N, {
+      Q = useDeviceSize();
+    return jsx(LayoutGroup, {
       id: s ?? Y,
-      children: e(ba, {
+      children: jsx(ba, {
         animate: R,
         initial: !1,
-        children: e(zr, {
+        children: jsx(zr, {
           value: jr,
-          children: e(r.div, {
+          children: jsx(motion.div, {
             ...C,
-            className: k(ya, ...$, "framer-1mo43e9", f, p),
+            className: cx(ya, ...$, "framer-1mo43e9", f, p),
             "data-framer-name": "Variant 1",
             "data-highlight": !0,
             layoutDependency: v,
@@ -425,12 +377,12 @@ var jr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
               l,
               L,
             ),
-            children: e(zr, {
+            children: jsx(zr, {
               value: jr,
-              children: e(O, {
+              children: jsx(RichTextComponent, {
                 __fromCanvasComponent: !0,
-                children: e(c, {
-                  children: g(r.h1, {
+                children: jsx(ReactFragment, {
+                  children: jsxs(motion.h1, {
                     style: {
                       "--font-selector": "R0Y7SW50ZXItNzAw",
                       "--framer-font-family":
@@ -443,17 +395,17 @@ var jr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                         "var(--extracted-gdpscs, var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55)))",
                     },
                     children: [
-                      e(r.span, {
+                      jsx(motion.span, {
                         style: {
                           "--framer-text-color":
                             "var(--extracted-1sp2osd, var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, rgb(82, 156, 156)))",
                         },
-                        children: e(r.strong, { children: "Record," }),
+                        children: jsx(motion.strong, { children: "Record," }),
                       }),
-                      e(r.strong, { children: e(r.br, {}) }),
-                      e(r.strong, { children: "Reflect," }),
-                      e(r.strong, { children: e(r.br, {}) }),
-                      e(r.strong, { children: "Refine:" }),
+                      jsx(motion.strong, { children: jsx(motion.useVariantState, {}) }),
+                      jsx(motion.strong, { children: "Reflect," }),
+                      jsx(motion.strong, { children: jsx(motion.useVariantState, {}) }),
+                      jsx(motion.strong, { children: "Refine:" }),
                     ],
                   }),
                 }),
@@ -498,8 +450,8 @@ var jr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                   {
                     ak_u9yeBh: {
                       "data-highlight": !0,
-                      children: e(c, {
-                        children: g(r.h1, {
+                      children: jsx(ReactFragment, {
+                        children: jsxs(motion.h1, {
                           style: {
                             "--font-selector": "R0Y7SW50ZXItNzAw",
                             "--framer-font-family":
@@ -512,28 +464,28 @@ var jr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                               "var(--extracted-gdpscs, var(--token-c8b566a8-9d13-4284-b32a-9b7fd1a6f5a4, rgb(56, 52, 55)))",
                           },
                           children: [
-                            e(r.span, {
+                            jsx(motion.span, {
                               style: {
                                 "--framer-text-color":
                                   "var(--extracted-1sp2osd, var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55)))",
                               },
-                              children: e(r.strong, { children: "Record," }),
+                              children: jsx(motion.strong, { children: "Record," }),
                             }),
-                            e(r.span, {
+                            jsx(motion.span, {
                               style: {
                                 "--framer-text-color":
                                   "var(--extracted-f12k5c, var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, rgb(82, 156, 156)))",
                               },
-                              children: e(r.strong, { children: e(r.br, {}) }),
+                              children: jsx(motion.strong, { children: jsx(motion.useVariantState, {}) }),
                             }),
-                            e(r.strong, { children: "Reflect," }),
-                            e(r.strong, { children: e(r.br, {}) }),
-                            e(r.span, {
+                            jsx(motion.strong, { children: "Reflect," }),
+                            jsx(motion.strong, { children: jsx(motion.useVariantState, {}) }),
+                            jsx(motion.span, {
                               style: {
                                 "--framer-text-color":
                                   "var(--extracted-1sc344s, var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, rgb(82, 156, 156)))",
                               },
-                              children: e(r.strong, { children: "Refine:" }),
+                              children: jsx(motion.strong, { children: "Refine:" }),
                             }),
                           ],
                         }),
@@ -542,8 +494,8 @@ var jr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                     },
                     KVq4FzV2g: {
                       "data-highlight": !0,
-                      children: e(c, {
-                        children: g(r.h1, {
+                      children: jsx(ReactFragment, {
+                        children: jsxs(motion.h1, {
                           style: {
                             "--font-selector": "R0Y7SW50ZXItNzAw",
                             "--framer-font-family":
@@ -556,28 +508,28 @@ var jr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                               "var(--extracted-gdpscs, var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, rgb(82, 156, 156)))",
                           },
                           children: [
-                            e(r.span, {
+                            jsx(motion.span, {
                               style: {
                                 "--framer-text-color":
                                   "var(--extracted-1sp2osd, var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55)))",
                               },
-                              children: e(r.strong, { children: "Record," }),
+                              children: jsx(motion.strong, { children: "Record," }),
                             }),
-                            e(r.strong, { children: e(r.br, {}) }),
-                            e(r.strong, { children: "Reflect," }),
-                            e(r.span, {
+                            jsx(motion.strong, { children: jsx(motion.useVariantState, {}) }),
+                            jsx(motion.strong, { children: "Reflect," }),
+                            jsx(motion.span, {
                               style: {
                                 "--framer-text-color":
                                   "var(--extracted-1dy2hks, var(--token-c8b566a8-9d13-4284-b32a-9b7fd1a6f5a4, rgb(56, 52, 55)))",
                               },
-                              children: e(r.strong, { children: e(r.br, {}) }),
+                              children: jsx(motion.strong, { children: jsx(motion.useVariantState, {}) }),
                             }),
-                            e(r.span, {
+                            jsx(motion.span, {
                               style: {
                                 "--framer-text-color":
                                   "var(--extracted-1sc344s, var(--token-c8b566a8-9d13-4284-b32a-9b7fd1a6f5a4, rgb(56, 52, 55)))",
                               },
-                              children: e(r.strong, { children: "Refine:" }),
+                              children: jsx(motion.strong, { children: "Refine:" }),
                             }),
                           ],
                         }),
@@ -605,19 +557,19 @@ var jr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
     ".framer-Kt2aq.framer-v-tsw57o.framer-1mo43e9 { gap: 0px; }",
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-Kt2aq.framer-v-tsw57o.framer-1mo43e9 { gap: 0px; } .framer-Kt2aq.framer-v-tsw57o.framer-1mo43e9 > * { margin: 0px; margin-bottom: calc(0px / 2); margin-top: calc(0px / 2); } .framer-Kt2aq.framer-v-tsw57o.framer-1mo43e9 > :first-child { margin-top: 0px; } .framer-Kt2aq.framer-v-tsw57o.framer-1mo43e9 > :last-child { margin-bottom: 0px; } }",
   ],
-  be = j(Ra, Xa, "framer-Kt2aq"),
+  be = withCSS(Ra, Xa, "framer-Kt2aq"),
   Ae = be;
 be.displayName = "Record Reflect Refine Copy";
 be.defaultProps = { height: 223, width: 226 };
-T(be, {
+addPropertyControls(be, {
   variant: {
     options: ["jPAyFUDCD", "KVq4FzV2g", "ak_u9yeBh"],
     optionTitles: ["Variant 1", "Variant 2", "Variant 3"],
     title: "Variant",
-    type: X.Enum,
+    type: ControlType.Enum,
   },
 });
-z(
+loadFonts(
   be,
   [
     {
@@ -655,12 +607,12 @@ function Vr(t, ...a) {
 }
 var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
   Mr = ({ value: t, children: a }) => {
-    let n = H(w),
+    let n = useContext(MotionContext),
       i = t ?? n.transition,
-      o = E(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return e(w.Provider, { value: o, children: a });
+      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
+    return jsx(MotionContext.Provider, { value: o, children: a });
   },
-  Ia = r(c),
+  Ia = motion(ReactFragment),
   _a = {
     "Variant 1": "Aa5IjJyQQ",
     "Variant 2": "Ds7IWPpXk",
@@ -679,8 +631,8 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
   },
   ja = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  za = I(function (t, a) {
-    let { activeLocale: n, setLocale: i } = S(),
+  za = forwardRef(function (t, a) {
+    let { activeLocale: n, setLocale: i } = useLocale(),
       { style: o, className: f, layoutId: s, variant: U, ...C } = Na(t),
       {
         baseVariant: l,
@@ -692,14 +644,14 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
         setGestureState: v,
         setVariant: x,
         variants: u,
-      } = P({
+      } = useComponentVariantState({
         cycleOrder: Oa,
         defaultVariant: "Aa5IjJyQQ",
         variant: U,
         variantClassNames: Ua,
       }),
       m = ja(t, u),
-      { activeVariantCallback: h, delay: b } = D(l),
+      { activeVariantCallback: h, delay: b } = useVariantAnimationCallbacks(l),
       V = h(async (...de) => {
         await b(() => x("Ds7IWPpXk"), 1800);
       }),
@@ -715,22 +667,22 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
       $ = h(async (...de) => {
         x("Aa5IjJyQQ");
       });
-    W(l, { default: V, Ds7IWPpXk: M, wtxEodMdN: A });
-    let Q = F(null),
-      J = _(),
+    useOnVariantChange(l, { default: V, Ds7IWPpXk: M, wtxEodMdN: A });
+    let Q = useRef(null),
+      J = useId(),
       ce = [],
-      je = K();
-    return e(N, {
+      je = useDeviceSize();
+    return jsx(LayoutGroup, {
       id: s ?? J,
-      children: e(Ia, {
+      children: jsx(Ia, {
         animate: u,
         initial: !1,
-        children: e(Mr, {
+        children: jsx(Mr, {
           value: Lr,
-          children: e(r.div, {
+          children: jsx(motion.div, {
             ...C,
             ...y,
-            className: k(ka, ...ce, "framer-2fjn4z", f, p),
+            className: cx(ka, ...ce, "framer-2fjn4z", f, p),
             "data-framer-name": "Variant 1",
             "data-highlight": !0,
             layoutDependency: m,
@@ -745,12 +697,12 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
               l,
               d,
             ),
-            children: e(Mr, {
+            children: jsx(Mr, {
               value: Lr,
-              children: e(O, {
+              children: jsx(RichTextComponent, {
                 __fromCanvasComponent: !0,
-                children: e(c, {
-                  children: g(r.h1, {
+                children: jsx(ReactFragment, {
+                  children: jsxs(motion.h1, {
                     style: {
                       "--font-selector": "R0Y7SW50ZXItNTAw",
                       "--framer-font-family":
@@ -763,7 +715,7 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                         "var(--extracted-gdpscs, var(--token-1af50db2-7d53-4f76-a442-1d2b2bb0984c, rgb(131, 130, 143)))",
                     },
                     children: [
-                      e(r.span, {
+                      jsx(motion.span, {
                         style: {
                           "--font-selector": "R0Y7SW50ZXItNzAw",
                           "--framer-font-size": "62px",
@@ -771,9 +723,9 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                           "--framer-text-color":
                             "var(--extracted-1sp2osd, var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, rgb(82, 156, 156)))",
                         },
-                        children: e(r.strong, { children: "Record," }),
+                        children: jsx(motion.strong, { children: "Record," }),
                       }),
-                      e(r.span, {
+                      jsx(motion.span, {
                         style: {
                           "--font-selector": "R0Y7SW50ZXItNzAw",
                           "--framer-font-size": "62px",
@@ -781,19 +733,19 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                           "--framer-text-color":
                             "var(--extracted-f12k5c, var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55)))",
                         },
-                        children: e(r.strong, {
+                        children: jsx(motion.strong, {
                           children: " Reflect, Refine:",
                         }),
                       }),
-                      e(r.span, {
+                      jsx(motion.span, {
                         style: {
                           "--framer-font-size": "62px",
                           "--framer-text-color":
                             "var(--extracted-1ke0nse, var(--token-c8b566a8-9d13-4284-b32a-9b7fd1a6f5a4, rgb(56, 52, 55)))",
                         },
-                        children: e(r.strong, { children: e(r.br, {}) }),
+                        children: jsx(motion.strong, { children: jsx(motion.useVariantState, {}) }),
                       }),
-                      e(r.strong, {
+                      jsx(motion.strong, {
                         children:
                           "Improve patient care through video reflection.",
                       }),
@@ -845,8 +797,8 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                   {
                     Ds7IWPpXk: {
                       "data-highlight": !0,
-                      children: e(c, {
-                        children: g(r.h1, {
+                      children: jsx(ReactFragment, {
+                        children: jsxs(motion.h1, {
                           style: {
                             "--font-selector": "R0Y7SW50ZXItNTAw",
                             "--framer-font-family":
@@ -859,7 +811,7 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                               "var(--extracted-gdpscs, var(--token-1af50db2-7d53-4f76-a442-1d2b2bb0984c, rgb(137, 130, 143)))",
                           },
                           children: [
-                            e(r.span, {
+                            jsx(motion.span, {
                               style: {
                                 "--font-selector": "R0Y7SW50ZXItNzAw",
                                 "--framer-font-size": "62px",
@@ -867,9 +819,9 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                                 "--framer-text-color":
                                   "var(--extracted-1sp2osd, var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55)))",
                               },
-                              children: e(r.strong, { children: "Record," }),
+                              children: jsx(motion.strong, { children: "Record," }),
                             }),
-                            e(r.span, {
+                            jsx(motion.span, {
                               style: {
                                 "--font-selector": "R0Y7SW50ZXItNzAw",
                                 "--framer-font-size": "62px",
@@ -877,9 +829,9 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                                 "--framer-text-color":
                                   "var(--extracted-f12k5c, var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, rgb(82, 156, 156)))",
                               },
-                              children: e(r.strong, { children: " Reflect," }),
+                              children: jsx(motion.strong, { children: " Reflect," }),
                             }),
-                            e(r.span, {
+                            jsx(motion.span, {
                               style: {
                                 "--font-selector": "R0Y7SW50ZXItNzAw",
                                 "--framer-font-size": "62px",
@@ -887,17 +839,17 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                                 "--framer-text-color":
                                   "var(--extracted-1ke0nse, var(--token-c8b566a8-9d13-4284-b32a-9b7fd1a6f5a4, rgb(56, 52, 55)))",
                               },
-                              children: e(r.strong, { children: " Refine:" }),
+                              children: jsx(motion.strong, { children: " Refine:" }),
                             }),
-                            e(r.span, {
+                            jsx(motion.span, {
                               style: {
                                 "--framer-font-size": "62px",
                                 "--framer-text-color":
                                   "var(--extracted-1dy2hks, var(--token-c8b566a8-9d13-4284-b32a-9b7fd1a6f5a4, rgb(56, 52, 55)))",
                               },
-                              children: e(r.strong, { children: e(r.br, {}) }),
+                              children: jsx(motion.strong, { children: jsx(motion.useVariantState, {}) }),
                             }),
-                            e(r.strong, {
+                            jsx(motion.strong, {
                               children:
                                 "Improve patient care through video reflection.",
                             }),
@@ -908,8 +860,8 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                     },
                     wtxEodMdN: {
                       "data-highlight": !0,
-                      children: e(c, {
-                        children: g(r.h1, {
+                      children: jsx(ReactFragment, {
+                        children: jsxs(motion.h1, {
                           style: {
                             "--font-selector": "R0Y7SW50ZXItNTAw",
                             "--framer-font-family":
@@ -922,7 +874,7 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                               "var(--extracted-gdpscs, var(--token-1af50db2-7d53-4f76-a442-1d2b2bb0984c, rgb(131, 130, 143)))",
                           },
                           children: [
-                            e(r.span, {
+                            jsx(motion.span, {
                               style: {
                                 "--font-selector": "R0Y7SW50ZXItNzAw",
                                 "--framer-font-size": "62px",
@@ -930,9 +882,9 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                                 "--framer-text-color":
                                   "var(--extracted-1sp2osd, var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, rgb(56, 52, 55)))",
                               },
-                              children: e(r.strong, { children: "Record," }),
+                              children: jsx(motion.strong, { children: "Record," }),
                             }),
-                            e(r.span, {
+                            jsx(motion.span, {
                               style: {
                                 "--font-selector": "R0Y7SW50ZXItNzAw",
                                 "--framer-font-size": "62px",
@@ -940,9 +892,9 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                                 "--framer-text-color":
                                   "var(--extracted-f12k5c, var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, rgb(82, 156, 156)))",
                               },
-                              children: e(r.strong, { children: " " }),
+                              children: jsx(motion.strong, { children: " " }),
                             }),
-                            e(r.span, {
+                            jsx(motion.span, {
                               style: {
                                 "--font-selector": "R0Y7SW50ZXItNzAw",
                                 "--framer-font-size": "62px",
@@ -950,9 +902,9 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                                 "--framer-text-color":
                                   "var(--extracted-1ke0nse, var(--token-c8b566a8-9d13-4284-b32a-9b7fd1a6f5a4, rgb(56, 52, 55)))",
                               },
-                              children: e(r.strong, { children: "Reflect, " }),
+                              children: jsx(motion.strong, { children: "Reflect, " }),
                             }),
-                            e(r.span, {
+                            jsx(motion.span, {
                               style: {
                                 "--font-selector": "R0Y7SW50ZXItNzAw",
                                 "--framer-font-size": "62px",
@@ -960,17 +912,17 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                                 "--framer-text-color":
                                   "var(--extracted-1dy2hks, var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, rgb(82, 156, 156)))",
                               },
-                              children: e(r.strong, { children: "Refine:" }),
+                              children: jsx(motion.strong, { children: "Refine:" }),
                             }),
-                            e(r.span, {
+                            jsx(motion.span, {
                               style: {
                                 "--framer-font-size": "62px",
                                 "--framer-text-color":
                                   "var(--extracted-1sc344s, var(--token-c8b566a8-9d13-4284-b32a-9b7fd1a6f5a4, rgb(56, 52, 55)))",
                               },
-                              children: e(r.strong, { children: e(r.br, {}) }),
+                              children: jsx(motion.strong, { children: jsx(motion.useVariantState, {}) }),
                             }),
-                            e(r.strong, {
+                            jsx(motion.strong, {
                               children:
                                 "Improve patient care through video reflection.",
                             }),
@@ -998,19 +950,19 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-ABLhs.framer-2fjn4z { gap: 0px; } .framer-ABLhs.framer-2fjn4z > * { margin: 0px; margin-bottom: calc(20px / 2); margin-top: calc(20px / 2); } .framer-ABLhs.framer-2fjn4z > :first-child { margin-top: 0px; } .framer-ABLhs.framer-2fjn4z > :last-child { margin-bottom: 0px; } }",
     ".framer-ABLhs.framer-v-wbkwq0 .framer-1tufjen, .framer-ABLhs.framer-v-10ybi4f .framer-1tufjen { cursor: pointer; }",
   ],
-  we = j(za, Va, "framer-ABLhs"),
+  we = withCSS(za, Va, "framer-ABLhs"),
   He = we;
 we.displayName = "Record Reflect Refine";
 we.defaultProps = { height: 187, width: 717 };
-T(we, {
+addPropertyControls(we, {
   variant: {
     options: ["Aa5IjJyQQ", "Ds7IWPpXk", "wtxEodMdN"],
     optionTitles: ["Variant 1", "Variant 2", "Variant 3"],
     title: "Variant",
-    type: X.Enum,
+    type: ControlType.Enum,
   },
 });
-z(
+loadFonts(
   we,
   [
     {
@@ -1068,7 +1020,7 @@ var Sa = {
       type: "spring" /* physics-based spring animation */,
     },
   },
-  Da = I(function (
+  Da = forwardRef(function (
     {
       id: t,
       style: a,
@@ -1091,7 +1043,7 @@ var Sa = {
         setVariant: x,
         transition: u,
         variants: m,
-      } = P({
+      } = useComponentVariantState({
         cycleOrder: La,
         defaultVariant: "xKACItaHS",
         transitions: Ta,
@@ -1099,14 +1051,14 @@ var Sa = {
         variantClassNames: Ma,
       }),
       h = m.join("-") + C.layoutDependency,
-      { activeVariantCallback: b, delay: V } = D(y),
+      { activeVariantCallback: b, delay: V } = useVariantAnimationCallbacks(y),
       M = b(async (...Y) => {
         if (U && (await U(...Y)) === !1) return !1;
       }),
-      A = _();
-    return e(N, {
+      A = useId();
+    return jsx(LayoutGroup, {
       id: f ?? A,
-      children: e(r.div, {
+      children: jsx(motion.div, {
         initial: L,
         animate: m,
         onHoverStart: () => v({ isHovered: !0 }),
@@ -1114,11 +1066,11 @@ var Sa = {
         onTapStart: () => v({ isPressed: !0 }),
         onTap: () => v({ isPressed: !1 }),
         onTapCancel: () => v({ isPressed: !1 }),
-        className: k("framer-7RIWM", d),
+        className: cx("framer-7RIWM", d),
         style: { display: "contents" },
-        children: e(r.div, {
+        children: jsx(motion.div, {
           ...C,
-          className: k("framer-4hw3vi", n),
+          className: cx("framer-4hw3vi", n),
           "data-framer-name": "Variant 1",
           "data-highlight": !0,
           layoutDependency: h,
@@ -1157,20 +1109,20 @@ var Sa = {
     ".framer-7RIWM .framer-ibx2dq { display: block; }",
     ".framer-7RIWM .framer-4hw3vi { height: 54px; overflow: visible; position: relative; width: 238px; }",
   ],
-  Ce = j(Da, Pa, "framer-7RIWM"),
+  Ce = withCSS(Da, Pa, "framer-7RIWM"),
   le = Ce;
 Ce.displayName = "Trigger";
 Ce.defaultProps = { height: 54, width: 238 };
-T(Ce, {
+addPropertyControls(Ce, {
   variant: {
     options: ["xKACItaHS", "rgX5PDpQJ", "xeZKtnsQM"],
     optionTitles: ["Variant 1", "Variant 2", "Variant 3"],
     title: "Variant",
-    type: X.Enum,
+    type: ControlType.Enum,
   },
-  e8FqqnNOm: { title: "Hover", type: X.EventHandler },
+  e8FqqnNOm: { title: "Hover", type: ControlType.EventHandler },
 });
-z(Ce, []);
+loadFonts(Ce, []);
 var Ya = ["QCVLxQKOQ", "XVQi0W0KO", "Xwn3H48jY"],
   Ba = "framer-2FQXY",
   Aa = {
@@ -1185,12 +1137,12 @@ function Fr(t, ...a) {
 var Ha = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   Ea = (t, a) => `translateX(-50%) ${a}`,
   Ka = ({ value: t, children: a }) => {
-    let n = H(w),
+    let n = useContext(MotionContext),
       i = t ?? n.transition,
-      o = E(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return e(w.Provider, { value: o, children: a });
+      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
+    return jsx(MotionContext.Provider, { value: o, children: a });
   },
-  Wa = r(c),
+  Wa = motion(ReactFragment),
   Qa = { Active: "XVQi0W0KO", Inactive: "Xwn3H48jY", Main: "QCVLxQKOQ" },
   Za = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -1206,8 +1158,8 @@ var Ha = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
   },
   Ja = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  Ga = I(function (t, a) {
-    let { activeLocale: n, setLocale: i } = S(),
+  Ga = forwardRef(function (t, a) {
+    let { activeLocale: n, setLocale: i } = useLocale(),
       {
         style: o,
         className: f,
@@ -1224,36 +1176,36 @@ var Ha = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
         setGestureState: R,
         setVariant: v,
         variants: x,
-      } = P({
+      } = useComponentVariantState({
         cycleOrder: Ya,
         defaultVariant: "QCVLxQKOQ",
         variant: U,
         variantClassNames: Aa,
       }),
       u = Ja(t, x),
-      { activeVariantCallback: m, delay: h } = D(p),
+      { activeVariantCallback: m, delay: h } = useVariantAnimationCallbacks(p),
       b = m(async (...Q) => {
         if ((R({ isPressed: !1 }), C && (await C(...Q)) === !1)) return !1;
       }),
       V = m(async (...Q) => {
         v("XVQi0W0KO");
       });
-    W(p, { default: V, Xwn3H48jY: void 0 });
-    let M = F(null),
-      A = _(),
+    useOnVariantChange(p, { default: V, Xwn3H48jY: void 0 });
+    let M = useRef(null),
+      A = useId(),
       Y = [],
-      $ = K();
-    return e(N, {
+      $ = useDeviceSize();
+    return jsx(LayoutGroup, {
       id: s ?? A,
-      children: e(Wa, {
+      children: jsx(Wa, {
         animate: x,
         initial: !1,
-        children: e(Ka, {
+        children: jsx(Ka, {
           value: Ha,
-          children: e(r.div, {
+          children: jsx(motion.div, {
             ...l,
             ...y,
-            className: k(Ba, ...Y, "framer-14h8w6j", f, L),
+            className: cx(Ba, ...Y, "framer-14h8w6j", f, L),
             "data-framer-name": "Main",
             "data-highlight": !0,
             layoutDependency: u,
@@ -1283,10 +1235,10 @@ var Ha = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
               p,
               d,
             ),
-            children: e(O, {
+            children: jsx(RichTextComponent, {
               __fromCanvasComponent: !0,
-              children: e(c, {
-                children: e(r.h2, {
+              children: jsx(ReactFragment, {
+                children: jsx(motion.h2, {
                   style: {
                     "--font-selector": "R0Y7SW50ZXItNTAw",
                     "--framer-font-family":
@@ -1322,8 +1274,8 @@ var Ha = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
               ...Fr(
                 {
                   XVQi0W0KO: {
-                    children: e(c, {
-                      children: e(r.h2, {
+                    children: jsx(ReactFragment, {
+                      children: jsx(motion.h2, {
                         style: {
                           "--font-selector": "R0Y7SW50ZXItNTAw",
                           "--framer-font-family":
@@ -1357,20 +1309,20 @@ var Ha = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     ".framer-2FQXY .framer-1c06u0h { -webkit-user-select: none; bottom: 0px; flex: none; height: auto; left: 50%; overflow: visible; position: absolute; user-select: none; white-space: pre-wrap; width: 360px; word-break: break-word; word-wrap: break-word; }",
     ".framer-2FQXY.framer-v-1r41h02.framer-14h8w6j { overflow: hidden; will-change: var(--framer-will-change-override, transform); }",
   ],
-  qe = j(Ga, $a, "framer-2FQXY"),
+  qe = withCSS(Ga, $a, "framer-2FQXY"),
   Ee = qe;
 qe.displayName = "Decisiveness";
 qe.defaultProps = { height: 72, width: 380 };
-T(qe, {
+addPropertyControls(qe, {
   variant: {
     options: ["QCVLxQKOQ", "XVQi0W0KO", "Xwn3H48jY"],
     optionTitles: ["Main", "Active", "Inactive"],
     title: "Variant",
-    type: X.Enum,
+    type: ControlType.Enum,
   },
-  NXCj7csO1: { title: "Tap", type: X.EventHandler },
+  NXCj7csO1: { title: "Tap", type: ControlType.EventHandler },
 });
-z(
+loadFonts(
   qe,
   [
     {
@@ -1402,12 +1354,12 @@ function Sr(t, ...a) {
 var tt = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   nt = (t, a) => `translateX(-50%) ${a}`,
   it = ({ value: t, children: a }) => {
-    let n = H(w),
+    let n = useContext(MotionContext),
       i = t ?? n.transition,
-      o = E(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return e(w.Provider, { value: o, children: a });
+      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
+    return jsx(MotionContext.Provider, { value: o, children: a });
   },
-  ot = r(c),
+  ot = motion(ReactFragment),
   st = { Active: "yFu0ego46", Inactive: "Bq4Oqy1P7", Main: "A73BIfYrH" },
   ft = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -1423,8 +1375,8 @@ var tt = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
   },
   lt = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  mt = I(function (t, a) {
-    let { activeLocale: n, setLocale: i } = S(),
+  mt = forwardRef(function (t, a) {
+    let { activeLocale: n, setLocale: i } = useLocale(),
       {
         style: o,
         className: f,
@@ -1441,14 +1393,14 @@ var tt = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
         setGestureState: R,
         setVariant: v,
         variants: x,
-      } = P({
+      } = useComponentVariantState({
         cycleOrder: et,
         defaultVariant: "A73BIfYrH",
         variant: U,
         variantClassNames: at,
       }),
       u = lt(t, x),
-      { activeVariantCallback: m, delay: h } = D(p),
+      { activeVariantCallback: m, delay: h } = useVariantAnimationCallbacks(p),
       b = m(async (...J) => {
         if ((R({ isPressed: !1 }), C && (await C(...J)) === !1)) return !1;
       }),
@@ -1458,22 +1410,22 @@ var tt = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
       M = m(async (...J) => {
         v("yFu0ego46");
       });
-    W(p, { Bq4Oqy1P7: void 0, default: V });
-    let A = F(null),
-      Y = _(),
+    useOnVariantChange(p, { Bq4Oqy1P7: void 0, default: V });
+    let A = useRef(null),
+      Y = useId(),
       $ = [],
-      Q = K();
-    return e(N, {
+      Q = useDeviceSize();
+    return jsx(LayoutGroup, {
       id: s ?? Y,
-      children: e(ot, {
+      children: jsx(ot, {
         animate: x,
         initial: !1,
-        children: e(it, {
+        children: jsx(it, {
           value: tt,
-          children: e(r.div, {
+          children: jsx(motion.div, {
             ...l,
             ...y,
-            className: k(rt, ...$, "framer-1f4gy1p", f, L),
+            className: cx(rt, ...$, "framer-1f4gy1p", f, L),
             "data-framer-name": "Main",
             "data-highlight": !0,
             layoutDependency: u,
@@ -1503,15 +1455,15 @@ var tt = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
               p,
               d,
             ),
-            children: e(r.div, {
+            children: jsx(motion.div, {
               className: "framer-1aqnoq4",
               layoutDependency: u,
               layoutId: "erKigIyyG",
               transformTemplate: nt,
-              children: e(O, {
+              children: jsx(RichTextComponent, {
                 __fromCanvasComponent: !0,
-                children: e(c, {
-                  children: e(r.h2, {
+                children: jsx(ReactFragment, {
+                  children: jsx(motion.h2, {
                     style: {
                       "--font-selector": "R0Y7SW50ZXItNTAw",
                       "--framer-font-family":
@@ -1549,8 +1501,8 @@ var tt = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                 ...Sr(
                   {
                     yFu0ego46: {
-                      children: e(c, {
-                        children: e(r.h2, {
+                      children: jsx(ReactFragment, {
+                        children: jsx(motion.h2, {
                           style: {
                             "--font-selector": "R0Y7SW50ZXItNTAw",
                             "--framer-font-family":
@@ -1588,20 +1540,20 @@ var tt = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-pC2CI .framer-1aqnoq4 { gap: 0px; } .framer-pC2CI .framer-1aqnoq4 > * { margin: 0px; margin-bottom: calc(10px / 2); margin-top: calc(10px / 2); } .framer-pC2CI .framer-1aqnoq4 > :first-child { margin-top: 0px; } .framer-pC2CI .framer-1aqnoq4 > :last-child { margin-bottom: 0px; } }",
     ".framer-pC2CI.framer-v-tr7mnx.framer-1f4gy1p { overflow: hidden; will-change: var(--framer-will-change-override, transform); }",
   ],
-  Re = j(mt, dt, "framer-pC2CI"),
+  Re = withCSS(mt, dt, "framer-pC2CI"),
   Ke = Re;
 Re.displayName = "Quiet Reflection";
 Re.defaultProps = { height: 72, width: 380 };
-T(Re, {
+addPropertyControls(Re, {
   variant: {
     options: ["A73BIfYrH", "yFu0ego46", "Bq4Oqy1P7"],
     optionTitles: ["Main", "Active", "Inactive"],
     title: "Variant",
-    type: X.Enum,
+    type: ControlType.Enum,
   },
-  HEb3Jrr9H: { title: "Tap", type: X.EventHandler },
+  HEb3Jrr9H: { title: "Tap", type: ControlType.EventHandler },
 });
-z(
+loadFonts(
   Re,
   [
     {
@@ -1633,12 +1585,12 @@ function Tr(t, ...a) {
 var ut = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   gt = (t, a) => `translate(-50%, -50%) ${a}`,
   xt = ({ value: t, children: a }) => {
-    let n = H(w),
+    let n = useContext(MotionContext),
       i = t ?? n.transition,
-      o = E(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return e(w.Provider, { value: o, children: a });
+      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
+    return jsx(MotionContext.Provider, { value: o, children: a });
   },
-  yt = r(c),
+  yt = motion(ReactFragment),
   vt = { Active: "qFD4z7zh2", Inactive: "uLTZzDf3c", Main: "HkR7N8JHH" },
   bt = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -1654,8 +1606,8 @@ var ut = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
   },
   wt = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  Ct = I(function (t, a) {
-    let { activeLocale: n, setLocale: i } = S(),
+  Ct = forwardRef(function (t, a) {
+    let { activeLocale: n, setLocale: i } = useLocale(),
       {
         style: o,
         className: f,
@@ -1672,36 +1624,36 @@ var ut = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
         setGestureState: R,
         setVariant: v,
         variants: x,
-      } = P({
+      } = useComponentVariantState({
         cycleOrder: ct,
         defaultVariant: "HkR7N8JHH",
         variant: U,
         variantClassNames: ht,
       }),
       u = wt(t, x),
-      { activeVariantCallback: m, delay: h } = D(p),
+      { activeVariantCallback: m, delay: h } = useVariantAnimationCallbacks(p),
       b = m(async (...Q) => {
         if ((R({ isPressed: !1 }), C && (await C(...Q)) === !1)) return !1;
       }),
       V = m(async (...Q) => {
         v("qFD4z7zh2");
       });
-    W(p, { default: V, uLTZzDf3c: void 0 });
-    let M = F(null),
-      A = _(),
+    useOnVariantChange(p, { default: V, uLTZzDf3c: void 0 });
+    let M = useRef(null),
+      A = useId(),
       Y = [],
-      $ = K();
-    return e(N, {
+      $ = useDeviceSize();
+    return jsx(LayoutGroup, {
       id: s ?? A,
-      children: e(yt, {
+      children: jsx(yt, {
         animate: x,
         initial: !1,
-        children: e(xt, {
+        children: jsx(xt, {
           value: ut,
-          children: e(r.div, {
+          children: jsx(motion.div, {
             ...l,
             ...y,
-            className: k(pt, ...Y, "framer-6uc7fk", f, L),
+            className: cx(pt, ...Y, "framer-6uc7fk", f, L),
             "data-framer-name": "Main",
             "data-highlight": !0,
             layoutDependency: u,
@@ -1731,10 +1683,10 @@ var ut = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
               p,
               d,
             ),
-            children: e(O, {
+            children: jsx(RichTextComponent, {
               __fromCanvasComponent: !0,
-              children: e(c, {
-                children: e(r.h2, {
+              children: jsx(ReactFragment, {
+                children: jsx(motion.h2, {
                   style: {
                     "--font-selector": "R0Y7SW50ZXItNTAw",
                     "--framer-font-family":
@@ -1771,8 +1723,8 @@ var ut = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
               ...Tr(
                 {
                   qFD4z7zh2: {
-                    children: e(c, {
-                      children: e(r.h2, {
+                    children: jsx(ReactFragment, {
+                      children: jsx(motion.h2, {
                         style: {
                           "--font-selector": "R0Y7SW50ZXItNTAw",
                           "--framer-font-family":
@@ -1807,20 +1759,20 @@ var ut = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     ".framer-gdsq7 .framer-1pt2td0 { -webkit-user-select: none; flex: none; height: auto; left: 50%; overflow: visible; position: absolute; top: 50%; user-select: none; white-space: pre-wrap; width: 360px; word-break: break-word; word-wrap: break-word; }",
     ".framer-gdsq7.framer-v-13j692f.framer-6uc7fk { overflow: hidden; will-change: var(--framer-will-change-override, transform); }",
   ],
-  Xe = j(Ct, qt, "framer-gdsq7"),
+  Xe = withCSS(Ct, qt, "framer-gdsq7"),
   We = Xe;
 Xe.displayName = "Team Dynamics";
 Xe.defaultProps = { height: 72, width: 380 };
-T(Xe, {
+addPropertyControls(Xe, {
   variant: {
     options: ["HkR7N8JHH", "qFD4z7zh2", "uLTZzDf3c"],
     optionTitles: ["Main", "Active", "Inactive"],
     title: "Variant",
-    type: X.Enum,
+    type: ControlType.Enum,
   },
-  E2jYS2CvR: { title: "Tap", type: X.EventHandler },
+  E2jYS2CvR: { title: "Tap", type: ControlType.EventHandler },
 });
-z(
+loadFonts(
   Xe,
   [
     {
@@ -1838,13 +1790,13 @@ z(
   ],
   { supportsExplicitInterCodegen: !0 },
 );
-var Qe = withFXWrapper(r.div),
-  Ze = scheduleAppearAnimation(withFXWrapper(r.a)),
-  Rt = Z(le),
-  Xt = Z(Ke),
-  Ot = Z(We),
-  kt = Z(Ee),
-  Ut = Z(G),
+var Qe = withFXWrapper(motion.div),
+  Ze = scheduleAppearAnimation(withFXWrapper(motion.a)),
+  Rt = getFonts(le),
+  Xt = getFonts(Ke),
+  Ot = getFonts(We),
+  kt = getFonts(Ee),
+  Ut = getFonts(G),
   It = ["SoQlwVPaX", "CuHIQOWnA", "ggKLLEo3O"],
   _t = "framer-MY1rC",
   Nt = {
@@ -1920,12 +1872,12 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
     y: -4,
   },
   Mt = ({ value: t, children: a }) => {
-    let n = H(w),
+    let n = useContext(MotionContext),
       i = t ?? n.transition,
-      o = E(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return e(w.Provider, { value: o, children: a });
+      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
+    return jsx(MotionContext.Provider, { value: o, children: a });
   },
-  Ft = r(c),
+  Ft = motion(ReactFragment),
   St = {
     "First Tab": "SoQlwVPaX",
     "Variant 2": "CuHIQOWnA",
@@ -1945,8 +1897,8 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
   },
   Dt = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  Pt = I(function (t, a) {
-    let { activeLocale: n, setLocale: i } = S(),
+  Pt = forwardRef(function (t, a) {
+    let { activeLocale: n, setLocale: i } = useLocale(),
       {
         style: o,
         className: f,
@@ -1965,14 +1917,14 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
         setGestureState: x,
         setVariant: u,
         variants: m,
-      } = P({
+      } = useComponentVariantState({
         cycleOrder: It,
         defaultVariant: "SoQlwVPaX",
         variant: U,
         variantClassNames: Nt,
       }),
       h = Dt(t, m),
-      { activeVariantCallback: b, delay: V } = D(p),
+      { activeVariantCallback: b, delay: V } = useVariantAnimationCallbacks(p),
       M = b(async (...ye) => {
         await V(() => u(CycleSymbol), 6600);
       }),
@@ -1989,25 +1941,25 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
       Q = b(async (...ye) => {
         u("ggKLLEo3O");
       });
-    W(p, { default: M });
-    let J = F(null),
+    useOnVariantChange(p, { default: M });
+    let J = useRef(null),
       ce = () => !["CuHIQOWnA", "ggKLLEo3O"].includes(p),
       je = () => p === "CuHIQOWnA",
       de = () => p === "ggKLLEo3O",
-      ur = _(),
+      ur = useId(),
       xe = [],
-      Ni = K();
-    return e(N, {
+      Ni = useDeviceSize();
+    return jsx(LayoutGroup, {
       id: s ?? ur,
-      children: e(Ft, {
+      children: jsx(Ft, {
         animate: m,
         initial: !1,
-        children: e(Mt, {
+        children: jsx(Mt, {
           value: jt,
-          children: g(r.div, {
+          children: jsxs(motion.div, {
             ...l,
             ...d,
-            className: k(_t, ...xe, "framer-1gwjjt4", f, L),
+            className: cx(_t, ...xe, "framer-1gwjjt4", f, L),
             "data-framer-name": "First Tab",
             "data-highlight": !0,
             layoutDependency: h,
@@ -2024,10 +1976,10 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
             ),
             children: [
               ce() &&
-                e(B, {
+                jsx(B, {
                   href: { hash: ":mRVhqybMB", webPageId: "bzydBB85Y" },
                   openInNewTab: !1,
-                  children: e(Ze, {
+                  children: jsx(Ze, {
                     __perspectiveFX: !1,
                     __smartComponentFX: !0,
                     __targetOpacity: 1,
@@ -2045,11 +1997,11 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       borderTopLeftRadius: 10,
                       borderTopRightRadius: 10,
                     },
-                    children: e(r.div, {
+                    children: jsx(motion.div, {
                       className: "framer-kf2wna",
                       layoutDependency: h,
                       layoutId: "sJrvLCmSo",
-                      children: e(Qe, {
+                      children: jsx(Qe, {
                         __framer__animate: { transition: Le },
                         __framer__animateOnce: !0,
                         __framer__enter: $e,
@@ -2077,10 +2029,10 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   }),
                 }),
               je() &&
-                e(B, {
+                jsx(B, {
                   href: { hash: ":NYP2seWhD", webPageId: "bzydBB85Y" },
                   openInNewTab: !1,
-                  children: e(Ze, {
+                  children: jsx(Ze, {
                     __perspectiveFX: !1,
                     __smartComponentFX: !0,
                     __targetOpacity: 1,
@@ -2098,11 +2050,11 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       borderTopLeftRadius: 10,
                       borderTopRightRadius: 10,
                     },
-                    children: e(r.div, {
+                    children: jsx(motion.div, {
                       className: "framer-12ws8fg",
                       layoutDependency: h,
                       layoutId: "HA4XkAUHM",
-                      children: e(Qe, {
+                      children: jsx(Qe, {
                         __framer__animate: { transition: Le },
                         __framer__animateOnce: !0,
                         __framer__enter: $e,
@@ -2130,10 +2082,10 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   }),
                 }),
               de() &&
-                e(B, {
+                jsx(B, {
                   href: { hash: ":DXqsCYt4L", webPageId: "bzydBB85Y" },
                   openInNewTab: !1,
-                  children: e(Ze, {
+                  children: jsx(Ze, {
                     __perspectiveFX: !1,
                     __smartComponentFX: !0,
                     __targetOpacity: 1,
@@ -2151,11 +2103,11 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       borderTopLeftRadius: 10,
                       borderTopRightRadius: 10,
                     },
-                    children: e(r.div, {
+                    children: jsx(motion.div, {
                       className: "framer-1scv3mw",
                       layoutDependency: h,
                       layoutId: "Xhd69UAep",
-                      children: e(Qe, {
+                      children: jsx(Qe, {
                         __framer__animate: { transition: Le },
                         __framer__animateOnce: !0,
                         __framer__enter: $e,
@@ -2182,22 +2134,22 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                     }),
                   }),
                 }),
-              e(B, {
+              jsx(B, {
                 href: { webPageId: "sfcH2behU" },
                 openInNewTab: !1,
-                children: g(r.a, {
+                children: jsxs(motion.a, {
                   className: "framer-1q8th58 framer-3s0w40",
                   "data-framer-name": "hovertriggers",
                   layoutDependency: h,
                   layoutId: "IaUgOVncF",
                   children: [
-                    e(q, {
-                      children: e(r.div, {
+                    jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-1dg46b4-container",
                         layoutDependency: h,
                         layoutId: "mwqNaEEJ5-container",
                         style: { opacity: 0 },
-                        children: e(le, {
+                        children: jsx(le, {
                           height: "100%",
                           id: "mwqNaEEJ5",
                           layoutId: "mwqNaEEJ5",
@@ -2215,13 +2167,13 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         }),
                       }),
                     }),
-                    e(q, {
-                      children: e(r.div, {
+                    jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-38lnyz-container",
                         layoutDependency: h,
                         layoutId: "qkqShLL2U-container",
                         style: { opacity: 0 },
-                        children: e(le, {
+                        children: jsx(le, {
                           height: "100%",
                           hover: $,
                           id: "qkqShLL2U",
@@ -2232,13 +2184,13 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         }),
                       }),
                     }),
-                    e(q, {
-                      children: e(r.div, {
+                    jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-1jkfppu-container",
                         layoutDependency: h,
                         layoutId: "B8p7HqPsG-container",
                         style: { opacity: 0 },
-                        children: e(le, {
+                        children: jsx(le, {
                           height: "100%",
                           hover: Q,
                           id: "B8p7HqPsG",
@@ -2252,19 +2204,19 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   ],
                 }),
               }),
-              g(r.div, {
+              jsxs(motion.div, {
                 className: "framer-1sr9rsy",
                 "data-framer-name": "Captions",
                 layoutDependency: h,
                 layoutId: "BgqK63l7f",
                 children: [
-                  e(q, {
+                  jsx(DeviceSizeContainer, {
                     width: "380px",
-                    children: e(r.div, {
+                    children: jsx(motion.div, {
                       className: "framer-1x25rle-container",
                       layoutDependency: h,
                       layoutId: "cMLiBJIJv-container",
-                      children: e(Ke, {
+                      children: jsx(Ke, {
                         height: "100%",
                         id: "cMLiBJIJv",
                         layoutId: "cMLiBJIJv",
@@ -2282,13 +2234,13 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       }),
                     }),
                   }),
-                  e(q, {
+                  jsx(DeviceSizeContainer, {
                     width: "380px",
-                    children: e(r.div, {
+                    children: jsx(motion.div, {
                       className: "framer-93qqv0-container",
                       layoutDependency: h,
                       layoutId: "qdfY4PCfH-container",
-                      children: e(We, {
+                      children: jsx(We, {
                         height: "100%",
                         id: "qdfY4PCfH",
                         layoutId: "qdfY4PCfH",
@@ -2299,13 +2251,13 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       }),
                     }),
                   }),
-                  e(q, {
+                  jsx(DeviceSizeContainer, {
                     width: "380px",
-                    children: e(r.div, {
+                    children: jsx(motion.div, {
                       className: "framer-ptft8n-container",
                       layoutDependency: h,
                       layoutId: "imXFxFHKL-container",
-                      children: e(Ee, {
+                      children: jsx(Ee, {
                         height: "100%",
                         id: "imXFxFHKL",
                         layoutId: "imXFxFHKL",
@@ -2316,7 +2268,7 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       }),
                     }),
                   }),
-                  e(r.div, {
+                  jsx(motion.div, {
                     className: "framer-wcqno7",
                     layoutDependency: h,
                     layoutId: "rZWg2VUnG",
@@ -2332,7 +2284,7 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   }),
                 ],
               }),
-              e(FrameComponent, {
+              jsx(FrameComponent, {
                 background: {
                   alt: "",
                   fit: "fill",
@@ -2349,7 +2301,7 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   borderTopLeftRadius: 20,
                   borderTopRightRadius: 20,
                 },
-                children: e(B, {
+                children: jsx(B, {
                   href: { hash: ":mRVhqybMB", webPageId: "bzydBB85Y" },
                   openInNewTab: !1,
                   smoothScroll: !0,
@@ -2365,7 +2317,7 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                     p,
                     R,
                   ),
-                  children: g(r.a, {
+                  children: jsxs(motion.a, {
                     className: "framer-763a3a framer-3s0w40",
                     layoutDependency: h,
                     layoutId: "J3f2kPx1k",
@@ -2378,8 +2330,8 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                     },
                     whileHover: Lt,
                     children: [
-                      e(q, {
-                        children: e(r.div, {
+                      jsx(DeviceSizeContainer, {
+                        children: jsx(motion.div, {
                           className: "framer-idlw4i-container",
                           "data-framer-name": "vbroadeningperspectives",
                           layoutDependency: h,
@@ -2387,7 +2339,7 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                           name: "vbroadeningperspectives",
                           style: { opacity: 0 },
                           variants: { ggKLLEo3O: { opacity: 1 } },
-                          children: e(G, {
+                          children: jsx(G, {
                             backgroundColor: "rgba(0, 0, 0, 0)",
                             borderRadius: 0,
                             bottomLeftRadius: 0,
@@ -2417,8 +2369,8 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                           }),
                         }),
                       }),
-                      e(q, {
-                        children: e(r.div, {
+                      jsx(DeviceSizeContainer, {
+                        children: jsx(motion.div, {
                           className: "framer-1878zvf-container",
                           "data-framer-name": "vsharpeningskills",
                           layoutDependency: h,
@@ -2429,7 +2381,7 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                             CuHIQOWnA: { opacity: 0 },
                             ggKLLEo3O: { opacity: 0 },
                           },
-                          children: e(G, {
+                          children: jsx(G, {
                             backgroundColor: "rgba(0, 0, 0, 0)",
                             borderRadius: 0,
                             bottomLeftRadius: 0,
@@ -2459,8 +2411,8 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                           }),
                         }),
                       }),
-                      e(q, {
-                        children: e(r.div, {
+                      jsx(DeviceSizeContainer, {
+                        children: jsx(motion.div, {
                           className: "framer-1hj8jok-container",
                           "data-framer-name": "vteamdynamics",
                           layoutDependency: h,
@@ -2468,7 +2420,7 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                           name: "vteamdynamics",
                           style: { opacity: 0 },
                           variants: { CuHIQOWnA: { opacity: 1 } },
-                          children: e(G, {
+                          children: jsx(G, {
                             backgroundColor: "rgba(0, 0, 0, 0)",
                             borderRadius: 0,
                             bottomLeftRadius: 0,
@@ -2530,20 +2482,20 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
     ".framer-MY1rC.framer-v-sltbvw .framer-wcqno7 { top: calc(50.00000000000002% - 90px / 2); }",
     ".framer-MY1rC.framer-v-8q1l2i .framer-wcqno7 { bottom: -11px; top: unset; }",
   ],
-  Oe = j(Pt, Yt, "framer-MY1rC"),
+  Oe = withCSS(Pt, Yt, "framer-MY1rC"),
   rr = Oe;
 Oe.displayName = "Story Right";
 Oe.defaultProps = { height: 352, width: 1e3 };
-T(Oe, {
+addPropertyControls(Oe, {
   variant: {
     options: ["SoQlwVPaX", "CuHIQOWnA", "ggKLLEo3O"],
     optionTitles: ["First Tab", "Variant 2", "Variant 3"],
     title: "Variant",
-    type: X.Enum,
+    type: ControlType.Enum,
   },
-  U4TM70Ust: { title: "Tap", type: X.EventHandler },
+  U4TM70Ust: { title: "Tap", type: ControlType.EventHandler },
 });
-z(Oe, [{ explicitInter: !0, fonts: [] }, ...Rt, ...Xt, ...Ot, ...kt, ...Ut], {
+loadFonts(Oe, [{ explicitInter: !0, fonts: [] }, ...Rt, ...Xt, ...Ot, ...kt, ...Ut], {
   supportsExplicitInterCodegen: !0,
 });
 var Bt = ["NFc0G3jDM", "NH6OUC_9N", "Bx08xEGah"],
@@ -2560,12 +2512,12 @@ function Dr(t, ...a) {
 var Et = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   Kt = (t, a) => `translateX(-50%) ${a}`,
   Wt = ({ value: t, children: a }) => {
-    let n = H(w),
+    let n = useContext(MotionContext),
       i = t ?? n.transition,
-      o = E(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return e(w.Provider, { value: o, children: a });
+      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
+    return jsx(MotionContext.Provider, { value: o, children: a });
   },
-  Qt = r(c),
+  Qt = motion(ReactFragment),
   Zt = { "Variant 1": "NFc0G3jDM", Inactive: "Bx08xEGah", Raised: "NH6OUC_9N" },
   Jt = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -2580,8 +2532,8 @@ var Et = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     };
   },
   Gt = (t, a) => a.join("-") + t.layoutDependency,
-  $t = I(function (t, a) {
-    let { activeLocale: n, setLocale: i } = S(),
+  $t = forwardRef(function (t, a) {
+    let { activeLocale: n, setLocale: i } = useLocale(),
       {
         style: o,
         className: f,
@@ -2597,14 +2549,14 @@ var Et = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
         setGestureState: d,
         setVariant: R,
         variants: v,
-      } = P({
+      } = useComponentVariantState({
         cycleOrder: Bt,
         defaultVariant: "NFc0G3jDM",
         variant: U,
         variantClassNames: Ht,
       }),
       x = Gt(t, v),
-      { activeVariantCallback: u, delay: m } = D(p),
+      { activeVariantCallback: u, delay: m } = useVariantAnimationCallbacks(p),
       h = u(async (...Q) => {
         if ((d({ isPressed: !1 }), C && (await C(...Q)) === !1)) return !1;
       }),
@@ -2614,21 +2566,21 @@ var Et = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
       V = u(async (...Q) => {
         R("NH6OUC_9N");
       });
-    W(p, { Bx08xEGah: void 0, default: b });
-    let M = F(null),
-      A = _(),
+    useOnVariantChange(p, { Bx08xEGah: void 0, default: b });
+    let M = useRef(null),
+      A = useId(),
       Y = [],
-      $ = K();
-    return e(N, {
+      $ = useDeviceSize();
+    return jsx(LayoutGroup, {
       id: s ?? A,
-      children: e(Qt, {
+      children: jsx(Qt, {
         animate: v,
         initial: !1,
-        children: e(Wt, {
+        children: jsx(Wt, {
           value: Et,
-          children: e(r.div, {
+          children: jsx(motion.div, {
             ...l,
-            className: k(At, ...Y, "framer-r8ywzq", f, L),
+            className: cx(At, ...Y, "framer-r8ywzq", f, L),
             "data-framer-name": "Variant 1",
             "data-highlight": !0,
             layoutDependency: x,
@@ -2662,10 +2614,10 @@ var Et = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
               p,
               y,
             ),
-            children: e(O, {
+            children: jsx(RichTextComponent, {
               __fromCanvasComponent: !0,
-              children: e(c, {
-                children: e(r.h2, {
+              children: jsx(ReactFragment, {
+                children: jsx(motion.h2, {
                   style: {
                     "--font-selector": "R0Y7SW50ZXItNTAw",
                     "--framer-font-family":
@@ -2707,8 +2659,8 @@ var Et = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                   Bx08xEGah: { "data-highlight": void 0, onTap: void 0 },
                   NH6OUC_9N: {
                     "data-highlight": void 0,
-                    children: e(c, {
-                      children: e(r.h2, {
+                    children: jsx(ReactFragment, {
+                      children: jsx(motion.h2, {
                         style: {
                           "--font-selector": "R0Y7SW50ZXItNTAw",
                           "--framer-font-family":
@@ -2745,20 +2697,20 @@ var Et = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     ".framer-Z1wid.framer-v-3v0an8.framer-r8ywzq { overflow: hidden; will-change: var(--framer-will-change-override, transform); }",
     ".framer-Z1wid.framer-v-3v0an8 .framer-1i486jk, .framer-Z1wid.framer-v-s81sxb .framer-1i486jk { cursor: unset; }",
   ],
-  ke = j($t, en, "framer-Z1wid"),
+  ke = withCSS($t, en, "framer-Z1wid"),
   ar = ke;
 ke.displayName = "Tunnel vision";
 ke.defaultProps = { height: 72, width: 380 };
-T(ke, {
+addPropertyControls(ke, {
   variant: {
     options: ["NFc0G3jDM", "NH6OUC_9N", "Bx08xEGah"],
     optionTitles: ["Variant 1", "Raised", "Inactive"],
     title: "Variant",
-    type: X.Enum,
+    type: ControlType.Enum,
   },
-  UGmfn7WC9: { title: "Tap", type: X.EventHandler },
+  UGmfn7WC9: { title: "Tap", type: ControlType.EventHandler },
 });
-z(
+loadFonts(
   ke,
   [
     {
@@ -2790,12 +2742,12 @@ function Pr(t, ...a) {
 var nn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   on = (t, a) => `translateY(-50%) ${a}`,
   sn = ({ value: t, children: a }) => {
-    let n = H(w),
+    let n = useContext(MotionContext),
       i = t ?? n.transition,
-      o = E(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return e(w.Provider, { value: o, children: a });
+      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
+    return jsx(MotionContext.Provider, { value: o, children: a });
   },
-  fn = r(c),
+  fn = motion(ReactFragment),
   ln = { inactive: "gO1Oy0ksh", Main: "zsZ4Z5z6N", Raised: "j8drpudA2" },
   mn = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -2810,8 +2762,8 @@ var nn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     };
   },
   dn = (t, a) => a.join("-") + t.layoutDependency,
-  cn = I(function (t, a) {
-    let { activeLocale: n, setLocale: i } = S(),
+  cn = forwardRef(function (t, a) {
+    let { activeLocale: n, setLocale: i } = useLocale(),
       {
         style: o,
         className: f,
@@ -2827,36 +2779,36 @@ var nn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
         setGestureState: d,
         setVariant: R,
         variants: v,
-      } = P({
+      } = useComponentVariantState({
         cycleOrder: rn,
         defaultVariant: "zsZ4Z5z6N",
         variant: U,
         variantClassNames: tn,
       }),
       x = dn(t, v),
-      { activeVariantCallback: u, delay: m } = D(p),
+      { activeVariantCallback: u, delay: m } = useVariantAnimationCallbacks(p),
       h = u(async (...Q) => {
         if ((d({ isPressed: !1 }), C && (await C(...Q)) === !1)) return !1;
       }),
       b = u(async (...Q) => {
         R("j8drpudA2");
       });
-    W(p, { default: b, gO1Oy0ksh: void 0 });
-    let V = F(null),
+    useOnVariantChange(p, { default: b, gO1Oy0ksh: void 0 });
+    let V = useRef(null),
       M = () => p !== "j8drpudA2",
-      A = _(),
+      A = useId(),
       Y = [],
-      $ = K();
-    return e(N, {
+      $ = useDeviceSize();
+    return jsx(LayoutGroup, {
       id: s ?? A,
-      children: e(fn, {
+      children: jsx(fn, {
         animate: v,
         initial: !1,
-        children: e(sn, {
+        children: jsx(sn, {
           value: nn,
-          children: g(r.div, {
+          children: jsxs(motion.div, {
             ...l,
-            className: k(an, ...Y, "framer-1g1moqd", f, L),
+            className: cx(an, ...Y, "framer-1g1moqd", f, L),
             "data-framer-name": "Main",
             "data-highlight": !0,
             layoutDependency: x,
@@ -2892,16 +2844,16 @@ var nn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
             ),
             children: [
               M() &&
-                e(r.div, {
+                jsx(motion.div, {
                   className: "framer-zcizhz",
                   layoutDependency: x,
                   layoutId: "IXgMWqBN9",
                   transformTemplate: on,
                 }),
-              e(O, {
+              jsx(RichTextComponent, {
                 __fromCanvasComponent: !0,
-                children: e(c, {
-                  children: e(r.h2, {
+                children: jsx(ReactFragment, {
+                  children: jsx(motion.h2, {
                     style: {
                       "--font-selector": "R0Y7SW50ZXItNTAw",
                       "--framer-font-family":
@@ -2938,8 +2890,8 @@ var nn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                 ...Pr(
                   {
                     j8drpudA2: {
-                      children: e(c, {
-                        children: e(r.h2, {
+                      children: jsx(ReactFragment, {
+                        children: jsx(motion.h2, {
                           style: {
                             "--font-selector": "R0Y7SW50ZXItNTAw",
                             "--framer-font-family":
@@ -2977,20 +2929,20 @@ var nn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-0umfc .framer-zcizhz { gap: 0px; } .framer-0umfc .framer-zcizhz > * { margin: 0px; margin-bottom: calc(10px / 2); margin-top: calc(10px / 2); } .framer-0umfc .framer-zcizhz > :first-child { margin-top: 0px; } .framer-0umfc .framer-zcizhz > :last-child { margin-bottom: 0px; } }",
     ".framer-0umfc.framer-v-1elz6w7.framer-1g1moqd { width: 410px; }",
   ],
-  Ue = j(cn, pn, "framer-0umfc"),
+  Ue = withCSS(cn, pn, "framer-0umfc"),
   tr = Ue;
 Ue.displayName = "Urgency";
 Ue.defaultProps = { height: 72, width: 380 };
-T(Ue, {
+addPropertyControls(Ue, {
   variant: {
     options: ["zsZ4Z5z6N", "j8drpudA2", "gO1Oy0ksh"],
     optionTitles: ["Main", "Raised", "inactive"],
     title: "Variant",
-    type: X.Enum,
+    type: ControlType.Enum,
   },
-  mBC2PxMBg: { title: "Tap", type: X.EventHandler },
+  mBC2PxMBg: { title: "Tap", type: ControlType.EventHandler },
 });
-z(
+loadFonts(
   Ue,
   [
     {
@@ -3022,12 +2974,12 @@ function Yr(t, ...a) {
 var xn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   yn = (t, a) => `translateY(-50%) ${a}`,
   vn = ({ value: t, children: a }) => {
-    let n = H(w),
+    let n = useContext(MotionContext),
       i = t ?? n.transition,
-      o = E(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return e(w.Provider, { value: o, children: a });
+      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
+    return jsx(MotionContext.Provider, { value: o, children: a });
   },
-  bn = r(c),
+  bn = motion(ReactFragment),
   wn = { Inactive: "aJO1FcIHC", Main: "S3kYznUP4", Raised: "xZIBSRPrK" },
   Cn = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -3042,8 +2994,8 @@ var xn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     };
   },
   qn = (t, a) => a.join("-") + t.layoutDependency,
-  Rn = I(function (t, a) {
-    let { activeLocale: n, setLocale: i } = S(),
+  Rn = forwardRef(function (t, a) {
+    let { activeLocale: n, setLocale: i } = useLocale(),
       {
         style: o,
         className: f,
@@ -3059,36 +3011,36 @@ var xn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
         setGestureState: d,
         setVariant: R,
         variants: v,
-      } = P({
+      } = useComponentVariantState({
         cycleOrder: hn,
         defaultVariant: "S3kYznUP4",
         variant: U,
         variantClassNames: gn,
       }),
       x = qn(t, v),
-      { activeVariantCallback: u, delay: m } = D(p),
+      { activeVariantCallback: u, delay: m } = useVariantAnimationCallbacks(p),
       h = u(async (...Q) => {
         if ((d({ isPressed: !1 }), C && (await C(...Q)) === !1)) return !1;
       }),
       b = u(async (...Q) => {
         R("xZIBSRPrK");
       });
-    W(p, { aJO1FcIHC: void 0, default: b });
-    let V = F(null),
+    useOnVariantChange(p, { aJO1FcIHC: void 0, default: b });
+    let V = useRef(null),
       M = () => p !== "xZIBSRPrK",
-      A = _(),
+      A = useId(),
       Y = [],
-      $ = K();
-    return e(N, {
+      $ = useDeviceSize();
+    return jsx(LayoutGroup, {
       id: s ?? A,
-      children: e(bn, {
+      children: jsx(bn, {
         animate: v,
         initial: !1,
-        children: e(vn, {
+        children: jsx(vn, {
           value: xn,
-          children: g(r.div, {
+          children: jsxs(motion.div, {
             ...l,
-            className: k(un, ...Y, "framer-11b0mpr", f, L),
+            className: cx(un, ...Y, "framer-11b0mpr", f, L),
             "data-framer-name": "Main",
             "data-highlight": !0,
             layoutDependency: x,
@@ -3124,21 +3076,21 @@ var xn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
             ),
             children: [
               M() &&
-                e(r.div, {
+                jsx(motion.div, {
                   className: "framer-jjhh2s",
                   layoutDependency: x,
                   layoutId: "TkGeRqFTC",
                   transformTemplate: yn,
-                  children: e(r.div, {
+                  children: jsx(motion.div, {
                     className: "framer-1bvamph",
                     layoutDependency: x,
                     layoutId: "DQ_akzWYl",
                   }),
                 }),
-              e(O, {
+              jsx(RichTextComponent, {
                 __fromCanvasComponent: !0,
-                children: e(c, {
-                  children: e(r.h2, {
+                children: jsx(ReactFragment, {
+                  children: jsx(motion.h2, {
                     style: {
                       "--font-selector": "R0Y7SW50ZXItNTAw",
                       "--framer-font-family":
@@ -3174,8 +3126,8 @@ var xn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                 ...Yr(
                   {
                     xZIBSRPrK: {
-                      children: e(c, {
-                        children: e(r.h2, {
+                      children: jsx(ReactFragment, {
+                        children: jsx(motion.h2, {
                           style: {
                             "--font-selector": "R0Y7SW50ZXItNTAw",
                             "--framer-font-family":
@@ -3214,20 +3166,20 @@ var xn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-DCwjj .framer-jjhh2s, .framer-DCwjj .framer-1bvamph { gap: 0px; } .framer-DCwjj .framer-jjhh2s > * { margin: 0px; margin-bottom: calc(10px / 2); margin-top: calc(10px / 2); } .framer-DCwjj .framer-jjhh2s > :first-child { margin-top: 0px; } .framer-DCwjj .framer-jjhh2s > :last-child { margin-bottom: 0px; } .framer-DCwjj .framer-1bvamph > * { margin: 0px; margin-left: calc(10px / 2); margin-right: calc(10px / 2); } .framer-DCwjj .framer-1bvamph > :first-child { margin-left: 0px; } .framer-DCwjj .framer-1bvamph > :last-child { margin-right: 0px; } }",
     ".framer-DCwjj.framer-v-327s0c.framer-11b0mpr { overflow: hidden; will-change: var(--framer-will-change-override, transform); }",
   ],
-  Ie = j(Rn, Xn, "framer-DCwjj"),
+  Ie = withCSS(Rn, Xn, "framer-DCwjj"),
   nr = Ie;
 Ie.displayName = "Coordination";
 Ie.defaultProps = { height: 72, width: 380 };
-T(Ie, {
+addPropertyControls(Ie, {
   variant: {
     options: ["S3kYznUP4", "xZIBSRPrK", "aJO1FcIHC"],
     optionTitles: ["Main", "Raised", "Inactive"],
     title: "Variant",
-    type: X.Enum,
+    type: ControlType.Enum,
   },
-  kJZ82E8Mx: { title: "Tap", type: X.EventHandler },
+  kJZ82E8Mx: { title: "Tap", type: ControlType.EventHandler },
 });
-z(
+loadFonts(
   Ie,
   [
     {
@@ -3245,13 +3197,13 @@ z(
   ],
   { supportsExplicitInterCodegen: !0 },
 );
-var ir = withFXWrapper(r.div),
-  or = scheduleAppearAnimation(withFXWrapper(r.a)),
-  On = Z(G),
-  kn = Z(tr),
-  Un = Z(nr),
-  In = Z(ar),
-  _n = Z(le),
+var ir = withFXWrapper(motion.div),
+  or = scheduleAppearAnimation(withFXWrapper(motion.a)),
+  On = getFonts(G),
+  kn = getFonts(tr),
+  Un = getFonts(nr),
+  In = getFonts(ar),
+  _n = getFonts(le),
   Nn = ["Q1DJ9ntwf", "qvmKCdJXN", "hxzAUWcy0"],
   jn = "framer-sRCsS",
   zn = {
@@ -3351,12 +3303,12 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
     y: -4,
   },
   Tn = ({ value: t, children: a }) => {
-    let n = H(w),
+    let n = useContext(MotionContext),
       i = t ?? n.transition,
-      o = E(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return e(w.Provider, { value: o, children: a });
+      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
+    return jsx(MotionContext.Provider, { value: o, children: a });
   },
-  Dn = r(c),
+  Dn = motion(ReactFragment),
   Pn = {
     "First tab": "Q1DJ9ntwf",
     "SECOND TAB": "qvmKCdJXN",
@@ -3375,8 +3327,8 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
   },
   Bn = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  An = I(function (t, a) {
-    let { activeLocale: n, setLocale: i } = S(),
+  An = forwardRef(function (t, a) {
+    let { activeLocale: n, setLocale: i } = useLocale(),
       { style: o, className: f, layoutId: s, variant: U, ...C } = Yn(t),
       {
         baseVariant: l,
@@ -3388,14 +3340,14 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
         setGestureState: v,
         setVariant: x,
         variants: u,
-      } = P({
+      } = useComponentVariantState({
         cycleOrder: Nn,
         defaultVariant: "Q1DJ9ntwf",
         variant: U,
         variantClassNames: zn,
       }),
       m = Bn(t, u),
-      { activeVariantCallback: h, delay: b } = D(l),
+      { activeVariantCallback: h, delay: b } = useVariantAnimationCallbacks(l),
       V = h(async (...xe) => {
         await b(() => x(CycleSymbol), 6600);
       }),
@@ -3408,25 +3360,25 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
       Y = h(async (...xe) => {
         await b(() => x("hxzAUWcy0"), 60);
       });
-    W(l, { default: V });
-    let $ = F(null),
+    useOnVariantChange(l, { default: V });
+    let $ = useRef(null),
       Q = () => !["qvmKCdJXN", "hxzAUWcy0"].includes(l),
       J = () => l === "qvmKCdJXN",
       ce = () => l === "hxzAUWcy0",
-      je = _(),
+      je = useId(),
       de = [],
-      ur = K();
-    return e(N, {
+      ur = useDeviceSize();
+    return jsx(LayoutGroup, {
       id: s ?? je,
-      children: e(Dn, {
+      children: jsx(Dn, {
         animate: u,
         initial: !1,
-        children: e(Tn, {
+        children: jsx(Tn, {
           value: Vn,
-          children: g(r.div, {
+          children: jsxs(motion.div, {
             ...C,
             ...y,
-            className: k(jn, ...de, "framer-khfq23", f, p),
+            className: cx(jn, ...de, "framer-khfq23", f, p),
             "data-framer-name": "First tab",
             "data-highlight": !0,
             layoutDependency: m,
@@ -3443,11 +3395,11 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
             ),
             children: [
               Q() &&
-                e(B, {
+                jsx(B, {
                   href: { hash: ":WjO84y3BZ", webPageId: "bzydBB85Y" },
                   openInNewTab: !1,
                   smoothScroll: !0,
-                  children: e(or, {
+                  children: jsx(or, {
                     __perspectiveFX: !1,
                     __smartComponentFX: !0,
                     __targetOpacity: 1,
@@ -3465,11 +3417,11 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       borderTopLeftRadius: 10,
                       borderTopRightRadius: 10,
                     },
-                    children: e(r.div, {
+                    children: jsx(motion.div, {
                       className: "framer-1l53x7w",
                       layoutDependency: m,
                       layoutId: "rP4Qgd3xN",
-                      children: e(ir, {
+                      children: jsx(ir, {
                         __framer__animate: { transition: Me },
                         __framer__animateOnce: !0,
                         __framer__enter: fr,
@@ -3497,10 +3449,10 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   }),
                 }),
               J() &&
-                e(B, {
+                jsx(B, {
                   href: { hash: ":dbtg_NZW8", webPageId: "bzydBB85Y" },
                   openInNewTab: !1,
-                  children: e(or, {
+                  children: jsx(or, {
                     __perspectiveFX: !1,
                     __smartComponentFX: !0,
                     __targetOpacity: 1,
@@ -3518,11 +3470,11 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       borderTopLeftRadius: 10,
                       borderTopRightRadius: 10,
                     },
-                    children: e(r.div, {
+                    children: jsx(motion.div, {
                       className: "framer-rmlb7z",
                       layoutDependency: m,
                       layoutId: "dyJ8qqujy",
-                      children: e(ir, {
+                      children: jsx(ir, {
                         __framer__animate: { transition: Me },
                         __framer__animateOnce: !0,
                         __framer__enter: fr,
@@ -3550,10 +3502,10 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   }),
                 }),
               ce() &&
-                e(B, {
+                jsx(B, {
                   href: { hash: ":tftSCv8zZ", webPageId: "bzydBB85Y" },
                   openInNewTab: !1,
-                  children: e(or, {
+                  children: jsx(or, {
                     __perspectiveFX: !1,
                     __smartComponentFX: !0,
                     __targetOpacity: 1,
@@ -3571,11 +3523,11 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       borderTopLeftRadius: 10,
                       borderTopRightRadius: 10,
                     },
-                    children: e(r.div, {
+                    children: jsx(motion.div, {
                       className: "framer-1lbny7u",
                       layoutDependency: m,
                       layoutId: "mholq0un4",
-                      children: e(ir, {
+                      children: jsx(ir, {
                         __framer__animate: { transition: Me },
                         __framer__animateOnce: !0,
                         __framer__enter: fr,
@@ -3602,7 +3554,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                     }),
                   }),
                 }),
-              e(B, {
+              jsx(B, {
                 href: { hash: ":WjO84y3BZ", webPageId: "bzydBB85Y" },
                 openInNewTab: !1,
                 smoothScroll: !0,
@@ -3618,7 +3570,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   l,
                   d,
                 ),
-                children: g(r.a, {
+                children: jsxs(motion.a, {
                   background: {
                     alt: "",
                     fit: "fill",
@@ -3652,7 +3604,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                     d,
                   ),
                   children: [
-                    e(r.div, {
+                    jsx(motion.div, {
                       className: "framer-1jvhuey",
                       layoutDependency: m,
                       layoutId: "W4e4Idf8E",
@@ -3663,8 +3615,8 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         borderTopRightRadius: 20,
                         boxShadow: "1px 2px 2px 0px rgba(0,0,0,0.25)",
                       },
-                      children: e(q, {
-                        children: e(r.div, {
+                      children: jsx(DeviceSizeContainer, {
+                        children: jsx(motion.div, {
                           className: "framer-9b41qt-container",
                           "data-framer-name": "vtimesensitive",
                           layoutDependency: m,
@@ -3675,7 +3627,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                             hxzAUWcy0: { opacity: 0 },
                             qvmKCdJXN: { opacity: 0 },
                           },
-                          children: e(G, {
+                          children: jsx(G, {
                             backgroundColor: "rgba(0, 0, 0, 0)",
                             borderRadius: 20,
                             bottomLeftRadius: 20,
@@ -3706,7 +3658,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         }),
                       }),
                     }),
-                    e(r.div, {
+                    jsx(motion.div, {
                       className: "framer-e12bp3",
                       layoutDependency: m,
                       layoutId: "QT1qNrDs6",
@@ -3717,8 +3669,8 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         borderTopRightRadius: 20,
                         boxShadow: "1px 2px 2px 0px rgba(0,0,0,0.25)",
                       },
-                      children: e(q, {
-                        children: e(r.div, {
+                      children: jsx(DeviceSizeContainer, {
+                        children: jsx(motion.div, {
                           className: "framer-vhj82g-container",
                           "data-framer-name": "vcomesatcost",
                           layoutDependency: m,
@@ -3726,7 +3678,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                           name: "vcomesatcost",
                           style: { opacity: 0 },
                           variants: { hxzAUWcy0: { opacity: 1 } },
-                          children: e(G, {
+                          children: jsx(G, {
                             backgroundColor: "rgba(0, 0, 0, 0)",
                             borderRadius: 20,
                             bottomLeftRadius: 20,
@@ -3757,7 +3709,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         }),
                       }),
                     }),
-                    e(r.div, {
+                    jsx(motion.div, {
                       className: "framer-j1b2k8",
                       layoutDependency: m,
                       layoutId: "QlgvEBdq2",
@@ -3768,8 +3720,8 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         borderTopRightRadius: 20,
                         boxShadow: "1px 2px 2px 0px rgba(0,0,0,0.25)",
                       },
-                      children: e(q, {
-                        children: e(r.div, {
+                      children: jsx(DeviceSizeContainer, {
+                        children: jsx(motion.div, {
                           className: "framer-11ixtnj-container",
                           "data-framer-name": "vlikeadance",
                           layoutDependency: m,
@@ -3777,7 +3729,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                           name: "vlikeadance",
                           style: { opacity: 0 },
                           variants: { qvmKCdJXN: { opacity: 1 } },
-                          children: e(G, {
+                          children: jsx(G, {
                             backgroundColor: "rgba(0, 0, 0, 0)",
                             borderRadius: 20,
                             bottomLeftRadius: 20,
@@ -3812,7 +3764,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   ],
                 }),
               }),
-              e(B, {
+              jsx(B, {
                 ...oe(
                   {
                     hxzAUWcy0: {
@@ -3823,20 +3775,20 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   l,
                   d,
                 ),
-                children: g(r.a, {
+                children: jsxs(motion.a, {
                   className: "framer-h0n0bm framer-rf24a0",
                   "data-framer-name": "Captions",
                   layoutDependency: m,
                   layoutId: "WSK0MVtYX",
                   children: [
-                    e(q, {
+                    jsx(DeviceSizeContainer, {
                       width: "380px",
-                      children: e(r.div, {
+                      children: jsx(motion.div, {
                         className: "framer-ho4a6n-container",
                         layoutDependency: m,
                         layoutId: "Kjarh8b0F-container",
                         whileHover: mr,
-                        children: e(tr, {
+                        children: jsx(tr, {
                           height: "100%",
                           id: "Kjarh8b0F",
                           layoutId: "Kjarh8b0F",
@@ -3860,15 +3812,15 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         }),
                       }),
                     }),
-                    e(q, {
+                    jsx(DeviceSizeContainer, {
                       width: "380px",
-                      children: e(r.div, {
+                      children: jsx(motion.div, {
                         className: "framer-17nq8nm-container",
                         layoutDependency: m,
                         layoutId: "Qw2n1EueW-container",
                         whileHover: mr,
                         ...oe({ qvmKCdJXN: { whileHover: void 0 } }, l, d),
-                        children: e(nr, {
+                        children: jsx(nr, {
                           height: "100%",
                           id: "Qw2n1EueW",
                           layoutId: "Qw2n1EueW",
@@ -3879,15 +3831,15 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         }),
                       }),
                     }),
-                    e(q, {
+                    jsx(DeviceSizeContainer, {
                       width: "380px",
-                      children: e(r.div, {
+                      children: jsx(motion.div, {
                         className: "framer-6if8f0-container",
                         layoutDependency: m,
                         layoutId: "BPtfXhKGl-container",
                         whileHover: mr,
                         ...oe({ hxzAUWcy0: { whileHover: void 0 } }, l, d),
-                        children: e(ar, {
+                        children: jsx(ar, {
                           height: "100%",
                           id: "BPtfXhKGl",
                           layoutId: "BPtfXhKGl",
@@ -3898,7 +3850,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         }),
                       }),
                     }),
-                    e(r.div, {
+                    jsx(motion.div, {
                       className: "framer-gr8coz",
                       layoutDependency: m,
                       layoutId: "DcHrFa3kE",
@@ -3915,22 +3867,22 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   ],
                 }),
               }),
-              e(B, {
+              jsx(B, {
                 href: { webPageId: "sfcH2behU" },
                 openInNewTab: !1,
-                children: g(r.a, {
+                children: jsxs(motion.a, {
                   className: "framer-17ix8tg framer-rf24a0",
                   "data-framer-name": "hovertriggers",
                   layoutDependency: m,
                   layoutId: "Nigco7AyM",
                   children: [
-                    e(q, {
-                      children: e(r.div, {
+                    jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-12hfz3c-container",
                         layoutDependency: m,
                         layoutId: "siYOUFHkt-container",
                         style: { opacity: 0 },
-                        children: e(le, {
+                        children: jsx(le, {
                           height: "100%",
                           id: "siYOUFHkt",
                           layoutId: "siYOUFHkt",
@@ -3940,13 +3892,13 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         }),
                       }),
                     }),
-                    e(q, {
-                      children: e(r.div, {
+                    jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-1ii6dh3-container",
                         layoutDependency: m,
                         layoutId: "CC4a7R4Fp-container",
                         style: { opacity: 0 },
-                        children: e(le, {
+                        children: jsx(le, {
                           height: "100%",
                           hover: M,
                           id: "CC4a7R4Fp",
@@ -3965,13 +3917,13 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         }),
                       }),
                     }),
-                    e(q, {
-                      children: e(r.div, {
+                    jsx(DeviceSizeContainer, {
+                      children: jsx(motion.div, {
                         className: "framer-1xqtcq4-container",
                         layoutDependency: m,
                         layoutId: "VaOijB5sh-container",
                         style: { opacity: 0 },
-                        children: e(le, {
+                        children: jsx(le, {
                           height: "100%",
                           hover: Y,
                           id: "VaOijB5sh",
@@ -4022,22 +3974,22 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
     ".framer-sRCsS.framer-v-jxbueo .framer-h0n0bm { text-decoration: none; }",
     ".framer-sRCsS.framer-v-jxbueo .framer-gr8coz { bottom: unset; height: 90px; left: calc(51.05263157894739% - 411px / 2); order: 3; right: unset; top: calc(85.93750000000003% - 90px / 2); width: 411px; }",
   ],
-  _e = j(An, Hn, "framer-sRCsS"),
+  _e = withCSS(An, Hn, "framer-sRCsS"),
   dr = _e;
 _e.displayName = "Story Left2";
 _e.defaultProps = { height: 352, width: 1e3 };
-T(_e, {
+addPropertyControls(_e, {
   variant: {
     options: ["Q1DJ9ntwf", "qvmKCdJXN", "hxzAUWcy0"],
     optionTitles: ["First tab", "SECOND TAB", "Third Tab"],
     title: "Variant",
-    type: X.Enum,
+    type: ControlType.Enum,
   },
 });
-z(_e, [{ explicitInter: !0, fonts: [] }, ...On, ...kn, ...Un, ...In, ..._n], {
+loadFonts(_e, [{ explicitInter: !0, fonts: [] }, ...On, ...kn, ...Un, ...In, ..._n], {
   supportsExplicitInterCodegen: !0,
 });
-var En = withFXWrapper(r.div),
+var En = withFXWrapper(motion.div),
   Kn = { h9tfYk7K5: { hover: !0 } },
   Wn = ["I5QaL6oi8", "h9tfYk7K5"],
   Qn = "framer-Kv8wc",
@@ -4084,12 +4036,12 @@ var Gn = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
     y: 0,
   },
   ai = ({ value: t, children: a }) => {
-    let n = H(w),
+    let n = useContext(MotionContext),
       i = t ?? n.transition,
-      o = E(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
-    return e(w.Provider, { value: o, children: a });
+      o = useMemo(() => ({ ...n, transition: i }), [JSON.stringify(i)]);
+    return jsx(MotionContext.Provider, { value: o, children: a });
   },
-  ti = r(c),
+  ti = motion(ReactFragment),
   ni = { "Variant 1": "I5QaL6oi8", "Variant 2": "h9tfYk7K5" },
   ii = ({ height: t, id: a, width: n, ...i }) => {
     var o, f;
@@ -4103,8 +4055,8 @@ var Gn = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
     };
   },
   oi = (t, a) => a.join("-") + t.layoutDependency,
-  si = I(function (t, a) {
-    let { activeLocale: n, setLocale: i } = S(),
+  si = forwardRef(function (t, a) {
+    let { activeLocale: n, setLocale: i } = useLocale(),
       { style: o, className: f, layoutId: s, variant: U, ...C } = ii(t),
       {
         baseVariant: l,
@@ -4113,7 +4065,7 @@ var Gn = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
         setGestureState: y,
         setVariant: d,
         variants: R,
-      } = P({
+      } = useComponentVariantState({
         cycleOrder: Wn,
         defaultVariant: "I5QaL6oi8",
         enabledGestures: Kn,
@@ -4121,28 +4073,28 @@ var Gn = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
         variantClassNames: Zn,
       }),
       v = oi(t, R),
-      { activeVariantCallback: x, delay: u } = D(l),
+      { activeVariantCallback: x, delay: u } = useVariantAnimationCallbacks(l),
       m = x(async (...Y) => {
         await u(() => d("h9tfYk7K5"), 400);
       }),
       h = x(async (...Y) => {
         (y({ isPressed: !1 }), d("I5QaL6oi8"));
       });
-    W(l, { default: m });
-    let b = F(null),
-      V = _(),
+    useOnVariantChange(l, { default: m });
+    let b = useRef(null),
+      V = useId(),
       M = [],
-      A = K();
-    return e(N, {
+      A = useDeviceSize();
+    return jsx(LayoutGroup, {
       id: s ?? V,
-      children: e(ti, {
+      children: jsx(ti, {
         animate: R,
         initial: !1,
-        children: e(ai, {
+        children: jsx(ai, {
           value: Gn,
-          children: g(En, {
+          children: jsxs(En, {
             ...C,
-            className: k(Qn, ...M, "framer-yyb023", f, p),
+            className: cx(Qn, ...M, "framer-yyb023", f, p),
             "data-framer-name": "Variant 1",
             "data-highlight": !0,
             layoutDependency: v,
@@ -4182,7 +4134,7 @@ var Gn = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
               L,
             ),
             children: [
-              e(SVGComponent, {
+              jsx(SVGComponent, {
                 className: "framer-1nwrmj9",
                 "data-framer-name": "Inner Ring",
                 fill: "black",
@@ -4198,7 +4150,7 @@ var Gn = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
                 },
                 withExternalLayout: !0,
               }),
-              e(SVGComponent, {
+              jsx(SVGComponent, {
                 className: "framer-1fz3tc2",
                 "data-framer-name": "Outer Ring",
                 fill: "black",
@@ -4214,7 +4166,7 @@ var Gn = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
                 },
                 withExternalLayout: !0,
               }),
-              e(SVGComponent, {
+              jsx(SVGComponent, {
                 className: "framer-v5bumn",
                 "data-framer-name": "Neoflix",
                 fill: "black",
@@ -4240,33 +4192,33 @@ var Gn = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
     ".framer-Kv8wc .framer-v5bumn { aspect-ratio: 4.52020202020202 / 1; bottom: 0px; flex: none; height: 50%; position: absolute; right: 0px; width: var(--framer-aspect-ratio-supported, 646px); z-index: 1; }",
     ".framer-Kv8wc.framer-v-1kdysgy.framer-yyb023 { cursor: pointer; }",
   ],
-  Ne = j(si, fi, "framer-Kv8wc"),
+  Ne = withCSS(si, fi, "framer-Kv8wc"),
   cr = Ne;
 Ne.displayName = "Neoflix anim";
 Ne.defaultProps = { height: 287, width: 935 };
-T(Ne, {
+addPropertyControls(Ne, {
   variant: {
     options: ["I5QaL6oi8", "h9tfYk7K5"],
     optionTitles: ["Variant 1", "Variant 2"],
     title: "Variant",
-    type: X.Enum,
+    type: ControlType.Enum,
   },
 });
-z(Ne, [{ explicitInter: !0, fonts: [] }], { supportsExplicitInterCodegen: !0 });
-var li = Z(MapMobile2Component),
-  ge = withScrollSnapChild(r.section),
-  me = Ir(r.section),
-  mi = Z(G),
-  di = Z(Be),
-  ci = Z(Ae),
-  pi = withScrollSnapContainer(r.main),
-  hi = Z(cr),
-  ui = Z(He),
-  Fe = scheduleAppearAnimation(r.div),
-  gi = Z(dr),
-  xi = Z(rr),
-  yi = Z(MapComponent),
-  vi = withScrollSnapContainerAlt(r.main),
+loadFonts(Ne, [{ explicitInter: !0, fonts: [] }], { supportsExplicitInterCodegen: !0 });
+var li = getFonts(MapMobile2Component),
+  ge = withScrollSnapChild(motion.section),
+  me = Ir(motion.section),
+  mi = getFonts(G),
+  di = getFonts(Be),
+  ci = getFonts(Ae),
+  pi = withScrollSnapContainer(motion.main),
+  hi = getFonts(cr),
+  ui = getFonts(He),
+  Fe = scheduleAppearAnimation(motion.div),
+  gi = getFonts(dr),
+  xi = getFonts(rr),
+  yi = getFonts(MapComponent),
+  vi = withScrollSnapContainerAlt(motion.main),
   bi = {
     CXFUsfZRE: "(max-width: 809px)",
     ueHalD28r: "(min-width: 810px) and (max-width: 1199px)",
@@ -4374,8 +4326,8 @@ var li = Z(MapMobile2Component),
           : "WQLkyLRf1",
     };
   },
-  Ii = I(function (t, a) {
-    let { activeLocale: n, setLocale: i } = S(),
+  Ii = forwardRef(function (t, a) {
+    let { activeLocale: n, setLocale: i } = useLocale(),
       { style: o, className: f, layoutId: s, variant: U, ...C } = Ui(t);
     (useEffect(() => {
       let u = Ve(void 0, n);
@@ -4412,41 +4364,41 @@ var li = Z(MapMobile2Component),
       }, [void 0, n]));
     let [l, p] = useVariantState(U, bi, !1),
       L = void 0,
-      y = F(null),
+      y = useRef(null),
       d = () => (Er() ? l !== "CXFUsfZRE" : !0),
       R = () => !Er() || l === "CXFUsfZRE",
-      v = _(),
-      x = [Ur];
+      v = useId(),
+      x = [cssClassScope];
     return (
       registerCursors({}),
-      e(CursorContext.Provider, {
+      jsx(CursorContext.Provider, {
         value: { primaryVariantId: "WQLkyLRf1", variantClassNames: wi },
-        children: g(N, {
+        children: jsxs(LayoutGroup, {
           id: s ?? v,
           children: [
-            g(r.div, {
+            jsxs(motion.div, {
               ...C,
-              className: k(Kr, ...x, "framer-72rtr7", f),
+              className: cx(Kr, ...x, "framer-72rtr7", f),
               ref: a ?? y,
               style: { ...o },
               children: [
-                g("nav", {
+                jsxs("nav", {
                   className: "framer-13yn9ib",
                   "data-framer-name": "Nav",
                   name: "Nav",
                   children: [
                     d() &&
-                      e(B, {
+                      jsx(B, {
                         href: { webPageId: "augiA20Il" },
                         openInNewTab: !1,
-                        children: e(r.a, {
+                        children: jsx(motion.a, {
                           "aria-label": "Framer University logo",
                           className:
                             "framer-xvlq3 hidden-1jamxon framer-lux5qc",
                           "data-framer-name": "Logo",
                           name: "Logo",
                           whileHover: Ci,
-                          children: e(SVGComponent, {
+                          children: jsx(SVGComponent, {
                             className: "framer-bg8cfc",
                             "data-framer-name": "Neoflix_Logo_SVG",
                             fill: "black",
@@ -4458,15 +4410,15 @@ var li = Z(MapMobile2Component),
                           }),
                         }),
                       }),
-                    g("div", {
+                    jsxs("div", {
                       className: "framer-rfpe3x",
                       "data-framer-name": "Links",
                       name: "Links",
                       children: [
-                        e(O, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(c, {
-                            children: e("p", {
+                          children: jsx(ReactFragment, {
+                            children: jsx("p", {
                               style: {
                                 "--font-selector": "R0Y7TW9udHNlcnJhdC01MDA=",
                                 "--framer-font-family":
@@ -4476,11 +4428,11 @@ var li = Z(MapMobile2Component),
                                 "--framer-text-color":
                                   "var(--token-3f355627-0701-4163-9212-31117bae3b68, rgb(114, 194, 194))",
                               },
-                              children: e(B, {
+                              children: jsx(B, {
                                 href: { webPageId: "bzydBB85Y" },
                                 openInNewTab: !1,
                                 smoothScroll: !1,
-                                children: e("a", {
+                                children: jsx("a", {
                                   className: "framer-styles-preset-b5e6zr",
                                   "data-styles-preset": "H9WgrbXMf",
                                   children: "Neoflix",
@@ -4495,10 +4447,10 @@ var li = Z(MapMobile2Component),
                           verticalAlignment: "top",
                           withExternalLayout: !0,
                         }),
-                        e(O, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(c, {
-                            children: e("p", {
+                          children: jsx(ReactFragment, {
+                            children: jsx("p", {
                               style: {
                                 "--font-selector": "R0Y7TW9udHNlcnJhdC01MDA=",
                                 "--framer-font-family":
@@ -4507,11 +4459,11 @@ var li = Z(MapMobile2Component),
                                 "--framer-font-weight": "500",
                                 "--framer-text-color": "rgb(33, 33, 33)",
                               },
-                              children: e(B, {
+                              children: jsx(B, {
                                 href: { webPageId: "aLuYbVoBY" },
                                 openInNewTab: !1,
                                 smoothScroll: !1,
-                                children: e("a", {
+                                children: jsx("a", {
                                   className: "framer-styles-preset-b5e6zr",
                                   "data-styles-preset": "H9WgrbXMf",
                                   children: "Publications",
@@ -4526,15 +4478,15 @@ var li = Z(MapMobile2Component),
                           verticalAlignment: "top",
                           withExternalLayout: !0,
                         }),
-                        e(B, {
+                        jsx(B, {
                           href: { webPageId: "x05wlhCdy" },
-                          children: e(r.a, {
+                          children: jsx(motion.a, {
                             className: "framer-pi7ax framer-lux5qc",
                             whileHover: qi,
-                            children: e(O, {
+                            children: jsx(RichTextComponent, {
                               __fromCanvasComponent: !0,
-                              children: e(c, {
-                                children: e("p", {
+                              children: jsx(ReactFragment, {
+                                children: jsx("p", {
                                   style: {
                                     "--font-selector":
                                       "R0Y7TW9udHNlcnJhdC01MDA=",
@@ -4562,16 +4514,16 @@ var li = Z(MapMobile2Component),
                   ],
                 }),
                 R() &&
-                  g(pi, {
+                  jsxs(pi, {
                     className: "framer-2oid04 hidden-72rtr7 hidden-1uu5wld",
                     "data-framer-name": "Main",
                     name: "Main",
                     children: [
-                      e(ge, {
+                      jsx(ge, {
                         className: "framer-su22bd",
                         "data-framer-name": "Worldmap",
                         name: "Worldmap",
-                        children: e(PropertyOverridesProvider, {
+                        children: jsx(PropertyOverridesProvider, {
                           breakpoint: l,
                           overrides: {
                             CXFUsfZRE: {
@@ -4579,11 +4531,11 @@ var li = Z(MapMobile2Component),
                               y: 8960,
                             },
                           },
-                          children: e(q, {
+                          children: jsx(DeviceSizeContainer, {
                             height: 1100,
-                            children: e(cssSSRMinifiedHelper, {
+                            children: jsx(cssSSRMinifiedHelper, {
                               className: "framer-15e83ey-container",
-                              children: e(MapMobile2Component, {
+                              children: jsx(MapMobile2Component, {
                                 height: "100%",
                                 id: "o7_4SypJZ",
                                 layoutId: "o7_4SypJZ",
@@ -4601,20 +4553,20 @@ var li = Z(MapMobile2Component),
                           }),
                         }),
                       }),
-                      e(me, {
+                      jsx(me, {
                         className: "framer-1ik8i4i",
                         "data-framer-name": "Section-Intermission",
                         name: "Section-Intermission",
-                        children: e(r.div, {
+                        children: jsx(motion.div, {
                           className: "framer-1gmu7om",
-                          children: e(r.div, {
+                          children: jsx(motion.div, {
                             className: "framer-6b16oh",
-                            children: e(r.div, {
+                            children: jsx(motion.div, {
                               className: "framer-t91ls2",
-                              children: e(O, {
+                              children: jsx(RichTextComponent, {
                                 __fromCanvasComponent: !0,
-                                children: e(c, {
-                                  children: g("h1", {
+                                children: jsx(ReactFragment, {
+                                  children: jsxs("h1", {
                                     style: {
                                       "--font-selector": "R0Y7SW50ZXItNzAw",
                                       "--framer-font-family":
@@ -4628,7 +4580,7 @@ var li = Z(MapMobile2Component),
                                     },
                                     children: [
                                       "In the moment, ",
-                                      e("span", {
+                                      jsx("span", {
                                         style: {
                                           "--framer-text-color":
                                             "var(--token-3f355627-0701-4163-9212-31117bae3b68, rgb(114, 194, 194))",
@@ -4648,28 +4600,28 @@ var li = Z(MapMobile2Component),
                           }),
                         }),
                       }),
-                      e(me, {
+                      jsx(me, {
                         className: "framer-pbgesn",
                         "data-framer-name": "Section-Dance",
                         name: "Section-Dance",
-                        children: g(r.div, {
+                        children: jsxs(motion.div, {
                           className: "framer-uvqrd9",
                           children: [
-                            e(r.div, {
+                            jsx(motion.div, {
                               className: "framer-1778g3n",
-                              children: e(B, {
+                              children: jsx(B, {
                                 href: {
                                   hash: ":dbtg_NZW8",
                                   webPageId: "bzydBB85Y",
                                 },
                                 openInNewTab: !1,
                                 smoothScroll: !0,
-                                children: e(r.a, {
+                                children: jsx(motion.a, {
                                   className: "framer-155vfoo framer-lux5qc",
-                                  children: e(q, {
-                                    children: e(cssSSRMinifiedHelper, {
+                                  children: jsx(DeviceSizeContainer, {
+                                    children: jsx(cssSSRMinifiedHelper, {
                                       className: "framer-e1ey9a-container",
-                                      children: e(G, {
+                                      children: jsx(G, {
                                         backgroundColor: "rgba(0, 0, 0, 0)",
                                         borderRadius: 0,
                                         bottomLeftRadius: 0,
@@ -4704,14 +4656,14 @@ var li = Z(MapMobile2Component),
                                 }),
                               }),
                             }),
-                            e(r.div, {
+                            jsx(motion.div, {
                               className: "framer-1djjt42",
-                              children: e(r.div, {
+                              children: jsx(motion.div, {
                                 className: "framer-19ai335",
-                                children: e(O, {
+                                children: jsx(RichTextComponent, {
                                   __fromCanvasComponent: !0,
-                                  children: e(c, {
-                                    children: e("h3", {
+                                  children: jsx(ReactFragment, {
+                                    children: jsx("h3", {
                                       style: {
                                         "--font-selector": "SW50ZXItQm9sZA==",
                                         "--framer-font-family":
@@ -4738,28 +4690,28 @@ var li = Z(MapMobile2Component),
                           ],
                         }),
                       }),
-                      e(me, {
+                      jsx(me, {
                         className: "framer-15vmt0k",
                         "data-framer-name": "Section-Cost",
                         name: "Section-Cost",
-                        children: g(r.div, {
+                        children: jsxs(motion.div, {
                           className: "framer-1fllrdy",
                           children: [
-                            e(r.div, {
+                            jsx(motion.div, {
                               className: "framer-1tp3ir",
-                              children: e(B, {
+                              children: jsx(B, {
                                 href: {
                                   hash: ":tftSCv8zZ",
                                   webPageId: "bzydBB85Y",
                                 },
                                 openInNewTab: !1,
                                 smoothScroll: !0,
-                                children: e(r.a, {
+                                children: jsx(motion.a, {
                                   className: "framer-70lyct framer-lux5qc",
-                                  children: e(q, {
-                                    children: e(cssSSRMinifiedHelper, {
+                                  children: jsx(DeviceSizeContainer, {
+                                    children: jsx(cssSSRMinifiedHelper, {
                                       className: "framer-19faesl-container",
-                                      children: e(G, {
+                                      children: jsx(G, {
                                         backgroundColor: "rgba(0, 0, 0, 0)",
                                         borderRadius: 0,
                                         bottomLeftRadius: 0,
@@ -4794,14 +4746,14 @@ var li = Z(MapMobile2Component),
                                 }),
                               }),
                             }),
-                            e(r.div, {
+                            jsx(motion.div, {
                               className: "framer-a4hnew",
-                              children: e(r.div, {
+                              children: jsx(motion.div, {
                                 className: "framer-1p147u6",
-                                children: e(O, {
+                                children: jsx(RichTextComponent, {
                                   __fromCanvasComponent: !0,
-                                  children: e(c, {
-                                    children: e("h3", {
+                                  children: jsx(ReactFragment, {
+                                    children: jsx("h3", {
                                       style: {
                                         "--font-selector": "SW50ZXItQm9sZA==",
                                         "--framer-font-family":
@@ -4828,20 +4780,20 @@ var li = Z(MapMobile2Component),
                           ],
                         }),
                       }),
-                      e(me, {
+                      jsx(me, {
                         className: "framer-h6e4v4",
                         "data-framer-name": "Section-Intermission",
                         name: "Section-Intermission",
-                        children: e(r.div, {
+                        children: jsx(motion.div, {
                           className: "framer-1g89ijn",
-                          children: e(r.div, {
+                          children: jsx(motion.div, {
                             className: "framer-k7dh17",
-                            children: e(r.div, {
+                            children: jsx(motion.div, {
                               className: "framer-r98bkj",
-                              children: e(O, {
+                              children: jsx(RichTextComponent, {
                                 __fromCanvasComponent: !0,
-                                children: e(c, {
-                                  children: g("h1", {
+                                children: jsx(ReactFragment, {
+                                  children: jsxs("h1", {
                                     style: {
                                       "--font-selector": "R0Y7SW50ZXItNzAw",
                                       "--framer-font-family":
@@ -4854,11 +4806,11 @@ var li = Z(MapMobile2Component),
                                         "var(--token-b73f7c2a-3920-4d15-bb22-d8016da87d50, rgb(245, 249, 252))",
                                     },
                                     children: [
-                                      e("span", {
+                                      jsx("span", {
                                         style: { "--framer-font-size": "55px" },
                                         children: "...yet, ",
                                       }),
-                                      e("span", {
+                                      jsx("span", {
                                         style: {
                                           "--framer-font-size": "55px",
                                           "--framer-text-color":
@@ -4866,15 +4818,15 @@ var li = Z(MapMobile2Component),
                                         },
                                         children: "reflection",
                                       }),
-                                      e("span", {
+                                      jsx("span", {
                                         style: { "--framer-font-size": "55px" },
                                         children: " strengthens",
                                       }),
-                                      e("span", {
+                                      jsx("span", {
                                         style: { "--framer-font-size": "55px" },
-                                        children: e("br", {}),
+                                        children: jsx("br", {}),
                                       }),
-                                      e("span", {
+                                      jsx("span", {
                                         style: { "--framer-font-size": "55px" },
                                         children: "the next.",
                                       }),
@@ -4890,28 +4842,28 @@ var li = Z(MapMobile2Component),
                           }),
                         }),
                       }),
-                      e(me, {
+                      jsx(me, {
                         className: "framer-1h5rsno",
                         "data-framer-name": "Section-Skills",
                         name: "Section-Skills",
-                        children: g(r.div, {
+                        children: jsxs(motion.div, {
                           className: "framer-ycgccy",
                           children: [
-                            e(r.div, {
+                            jsx(motion.div, {
                               className: "framer-eru19r",
-                              children: e(B, {
+                              children: jsx(B, {
                                 href: {
                                   hash: ":mRVhqybMB",
                                   webPageId: "bzydBB85Y",
                                 },
                                 openInNewTab: !1,
                                 smoothScroll: !0,
-                                children: e(r.a, {
+                                children: jsx(motion.a, {
                                   className: "framer-1b0vvft framer-lux5qc",
-                                  children: e(q, {
-                                    children: e(cssSSRMinifiedHelper, {
+                                  children: jsx(DeviceSizeContainer, {
+                                    children: jsx(cssSSRMinifiedHelper, {
                                       className: "framer-ni3rk9-container",
-                                      children: e(G, {
+                                      children: jsx(G, {
                                         backgroundColor: "rgba(0, 0, 0, 0)",
                                         borderRadius: 0,
                                         bottomLeftRadius: 0,
@@ -4946,14 +4898,14 @@ var li = Z(MapMobile2Component),
                                 }),
                               }),
                             }),
-                            e(r.div, {
+                            jsx(motion.div, {
                               className: "framer-1anpbt7",
-                              children: e(r.div, {
+                              children: jsx(motion.div, {
                                 className: "framer-dvlf7d",
-                                children: e(O, {
+                                children: jsx(RichTextComponent, {
                                   __fromCanvasComponent: !0,
-                                  children: e(c, {
-                                    children: e("h3", {
+                                  children: jsx(ReactFragment, {
+                                    children: jsx("h3", {
                                       style: {
                                         "--font-selector": "SW50ZXItQm9sZA==",
                                         "--framer-font-family":
@@ -4980,27 +4932,27 @@ var li = Z(MapMobile2Component),
                           ],
                         }),
                       }),
-                      e(me, {
+                      jsx(me, {
                         className: "framer-1o8tkgz",
                         "data-framer-name": "Section-Team",
                         name: "Section-Team",
-                        children: g(r.div, {
+                        children: jsxs(motion.div, {
                           className: "framer-4avabb",
                           children: [
-                            e(r.div, {
+                            jsx(motion.div, {
                               className: "framer-14lpll9",
-                              children: e(B, {
+                              children: jsx(B, {
                                 href: {
                                   hash: ":NYP2seWhD",
                                   webPageId: "bzydBB85Y",
                                 },
                                 openInNewTab: !1,
-                                children: e(r.a, {
+                                children: jsx(motion.a, {
                                   className: "framer-9inaut framer-lux5qc",
-                                  children: e(q, {
-                                    children: e(cssSSRMinifiedHelper, {
+                                  children: jsx(DeviceSizeContainer, {
+                                    children: jsx(cssSSRMinifiedHelper, {
                                       className: "framer-1gc0yrt-container",
-                                      children: e(G, {
+                                      children: jsx(G, {
                                         backgroundColor: "rgba(0, 0, 0, 0)",
                                         borderRadius: 0,
                                         bottomLeftRadius: 0,
@@ -5035,14 +4987,14 @@ var li = Z(MapMobile2Component),
                                 }),
                               }),
                             }),
-                            e(r.div, {
+                            jsx(motion.div, {
                               className: "framer-194fqnw",
-                              children: e(r.div, {
+                              children: jsx(motion.div, {
                                 className: "framer-1lmwi62",
-                                children: e(O, {
+                                children: jsx(RichTextComponent, {
                                   __fromCanvasComponent: !0,
-                                  children: e(c, {
-                                    children: e("h3", {
+                                  children: jsx(ReactFragment, {
+                                    children: jsx("h3", {
                                       style: {
                                         "--font-selector": "SW50ZXItQm9sZA==",
                                         "--framer-font-family":
@@ -5069,28 +5021,28 @@ var li = Z(MapMobile2Component),
                           ],
                         }),
                       }),
-                      e(me, {
+                      jsx(me, {
                         className: "framer-bstmck",
                         "data-framer-name": "Section-Perspective",
                         name: "Section-Perspective",
-                        children: g(r.div, {
+                        children: jsxs(motion.div, {
                           className: "framer-1fycwfh",
                           children: [
-                            e(r.div, {
+                            jsx(motion.div, {
                               className: "framer-11wjs2p",
-                              children: e(B, {
+                              children: jsx(B, {
                                 href: {
                                   hash: ":DXqsCYt4L",
                                   webPageId: "bzydBB85Y",
                                 },
                                 openInNewTab: !1,
                                 smoothScroll: !0,
-                                children: e(r.a, {
+                                children: jsx(motion.a, {
                                   className: "framer-1udrl05 framer-lux5qc",
-                                  children: e(q, {
-                                    children: e(cssSSRMinifiedHelper, {
+                                  children: jsx(DeviceSizeContainer, {
+                                    children: jsx(cssSSRMinifiedHelper, {
                                       className: "framer-18mjo87-container",
-                                      children: e(G, {
+                                      children: jsx(G, {
                                         backgroundColor: "rgba(0, 0, 0, 0)",
                                         borderRadius: 0,
                                         bottomLeftRadius: 0,
@@ -5125,14 +5077,14 @@ var li = Z(MapMobile2Component),
                                 }),
                               }),
                             }),
-                            e(r.div, {
+                            jsx(motion.div, {
                               className: "framer-jl5t6f",
-                              children: e(r.div, {
+                              children: jsx(motion.div, {
                                 className: "framer-1l2tixu",
-                                children: e(O, {
+                                children: jsx(RichTextComponent, {
                                   __fromCanvasComponent: !0,
-                                  children: e(c, {
-                                    children: e("h3", {
+                                  children: jsx(ReactFragment, {
+                                    children: jsx("h3", {
                                       style: {
                                         "--font-selector": "SW50ZXItQm9sZA==",
                                         "--framer-font-family":
@@ -5159,28 +5111,28 @@ var li = Z(MapMobile2Component),
                           ],
                         }),
                       }),
-                      e(me, {
+                      jsx(me, {
                         className: "framer-14fyi8v",
                         "data-framer-name": "Section-Time",
                         name: "Section-Time",
-                        children: g(r.div, {
+                        children: jsxs(motion.div, {
                           className: "framer-qg0h3f",
                           children: [
-                            e(r.div, {
+                            jsx(motion.div, {
                               className: "framer-1rf1z8u",
-                              children: e(B, {
+                              children: jsx(B, {
                                 href: {
                                   hash: ":WjO84y3BZ",
                                   webPageId: "bzydBB85Y",
                                 },
                                 openInNewTab: !1,
                                 smoothScroll: !0,
-                                children: e(r.a, {
+                                children: jsx(motion.a, {
                                   className: "framer-105urfr framer-lux5qc",
-                                  children: e(q, {
-                                    children: e(cssSSRMinifiedHelper, {
+                                  children: jsx(DeviceSizeContainer, {
+                                    children: jsx(cssSSRMinifiedHelper, {
                                       className: "framer-1ta4ebg-container",
-                                      children: e(G, {
+                                      children: jsx(G, {
                                         backgroundColor: "rgba(0, 0, 0, 0)",
                                         borderRadius: 0,
                                         bottomLeftRadius: 0,
@@ -5215,14 +5167,14 @@ var li = Z(MapMobile2Component),
                                 }),
                               }),
                             }),
-                            e(r.div, {
+                            jsx(motion.div, {
                               className: "framer-z1w1qy",
-                              children: e(r.div, {
+                              children: jsx(motion.div, {
                                 className: "framer-1brktv",
-                                children: e(O, {
+                                children: jsx(RichTextComponent, {
                                   __fromCanvasComponent: !0,
-                                  children: e(c, {
-                                    children: e("h3", {
+                                  children: jsx(ReactFragment, {
+                                    children: jsx("h3", {
                                       style: {
                                         "--font-selector": "SW50ZXItQm9sZA==",
                                         "--framer-font-family":
@@ -5249,23 +5201,23 @@ var li = Z(MapMobile2Component),
                           ],
                         }),
                       }),
-                      g(me, {
+                      jsxs(me, {
                         className: "framer-vsn0zu",
                         "data-framer-name": "Hero Section",
                         name: "Hero Section",
                         children: [
-                          e(r.div, { className: "framer-1xzh66h" }),
-                          e(PropertyOverridesProvider, {
+                          jsx(motion.div, { className: "framer-1xzh66h" }),
+                          jsx(PropertyOverridesProvider, {
                             breakpoint: l,
                             overrides: {
                               CXFUsfZRE: { width: "99.4956vw", y: 90 },
                             },
-                            children: e(q, {
+                            children: jsx(DeviceSizeContainer, {
                               height: 242,
-                              children: e(cssSSRMinifiedHelper, {
+                              children: jsx(cssSSRMinifiedHelper, {
                                 className: "framer-u2hhht-container",
                                 whileHover: Wr,
-                                children: e(Be, {
+                                children: jsx(Be, {
                                   height: "100%",
                                   id: "qzyMp3yoL",
                                   layoutId: "qzyMp3yoL",
@@ -5276,21 +5228,21 @@ var li = Z(MapMobile2Component),
                               }),
                             }),
                           }),
-                          e(r.div, {
+                          jsx(motion.div, {
                             className: "framer-9tpc26",
                             "data-framer-name": "Moment",
                             name: "Moment",
-                            children: g(r.div, {
+                            children: jsxs(motion.div, {
                               className: "framer-1nn7z0v",
                               children: [
-                                e(PropertyOverridesProvider, {
+                                jsx(PropertyOverridesProvider, {
                                   breakpoint: l,
                                   overrides: { CXFUsfZRE: { y: 377.5 } },
-                                  children: e(q, {
+                                  children: jsx(DeviceSizeContainer, {
                                     height: 223,
-                                    children: e(cssSSRMinifiedHelper, {
+                                    children: jsx(cssSSRMinifiedHelper, {
                                       className: "framer-s7m1wf-container",
-                                      children: e(Ae, {
+                                      children: jsx(Ae, {
                                         height: "100%",
                                         id: "RhYHZi1K3",
                                         layoutId: "RhYHZi1K3",
@@ -5300,10 +5252,10 @@ var li = Z(MapMobile2Component),
                                     }),
                                   }),
                                 }),
-                                e(O, {
+                                jsx(RichTextComponent, {
                                   __fromCanvasComponent: !0,
-                                  children: e(c, {
-                                    children: e("p", {
+                                  children: jsx(ReactFragment, {
+                                    children: jsx("p", {
                                       style: {
                                         "--font-selector": "SW50ZXItQm9sZA==",
                                         "--framer-font-family":
@@ -5330,17 +5282,17 @@ var li = Z(MapMobile2Component),
                     ],
                   }),
                 d() &&
-                  g(vi, {
+                  jsxs(vi, {
                     className: "framer-1vtk60x hidden-1jamxon",
                     "data-framer-name": "Main",
                     name: "Main",
                     children: [
-                      g(ge, {
+                      jsxs(ge, {
                         className: "framer-p8551w",
                         "data-framer-name": "Hero Section",
                         name: "Hero Section",
                         children: [
-                          e(PropertyOverridesProvider, {
+                          jsx(PropertyOverridesProvider, {
                             breakpoint: l,
                             overrides: {
                               ueHalD28r: {
@@ -5349,15 +5301,15 @@ var li = Z(MapMobile2Component),
                                 y: 173,
                               },
                             },
-                            children: e(q, {
+                            children: jsx(DeviceSizeContainer, {
                               height: 221,
                               width: "60vw",
                               y: 221,
-                              children: e(cssSSRMinifiedHelper, {
+                              children: jsx(cssSSRMinifiedHelper, {
                                 className: "framer-1bdw7m-container",
                                 transformTemplate: pr,
                                 whileHover: Wr,
-                                children: e(cr, {
+                                children: jsx(cr, {
                                   height: "100%",
                                   id: "tW6wrwedt",
                                   layoutId: "tW6wrwedt",
@@ -5368,33 +5320,33 @@ var li = Z(MapMobile2Component),
                               }),
                             }),
                           }),
-                          e(PropertyOverridesProvider, {
+                          jsx(PropertyOverridesProvider, {
                             breakpoint: l,
                             overrides: { ueHalD28r: { transformTemplate: pr } },
-                            children: e(r.div, {
+                            children: jsx(motion.div, {
                               className: "framer-g3ro50",
                               "data-framer-name": "Moment",
                               name: "Moment",
-                              children: e(r.div, {
+                              children: jsx(motion.div, {
                                 className: "framer-1ey594a",
-                                children: e(PropertyOverridesProvider, {
+                                children: jsx(PropertyOverridesProvider, {
                                   breakpoint: l,
                                   overrides: { ueHalD28r: { y: 600 } },
-                                  children: e(q, {
+                                  children: jsx(DeviceSizeContainer, {
                                     height: 187,
                                     width: "685px",
                                     y: 373,
-                                    children: e(PropertyOverridesProvider, {
+                                    children: jsx(PropertyOverridesProvider, {
                                       breakpoint: l,
                                       overrides: {
                                         ueHalD28r: {
                                           transformTemplate: void 0,
                                         },
                                       },
-                                      children: e(cssSSRMinifiedHelper, {
+                                      children: jsx(cssSSRMinifiedHelper, {
                                         className: "framer-1eeo48e-container",
                                         transformTemplate: pr,
-                                        children: e(He, {
+                                        children: jsx(He, {
                                           height: "100%",
                                           id: "NP_oewk8B",
                                           layoutId: "NP_oewk8B",
@@ -5411,12 +5363,12 @@ var li = Z(MapMobile2Component),
                           }),
                         ],
                       }),
-                      g(ge, {
+                      jsxs(ge, {
                         className: "framer-15cs0zp",
                         "data-framer-name": "Only the patient",
                         name: "Only the patient",
                         children: [
-                          g(Fe, {
+                          jsxs(Fe, {
                             animate: Qr,
                             className: "framer-1b5k5bb",
                             "data-framer-appear-id": "1b5k5bb",
@@ -5425,18 +5377,18 @@ var li = Z(MapMobile2Component),
                             name: "Moment header",
                             optimized: !0,
                             children: [
-                              e(r.div, {
+                              jsx(motion.div, {
                                 className: "framer-1i9dtug",
                                 "data-framer-name": "Moment",
                                 name: "Moment",
-                                children: e(r.div, {
+                                children: jsx(motion.div, {
                                   className: "framer-lp3hr5",
                                   "data-framer-name": "Content",
                                   name: "Content",
-                                  children: e(O, {
+                                  children: jsx(RichTextComponent, {
                                     __fromCanvasComponent: !0,
-                                    children: e(c, {
-                                      children: g("h1", {
+                                    children: jsx(ReactFragment, {
+                                      children: jsxs("h1", {
                                         style: {
                                           "--font-selector": "R0Y7SW50ZXItNzAw",
                                           "--framer-font-family":
@@ -5450,7 +5402,7 @@ var li = Z(MapMobile2Component),
                                         },
                                         children: [
                                           "In the moment, ",
-                                          e("span", {
+                                          jsx("span", {
                                             style: {
                                               "--framer-text-color":
                                                 "var(--token-61880a63-a0aa-4fc8-8a06-12f5d7522891, rgb(82, 156, 156))",
@@ -5468,9 +5420,9 @@ var li = Z(MapMobile2Component),
                                   }),
                                 }),
                               }),
-                              e(r.div, {
+                              jsx(motion.div, {
                                 className: "framer-1agyzia",
-                                children: e(r.div, {
+                                children: jsx(motion.div, {
                                   className: "framer-1r3oll3",
                                   "data-framer-name": "Content",
                                   name: "Content",
@@ -5478,7 +5430,7 @@ var li = Z(MapMobile2Component),
                               }),
                             ],
                           }),
-                          e(Fe, {
+                          jsx(Fe, {
                             animate: Zr,
                             className: "framer-j6gb99",
                             "data-framer-appear-id": "j6gb99",
@@ -5486,13 +5438,13 @@ var li = Z(MapMobile2Component),
                             initial: Se,
                             name: "Animation Left",
                             optimized: !0,
-                            children: e(r.div, {
+                            children: jsx(motion.div, {
                               className: "framer-b5i1zv",
                               "data-framer-name": "Features",
                               name: "Features",
-                              children: e(r.div, {
+                              children: jsx(motion.div, {
                                 className: "framer-1mxq6mp",
-                                children: e(PropertyOverridesProvider, {
+                                children: jsx(PropertyOverridesProvider, {
                                   breakpoint: l,
                                   overrides: {
                                     ueHalD28r: {
@@ -5500,19 +5452,19 @@ var li = Z(MapMobile2Component),
                                         "calc(min(100vw - 50px, 1000px) + 120px)",
                                     },
                                   },
-                                  children: e(q, {
+                                  children: jsx(DeviceSizeContainer, {
                                     height: 352,
                                     width: "1000px",
                                     y: 1394,
-                                    children: e(PropertyOverridesProvider, {
+                                    children: jsx(PropertyOverridesProvider, {
                                       breakpoint: l,
                                       overrides: {
                                         ueHalD28r: { transformTemplate: Gr },
                                       },
-                                      children: e(cssSSRMinifiedHelper, {
+                                      children: jsx(cssSSRMinifiedHelper, {
                                         className: "framer-1k0ssbx-container",
                                         transformTemplate: Jr,
-                                        children: e(dr, {
+                                        children: jsx(dr, {
                                           height: "100%",
                                           id: "oxXlQ801e",
                                           layoutId: "oxXlQ801e",
@@ -5529,16 +5481,16 @@ var li = Z(MapMobile2Component),
                           }),
                         ],
                       }),
-                      e(ge, {
+                      jsx(ge, {
                         className: "framer-3oh3yy",
                         "data-framer-name": "Yet, Reflection",
                         name: "Yet, Reflection",
-                        children: g(ge, {
+                        children: jsxs(ge, {
                           className: "framer-11411eu",
                           "data-framer-name": "Reflection strengthens",
                           name: "Reflection strengthens",
                           children: [
-                            g(Fe, {
+                            jsxs(Fe, {
                               animate: Qr,
                               className: "framer-6axhfk",
                               "data-framer-appear-id": "6axhfk",
@@ -5547,26 +5499,26 @@ var li = Z(MapMobile2Component),
                               name: "Moment header",
                               optimized: !0,
                               children: [
-                                e(r.div, {
+                                jsx(motion.div, {
                                   className: "framer-13fed00",
-                                  children: e(r.div, {
+                                  children: jsx(motion.div, {
                                     className: "framer-101nclb",
                                     "data-framer-name": "Content",
                                     name: "Content",
                                   }),
                                 }),
-                                e(r.div, {
+                                jsx(motion.div, {
                                   className: "framer-1dhzm6h",
                                   "data-framer-name": "Moment",
                                   name: "Moment",
-                                  children: e(r.div, {
+                                  children: jsx(motion.div, {
                                     className: "framer-7ooj09",
                                     "data-framer-name": "Content",
                                     name: "Content",
-                                    children: e(O, {
+                                    children: jsx(RichTextComponent, {
                                       __fromCanvasComponent: !0,
-                                      children: e(c, {
-                                        children: g("h1", {
+                                      children: jsx(ReactFragment, {
+                                        children: jsxs("h1", {
                                           style: {
                                             "--font-selector":
                                               "R0Y7SW50ZXItNzAw",
@@ -5581,7 +5533,7 @@ var li = Z(MapMobile2Component),
                                           },
                                           children: [
                                             "Yet, ",
-                                            e("span", {
+                                            jsx("span", {
                                               style: {
                                                 "--framer-text-color":
                                                   "var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, rgb(82, 156, 156))",
@@ -5589,7 +5541,7 @@ var li = Z(MapMobile2Component),
                                               children: "reflection",
                                             }),
                                             " strengthens",
-                                            e("br", {}),
+                                            jsx("br", {}),
                                             "the next",
                                           ],
                                         }),
@@ -5603,7 +5555,7 @@ var li = Z(MapMobile2Component),
                                 }),
                               ],
                             }),
-                            e(Fe, {
+                            jsx(Fe, {
                               animate: Zr,
                               className: "framer-x5gqdq",
                               "data-framer-appear-id": "x5gqdq",
@@ -5611,13 +5563,13 @@ var li = Z(MapMobile2Component),
                               initial: Se,
                               name: "Animation Right",
                               optimized: !0,
-                              children: e(r.div, {
+                              children: jsx(motion.div, {
                                 className: "framer-1en550q",
                                 "data-framer-name": "Features",
                                 name: "Features",
-                                children: e(r.div, {
+                                children: jsx(motion.div, {
                                   className: "framer-ezl8wv",
-                                  children: e(PropertyOverridesProvider, {
+                                  children: jsx(PropertyOverridesProvider, {
                                     breakpoint: l,
                                     overrides: {
                                       ueHalD28r: {
@@ -5625,21 +5577,21 @@ var li = Z(MapMobile2Component),
                                           "calc(min(100vw - 50px, 1000px) + 150px)",
                                       },
                                     },
-                                    children: e(q, {
+                                    children: jsx(DeviceSizeContainer, {
                                       height: 352,
                                       width: "1000px",
                                       y: 2398,
-                                      children: e(PropertyOverridesProvider, {
+                                      children: jsx(PropertyOverridesProvider, {
                                         breakpoint: l,
                                         overrides: {
                                           ueHalD28r: {
                                             transformTemplate: void 0,
                                           },
                                         },
-                                        children: e(cssSSRMinifiedHelper, {
+                                        children: jsx(cssSSRMinifiedHelper, {
                                           className: "framer-qjopz5-container",
                                           transformTemplate: Jr,
-                                          children: e(rr, {
+                                          children: jsx(rr, {
                                             height: "100%",
                                             id: "vc1jCsqkh",
                                             layoutId: "vc1jCsqkh",
@@ -5657,18 +5609,18 @@ var li = Z(MapMobile2Component),
                           ],
                         }),
                       }),
-                      g(ge, {
+                      jsxs(ge, {
                         className: "framer-1j5oyue",
                         "data-framer-name": "Worldmap",
                         name: "Worldmap",
                         children: [
-                          e(q, {
+                          jsx(DeviceSizeContainer, {
                             height: 1e3,
                             width: "100vw",
                             y: 3060,
-                            children: e(cssSSRMinifiedHelper, {
+                            children: jsx(cssSSRMinifiedHelper, {
                               className: "framer-14yr6pu-container",
-                              children: e(MapComponent, {
+                              children: jsx(MapComponent, {
                                 height: "100%",
                                 id: "RNjVxsq3J",
                                 layoutId: "RNjVxsq3J",
@@ -5684,23 +5636,23 @@ var li = Z(MapMobile2Component),
                               }),
                             }),
                           }),
-                          e(r.div, {
+                          jsx(motion.div, {
                             className: "framer-1b8s87v",
                             "data-framer-name": "Learnmore",
                             name: "Learnmore",
-                            children: e(r.div, {
+                            children: jsx(motion.div, {
                               className: "framer-x72eal",
                               "data-border": !0,
-                              children: e(B, {
+                              children: jsx(B, {
                                 href: { webPageId: "f7Ah01sPh" },
                                 openInNewTab: !1,
-                                children: e(r.a, {
+                                children: jsx(motion.a, {
                                   className: "framer-djajqq framer-lux5qc",
                                   whileHover: Oi,
-                                  children: e(O, {
+                                  children: jsx(RichTextComponent, {
                                     __fromCanvasComponent: !0,
-                                    children: e(c, {
-                                      children: g("h1", {
+                                    children: jsx(ReactFragment, {
+                                      children: jsxs("h1", {
                                         style: {
                                           "--font-selector": "R0Y7SW50ZXItNzAw",
                                           "--framer-font-family":
@@ -5714,7 +5666,7 @@ var li = Z(MapMobile2Component),
                                         },
                                         children: [
                                           "Learn more about Neoflix from our ",
-                                          e("span", {
+                                          jsx("span", {
                                             style: {
                                               "--framer-text-color":
                                                 "var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, rgb(82, 156, 156))",
@@ -5740,7 +5692,7 @@ var li = Z(MapMobile2Component),
                   }),
               ],
             }),
-            e("div", { className: k(Kr, ...x), id: "overlay" }),
+            jsx("div", { className: cx(Kr, ...x), id: "overlay" }),
           ],
         }),
       })
@@ -5811,14 +5763,14 @@ var li = Z(MapMobile2Component),
     "@supports (background: -webkit-named-image(i)) and (not (scale:1)) { .framer-qO1UX.framer-72rtr7, .framer-qO1UX .framer-xvlq3, .framer-qO1UX .framer-rfpe3x, .framer-qO1UX .framer-pi7ax, .framer-qO1UX .framer-2oid04, .framer-qO1UX .framer-su22bd, .framer-qO1UX .framer-1ik8i4i, .framer-qO1UX .framer-1gmu7om, .framer-qO1UX .framer-6b16oh, .framer-qO1UX .framer-t91ls2, .framer-qO1UX .framer-pbgesn, .framer-qO1UX .framer-uvqrd9, .framer-qO1UX .framer-1778g3n, .framer-qO1UX .framer-1djjt42, .framer-qO1UX .framer-19ai335, .framer-qO1UX .framer-15vmt0k, .framer-qO1UX .framer-1fllrdy, .framer-qO1UX .framer-1tp3ir, .framer-qO1UX .framer-a4hnew, .framer-qO1UX .framer-1p147u6, .framer-qO1UX .framer-h6e4v4, .framer-qO1UX .framer-1g89ijn, .framer-qO1UX .framer-k7dh17, .framer-qO1UX .framer-r98bkj, .framer-qO1UX .framer-1h5rsno, .framer-qO1UX .framer-ycgccy, .framer-qO1UX .framer-eru19r, .framer-qO1UX .framer-1anpbt7, .framer-qO1UX .framer-dvlf7d, .framer-qO1UX .framer-1o8tkgz, .framer-qO1UX .framer-4avabb, .framer-qO1UX .framer-14lpll9, .framer-qO1UX .framer-194fqnw, .framer-qO1UX .framer-1lmwi62, .framer-qO1UX .framer-bstmck, .framer-qO1UX .framer-1fycwfh, .framer-qO1UX .framer-11wjs2p, .framer-qO1UX .framer-jl5t6f, .framer-qO1UX .framer-1l2tixu, .framer-qO1UX .framer-14fyi8v, .framer-qO1UX .framer-qg0h3f, .framer-qO1UX .framer-1rf1z8u, .framer-qO1UX .framer-z1w1qy, .framer-qO1UX .framer-1brktv, .framer-qO1UX .framer-vsn0zu, .framer-qO1UX .framer-9tpc26, .framer-qO1UX .framer-1nn7z0v, .framer-qO1UX .framer-1vtk60x, .framer-qO1UX .framer-p8551w, .framer-qO1UX .framer-g3ro50, .framer-qO1UX .framer-1ey594a, .framer-qO1UX .framer-15cs0zp, .framer-qO1UX .framer-1b5k5bb, .framer-qO1UX .framer-1i9dtug, .framer-qO1UX .framer-lp3hr5, .framer-qO1UX .framer-1agyzia, .framer-qO1UX .framer-1r3oll3, .framer-qO1UX .framer-j6gb99, .framer-qO1UX .framer-b5i1zv, .framer-qO1UX .framer-3oh3yy, .framer-qO1UX .framer-11411eu, .framer-qO1UX .framer-6axhfk, .framer-qO1UX .framer-13fed00, .framer-qO1UX .framer-101nclb, .framer-qO1UX .framer-1dhzm6h, .framer-qO1UX .framer-7ooj09, .framer-qO1UX .framer-x5gqdq, .framer-qO1UX .framer-1en550q, .framer-qO1UX .framer-1j5oyue, .framer-qO1UX .framer-1b8s87v, .framer-qO1UX .framer-x72eal, .framer-qO1UX .framer-djajqq { gap: 0px; } .framer-qO1UX.framer-72rtr7 > *, .framer-qO1UX .framer-2oid04 > *, .framer-qO1UX .framer-su22bd > *, .framer-qO1UX .framer-1ik8i4i > *, .framer-qO1UX .framer-pbgesn > *, .framer-qO1UX .framer-15vmt0k > *, .framer-qO1UX .framer-h6e4v4 > *, .framer-qO1UX .framer-1h5rsno > *, .framer-qO1UX .framer-1o8tkgz > *, .framer-qO1UX .framer-bstmck > *, .framer-qO1UX .framer-14fyi8v > *, .framer-qO1UX .framer-1vtk60x > *, .framer-qO1UX .framer-g3ro50 > *, .framer-qO1UX .framer-1j5oyue > * { margin: 0px; margin-bottom: calc(0px / 2); margin-top: calc(0px / 2); } .framer-qO1UX.framer-72rtr7 > :first-child, .framer-qO1UX .framer-2oid04 > :first-child, .framer-qO1UX .framer-su22bd > :first-child, .framer-qO1UX .framer-1ik8i4i > :first-child, .framer-qO1UX .framer-1gmu7om > :first-child, .framer-qO1UX .framer-pbgesn > :first-child, .framer-qO1UX .framer-uvqrd9 > :first-child, .framer-qO1UX .framer-15vmt0k > :first-child, .framer-qO1UX .framer-1fllrdy > :first-child, .framer-qO1UX .framer-h6e4v4 > :first-child, .framer-qO1UX .framer-1g89ijn > :first-child, .framer-qO1UX .framer-1h5rsno > :first-child, .framer-qO1UX .framer-ycgccy > :first-child, .framer-qO1UX .framer-1o8tkgz > :first-child, .framer-qO1UX .framer-4avabb > :first-child, .framer-qO1UX .framer-bstmck > :first-child, .framer-qO1UX .framer-1fycwfh > :first-child, .framer-qO1UX .framer-14fyi8v > :first-child, .framer-qO1UX .framer-qg0h3f > :first-child, .framer-qO1UX .framer-1nn7z0v > :first-child, .framer-qO1UX .framer-1vtk60x > :first-child, .framer-qO1UX .framer-p8551w > :first-child, .framer-qO1UX .framer-g3ro50 > :first-child, .framer-qO1UX .framer-15cs0zp > :first-child, .framer-qO1UX .framer-lp3hr5 > :first-child, .framer-qO1UX .framer-1r3oll3 > :first-child, .framer-qO1UX .framer-j6gb99 > :first-child, .framer-qO1UX .framer-b5i1zv > :first-child, .framer-qO1UX .framer-3oh3yy > :first-child, .framer-qO1UX .framer-11411eu > :first-child, .framer-qO1UX .framer-101nclb > :first-child, .framer-qO1UX .framer-7ooj09 > :first-child, .framer-qO1UX .framer-x5gqdq > :first-child, .framer-qO1UX .framer-1en550q > :first-child, .framer-qO1UX .framer-1j5oyue > :first-child { margin-top: 0px; } .framer-qO1UX.framer-72rtr7 > :last-child, .framer-qO1UX .framer-2oid04 > :last-child, .framer-qO1UX .framer-su22bd > :last-child, .framer-qO1UX .framer-1ik8i4i > :last-child, .framer-qO1UX .framer-1gmu7om > :last-child, .framer-qO1UX .framer-pbgesn > :last-child, .framer-qO1UX .framer-uvqrd9 > :last-child, .framer-qO1UX .framer-15vmt0k > :last-child, .framer-qO1UX .framer-1fllrdy > :last-child, .framer-qO1UX .framer-h6e4v4 > :last-child, .framer-qO1UX .framer-1g89ijn > :last-child, .framer-qO1UX .framer-1h5rsno > :last-child, .framer-qO1UX .framer-ycgccy > :last-child, .framer-qO1UX .framer-1o8tkgz > :last-child, .framer-qO1UX .framer-4avabb > :last-child, .framer-qO1UX .framer-bstmck > :last-child, .framer-qO1UX .framer-1fycwfh > :last-child, .framer-qO1UX .framer-14fyi8v > :last-child, .framer-qO1UX .framer-qg0h3f > :last-child, .framer-qO1UX .framer-1nn7z0v > :last-child, .framer-qO1UX .framer-1vtk60x > :last-child, .framer-qO1UX .framer-p8551w > :last-child, .framer-qO1UX .framer-g3ro50 > :last-child, .framer-qO1UX .framer-15cs0zp > :last-child, .framer-qO1UX .framer-lp3hr5 > :last-child, .framer-qO1UX .framer-1r3oll3 > :last-child, .framer-qO1UX .framer-j6gb99 > :last-child, .framer-qO1UX .framer-b5i1zv > :last-child, .framer-qO1UX .framer-3oh3yy > :last-child, .framer-qO1UX .framer-11411eu > :last-child, .framer-qO1UX .framer-101nclb > :last-child, .framer-qO1UX .framer-7ooj09 > :last-child, .framer-qO1UX .framer-x5gqdq > :last-child, .framer-qO1UX .framer-1en550q > :last-child, .framer-qO1UX .framer-1j5oyue > :last-child { margin-bottom: 0px; } .framer-qO1UX .framer-xvlq3 > *, .framer-qO1UX .framer-pi7ax > *, .framer-qO1UX .framer-6b16oh > *, .framer-qO1UX .framer-t91ls2 > *, .framer-qO1UX .framer-1778g3n > *, .framer-qO1UX .framer-1djjt42 > *, .framer-qO1UX .framer-19ai335 > *, .framer-qO1UX .framer-1tp3ir > *, .framer-qO1UX .framer-a4hnew > *, .framer-qO1UX .framer-1p147u6 > *, .framer-qO1UX .framer-k7dh17 > *, .framer-qO1UX .framer-r98bkj > *, .framer-qO1UX .framer-eru19r > *, .framer-qO1UX .framer-1anpbt7 > *, .framer-qO1UX .framer-dvlf7d > *, .framer-qO1UX .framer-14lpll9 > *, .framer-qO1UX .framer-194fqnw > *, .framer-qO1UX .framer-1lmwi62 > *, .framer-qO1UX .framer-11wjs2p > *, .framer-qO1UX .framer-jl5t6f > *, .framer-qO1UX .framer-1l2tixu > *, .framer-qO1UX .framer-1rf1z8u > *, .framer-qO1UX .framer-z1w1qy > *, .framer-qO1UX .framer-vsn0zu > *, .framer-qO1UX .framer-1ey594a > *, .framer-qO1UX .framer-1i9dtug > *, .framer-qO1UX .framer-1agyzia > *, .framer-qO1UX .framer-13fed00 > *, .framer-qO1UX .framer-1dhzm6h > *, .framer-qO1UX .framer-1b8s87v > *, .framer-qO1UX .framer-x72eal > *, .framer-qO1UX .framer-djajqq > * { margin: 0px; margin-left: calc(10px / 2); margin-right: calc(10px / 2); } .framer-qO1UX .framer-xvlq3 > :first-child, .framer-qO1UX .framer-rfpe3x > :first-child, .framer-qO1UX .framer-pi7ax > :first-child, .framer-qO1UX .framer-6b16oh > :first-child, .framer-qO1UX .framer-t91ls2 > :first-child, .framer-qO1UX .framer-1778g3n > :first-child, .framer-qO1UX .framer-1djjt42 > :first-child, .framer-qO1UX .framer-19ai335 > :first-child, .framer-qO1UX .framer-1tp3ir > :first-child, .framer-qO1UX .framer-a4hnew > :first-child, .framer-qO1UX .framer-1p147u6 > :first-child, .framer-qO1UX .framer-k7dh17 > :first-child, .framer-qO1UX .framer-r98bkj > :first-child, .framer-qO1UX .framer-eru19r > :first-child, .framer-qO1UX .framer-1anpbt7 > :first-child, .framer-qO1UX .framer-dvlf7d > :first-child, .framer-qO1UX .framer-14lpll9 > :first-child, .framer-qO1UX .framer-194fqnw > :first-child, .framer-qO1UX .framer-1lmwi62 > :first-child, .framer-qO1UX .framer-11wjs2p > :first-child, .framer-qO1UX .framer-jl5t6f > :first-child, .framer-qO1UX .framer-1l2tixu > :first-child, .framer-qO1UX .framer-1rf1z8u > :first-child, .framer-qO1UX .framer-z1w1qy > :first-child, .framer-qO1UX .framer-1brktv > :first-child, .framer-qO1UX .framer-vsn0zu > :first-child, .framer-qO1UX .framer-9tpc26 > :first-child, .framer-qO1UX .framer-1ey594a > :first-child, .framer-qO1UX .framer-1b5k5bb > :first-child, .framer-qO1UX .framer-1i9dtug > :first-child, .framer-qO1UX .framer-1agyzia > :first-child, .framer-qO1UX .framer-6axhfk > :first-child, .framer-qO1UX .framer-13fed00 > :first-child, .framer-qO1UX .framer-1dhzm6h > :first-child, .framer-qO1UX .framer-1b8s87v > :first-child, .framer-qO1UX .framer-x72eal > :first-child, .framer-qO1UX .framer-djajqq > :first-child { margin-left: 0px; } .framer-qO1UX .framer-xvlq3 > :last-child, .framer-qO1UX .framer-rfpe3x > :last-child, .framer-qO1UX .framer-pi7ax > :last-child, .framer-qO1UX .framer-6b16oh > :last-child, .framer-qO1UX .framer-t91ls2 > :last-child, .framer-qO1UX .framer-1778g3n > :last-child, .framer-qO1UX .framer-1djjt42 > :last-child, .framer-qO1UX .framer-19ai335 > :last-child, .framer-qO1UX .framer-1tp3ir > :last-child, .framer-qO1UX .framer-a4hnew > :last-child, .framer-qO1UX .framer-1p147u6 > :last-child, .framer-qO1UX .framer-k7dh17 > :last-child, .framer-qO1UX .framer-r98bkj > :last-child, .framer-qO1UX .framer-eru19r > :last-child, .framer-qO1UX .framer-1anpbt7 > :last-child, .framer-qO1UX .framer-dvlf7d > :last-child, .framer-qO1UX .framer-14lpll9 > :last-child, .framer-qO1UX .framer-194fqnw > :last-child, .framer-qO1UX .framer-1lmwi62 > :last-child, .framer-qO1UX .framer-11wjs2p > :last-child, .framer-qO1UX .framer-jl5t6f > :last-child, .framer-qO1UX .framer-1l2tixu > :last-child, .framer-qO1UX .framer-1rf1z8u > :last-child, .framer-qO1UX .framer-z1w1qy > :last-child, .framer-qO1UX .framer-1brktv > :last-child, .framer-qO1UX .framer-vsn0zu > :last-child, .framer-qO1UX .framer-9tpc26 > :last-child, .framer-qO1UX .framer-1ey594a > :last-child, .framer-qO1UX .framer-1b5k5bb > :last-child, .framer-qO1UX .framer-1i9dtug > :last-child, .framer-qO1UX .framer-1agyzia > :last-child, .framer-qO1UX .framer-6axhfk > :last-child, .framer-qO1UX .framer-13fed00 > :last-child, .framer-qO1UX .framer-1dhzm6h > :last-child, .framer-qO1UX .framer-1b8s87v > :last-child, .framer-qO1UX .framer-x72eal > :last-child, .framer-qO1UX .framer-djajqq > :last-child { margin-right: 0px; } .framer-qO1UX .framer-rfpe3x > * { margin: 0px; margin-left: calc(20px / 2); margin-right: calc(20px / 2); } .framer-qO1UX .framer-1gmu7om > *, .framer-qO1UX .framer-uvqrd9 > *, .framer-qO1UX .framer-1fllrdy > *, .framer-qO1UX .framer-1g89ijn > *, .framer-qO1UX .framer-ycgccy > *, .framer-qO1UX .framer-4avabb > *, .framer-qO1UX .framer-1fycwfh > *, .framer-qO1UX .framer-qg0h3f > *, .framer-qO1UX .framer-1nn7z0v > *, .framer-qO1UX .framer-p8551w > *, .framer-qO1UX .framer-15cs0zp > *, .framer-qO1UX .framer-j6gb99 > *, .framer-qO1UX .framer-3oh3yy > *, .framer-qO1UX .framer-11411eu > *, .framer-qO1UX .framer-x5gqdq > * { margin: 0px; margin-bottom: calc(10px / 2); margin-top: calc(10px / 2); } .framer-qO1UX .framer-1brktv > *, .framer-qO1UX .framer-9tpc26 > *, .framer-qO1UX .framer-1b5k5bb > *, .framer-qO1UX .framer-6axhfk > * { margin: 0px; margin-left: calc(0px / 2); margin-right: calc(0px / 2); } .framer-qO1UX .framer-lp3hr5 > *, .framer-qO1UX .framer-1r3oll3 > *, .framer-qO1UX .framer-101nclb > *, .framer-qO1UX .framer-7ooj09 > * { margin: 0px; margin-bottom: calc(20px / 2); margin-top: calc(20px / 2); } .framer-qO1UX .framer-b5i1zv > *, .framer-qO1UX .framer-1en550q > * { margin: 0px; margin-bottom: calc(100px / 2); margin-top: calc(100px / 2); } }",
     `@media (min-width: 810px) and (max-width: 1199px) { .${hr.bodyClassName}-framer-qO1UX { background: white; } .framer-qO1UX.framer-72rtr7 { width: 810px; } .framer-qO1UX .framer-p8551w { order: 0; } .framer-qO1UX .framer-1bdw7m-container { height: var(--framer-aspect-ratio-supported, 242px); left: 50%; order: 3; top: 113px; width: 99%; } .framer-qO1UX .framer-g3ro50 { align-content: flex-start; align-items: flex-start; flex-direction: row; left: 51%; order: 0; position: absolute; top: 540px; transform: translateX(-50%); width: 793px; z-index: 1; } .framer-qO1UX .framer-1ey594a { align-content: flex-start; align-items: flex-start; min-height: unset; } .framer-qO1UX .framer-1eeo48e-container { bottom: unset; left: unset; order: 0; position: relative; transform: unset; } .framer-qO1UX .framer-15cs0zp { order: 1; } .framer-qO1UX .framer-1b5k5bb { order: 0; width: 100%; } .framer-qO1UX .framer-1i9dtug { padding: 0px; } .framer-qO1UX .framer-1agyzia, .framer-qO1UX .framer-13fed00 { flex: 0.7 0 0px; } .framer-qO1UX .framer-j6gb99, .framer-qO1UX .framer-3oh3yy { order: 2; } .framer-qO1UX .framer-1k0ssbx-container { left: -120px; right: 0px; transform: translateY(-50%); width: unset; } .framer-qO1UX .framer-6axhfk { width: 100%; } .framer-qO1UX .framer-1dhzm6h { padding: 0px 0px 8px 0px; } .framer-qO1UX .framer-qjopz5-container { left: -30px; right: -120px; top: 0px; transform: unset; width: unset; } .framer-qO1UX .framer-1j5oyue { order: 3; } @supports (background: -webkit-named-image(i)) and (not (scale:1)) { .framer-qO1UX .framer-g3ro50 { gap: 0px; } .framer-qO1UX .framer-g3ro50 > * { margin: 0px; margin-left: calc(0px / 2); margin-right: calc(0px / 2); } .framer-qO1UX .framer-g3ro50 > :first-child { margin-left: 0px; } .framer-qO1UX .framer-g3ro50 > :last-child { margin-right: 0px; } }}`,
     `@media (max-width: 809px) { .${hr.bodyClassName}-framer-qO1UX { background: white; } .framer-qO1UX.framer-72rtr7 { width: 390px; } .framer-qO1UX .framer-13yn9ib { align-content: flex-end; align-items: flex-end; background-color: var(--token-b73f7c2a-3920-4d15-bb22-d8016da87d50, #f5f9fc); flex-direction: column; order: 0; z-index: 3; } .framer-qO1UX .framer-2oid04 { order: 1; } .framer-qO1UX .framer-su22bd { order: 11; } .framer-qO1UX .framer-1ik8i4i { order: 3; } .framer-qO1UX .framer-pbgesn { order: 5; } .framer-qO1UX .framer-15vmt0k { order: 6; } .framer-qO1UX .framer-h6e4v4 { order: 7; } .framer-qO1UX .framer-1h5rsno { order: 8; } .framer-qO1UX .framer-1o8tkgz { order: 9; } .framer-qO1UX .framer-bstmck { order: 10; } .framer-qO1UX .framer-14fyi8v { order: 4; } .framer-qO1UX .framer-vsn0zu { order: 0; } .framer-qO1UX .framer-u2hhht-container { height: var(--framer-aspect-ratio-supported, 115px); } @supports (background: -webkit-named-image(i)) and (not (scale:1)) { .framer-qO1UX .framer-13yn9ib { gap: 0px; } .framer-qO1UX .framer-13yn9ib > *, .framer-qO1UX .framer-13yn9ib > :first-child, .framer-qO1UX .framer-13yn9ib > :last-child { margin: 0px; } }}`,
-    ...kr,
+    ...linkPresetStyles,
     '.framer-qO1UX[data-border="true"]::after, .framer-qO1UX [data-border="true"]::after { content: ""; border-width: var(--border-top-width, 0) var(--border-right-width, 0) var(--border-bottom-width, 0) var(--border-left-width, 0); border-color: var(--border-color, none); border-style: var(--border-style, none); width: 100%; height: 100%; position: absolute; box-sizing: border-box; left: 0; top: 0; border-radius: inherit; pointer-events: none; }',
   ],
-  De = j(Ii, _i, "framer-qO1UX"),
+  De = withCSS(Ii, _i, "framer-qO1UX"),
   Cs = De;
 De.displayName = "Home";
 De.defaultProps = { height: 860, width: 1200 };
-z(
+loadFonts(
   De,
   [
     {
@@ -5909,7 +5861,7 @@ z(
     ...gi,
     ...xi,
     ...yi,
-    ...Cr(fontConfig),
+    ...normalizeFontConfig(fontConfig),
   ],
   { supportsExplicitInterCodegen: !0 },
 );

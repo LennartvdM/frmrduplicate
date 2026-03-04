@@ -1,53 +1,4 @@
-/**
- * Import aliases resolved:
- *   ee → SmoothScrollComponent
- *   re → NoiseOverlayComponent
- *   ae → NavItemComponent
- *   _e → interMediumFontDefs
- *   je → interMediumPresetCSS
- *   Ue → interMediumCSSScope
- *   Fe → interExtraBoldFontDefs
- *   ze → interExtraBoldPresetCSS
- *   Te → interExtraBoldCSSScope
- *   Ce → fontConfig
- *   Ne → linkPresetStyles
- *   Re → cssClassScope
- *   pe → useRoute
- *   D → useLocale
- *   w → resolveLinks
- *   ue → ControlType
- *   ge → addPropertyControls
- *   T → cx
- *   ye → useDeviceSize
- *   t → DeviceSizeContainer
- *   p → cssSSRMinifiedHelper
- *   M → withCSS
- *   xe → registerCursors
- *   ke → CursorContext
- *   o → ReactFragment
- *   I → PropertyOverridesProvider
- *   C → withScrollSection
- *   V → forwardRef
- *   ce → useContext
- *   fe → useEffect
- *   B → useId
- *   de → useInsertionEffect
- *   he → useMemo
- *   be → useVariantState
- *   k → useRef
- *   ve → useVariantState
- *   e → jsx
- *   r → jsxs
- *   we → fontLoader
- *   Q → MotionContext
- *   m → RichTextComponent
- *   s → motion
- *   L → LayoutGroup
- *   Ie → SVGComponent
- *   O → loadFonts
- *   b → getFonts
- *   P → normalizeFontConfig
- */
+/* CSS extracted to: page--neoflix.1.css, page--neoflix.2.css */
 import { SmoothScrollComponent,
   NoiseOverlayComponent,
   NavItemComponent,
@@ -57,11 +8,11 @@ import { SmoothScrollComponent,
   interExtraBoldFontDefs,
   interExtraBoldPresetCSS,
   interExtraBoldCSSScope } from "./chunk--shared-components.mjs";
-import { a as c } from "./chunk-4R3P5DN4.mjs";
+import { a as c } from "./chunk--video-component-controls.mjs";
 import { fontConfig,
   linkPresetStyles,
   cssClassScope } from "./chunk--framer-components.mjs";
-import "./chunk-42U43NKG.mjs";
+import "./chunk--empty-stub-2.mjs";
 import { $ as a,
   useRoute,
   useLocale,
@@ -86,7 +37,7 @@ import { $ as a,
   useMemo,
   useVariantState,
   useRef,
-  useVariantState,
+  useComponentVariantState,
   jsx,
   qa as $,
   jsxs,
@@ -102,8 +53,8 @@ import { $ as a,
 import { a as Y } from "./chunk-QPIK4HVB.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
-var Ye = b(c),
-  Ze = b(re),
+var Ye = getFonts(c),
+  Ze = getFonts(NoiseOverlayComponent),
   We = [
     "Rre_u8WuV",
     "DkxmDygok",
@@ -127,12 +78,12 @@ function Pe(f, ...n) {
 }
 var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
   Ge = ({ value: f, children: n }) => {
-    let u = useContext(Q),
+    let u = useContext(MotionContext),
       d = f ?? u.transition,
       g = useMemo(() => ({ ...u, transition: d }), [JSON.stringify(d)]);
-    return e(Q.Provider, { value: g, children: n });
+    return jsx(MotionContext.Provider, { value: g, children: n });
   },
-  Je = s(o),
+  Je = motion(ReactFragment),
   Qe = {
     Cost: "tcTKLfIBw",
     Dance: "DkxmDygok",
@@ -154,8 +105,8 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
   },
   er = (f, n) =>
     f.layoutDependency ? n.join("-") + f.layoutDependency : n.join("-"),
-  rr = V(function (f, n) {
-    let { activeLocale: u, setLocale: d } = D(),
+  rr = forwardRef(function (f, n) {
+    let { activeLocale: u, setLocale: d } = useLocale(),
       { style: g, className: y, layoutId: v, variant: W, ...H } = $e(f),
       {
         baseVariant: h,
@@ -172,26 +123,26 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
         variantClassNames: Ke,
       }),
       l = er(f, _),
-      j = k(null),
+      j = useRef(null),
       S = () => h !== "sJR17n1rz",
       U = () => h === "sJR17n1rz",
       K = () => h === "eMNO9x2r7",
       F = () => !["eMNO9x2r7", "sJR17n1rz", "gRcraNE8T"].includes(h),
       X = () => !["sJR17n1rz", "gRcraNE8T"].includes(h),
-      z = B(),
+      z = useId(),
       G = [],
       A = useDeviceSize();
-    return e(L, {
+    return jsx(LayoutGroup, {
       id: v ?? z,
-      children: e(Je, {
+      children: jsx(Je, {
         animate: _,
         initial: !1,
-        children: e(Ge, {
+        children: jsx(Ge, {
           value: Xe,
-          children: r(s.div, {
+          children: jsxs(motion.div, {
             ...H,
             ...se,
-            className: T(He, ...G, "framer-1ewt70r", y, ie),
+            className: cx(He, ...G, "framer-1ewt70r", y, ie),
             "data-framer-name": "Time",
             layoutDependency: l,
             layoutId: "Rre_u8WuV",
@@ -210,7 +161,7 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
             ),
             children: [
               S() &&
-                e(s.div, {
+                jsx(motion.div, {
                   background: {
                     alt: "",
                     fit: "fill",
@@ -221,12 +172,12 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   "data-framer-name": "Six",
                   layoutDependency: l,
                   layoutId: "eU92XqQwC",
-                  children: e(t, {
-                    children: e(s.div, {
+                  children: jsx(DeviceSizeContainer, {
+                    children: jsx(motion.div, {
                       className: "framer-1qcn6wb-container",
                       layoutDependency: l,
                       layoutId: "EumH2pnmK-container",
-                      children: e(c, {
+                      children: jsx(c, {
                         backgroundColor: "rgba(0, 0, 0, 0)",
                         borderRadius: 0,
                         bottomLeftRadius: 0,
@@ -257,7 +208,7 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   }),
                 }),
               U() &&
-                e(s.div, {
+                jsx(motion.div, {
                   background: {
                     alt: "",
                     fit: "fill",
@@ -268,12 +219,12 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   "data-framer-name": "Five",
                   layoutDependency: l,
                   layoutId: "BPDy0EIjX",
-                  children: e(t, {
-                    children: e(s.div, {
+                  children: jsx(DeviceSizeContainer, {
+                    children: jsx(motion.div, {
                       className: "framer-7mze90-container",
                       layoutDependency: l,
                       layoutId: "Q4Ut8FyxB-container",
-                      children: e(c, {
+                      children: jsx(c, {
                         backgroundColor: "rgba(0, 0, 0, 0)",
                         borderRadius: 0,
                         bottomLeftRadius: 0,
@@ -304,7 +255,7 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   }),
                 }),
               K() &&
-                e(s.div, {
+                jsx(motion.div, {
                   background: {
                     alt: "",
                     fit: "fill",
@@ -315,12 +266,12 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   "data-framer-name": "Four",
                   layoutDependency: l,
                   layoutId: "dHStQykAp",
-                  children: e(t, {
-                    children: e(s.div, {
+                  children: jsx(DeviceSizeContainer, {
+                    children: jsx(motion.div, {
                       className: "framer-uoewgw-container",
                       layoutDependency: l,
                       layoutId: "Ocb0EpzC7-container",
-                      children: e(c, {
+                      children: jsx(c, {
                         backgroundColor: "rgba(0, 0, 0, 0)",
                         borderRadius: 0,
                         bottomLeftRadius: 0,
@@ -351,7 +302,7 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   }),
                 }),
               F() &&
-                e(s.div, {
+                jsx(motion.div, {
                   background: {
                     alt: "",
                     fit: "fill",
@@ -362,12 +313,12 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   "data-framer-name": "Three",
                   layoutDependency: l,
                   layoutId: "jNKdLtv4F",
-                  children: e(t, {
-                    children: e(s.div, {
+                  children: jsx(DeviceSizeContainer, {
+                    children: jsx(motion.div, {
                       className: "framer-iinprr-container",
                       layoutDependency: l,
                       layoutId: "kFS3ppAvv-container",
-                      children: e(c, {
+                      children: jsx(c, {
                         backgroundColor: "rgba(0, 0, 0, 0)",
                         borderRadius: 0,
                         bottomLeftRadius: 0,
@@ -398,7 +349,7 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   }),
                 }),
               X() &&
-                e(s.div, {
+                jsx(motion.div, {
                   background: {
                     alt: "",
                     fit: "fill",
@@ -414,12 +365,12 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                     eMNO9x2r7: { opacity: 0 },
                     tcTKLfIBw: { opacity: 0 },
                   },
-                  children: e(t, {
-                    children: e(s.div, {
+                  children: jsx(DeviceSizeContainer, {
+                    children: jsx(motion.div, {
                       className: "framer-foyl56-container",
                       layoutDependency: l,
                       layoutId: "NRZzc9_Zy-container",
-                      children: e(c, {
+                      children: jsx(c, {
                         backgroundColor: "rgba(0, 0, 0, 0)",
                         borderRadius: 0,
                         bottomLeftRadius: 0,
@@ -449,7 +400,7 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                     }),
                   }),
                 }),
-              e(s.div, {
+              jsx(motion.div, {
                 background: {
                   alt: "",
                   fit: "fill",
@@ -470,12 +421,12 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                 },
                 children:
                   S() &&
-                  e(t, {
-                    children: e(s.div, {
+                  jsx(DeviceSizeContainer, {
+                    children: jsx(motion.div, {
                       className: "framer-33vwgr-container",
                       layoutDependency: l,
                       layoutId: "DRu3_2xH9-container",
-                      children: e(c, {
+                      children: jsx(c, {
                         backgroundColor: "rgba(0, 0, 0, 0)",
                         borderRadius: 0,
                         bottomLeftRadius: 0,
@@ -516,17 +467,17 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                     }),
                   }),
               }),
-              e(s.div, {
+              jsx(motion.div, {
                 className: "framer-pq83k9",
                 "data-framer-name": "Noise Blending",
                 layoutDependency: l,
                 layoutId: "okOOF1hn2",
-                children: e(t, {
-                  children: e(s.div, {
+                children: jsx(DeviceSizeContainer, {
+                  children: jsx(motion.div, {
                     className: "framer-1d40tbl-container",
                     layoutDependency: l,
                     layoutId: "d4DRh0AXt-container",
-                    children: e(NoiseOverlayComponent, {
+                    children: jsx(NoiseOverlayComponent, {
                       backgroundSize: 64,
                       borderRadius: 0,
                       height: "100%",
@@ -554,7 +505,7 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
     ".framer-v0tbV .framer-1xyvsbf { bottom: 0px; flex: none; left: 0px; overflow: hidden; position: absolute; right: 0px; top: 0px; }",
     ".framer-v0tbV .framer-pq83k9 { bottom: 0px; flex: none; left: 0px; mix-blend-mode: screen; overflow: visible; position: absolute; right: 0px; top: 0px; }",
   ],
-  q = M(rr, ar, "framer-v0tbV"),
+  q = withCSS(rr, ar, "framer-v0tbV"),
   te = q;
 q.displayName = "Backdrop";
 q.defaultProps = { height: 600, width: 800 };
@@ -573,7 +524,7 @@ addPropertyControls(q, {
     type: ControlType.Enum,
   },
 });
-O(q, [{ explicitInter: !0, fonts: [] }, ...Ye, ...Ze], {
+loadFonts(q, [{ explicitInter: !0, fonts: [] }, ...Ye, ...Ze], {
   supportsExplicitInterCodegen: !0,
 });
 fontLoader.loadFonts([]);
@@ -582,11 +533,11 @@ var Ae = [{ explicitInter: !0, fonts: [] }],
     ".framer-1BPWo .framer-styles-preset-1wicq5s:not(.rich-text-wrapper), .framer-1BPWo .framer-styles-preset-1wicq5s.rich-text-wrapper a { --framer-link-current-text-color: var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, #383437); --framer-link-current-text-decoration: none; --framer-link-hover-text-color: var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, #529c9c); --framer-link-hover-text-decoration: underline; --framer-link-text-color: var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, #00333b); --framer-link-text-decoration: none; }",
   ],
   Be = "framer-1BPWo";
-var ir = b(SmoothScrollComponent),
-  sr = b(te),
+var ir = getFonts(SmoothScrollComponent),
+  sr = getFonts(te),
   nr = $(te),
-  or = b(c),
-  lr = b(NavItemComponent),
+  or = getFonts(c),
+  lr = getFonts(NavItemComponent),
   N = $(NavItemComponent);
 var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
   cr = () => typeof document < "u",
@@ -652,8 +603,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
           : "vtnUon983",
     };
   },
-  kr = V(function (f, n) {
-    let { activeLocale: u, setLocale: d } = D(),
+  kr = forwardRef(function (f, n) {
+    let { activeLocale: u, setLocale: d } = useLocale(),
       { style: g, className: y, layoutId: v, variant: W, ...H } = xr(f);
     (useEffect(() => {
       let i = Y(void 0, u);
@@ -690,40 +641,40 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
       }, [void 0, u]));
     let [h, ie] = useVariantState(W, mr, !1),
       se = void 0,
-      E = k(null),
+      E = useRef(null),
       R = () => (cr() ? h !== "AlOztWgAm" : !0),
-      ne = w("WjO84y3BZ"),
-      _ = k(null),
-      l = w("dbtg_NZW8"),
-      j = k(null),
-      S = w("tftSCv8zZ"),
-      U = k(null),
-      K = w("mRVhqybMB"),
-      F = k(null),
-      X = w("NYP2seWhD"),
-      z = k(null),
-      G = w("DXqsCYt4L"),
-      A = k(null),
+      ne = resolveLinks("WjO84y3BZ"),
+      _ = useRef(null),
+      l = resolveLinks("dbtg_NZW8"),
+      j = useRef(null),
+      S = resolveLinks("tftSCv8zZ"),
+      U = useRef(null),
+      K = resolveLinks("mRVhqybMB"),
+      F = useRef(null),
+      X = resolveLinks("NYP2seWhD"),
+      z = useRef(null),
+      G = resolveLinks("DXqsCYt4L"),
+      A = useRef(null),
       vr = useRoute(),
-      Me = B(),
+      Me = useId(),
       oe = [interExtraBoldCSSScope, interMediumCSSScope, Be, cssClassScope];
     return (
       registerCursors({}),
-      e(CursorContext.Provider, {
+      jsx(CursorContext.Provider, {
         value: { primaryVariantId: "vtnUon983", variantClassNames: fr },
-        children: r(L, {
+        children: jsxs(LayoutGroup, {
           id: v ?? Me,
           children: [
-            r(s.div, {
+            jsxs(motion.div, {
               ...H,
-              className: T(Le, ...oe, "framer-18oda3j", y),
+              className: cx(Le, ...oe, "framer-18oda3j", y),
               ref: n ?? E,
               style: { ...g },
               children: [
-                e(t, {
-                  children: e(p, {
+                jsx(DeviceSizeContainer, {
+                  children: jsx(cssSSRMinifiedHelper, {
                     className: "framer-1xxbq53-container",
-                    children: e(SmoothScrollComponent, {
+                    children: jsx(SmoothScrollComponent, {
                       height: "100%",
                       id: "n2mjdAzVc",
                       intensity: 15,
@@ -732,9 +683,9 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                     }),
                   }),
                 }),
-                e(t, {
+                jsx(DeviceSizeContainer, {
                   width: "100vw",
-                  children: e(p, {
+                  children: jsx(cssSSRMinifiedHelper, {
                     animate: hr,
                     className: "framer-12f3lu4-container",
                     "data-framer-appear-id": "12f3lu4",
@@ -742,7 +693,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                     layoutScroll: !0,
                     optimized: !0,
                     style: { transformPerspective: 1200 },
-                    children: e(nr, {
+                    children: jsx(nr, {
                       __framer__animateOnce: !1,
                       __framer__threshold: 0.5,
                       __framer__variantAppearEffectEnabled: !0,
@@ -755,61 +706,61 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                     }),
                   }),
                 }),
-                r("div", {
+                jsxs("div", {
                   className: "framer-1a06t1c",
                   children: [
                     R() &&
-                      r("div", {
+                      jsxs("div", {
                         className: "framer-t3l13x hidden-p363ye",
                         "data-framer-name": "Sidebarstack",
                         name: "Sidebarstack",
                         children: [
-                          e("div", {
+                          jsx("div", {
                             className: "framer-wihk6b",
                             "data-framer-name": "navfiller",
                             name: "navfiller",
                           }),
-                          e("div", {
+                          jsx("div", {
                             className: "framer-14fjts4",
                             "data-framer-name": "Sidebar",
                             name: "Sidebar",
                           }),
                         ],
                       }),
-                    r("main", {
+                    jsxs("main", {
                       className: "framer-28jrge",
                       "data-framer-name": "Main",
                       "data-hide-scrollbars": !0,
                       name: "Main",
                       children: [
-                        e("section", {
+                        jsx("section", {
                           className: "framer-sa5hnr",
                           "data-framer-name": "Section-Time",
                           "data-hide-scrollbars": !0,
                           id: ne,
                           name: "Section-Time",
                           ref: _,
-                          children: e("div", {
+                          children: jsx("div", {
                             className: "framer-s6m53n",
-                            children: e("div", {
+                            children: jsx("div", {
                               className: "framer-nm0ikv",
-                              children: r("div", {
+                              children: jsxs("div", {
                                 className: "framer-1hg5wdu",
                                 children: [
                                   R() &&
-                                    e("div", {
+                                    jsx("div", {
                                       className: "framer-1x24jff hidden-p363ye",
                                     }),
-                                  e("div", {
+                                  jsx("div", {
                                     className: "framer-18z1jzc",
-                                    children: r("div", {
+                                    children: jsxs("div", {
                                       className: "framer-1ouw02o",
                                       children: [
-                                        e(m, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: r(o, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              e("h1", {
+                                              jsx("h1", {
                                                 className:
                                                   "framer-styles-preset-3nqyhf",
                                                 "data-styles-preset":
@@ -823,16 +774,16 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 children:
                                                   "Medical procedures are time-sensitive ",
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
                                                   "xZndidUCt",
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
-                                              r("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -843,37 +794,37 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "Medical interventions demand precision, urgency, and a high degree of ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "IDh2dRb_U",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children:
                                                           "adaptability",
                                                       }),
                                                     }),
                                                   }),
                                                   ". In critical care situations, every ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "cASgO3jWQ",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: r("a", {
+                                                    children: jsxs("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
                                                       children: [
-                                                        e("strong", {
+                                                        jsx("strong", {
                                                           children: "decision",
                                                         }),
                                                         " ",
@@ -881,19 +832,19 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                     }),
                                                   }),
                                                   "and action carries significant weight. Healthcare providers must assess complex scenarios rapidly, weighing potential risks and benefits within limited timeframes. The ability to ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "pcYRXVdRv",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: r("a", {
+                                                    children: jsxs("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
                                                       children: [
-                                                        e("strong", {
+                                                        jsx("strong", {
                                                           children:
                                                             "prioritize",
                                                         }),
@@ -904,7 +855,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   "effectively and maintain clear focus under pressure is paramount.",
                                                 ],
                                               }),
-                                              r("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -915,18 +866,18 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "Even in less urgent settings, time remains a critical factor. Delays can compromise ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "HtIN1t6ER",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children:
                                                           "patient outcomes",
                                                       }),
@@ -942,13 +893,13 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           verticalAlignment: "top",
                                           withExternalLayout: !0,
                                         }),
-                                        e("div", {
+                                        jsx("div", {
                                           className: "framer-1boqtvh",
-                                          children: e(t, {
-                                            children: e(p, {
+                                          children: jsx(DeviceSizeContainer, {
+                                            children: jsx(cssSSRMinifiedHelper, {
                                               className:
                                                 "framer-1cmixjq-container",
-                                              children: e(I, {
+                                              children: jsx(PropertyOverridesProvider, {
                                                 breakpoint: h,
                                                 overrides: {
                                                   AlOztWgAm: {
@@ -956,7 +907,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                       "https://framerusercontent.com/assets/94FGIKDXviN3xJyP51X5YDq5hw.mp4",
                                                   },
                                                 },
-                                                children: e(c, {
+                                                children: jsx(c, {
                                                   backgroundColor:
                                                     "rgba(0, 0, 0, 0)",
                                                   borderRadius: 15,
@@ -991,11 +942,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             }),
                                           }),
                                         }),
-                                        e(m, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: r(o, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              r("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1006,36 +957,36 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "Healthcare providers must navigate this complex landscape with unwavering professionalism. Their ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "KgHIqfucs",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children: "dedication",
                                                       }),
                                                     }),
                                                   }),
                                                   " and ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "S5cL1K0Pb",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: r("a", {
+                                                    children: jsxs("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
                                                       children: [
-                                                        e("strong", {
+                                                        jsx("strong", {
                                                           children: "expertise",
                                                         }),
                                                         " ",
@@ -1045,7 +996,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   "are essential during these time-sensitive moments. The challenges are undeniable, but so are the rewards of providing optimal patient care within these demanding circumstances.",
                                                 ],
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1054,11 +1005,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   "--framer-text-alignment":
                                                     "left",
                                                 },
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1067,7 +1018,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   "--framer-text-alignment":
                                                     "left",
                                                 },
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
@@ -1086,31 +1037,31 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                             }),
                           }),
                         }),
-                        e("section", {
+                        jsx("section", {
                           className: "framer-1y2dv23",
                           "data-framer-name": "Section-Dance",
                           "data-hide-scrollbars": !0,
                           id: l,
                           name: "Section-Dance",
                           ref: j,
-                          children: e("div", {
+                          children: jsx("div", {
                             className: "framer-1rxj0w1",
-                            children: e("div", {
+                            children: jsx("div", {
                               className: "framer-1uvzzs6",
-                              children: r("div", {
+                              children: jsxs("div", {
                                 className: "framer-1nko6ww",
                                 children: [
-                                  e("div", { className: "framer-1ubi6hg" }),
-                                  e("div", {
+                                  jsx("div", { className: "framer-1ubi6hg" }),
+                                  jsx("div", {
                                     className: "framer-f0xdgz",
-                                    children: r("div", {
+                                    children: jsxs("div", {
                                       className: "framer-1a7bs04",
                                       children: [
-                                        e(m, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: r(o, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              e("h1", {
+                                              jsx("h1", {
                                                 className:
                                                   "framer-styles-preset-3nqyhf",
                                                 "data-styles-preset":
@@ -1123,7 +1074,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: "Like a dance",
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1132,11 +1083,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   "--framer-text-alignment":
                                                     "left",
                                                 },
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
-                                              r("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1147,36 +1098,36 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "While individual members excel in their specific roles, true success requires more than just technical skill. Nurses, physicians, technicians, and support staff communicate and ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "zI2CbZmPJ",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children: "anticipate",
                                                       }),
                                                     }),
                                                   }),
                                                   " each other's needs, ensuring necessary ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "uQs2bgVcT",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: r("a", {
+                                                    children: jsxs("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
                                                       children: [
-                                                        e("strong", {
+                                                        jsx("strong", {
                                                           children: "resources",
                                                         }),
                                                         " ",
@@ -1193,13 +1144,13 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           verticalAlignment: "top",
                                           withExternalLayout: !0,
                                         }),
-                                        e("div", {
+                                        jsx("div", {
                                           className: "framer-avx6mw",
-                                          children: e(t, {
-                                            children: e(p, {
+                                          children: jsx(DeviceSizeContainer, {
+                                            children: jsx(cssSSRMinifiedHelper, {
                                               className:
                                                 "framer-1vljw3j-container",
-                                              children: e(I, {
+                                              children: jsx(PropertyOverridesProvider, {
                                                 breakpoint: h,
                                                 overrides: {
                                                   AlOztWgAm: {
@@ -1207,7 +1158,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                       "https://framerusercontent.com/assets/AsfMI1YIuCOQ4pfzbVw61U2T0d0.mp4",
                                                   },
                                                 },
-                                                children: e(c, {
+                                                children: jsx(c, {
                                                   backgroundColor:
                                                     "rgba(0, 0, 0, 0)",
                                                   borderRadius: 15,
@@ -1242,11 +1193,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             }),
                                           }),
                                         }),
-                                        e(m, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: r(o, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              r("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1257,18 +1208,18 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "Beyond the immediate patient care team, effective coordination extends throughout the healthcare system. Lab technicians swiftly process critical samples, pharmacists carefully prepare medications, and administrators manage resources so that the care team has the right tools and support. This ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "fN3izV_im",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children:
                                                           "network of collaboration",
                                                       }),
@@ -1277,7 +1228,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   " allows care teams to focus on treating patients, knowing the right information and resources are flowing smoothly behind the scenes.",
                                                 ],
                                               }),
-                                              r("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1288,18 +1239,18 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "This fluidity develops over time through collaboration and shared experiences. Trust solidifies through ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "sEYnG8vfd",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children:
                                                           "repeated interactions",
                                                       }),
@@ -1308,7 +1259,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   ", allowing team members to rely on each other's expertise and judgment. This strong foundation becomes crucial in high-pressure situations, enabling the team to deliver exceptional patient care when it matters most.",
                                                 ],
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1317,11 +1268,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   "--framer-text-alignment":
                                                     "left",
                                                 },
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1330,7 +1281,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   "--framer-text-alignment":
                                                     "left",
                                                 },
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
@@ -1349,31 +1300,31 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                             }),
                           }),
                         }),
-                        e("section", {
+                        jsx("section", {
                           className: "framer-tryz2c",
                           "data-framer-name": "Section-Cost",
                           "data-hide-scrollbars": !0,
                           id: S,
                           name: "Section-Cost",
                           ref: U,
-                          children: e("div", {
+                          children: jsx("div", {
                             className: "framer-qbgm69",
-                            children: e("div", {
+                            children: jsx("div", {
                               className: "framer-69ea2v",
-                              children: r("div", {
+                              children: jsxs("div", {
                                 className: "framer-106jc55",
                                 children: [
-                                  e("div", { className: "framer-xe0474" }),
-                                  e("div", {
+                                  jsx("div", { className: "framer-xe0474" }),
+                                  jsx("div", {
                                     className: "framer-1wijqoy",
-                                    children: r("div", {
+                                    children: jsxs("div", {
                                       className: "framer-vv1jrc",
                                       children: [
-                                        e(m, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: r(o, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              e("h1", {
+                                              jsx("h1", {
                                                 className:
                                                   "framer-styles-preset-3nqyhf",
                                                 "data-styles-preset":
@@ -1387,7 +1338,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 children:
                                                   "But this comes at a cost",
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1396,7 +1347,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   "--framer-text-alignment":
                                                     "left",
                                                 },
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
@@ -1407,13 +1358,13 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           verticalAlignment: "top",
                                           withExternalLayout: !0,
                                         }),
-                                        e("div", {
+                                        jsx("div", {
                                           className: "framer-1261yhd",
-                                          children: e(t, {
-                                            children: e(p, {
+                                          children: jsx(DeviceSizeContainer, {
+                                            children: jsx(cssSSRMinifiedHelper, {
                                               className:
                                                 "framer-b4cavj-container",
-                                              children: e(I, {
+                                              children: jsx(PropertyOverridesProvider, {
                                                 breakpoint: h,
                                                 overrides: {
                                                   AlOztWgAm: {
@@ -1421,7 +1372,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                       "https://framerusercontent.com/assets/4EQcQDQ3npZd3gwjcKO6sENyQG0.mp4",
                                                   },
                                                 },
-                                                children: e(c, {
+                                                children: jsx(c, {
                                                   backgroundColor:
                                                     "rgba(0, 0, 0, 0)",
                                                   borderRadius: 15,
@@ -1456,11 +1407,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             }),
                                           }),
                                         }),
-                                        e(m, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: r(o, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              r("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1471,36 +1422,36 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "The pressure to perform individual tasks with precision can inadvertently diminish the importance of ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "sEYnG8vfd",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children:
                                                           "team cohesion",
                                                       }),
                                                     }),
                                                   }),
                                                   ". When members become overly absorbed in their specific responsibilities, subtle ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "MrFemP8j0",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children:
                                                           "communication breakdowns",
                                                       }),
@@ -1509,7 +1460,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   " may occur. This can manifest as misinterpretations, delays, or a decreased ability to anticipate the needs of other team members. Such breakdowns can disrupt the coordinated effort required for optimal patient care.",
                                                 ],
                                               }),
-                                              r("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1520,38 +1471,38 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "The division of labor within medical teams is essential for efficiency, yet it can inadvertently create ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "EY4hH_Y7j",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children:
                                                           "silos of information",
                                                       }),
                                                     }),
                                                   }),
                                                   ". This compartmentalization can lead to a decreased awareness of how individual actions might impact the broader team effort. Seemingly minor discrepancies or misalignments between team members can, in aggregate, have a significant effect on the",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "X8n9MxBBr",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: r("a", {
+                                                    children: jsxs("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
                                                       children: [
                                                         " ",
-                                                        e("strong", {
+                                                        jsx("strong", {
                                                           children:
                                                             "overall flow",
                                                         }),
@@ -1561,7 +1512,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   " and success of a procedure.",
                                                 ],
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1573,7 +1524,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 children:
                                                   "The emphasis on individual expertise risks obscuring the collaborative nature of effective medical care. This narrow focus can make it difficult to maintain a shared understanding of the situation and overall patient needs. Missed opportunities for support or a lack of resource reallocation where necessary may occur, potentially impacting patient outcomes.",
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1582,11 +1533,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   "--framer-text-alignment":
                                                     "left",
                                                 },
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1595,7 +1546,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   "--framer-text-alignment":
                                                     "left",
                                                 },
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
@@ -1614,31 +1565,31 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                             }),
                           }),
                         }),
-                        e("section", {
+                        jsx("section", {
                           className: "framer-jnm6wk",
                           "data-framer-name": "Section-Skills",
                           "data-hide-scrollbars": !0,
                           id: K,
                           name: "Section-Skills",
                           ref: F,
-                          children: e("div", {
+                          children: jsx("div", {
                             className: "framer-g98yis",
-                            children: e("div", {
+                            children: jsx("div", {
                               className: "framer-zsje82",
-                              children: r("div", {
+                              children: jsxs("div", {
                                 className: "framer-yjzruh",
                                 children: [
-                                  e("div", { className: "framer-1vy4v2" }),
-                                  e("div", {
+                                  jsx("div", { className: "framer-1vy4v2" }),
+                                  jsx("div", {
                                     className: "framer-g1ueej",
-                                    children: r("div", {
+                                    children: jsxs("div", {
                                       className: "framer-3p4opu",
                                       children: [
-                                        e(m, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: r(o, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              e("h1", {
+                                              jsx("h1", {
                                                 className:
                                                   "framer-styles-preset-3nqyhf",
                                                 "data-styles-preset":
@@ -1651,16 +1602,16 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: "Sharpening skills ",
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
                                                   "xZndidUCt",
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
-                                              r("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1671,20 +1622,20 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "The complexity of the medical field necessitates continuous learning. Complex cases offer",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "N3WZmbqwm",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: r("a", {
+                                                    children: jsxs("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
                                                       children: [
                                                         " ",
-                                                        e("strong", {
+                                                        jsx("strong", {
                                                           children:
                                                             "valuable opportunities",
                                                         }),
@@ -1701,13 +1652,13 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           verticalAlignment: "top",
                                           withExternalLayout: !0,
                                         }),
-                                        e("div", {
+                                        jsx("div", {
                                           className: "framer-a6fuxj",
-                                          children: e(t, {
-                                            children: e(p, {
+                                          children: jsx(DeviceSizeContainer, {
+                                            children: jsx(cssSSRMinifiedHelper, {
                                               className:
                                                 "framer-nvaod3-container",
-                                              children: e(I, {
+                                              children: jsx(PropertyOverridesProvider, {
                                                 breakpoint: h,
                                                 overrides: {
                                                   AlOztWgAm: {
@@ -1715,7 +1666,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                       "https://framerusercontent.com/assets/DmivDyww4OxLLV34oV7ac24l2Q.mp4",
                                                   },
                                                 },
-                                                children: e(c, {
+                                                children: jsx(c, {
                                                   backgroundColor:
                                                     "rgba(0, 0, 0, 0)",
                                                   borderRadius: 15,
@@ -1750,11 +1701,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             }),
                                           }),
                                         }),
-                                        e(m, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: r(o, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              r("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1765,36 +1716,36 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "This ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "ut1mnZVW1",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children:
                                                           "introspective analysis",
                                                       }),
                                                     }),
                                                   }),
                                                   " can enhance patient care. It suggests a dedication to ongoing ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "t97unZiTK",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children:
                                                           "skill refinement",
                                                       }),
@@ -1803,7 +1754,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   ". Self-reflection allows healthcare providers to identify both their strengths and areas for further development.",
                                                 ],
                                               }),
-                                              r("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1814,20 +1765,20 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "A commitment to continuous,",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "rC8gH4Mco",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: r("a", {
+                                                    children: jsxs("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
                                                       children: [
                                                         " ",
-                                                        e("strong", {
+                                                        jsx("strong", {
                                                           children:
                                                             "self-directed learning",
                                                         }),
@@ -1837,7 +1788,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   " helps medical providers effectively handle the challenges of the dynamic medical environment. It fosters a culture of careful self-assessment and a drive for continuous improvement, benefiting healthcare practitioners and their patients.",
                                                 ],
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1846,11 +1797,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   "--framer-text-alignment":
                                                     "left",
                                                 },
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1859,7 +1810,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   "--framer-text-alignment":
                                                     "left",
                                                 },
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
@@ -1878,31 +1829,31 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                             }),
                           }),
                         }),
-                        e("section", {
+                        jsx("section", {
                           className: "framer-1k2r7fq",
                           "data-framer-name": "Section-Team",
                           "data-hide-scrollbars": !0,
                           id: X,
                           name: "Section-Team",
                           ref: z,
-                          children: e("div", {
+                          children: jsx("div", {
                             className: "framer-1n46uon",
-                            children: e("div", {
+                            children: jsx("div", {
                               className: "framer-3egmf7",
-                              children: r("div", {
+                              children: jsxs("div", {
                                 className: "framer-7i1v0w",
                                 children: [
-                                  e("div", { className: "framer-i2rcf0" }),
-                                  e("div", {
+                                  jsx("div", { className: "framer-i2rcf0" }),
+                                  jsx("div", {
                                     className: "framer-pecmdd",
-                                    children: r("div", {
+                                    children: jsxs("div", {
                                       className: "framer-1itas1o",
                                       children: [
-                                        e(m, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: r(o, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              e("h1", {
+                                              jsx("h1", {
                                                 className:
                                                   "framer-styles-preset-3nqyhf",
                                                 "data-styles-preset":
@@ -1916,16 +1867,16 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 children:
                                                   "Strenghtening team dynamics",
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
                                                   "xZndidUCt",
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
-                                              r("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -1936,18 +1887,18 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "While healthcare providers continuously develop their individual skills, it's equally important to foster strong team dynamics. Video debriefs offer a valuable tool for ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "nzfaDOFRY",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children:
                                                           "collaborative analysis",
                                                       }),
@@ -1963,13 +1914,13 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           verticalAlignment: "top",
                                           withExternalLayout: !0,
                                         }),
-                                        e("div", {
+                                        jsx("div", {
                                           className: "framer-1niytn",
-                                          children: e(t, {
-                                            children: e(p, {
+                                          children: jsx(DeviceSizeContainer, {
+                                            children: jsx(cssSSRMinifiedHelper, {
                                               className:
                                                 "framer-1cj2qsy-container",
-                                              children: e(I, {
+                                              children: jsx(PropertyOverridesProvider, {
                                                 breakpoint: h,
                                                 overrides: {
                                                   AlOztWgAm: {
@@ -1977,7 +1928,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                       "https://framerusercontent.com/assets/vwo4RiwL3gvpTSfYWhwtOZLTmhU.mp4",
                                                   },
                                                 },
-                                                children: e(c, {
+                                                children: jsx(c, {
                                                   backgroundColor:
                                                     "rgba(0, 0, 0, 0)",
                                                   borderRadius: 15,
@@ -2012,11 +1963,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             }),
                                           }),
                                         }),
-                                        e(m, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: r(o, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              r("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -2027,18 +1978,18 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "The emphasis within debriefings is on ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "mRVtT24DH",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children:
                                                           "constructive problem-solving",
                                                       }),
@@ -2047,7 +1998,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   ". This creates a safe space for open communication without judgment, promoting transparency and a focus on team-wide improvement. By inviting all team members to share their unique perspectives, video debriefs enhance understanding between colleagues, regardless of role or experience level.",
                                                 ],
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -2059,7 +2010,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 children:
                                                   "Regularly reviewing cases in this structured format can lead to improved patient outcomes, optimized team efficiency, and stronger professional relationships. It fosters a culture of learning, growth, and mutual support throughout the medical team.",
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -2068,7 +2019,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   "--framer-text-alignment":
                                                     "left",
                                                 },
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
@@ -2087,31 +2038,31 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                             }),
                           }),
                         }),
-                        e("section", {
+                        jsx("section", {
                           className: "framer-ybzgtm",
                           "data-framer-name": "Section-Perspectives",
                           "data-hide-scrollbars": !0,
                           id: G,
                           name: "Section-Perspectives",
                           ref: A,
-                          children: e("div", {
+                          children: jsx("div", {
                             className: "framer-1xunj3i",
-                            children: e("div", {
+                            children: jsx("div", {
                               className: "framer-1encm2n",
-                              children: r("div", {
+                              children: jsxs("div", {
                                 className: "framer-1mewfbx",
                                 children: [
-                                  e("div", { className: "framer-bqaqqm" }),
-                                  e("div", {
+                                  jsx("div", { className: "framer-bqaqqm" }),
+                                  jsx("div", {
                                     className: "framer-hh5gom",
-                                    children: r("div", {
+                                    children: jsxs("div", {
                                       className: "framer-2tsoyv",
                                       children: [
-                                        e(m, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: r(o, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              e("h1", {
+                                              jsx("h1", {
                                                 className:
                                                   "framer-styles-preset-3nqyhf",
                                                 "data-styles-preset":
@@ -2125,16 +2076,16 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 children:
                                                   "Broadening perspectives",
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
                                                   "xZndidUCt",
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
-                                              r("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -2145,18 +2096,18 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "Collaborative case reviews offer benefits beyond individual skills and procedural analysis. They establish a ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "ymL2yz5Md",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children:
                                                           "foundation of shared confidence",
                                                       }),
@@ -2165,7 +2116,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   " across the team. Through the careful examination of past workflows, each member gains clarity on their responsibilities, effective communication strategies, and potential contingency plans for complex scenarios.",
                                                 ],
                                               }),
-                                              r("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -2176,36 +2127,36 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "This knowledge can minimize hesitation during critical procedures, leading to more ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "X8n9MxBBr",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children:
                                                           "deliberate actions",
                                                       }),
                                                     }),
                                                   }),
                                                   " and efficient communication. A ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "NM8YGpOE1",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children:
                                                           "sense of preparedness",
                                                       }),
@@ -2221,13 +2172,13 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           verticalAlignment: "top",
                                           withExternalLayout: !0,
                                         }),
-                                        e("div", {
+                                        jsx("div", {
                                           className: "framer-11a32oa",
-                                          children: e(t, {
-                                            children: e(p, {
+                                          children: jsx(DeviceSizeContainer, {
+                                            children: jsx(cssSSRMinifiedHelper, {
                                               className:
                                                 "framer-ix3j3j-container",
-                                              children: e(I, {
+                                              children: jsx(PropertyOverridesProvider, {
                                                 breakpoint: h,
                                                 overrides: {
                                                   AlOztWgAm: {
@@ -2235,7 +2186,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                       "https://framerusercontent.com/assets/4NGDIFKnqSawyWIzI61eP17UVsQ.mp4",
                                                   },
                                                 },
-                                                children: e(c, {
+                                                children: jsx(c, {
                                                   backgroundColor:
                                                     "rgba(0, 0, 0, 0)",
                                                   borderRadius: 15,
@@ -2270,11 +2221,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             }),
                                           }),
                                         }),
-                                        e(m, {
+                                        jsx(RichTextComponent, {
                                           __fromCanvasComponent: !0,
-                                          children: r(o, {
+                                          children: jsxs(ReactFragment, {
                                             children: [
-                                              r("p", {
+                                              jsxs("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -2285,18 +2236,18 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                 },
                                                 children: [
                                                   "These factors enable the team to perform optimally under pressure. The collaborative preparation and shared understanding foster a sense of readiness. By ",
-                                                  e(a, {
+                                                  jsx(a, {
                                                     href: {
                                                       webPageId: "H5snp07v4",
                                                     },
                                                     openInNewTab: !1,
                                                     smoothScroll: !1,
-                                                    children: e("a", {
+                                                    children: jsx("a", {
                                                       className:
                                                         "framer-styles-preset-1wicq5s",
                                                       "data-styles-preset":
                                                         "ro7OPezbn",
-                                                      children: e("strong", {
+                                                      children: jsx("strong", {
                                                         children:
                                                           "proactively addressing",
                                                       }),
@@ -2305,7 +2256,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   " challenges and establishing clear expectations, the team can work together effectively for the best possible patient outcomes.",
                                                 ],
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -2314,11 +2265,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   "--framer-text-alignment":
                                                     "left",
                                                 },
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
-                                              e("p", {
+                                              jsx("p", {
                                                 className:
                                                   "framer-styles-preset-21ogod",
                                                 "data-styles-preset":
@@ -2327,7 +2278,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                                   "--framer-text-alignment":
                                                     "left",
                                                 },
-                                                children: e("br", {
+                                                children: jsx("br", {
                                                   className: "trailing-break",
                                                 }),
                                               }),
@@ -2350,23 +2301,23 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                     }),
                   ],
                 }),
-                r("nav", {
+                jsxs("nav", {
                   className: "framer-127ahf",
                   "data-framer-name": "Nav",
                   name: "Nav",
                   children: [
                     R() &&
-                      e(a, {
+                      jsx(a, {
                         href: { webPageId: "augiA20Il" },
                         openInNewTab: !0,
-                        children: e(s.a, {
+                        children: jsx(motion.a, {
                           "aria-label": "Framer University logo",
                           className:
                             "framer-il55l2 hidden-p363ye framer-p7mxce",
                           "data-framer-name": "Logo",
                           name: "Logo",
                           whileHover: ur,
-                          children: e(SVGComponent, {
+                          children: jsx(SVGComponent, {
                             className: "framer-13rf3nq",
                             "data-framer-name": "Neoflix_Logo_SVG",
                             fill: "black",
@@ -2378,15 +2329,15 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           }),
                         }),
                       }),
-                    r("div", {
+                    jsxs("div", {
                       className: "framer-r1l2tq",
                       "data-framer-name": "Links",
                       name: "Links",
                       children: [
-                        e(m, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(o, {
-                            children: e("p", {
+                          children: jsx(ReactFragment, {
+                            children: jsx("p", {
                               style: {
                                 "--font-selector": "R0Y7TW9udHNlcnJhdC01MDA=",
                                 "--framer-font-family":
@@ -2396,11 +2347,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                 "--framer-text-color":
                                   "var(--token-3f355627-0701-4163-9212-31117bae3b68, rgb(114, 194, 194))",
                               },
-                              children: e(a, {
+                              children: jsx(a, {
                                 href: { webPageId: "bzydBB85Y" },
                                 openInNewTab: !1,
                                 smoothScroll: !1,
-                                children: e("a", {
+                                children: jsx("a", {
                                   className: "framer-styles-preset-b5e6zr",
                                   "data-styles-preset": "H9WgrbXMf",
                                   children: "Neoflix",
@@ -2415,10 +2366,10 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           verticalAlignment: "top",
                           withExternalLayout: !0,
                         }),
-                        e(m, {
+                        jsx(RichTextComponent, {
                           __fromCanvasComponent: !0,
-                          children: e(o, {
-                            children: e("p", {
+                          children: jsx(ReactFragment, {
+                            children: jsx("p", {
                               style: {
                                 "--font-selector": "R0Y7TW9udHNlcnJhdC01MDA=",
                                 "--framer-font-family":
@@ -2427,11 +2378,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                 "--framer-font-weight": "500",
                                 "--framer-text-color": "rgb(33, 33, 33)",
                               },
-                              children: e(a, {
+                              children: jsx(a, {
                                 href: { webPageId: "aLuYbVoBY" },
                                 openInNewTab: !1,
                                 smoothScroll: !1,
-                                children: e("a", {
+                                children: jsx("a", {
                                   className: "framer-styles-preset-b5e6zr",
                                   "data-styles-preset": "H9WgrbXMf",
                                   children: "Publications",
@@ -2446,15 +2397,15 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           verticalAlignment: "top",
                           withExternalLayout: !0,
                         }),
-                        e(a, {
+                        jsx(a, {
                           href: { webPageId: "x05wlhCdy" },
-                          children: e(s.a, {
+                          children: jsx(motion.a, {
                             className: "framer-whs8ci framer-p7mxce",
                             whileHover: gr,
-                            children: e(m, {
+                            children: jsx(RichTextComponent, {
                               __fromCanvasComponent: !0,
-                              children: e(o, {
-                                children: e("p", {
+                              children: jsx(ReactFragment, {
+                                children: jsx("p", {
                                   style: {
                                     "--font-selector":
                                       "R0Y7TW9udHNlcnJhdC01MDA=",
@@ -2482,36 +2433,36 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                   ],
                 }),
                 R() &&
-                  r("div", {
+                  jsxs("div", {
                     className: "framer-15osv68 hidden-p363ye",
                     "data-framer-name": "Dummy Stack",
                     name: "Dummy Stack",
                     children: [
-                      r("div", {
+                      jsxs("div", {
                         className: "framer-1m7yk5f",
                         "data-framer-name": "Sidebarstack",
                         name: "Sidebarstack",
                         children: [
-                          r("div", {
+                          jsxs("div", {
                             className: "framer-eu137",
                             "data-framer-name": "Sidebarstack",
                             name: "Sidebarstack",
                             children: [
-                              e("div", {
+                              jsx("div", {
                                 className: "framer-srx6on",
                                 "data-framer-name": "navfiller",
                                 name: "navfiller",
                               }),
-                              e("div", {
+                              jsx("div", {
                                 className: "framer-187rc8f",
                                 "data-framer-name": "Sidebar",
                                 name: "Sidebar",
-                                children: r("div", {
+                                children: jsxs("div", {
                                   className: "framer-uvjknm",
                                   "data-framer-name": "Links",
                                   name: "Links",
                                   children: [
-                                    e(C, {
+                                    jsx(withScrollSection, {
                                       links: [
                                         {
                                           href: {
@@ -2522,14 +2473,14 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                         },
                                       ],
                                       children: (i) =>
-                                        e(t, {
+                                        jsx(DeviceSizeContainer, {
                                           width: "273.6px",
-                                          children: e(p, {
+                                          children: jsx(cssSSRMinifiedHelper, {
                                             className:
                                               "framer-144xu0w-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: e(N, {
+                                            children: jsx(N, {
                                               __framer__animateOnce: !1,
                                               __framer__targets: [
                                                 { ref: _, target: "f7_6jHMU5" },
@@ -2552,7 +2503,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           }),
                                         }),
                                     }),
-                                    e(C, {
+                                    jsx(withScrollSection, {
                                       links: [
                                         {
                                           href: {
@@ -2563,14 +2514,14 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                         },
                                       ],
                                       children: (i) =>
-                                        e(t, {
+                                        jsx(DeviceSizeContainer, {
                                           width: "273.6px",
-                                          children: e(p, {
+                                          children: jsx(cssSSRMinifiedHelper, {
                                             className:
                                               "framer-13oq9sc-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: e(N, {
+                                            children: jsx(N, {
                                               __framer__animateOnce: !1,
                                               __framer__targets: [
                                                 { ref: j, target: "f7_6jHMU5" },
@@ -2593,7 +2544,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           }),
                                         }),
                                     }),
-                                    e(C, {
+                                    jsx(withScrollSection, {
                                       links: [
                                         {
                                           href: {
@@ -2604,14 +2555,14 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                         },
                                       ],
                                       children: (i) =>
-                                        e(t, {
+                                        jsx(DeviceSizeContainer, {
                                           width: "273.6px",
-                                          children: e(p, {
+                                          children: jsx(cssSSRMinifiedHelper, {
                                             className:
                                               "framer-1lxqg2f-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: e(N, {
+                                            children: jsx(N, {
                                               __framer__animateOnce: !1,
                                               __framer__targets: [
                                                 { ref: U, target: "f7_6jHMU5" },
@@ -2635,7 +2586,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           }),
                                         }),
                                     }),
-                                    e(C, {
+                                    jsx(withScrollSection, {
                                       links: [
                                         {
                                           href: {
@@ -2646,14 +2597,14 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                         },
                                       ],
                                       children: (i) =>
-                                        e(t, {
+                                        jsx(DeviceSizeContainer, {
                                           width: "273.6px",
-                                          children: e(p, {
+                                          children: jsx(cssSSRMinifiedHelper, {
                                             className:
                                               "framer-1oawkpd-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: e(N, {
+                                            children: jsx(N, {
                                               __framer__animateOnce: !1,
                                               __framer__targets: [
                                                 { ref: F, target: "f7_6jHMU5" },
@@ -2676,7 +2627,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           }),
                                         }),
                                     }),
-                                    e(C, {
+                                    jsx(withScrollSection, {
                                       links: [
                                         {
                                           href: {
@@ -2687,14 +2638,14 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                         },
                                       ],
                                       children: (i) =>
-                                        e(t, {
+                                        jsx(DeviceSizeContainer, {
                                           width: "273.6px",
-                                          children: e(p, {
+                                          children: jsx(cssSSRMinifiedHelper, {
                                             className:
                                               "framer-1aw20d8-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: e(N, {
+                                            children: jsx(N, {
                                               __framer__animateOnce: !1,
                                               __framer__targets: [
                                                 { ref: z, target: "f7_6jHMU5" },
@@ -2718,7 +2669,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                           }),
                                         }),
                                     }),
-                                    e(C, {
+                                    jsx(withScrollSection, {
                                       links: [
                                         {
                                           href: {
@@ -2729,14 +2680,14 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                         },
                                       ],
                                       children: (i) =>
-                                        e(t, {
+                                        jsx(DeviceSizeContainer, {
                                           width: "273.6px",
-                                          children: e(p, {
+                                          children: jsx(cssSSRMinifiedHelper, {
                                             className:
                                               "framer-yle7l6-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: e(N, {
+                                            children: jsx(N, {
                                               __framer__animateOnce: !1,
                                               __framer__targets: [
                                                 { ref: A, target: "f7_6jHMU5" },
@@ -2764,14 +2715,14 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                               }),
                             ],
                           }),
-                          e("div", {
+                          jsx("div", {
                             className: "framer-aong3m",
                             "data-framer-name": "navfiller",
                             name: "navfiller",
                           }),
                         ],
                       }),
-                      e("main", {
+                      jsx("main", {
                         className: "framer-gcvtsl",
                         "data-framer-name": "Main",
                         "data-hide-scrollbars": !0,
@@ -2781,7 +2732,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                   }),
               ],
             }),
-            e("div", { className: T(Le, ...oe), id: "overlay" }),
+            jsx("div", { className: cx(Le, ...oe), id: "overlay" }),
           ],
         }),
       })
@@ -2827,18 +2778,18 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     "@supports (background: -webkit-named-image(i)) and (not (scale:1)) { .framer-CacIk.framer-18oda3j, .framer-CacIk .framer-1a06t1c, .framer-CacIk .framer-t3l13x, .framer-CacIk .framer-wihk6b, .framer-CacIk .framer-28jrge, .framer-CacIk .framer-sa5hnr, .framer-CacIk .framer-s6m53n, .framer-CacIk .framer-nm0ikv, .framer-CacIk .framer-1hg5wdu, .framer-CacIk .framer-1x24jff, .framer-CacIk .framer-18z1jzc, .framer-CacIk .framer-1ouw02o, .framer-CacIk .framer-1boqtvh, .framer-CacIk .framer-1y2dv23, .framer-CacIk .framer-1rxj0w1, .framer-CacIk .framer-1uvzzs6, .framer-CacIk .framer-1nko6ww, .framer-CacIk .framer-1ubi6hg, .framer-CacIk .framer-f0xdgz, .framer-CacIk .framer-1a7bs04, .framer-CacIk .framer-avx6mw, .framer-CacIk .framer-tryz2c, .framer-CacIk .framer-qbgm69, .framer-CacIk .framer-69ea2v, .framer-CacIk .framer-106jc55, .framer-CacIk .framer-xe0474, .framer-CacIk .framer-1wijqoy, .framer-CacIk .framer-vv1jrc, .framer-CacIk .framer-1261yhd, .framer-CacIk .framer-jnm6wk, .framer-CacIk .framer-g98yis, .framer-CacIk .framer-zsje82, .framer-CacIk .framer-yjzruh, .framer-CacIk .framer-1vy4v2, .framer-CacIk .framer-g1ueej, .framer-CacIk .framer-3p4opu, .framer-CacIk .framer-a6fuxj, .framer-CacIk .framer-1k2r7fq, .framer-CacIk .framer-1n46uon, .framer-CacIk .framer-3egmf7, .framer-CacIk .framer-7i1v0w, .framer-CacIk .framer-i2rcf0, .framer-CacIk .framer-pecmdd, .framer-CacIk .framer-1itas1o, .framer-CacIk .framer-1niytn, .framer-CacIk .framer-ybzgtm, .framer-CacIk .framer-1xunj3i, .framer-CacIk .framer-1encm2n, .framer-CacIk .framer-1mewfbx, .framer-CacIk .framer-bqaqqm, .framer-CacIk .framer-hh5gom, .framer-CacIk .framer-2tsoyv, .framer-CacIk .framer-11a32oa, .framer-CacIk .framer-il55l2, .framer-CacIk .framer-r1l2tq, .framer-CacIk .framer-whs8ci, .framer-CacIk .framer-15osv68, .framer-CacIk .framer-1m7yk5f, .framer-CacIk .framer-eu137, .framer-CacIk .framer-srx6on, .framer-CacIk .framer-uvjknm, .framer-CacIk .framer-aong3m, .framer-CacIk .framer-gcvtsl { gap: 0px; } .framer-CacIk.framer-18oda3j > *, .framer-CacIk .framer-t3l13x > *, .framer-CacIk .framer-28jrge > *, .framer-CacIk .framer-s6m53n > *, .framer-CacIk .framer-nm0ikv > *, .framer-CacIk .framer-1hg5wdu > *, .framer-CacIk .framer-18z1jzc > *, .framer-CacIk .framer-1rxj0w1 > *, .framer-CacIk .framer-1uvzzs6 > *, .framer-CacIk .framer-1nko6ww > *, .framer-CacIk .framer-f0xdgz > *, .framer-CacIk .framer-qbgm69 > *, .framer-CacIk .framer-69ea2v > *, .framer-CacIk .framer-106jc55 > *, .framer-CacIk .framer-1wijqoy > *, .framer-CacIk .framer-g98yis > *, .framer-CacIk .framer-zsje82 > *, .framer-CacIk .framer-yjzruh > *, .framer-CacIk .framer-g1ueej > *, .framer-CacIk .framer-1n46uon > *, .framer-CacIk .framer-3egmf7 > *, .framer-CacIk .framer-7i1v0w > *, .framer-CacIk .framer-pecmdd > *, .framer-CacIk .framer-1xunj3i > *, .framer-CacIk .framer-1encm2n > *, .framer-CacIk .framer-1mewfbx > *, .framer-CacIk .framer-hh5gom > *, .framer-CacIk .framer-1m7yk5f > *, .framer-CacIk .framer-eu137 > *, .framer-CacIk .framer-gcvtsl > * { margin: 0px; margin-bottom: calc(0px / 2); margin-top: calc(0px / 2); } .framer-CacIk.framer-18oda3j > :first-child, .framer-CacIk .framer-t3l13x > :first-child, .framer-CacIk .framer-wihk6b > :first-child, .framer-CacIk .framer-28jrge > :first-child, .framer-CacIk .framer-s6m53n > :first-child, .framer-CacIk .framer-nm0ikv > :first-child, .framer-CacIk .framer-1hg5wdu > :first-child, .framer-CacIk .framer-18z1jzc > :first-child, .framer-CacIk .framer-1ouw02o > :first-child, .framer-CacIk .framer-1boqtvh > :first-child, .framer-CacIk .framer-1rxj0w1 > :first-child, .framer-CacIk .framer-1uvzzs6 > :first-child, .framer-CacIk .framer-1nko6ww > :first-child, .framer-CacIk .framer-f0xdgz > :first-child, .framer-CacIk .framer-1a7bs04 > :first-child, .framer-CacIk .framer-avx6mw > :first-child, .framer-CacIk .framer-qbgm69 > :first-child, .framer-CacIk .framer-69ea2v > :first-child, .framer-CacIk .framer-106jc55 > :first-child, .framer-CacIk .framer-1wijqoy > :first-child, .framer-CacIk .framer-vv1jrc > :first-child, .framer-CacIk .framer-1261yhd > :first-child, .framer-CacIk .framer-g98yis > :first-child, .framer-CacIk .framer-zsje82 > :first-child, .framer-CacIk .framer-yjzruh > :first-child, .framer-CacIk .framer-g1ueej > :first-child, .framer-CacIk .framer-3p4opu > :first-child, .framer-CacIk .framer-a6fuxj > :first-child, .framer-CacIk .framer-1n46uon > :first-child, .framer-CacIk .framer-3egmf7 > :first-child, .framer-CacIk .framer-7i1v0w > :first-child, .framer-CacIk .framer-pecmdd > :first-child, .framer-CacIk .framer-1itas1o > :first-child, .framer-CacIk .framer-1niytn > :first-child, .framer-CacIk .framer-1xunj3i > :first-child, .framer-CacIk .framer-1encm2n > :first-child, .framer-CacIk .framer-1mewfbx > :first-child, .framer-CacIk .framer-hh5gom > :first-child, .framer-CacIk .framer-2tsoyv > :first-child, .framer-CacIk .framer-11a32oa > :first-child, .framer-CacIk .framer-1m7yk5f > :first-child, .framer-CacIk .framer-eu137 > :first-child, .framer-CacIk .framer-srx6on > :first-child, .framer-CacIk .framer-uvjknm > :first-child, .framer-CacIk .framer-aong3m > :first-child, .framer-CacIk .framer-gcvtsl > :first-child { margin-top: 0px; } .framer-CacIk.framer-18oda3j > :last-child, .framer-CacIk .framer-t3l13x > :last-child, .framer-CacIk .framer-wihk6b > :last-child, .framer-CacIk .framer-28jrge > :last-child, .framer-CacIk .framer-s6m53n > :last-child, .framer-CacIk .framer-nm0ikv > :last-child, .framer-CacIk .framer-1hg5wdu > :last-child, .framer-CacIk .framer-18z1jzc > :last-child, .framer-CacIk .framer-1ouw02o > :last-child, .framer-CacIk .framer-1boqtvh > :last-child, .framer-CacIk .framer-1rxj0w1 > :last-child, .framer-CacIk .framer-1uvzzs6 > :last-child, .framer-CacIk .framer-1nko6ww > :last-child, .framer-CacIk .framer-f0xdgz > :last-child, .framer-CacIk .framer-1a7bs04 > :last-child, .framer-CacIk .framer-avx6mw > :last-child, .framer-CacIk .framer-qbgm69 > :last-child, .framer-CacIk .framer-69ea2v > :last-child, .framer-CacIk .framer-106jc55 > :last-child, .framer-CacIk .framer-1wijqoy > :last-child, .framer-CacIk .framer-vv1jrc > :last-child, .framer-CacIk .framer-1261yhd > :last-child, .framer-CacIk .framer-g98yis > :last-child, .framer-CacIk .framer-zsje82 > :last-child, .framer-CacIk .framer-yjzruh > :last-child, .framer-CacIk .framer-g1ueej > :last-child, .framer-CacIk .framer-3p4opu > :last-child, .framer-CacIk .framer-a6fuxj > :last-child, .framer-CacIk .framer-1n46uon > :last-child, .framer-CacIk .framer-3egmf7 > :last-child, .framer-CacIk .framer-7i1v0w > :last-child, .framer-CacIk .framer-pecmdd > :last-child, .framer-CacIk .framer-1itas1o > :last-child, .framer-CacIk .framer-1niytn > :last-child, .framer-CacIk .framer-1xunj3i > :last-child, .framer-CacIk .framer-1encm2n > :last-child, .framer-CacIk .framer-1mewfbx > :last-child, .framer-CacIk .framer-hh5gom > :last-child, .framer-CacIk .framer-2tsoyv > :last-child, .framer-CacIk .framer-11a32oa > :last-child, .framer-CacIk .framer-1m7yk5f > :last-child, .framer-CacIk .framer-eu137 > :last-child, .framer-CacIk .framer-srx6on > :last-child, .framer-CacIk .framer-uvjknm > :last-child, .framer-CacIk .framer-aong3m > :last-child, .framer-CacIk .framer-gcvtsl > :last-child { margin-bottom: 0px; } .framer-CacIk .framer-1a06t1c > *, .framer-CacIk .framer-sa5hnr > *, .framer-CacIk .framer-1x24jff > *, .framer-CacIk .framer-1y2dv23 > *, .framer-CacIk .framer-1ubi6hg > *, .framer-CacIk .framer-tryz2c > *, .framer-CacIk .framer-xe0474 > *, .framer-CacIk .framer-jnm6wk > *, .framer-CacIk .framer-1vy4v2 > *, .framer-CacIk .framer-1k2r7fq > *, .framer-CacIk .framer-i2rcf0 > *, .framer-CacIk .framer-ybzgtm > *, .framer-CacIk .framer-bqaqqm > *, .framer-CacIk .framer-15osv68 > * { margin: 0px; margin-left: calc(0px / 2); margin-right: calc(0px / 2); } .framer-CacIk .framer-1a06t1c > :first-child, .framer-CacIk .framer-sa5hnr > :first-child, .framer-CacIk .framer-1x24jff > :first-child, .framer-CacIk .framer-1y2dv23 > :first-child, .framer-CacIk .framer-1ubi6hg > :first-child, .framer-CacIk .framer-tryz2c > :first-child, .framer-CacIk .framer-xe0474 > :first-child, .framer-CacIk .framer-jnm6wk > :first-child, .framer-CacIk .framer-1vy4v2 > :first-child, .framer-CacIk .framer-1k2r7fq > :first-child, .framer-CacIk .framer-i2rcf0 > :first-child, .framer-CacIk .framer-ybzgtm > :first-child, .framer-CacIk .framer-bqaqqm > :first-child, .framer-CacIk .framer-il55l2 > :first-child, .framer-CacIk .framer-r1l2tq > :first-child, .framer-CacIk .framer-whs8ci > :first-child, .framer-CacIk .framer-15osv68 > :first-child { margin-left: 0px; } .framer-CacIk .framer-1a06t1c > :last-child, .framer-CacIk .framer-sa5hnr > :last-child, .framer-CacIk .framer-1x24jff > :last-child, .framer-CacIk .framer-1y2dv23 > :last-child, .framer-CacIk .framer-1ubi6hg > :last-child, .framer-CacIk .framer-tryz2c > :last-child, .framer-CacIk .framer-xe0474 > :last-child, .framer-CacIk .framer-jnm6wk > :last-child, .framer-CacIk .framer-1vy4v2 > :last-child, .framer-CacIk .framer-1k2r7fq > :last-child, .framer-CacIk .framer-i2rcf0 > :last-child, .framer-CacIk .framer-ybzgtm > :last-child, .framer-CacIk .framer-bqaqqm > :last-child, .framer-CacIk .framer-il55l2 > :last-child, .framer-CacIk .framer-r1l2tq > :last-child, .framer-CacIk .framer-whs8ci > :last-child, .framer-CacIk .framer-15osv68 > :last-child { margin-right: 0px; } .framer-CacIk .framer-wihk6b > *, .framer-CacIk .framer-1boqtvh > *, .framer-CacIk .framer-avx6mw > *, .framer-CacIk .framer-1261yhd > *, .framer-CacIk .framer-a6fuxj > *, .framer-CacIk .framer-1niytn > *, .framer-CacIk .framer-11a32oa > *, .framer-CacIk .framer-srx6on > *, .framer-CacIk .framer-uvjknm > *, .framer-CacIk .framer-aong3m > * { margin: 0px; margin-bottom: calc(10px / 2); margin-top: calc(10px / 2); } .framer-CacIk .framer-1ouw02o > *, .framer-CacIk .framer-1a7bs04 > *, .framer-CacIk .framer-vv1jrc > *, .framer-CacIk .framer-3p4opu > *, .framer-CacIk .framer-1itas1o > *, .framer-CacIk .framer-2tsoyv > * { margin: 0px; margin-bottom: calc(38px / 2); margin-top: calc(38px / 2); } .framer-CacIk .framer-il55l2 > *, .framer-CacIk .framer-whs8ci > * { margin: 0px; margin-left: calc(10px / 2); margin-right: calc(10px / 2); } .framer-CacIk .framer-r1l2tq > * { margin: 0px; margin-left: calc(20px / 2); margin-right: calc(20px / 2); } }",
     "@media (min-width: 1200px) { .framer-CacIk .hidden-18oda3j { display: none !important; } }",
     "@media (max-width: 1199px) { .framer-CacIk .hidden-p363ye { display: none !important; } .framer-CacIk.framer-18oda3j { width: 390px; } .framer-CacIk .framer-1xxbq53-container, .framer-CacIk .framer-sa5hnr { order: 0; } .framer-CacIk .framer-12f3lu4-container, .framer-CacIk .framer-1y2dv23 { order: 1; } .framer-CacIk .framer-1a06t1c { order: 4; padding: 80px 0px 82px 0px; } .framer-CacIk .framer-18z1jzc { z-index: -1; } .framer-CacIk .framer-1ouw02o { gap: 42px; } .framer-CacIk .framer-tryz2c { order: 2; } .framer-CacIk .framer-jnm6wk { order: 3; } .framer-CacIk .framer-1k2r7fq { order: 4; } .framer-CacIk .framer-ybzgtm { order: 5; } .framer-CacIk .framer-127ahf { align-content: flex-end; align-items: flex-end; background-color: var(--token-b73f7c2a-3920-4d15-bb22-d8016da87d50, #f5f9fc); flex-direction: column; opacity: unset; order: 2; z-index: 8; } @supports (background: -webkit-named-image(i)) and (not (scale:1)) { .framer-CacIk .framer-1ouw02o, .framer-CacIk .framer-127ahf { gap: 0px; } .framer-CacIk .framer-1ouw02o > * { margin: 0px; margin-bottom: calc(42px / 2); margin-top: calc(42px / 2); } .framer-CacIk .framer-1ouw02o > :first-child { margin-top: 0px; } .framer-CacIk .framer-1ouw02o > :last-child { margin-bottom: 0px; } .framer-CacIk .framer-127ahf > *, .framer-CacIk .framer-127ahf > :first-child, .framer-CacIk .framer-127ahf > :last-child { margin: 0px; } }}",
-    ...ze,
-    ...je,
+    ...interExtraBoldPresetCSS,
+    ...interMediumPresetCSS,
     ...Ve,
-    ...Ne,
+    ...linkPresetStyles,
     '.framer-CacIk[data-hide-scrollbars="true"]::-webkit-scrollbar, .framer-CacIk [data-hide-scrollbars="true"]::-webkit-scrollbar { width: 0px; height: 0px; }',
     '.framer-CacIk[data-hide-scrollbars="true"]::-webkit-scrollbar-thumb, .framer-CacIk [data-hide-scrollbars="true"]::-webkit-scrollbar-thumb { background: transparent; }',
   ],
-  Z = M(kr, br, "framer-CacIk"),
+  Z = withCSS(kr, br, "framer-CacIk"),
   Or = Z;
 Z.displayName = "Layer2 2";
 Z.defaultProps = { height: 8880, width: 1200 };
-O(
+loadFonts(
   Z,
   [
     {
@@ -2977,10 +2928,10 @@ O(
     ...sr,
     ...or,
     ...lr,
-    ...P(interExtraBoldFontDefs),
-    ...P(interMediumFontDefs),
-    ...P(Ae),
-    ...P(fontConfig),
+    ...normalizeFontConfig(interExtraBoldFontDefs),
+    ...normalizeFontConfig(interMediumFontDefs),
+    ...normalizeFontConfig(Ae),
+    ...normalizeFontConfig(fontConfig),
   ],
   { supportsExplicitInterCodegen: !0 },
 );

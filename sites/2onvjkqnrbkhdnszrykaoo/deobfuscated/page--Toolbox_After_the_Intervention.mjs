@@ -1,31 +1,9 @@
-/**
- * Import aliases resolved:
- *   X → useLocale
- *   p → cx
- *   h → withFXWrapper
- *   u → DeviceSizeContainer
- *   y → cssSSRMinifiedHelper
- *   Y → withCSS
- *   V → registerCursors
- *   O → CursorContext
- *   R → PropertyOverridesProvider
- *   k → forwardRef
- *   B → useId
- *   K → useInsertionEffect
- *   A → useVariantState
- *   C → useRef
- *   e → jsx
- *   f → jsxs
- *   c → motion
- *   N → LayoutGroup
- *   I → loadFonts
- *   x → getFonts
- */
+/* CSS extracted to: page--Toolbox_After_the_Intervention.css */
 import { DOCS_LINKS, getDocsUrl } from "./docs-links.mjs";
 import { a as w } from "./chunk-IPH6AA6U.mjs";
 import { a as g, b as v } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk-42U43NKG.mjs";
+import "./chunk--empty-stub-2.mjs";
 import { useLocale,
   cx,
   withFXWrapper,
@@ -48,10 +26,10 @@ import { useLocale,
   getFonts } from "./chunk--react-and-framer-runtime.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
-var P = h(c.div),
-  j = x(g),
-  J = x(v),
-  S = h(y);
+var P = withFXWrapper(motion.div),
+  j = getFonts(g),
+  J = getFonts(v),
+  S = withFXWrapper(cssSSRMinifiedHelper);
 var M = {
   a3gmAA0fN: "(min-width: 810px) and (max-width: 1199px)",
   vO94zyX4a: "(max-width: 809px)",
@@ -76,10 +54,10 @@ var z = "framer-ahKFB",
           : "yVaYlJDRW",
     };
   },
-  H = k(function (_, n) {
-    let { activeLocale: s, setLocale: i } = X(),
+  H = forwardRef(function (_, n) {
+    let { activeLocale: s, setLocale: i } = useLocale(),
       { style: r, className: o, layoutId: l, variant: D, ...E } = Z(_);
-    K(() => {
+    useInsertionEffect(() => {
       let t = w(void 0, s);
       if (((document.title = t.title || ""), t.viewport)) {
         var d;
@@ -107,25 +85,25 @@ var z = "framer-ahKFB",
           }
         );
     }, [void 0, s]);
-    let [L, Q] = A(D, M, !1),
+    let [L, Q] = useVariantState(D, M, !1),
       U = void 0,
-      T = C(null),
-      W = B(),
+      T = useRef(null),
+      W = useId(),
       F = [];
     return (
-      V({}),
-      e(O.Provider, {
+      registerCursors({}),
+      jsx(CursorContext.Provider, {
         value: { primaryVariantId: "yVaYlJDRW", variantClassNames: $ },
-        children: f(N, {
+        children: jsxs(LayoutGroup, {
           id: l ?? W,
           children: [
-            f(c.div, {
+            jsxs(motion.div, {
               ...E,
-              className: p(z, ...F, "framer-1mp5enu", o),
+              className: cx(z, ...F, "framer-1mp5enu", o),
               ref: n ?? T,
               style: { ...r },
               children: [
-                e(R, {
+                jsx(PropertyOverridesProvider, {
                   breakpoint: L,
                   overrides: {
                     vO94zyX4a: {
@@ -139,8 +117,8 @@ var z = "framer-ahKFB",
                             scale: 1,
                             skewX: 0,
                             skewY: 0,
-                            x: 0,
-                            y: 0,
+                            getFonts: 0,
+                            cssSSRMinifiedHelper: 0,
                           },
                         },
                         {
@@ -152,14 +130,14 @@ var z = "framer-ahKFB",
                             scale: 1,
                             skewX: 0,
                             skewY: 0,
-                            x: 0,
-                            y: -60,
+                            getFonts: 0,
+                            cssSSRMinifiedHelper: -60,
                           },
                         },
                       ],
                     },
                   },
-                  children: e(P, {
+                  children: jsx(P, {
                     __framer__styleTransformEffectEnabled: !0,
                     __framer__transformTargets: [
                       {
@@ -171,8 +149,8 @@ var z = "framer-ahKFB",
                           scale: 1,
                           skewX: 0,
                           skewY: 0,
-                          x: 0,
-                          y: 0,
+                          getFonts: 0,
+                          cssSSRMinifiedHelper: 0,
                         },
                       },
                       {
@@ -184,8 +162,8 @@ var z = "framer-ahKFB",
                           scale: 1,
                           skewX: 0,
                           skewY: 0,
-                          x: 0,
-                          y: -60,
+                          getFonts: 0,
+                          cssSSRMinifiedHelper: -60,
                         },
                       },
                     ],
@@ -195,10 +173,10 @@ var z = "framer-ahKFB",
                     className: "framer-1h7v2kl",
                   }),
                 }),
-                e(u, {
-                  children: e(y, {
+                jsx(DeviceSizeContainer, {
+                  children: jsx(cssSSRMinifiedHelper, {
                     className: "framer-q2m92i-container",
-                    children: e(g, {
+                    children: jsx(g, {
                       height: "100%",
                       html: "",
                       id: "gdm7LJ2Ok",
@@ -210,9 +188,9 @@ var z = "framer-ahKFB",
                     }),
                   }),
                 }),
-                e(u, {
+                jsx(DeviceSizeContainer, {
                   width: "100vw",
-                  children: e(S, {
+                  children: jsx(S, {
                     __framer__styleTransformEffectEnabled: !0,
                     __framer__transformTargets: [
                       {
@@ -224,8 +202,8 @@ var z = "framer-ahKFB",
                           scale: 1,
                           skewX: 0,
                           skewY: 0,
-                          x: 0,
-                          y: 0,
+                          getFonts: 0,
+                          cssSSRMinifiedHelper: 0,
                         },
                       },
                       {
@@ -237,8 +215,8 @@ var z = "framer-ahKFB",
                           scale: 1,
                           skewX: 0,
                           skewY: 0,
-                          x: 0,
-                          y: -60,
+                          getFonts: 0,
+                          cssSSRMinifiedHelper: -60,
                         },
                       },
                     ],
@@ -247,7 +225,7 @@ var z = "framer-ahKFB",
                     __targetOpacity: 1,
                     className: "framer-11cdumv-container",
                     layoutScroll: !0,
-                    children: e(v, {
+                    children: jsx(v, {
                       height: "100%",
                       id: "Zhz9ZpcOe",
                       layoutId: "Zhz9ZpcOe",
@@ -258,7 +236,7 @@ var z = "framer-ahKFB",
                 }),
               ],
             }),
-            e("div", { className: p(z, ...F), id: "overlay" }),
+            jsx("div", { className: cx(z, ...F), id: "overlay" }),
           ],
         }),
       })
@@ -277,11 +255,11 @@ var z = "framer-ahKFB",
     `@media (min-width: 810px) and (max-width: 1199px) { .framer-ahKFB .hidden-y38g2e { display: none !important; } .${b.bodyClassName}-framer-ahKFB { background: white; } .framer-ahKFB.framer-1mp5enu { width: 810px; }}`,
     `@media (max-width: 809px) { .framer-ahKFB .hidden-sfpcfu { display: none !important; } .${b.bodyClassName}-framer-ahKFB { background: white; } .framer-ahKFB.framer-1mp5enu { width: 390px; } .framer-ahKFB .framer-1h7v2kl { flex-direction: column; } @supports (background: -webkit-named-image(i)) and (not (scale:1)) { .framer-ahKFB .framer-1h7v2kl { gap: 0px; } .framer-ahKFB .framer-1h7v2kl > * { margin: 0px; margin-bottom: calc(0px / 2); margin-top: calc(0px / 2); } .framer-ahKFB .framer-1h7v2kl > :first-child { margin-top: 0px; } .framer-ahKFB .framer-1h7v2kl > :last-child { margin-bottom: 0px; } }}`,
   ],
-  m = Y(H, q, "framer-ahKFB"),
+  m = withCSS(H, q, "framer-ahKFB"),
   de = m;
 m.displayName = "Toolbox_Share_your_experience";
 m.defaultProps = { height: 1050, width: 1200 };
-I(m, [{ explicitInter: !0, fonts: [] }, ...j, ...J], {
+loadFonts(m, [{ explicitInter: !0, fonts: [] }, ...j, ...J], {
   supportsExplicitInterCodegen: !0,
 });
 var fe = {

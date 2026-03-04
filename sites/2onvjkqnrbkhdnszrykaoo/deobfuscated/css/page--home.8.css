@@ -1,0 +1,39 @@
+@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }
+
+.framer-MY1rC.framer-3s0w40, .framer-MY1rC .framer-3s0w40 { display: block; }
+
+.framer-MY1rC.framer-1gwjjt4 { align-content: center; align-items: center; display: flex; flex-direction: row; flex-wrap: wrap; gap: 80px; height: min-content; justify-content: center; overflow: visible; padding: 0px; position: relative; width: 1000px; }
+
+.framer-MY1rC .framer-yibhi7 { flex: none; height: 89px; left: -15px; overflow: hidden; position: absolute; text-decoration: none; top: 40px; width: 410px; will-change: var(--framer-will-change-override, transform); z-index: 7; }
+
+.framer-MY1rC .framer-kf2wna, .framer-MY1rC .framer-12ws8fg, .framer-MY1rC .framer-1scv3mw { align-content: center; align-items: center; bottom: 0px; display: flex; flex: none; flex-direction: row; flex-wrap: nowrap; gap: 10px; height: 2px; justify-content: center; left: 0px; overflow: hidden; padding: 0px; position: absolute; right: 0px; z-index: 10; }
+
+.framer-MY1rC .framer-1vbzu8s, .framer-MY1rC .framer-1xiqm97, .framer-MY1rC .framer-12uz4g5 { align-content: flex-start; align-items: flex-start; bottom: 0px; display: flex; flex: none; flex-direction: row; flex-wrap: nowrap; gap: 10px; justify-content: center; left: calc(50.00000000000002% - 410px / 2); overflow: visible; padding: 0px; position: absolute; top: 0px; width: 410px; z-index: 1; }
+
+.framer-MY1rC .framer-pm8gf7 { flex: none; height: 89px; left: -15px; overflow: hidden; position: absolute; text-decoration: none; top: calc(50.28409090909093% - 89px / 2); width: 410px; will-change: var(--framer-will-change-override, transform); z-index: 7; }
+
+.framer-MY1rC .framer-18rxxtg { bottom: 37px; flex: none; height: 89px; left: -15px; overflow: hidden; position: absolute; text-decoration: none; width: 410px; will-change: var(--framer-will-change-override, transform); z-index: 7; }
+
+.framer-MY1rC .framer-1q8th58 { align-content: center; align-items: center; display: flex; flex: none; flex-direction: column; flex-wrap: nowrap; gap: 21px; height: 256px; justify-content: center; left: calc(19.00000000000002% - 379px / 2); overflow: visible; padding: 0px; position: absolute; text-decoration: none; top: calc(50.28409090909093% - 256px / 2); width: 379px; z-index: 1; }
+
+.framer-MY1rC .framer-1dg46b4-container, .framer-MY1rC .framer-38lnyz-container, .framer-MY1rC .framer-1jkfppu-container { flex: none; height: 72px; position: relative; width: 382px; }
+
+.framer-MY1rC .framer-1sr9rsy { align-content: flex-end; align-items: flex-end; display: flex; flex: none; flex-direction: column; flex-wrap: nowrap; gap: 20px; height: min-content; justify-content: center; padding: 0px; position: relative; width: min-content; }
+
+.framer-MY1rC .framer-1x25rle-container, .framer-MY1rC .framer-93qqv0-container, .framer-MY1rC .framer-ptft8n-container { flex: none; height: 72px; position: relative; width: 380px; }
+
+.framer-MY1rC .framer-wcqno7 { flex: none; height: 90px; left: -15px; overflow: visible; position: absolute; right: -15px; top: -9px; z-index: -1; }
+
+.framer-MY1rC .framer-czj9l { align-content: center; align-items: center; aspect-ratio: 1.5325 / 1; display: flex; flex: 2 0 0px; flex-direction: column; flex-wrap: nowrap; gap: 20px; height: var(--framer-aspect-ratio-supported, 352px); justify-content: center; overflow: hidden; padding: 0px; position: relative; width: 1px; will-change: var(--framer-will-change-override, transform); }
+
+.framer-MY1rC .framer-763a3a { align-content: center; align-items: center; display: flex; flex: none; flex-direction: row; flex-wrap: nowrap; gap: 10px; height: 352px; justify-content: center; overflow: hidden; padding: 0px; position: relative; text-decoration: none; width: 540px; will-change: var(--framer-will-change-override, transform); z-index: 1; }
+
+.framer-MY1rC .framer-idlw4i-container, .framer-MY1rC .framer-1878zvf-container { bottom: -4px; flex: none; left: -47px; position: absolute; right: -48px; top: 0px; z-index: 1; }
+
+.framer-MY1rC .framer-1hj8jok-container { bottom: -2px; flex: none; left: -47px; position: absolute; right: -48px; top: -2px; z-index: 1; }
+
+@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-MY1rC.framer-1gwjjt4, .framer-MY1rC .framer-kf2wna, .framer-MY1rC .framer-1vbzu8s, .framer-MY1rC .framer-12ws8fg, .framer-MY1rC .framer-1xiqm97, .framer-MY1rC .framer-1scv3mw, .framer-MY1rC .framer-12uz4g5, .framer-MY1rC .framer-1q8th58, .framer-MY1rC .framer-1sr9rsy, .framer-MY1rC .framer-czj9l, .framer-MY1rC .framer-763a3a { gap: 0px; } .framer-MY1rC.framer-1gwjjt4 > * { margin: 0px; margin-left: calc(80px / 2); margin-right: calc(80px / 2); } .framer-MY1rC.framer-1gwjjt4 > :first-child, .framer-MY1rC .framer-kf2wna > :first-child, .framer-MY1rC .framer-1vbzu8s > :first-child, .framer-MY1rC .framer-12ws8fg > :first-child, .framer-MY1rC .framer-1xiqm97 > :first-child, .framer-MY1rC .framer-1scv3mw > :first-child, .framer-MY1rC .framer-12uz4g5 > :first-child, .framer-MY1rC .framer-763a3a > :first-child { margin-left: 0px; } .framer-MY1rC.framer-1gwjjt4 > :last-child, .framer-MY1rC .framer-kf2wna > :last-child, .framer-MY1rC .framer-1vbzu8s > :last-child, .framer-MY1rC .framer-12ws8fg > :last-child, .framer-MY1rC .framer-1xiqm97 > :last-child, .framer-MY1rC .framer-1scv3mw > :last-child, .framer-MY1rC .framer-12uz4g5 > :last-child, .framer-MY1rC .framer-763a3a > :last-child { margin-right: 0px; } .framer-MY1rC .framer-kf2wna > *, .framer-MY1rC .framer-1vbzu8s > *, .framer-MY1rC .framer-12ws8fg > *, .framer-MY1rC .framer-1xiqm97 > *, .framer-MY1rC .framer-1scv3mw > *, .framer-MY1rC .framer-12uz4g5 > *, .framer-MY1rC .framer-763a3a > * { margin: 0px; margin-left: calc(10px / 2); margin-right: calc(10px / 2); } .framer-MY1rC .framer-1q8th58 > * { margin: 0px; margin-bottom: calc(21px / 2); margin-top: calc(21px / 2); } .framer-MY1rC .framer-1q8th58 > :first-child, .framer-MY1rC .framer-1sr9rsy > :first-child, .framer-MY1rC .framer-czj9l > :first-child { margin-top: 0px; } .framer-MY1rC .framer-1q8th58 > :last-child, .framer-MY1rC .framer-1sr9rsy > :last-child, .framer-MY1rC .framer-czj9l > :last-child { margin-bottom: 0px; } .framer-MY1rC .framer-1sr9rsy > *, .framer-MY1rC .framer-czj9l > * { margin: 0px; margin-bottom: calc(20px / 2); margin-top: calc(20px / 2); } }
+
+.framer-MY1rC.framer-v-sltbvw .framer-wcqno7 { top: calc(50.00000000000002% - 90px / 2); }
+
+.framer-MY1rC.framer-v-8q1l2i .framer-wcqno7 { bottom: -11px; top: unset; }

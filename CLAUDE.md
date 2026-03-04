@@ -10,40 +10,38 @@
 
 | File | Lines | What it does |
 |------|-------|-------------|
-| `deobfuscated/script_main--router.mjs` | 456 | Route table (34 routes), SPA hydration, page transitions |
-| `deobfuscated/chunk--shared-components.mjs` | 915 | Lenis smooth scroll, cursor, nav items, noise overlay |
-| `deobfuscated/toolbox-page-factory.mjs` | 359 | Shared template for all 29 Toolbox pages (header + GitBook iframe + nav) |
-| `deobfuscated/chunk--embed-component.mjs` | 508 | Iframe embed component + shared Toolbox nav bar |
-| `deobfuscated/chunk--video-component-controls.mjs` | 328 | Video playback controls (scrubber, fullscreen) |
-| `deobfuscated/chunk--video-player-component.mjs` | 328 | Video player (fill/contain/cover modes, InView loading) |
-| `deobfuscated/docs-links.mjs` | 51 | Centralized GitBook URL map (route → docs.neoflix.care URL) |
-| `deobfuscated/chunk--site-metadata.mjs` | 16 | Favicon, social image, site title/description |
-| `deobfuscated/chunk--page-metadata-helper.mjs` | 40 | Responsive breakpoints + SEO metadata |
+| `src/script_main--router.mjs` | 456 | Route table (34 routes), SPA hydration, page transitions |
+| `src/chunk--shared-components.mjs` | 915 | Lenis smooth scroll, cursor, nav items, noise overlay |
+| `src/toolbox-page-factory.mjs` | 359 | Shared template for all 29 Toolbox pages (header + GitBook iframe + nav) |
+| `src/chunk--embed-component.mjs` | 508 | Iframe embed component + shared Toolbox nav bar |
+| `src/chunk--video-component-controls.mjs` | 328 | Video playback controls (scrubber, fullscreen) |
+| `src/chunk--video-player-component.mjs` | 328 | Video player (fill/contain/cover modes, InView loading) |
+| `src/docs-links.mjs` | 51 | Centralized GitBook URL map (route → docs.neoflix.care URL) |
+| `src/chunk--site-metadata.mjs` | 16 | Favicon, social image, site title/description |
+| `src/chunk--page-metadata-helper.mjs` | 40 | Responsive breakpoints + SEO metadata |
 
-**To understand individual pages, read these (~11,700 lines):**
+**To understand individual pages, read these (~10,500 lines):**
 
 | File | Lines | What it does |
 |------|-------|-------------|
-| `deobfuscated/page--home.mjs` | 5,890 | Home page: world map, scroll-snap sections, spring animations |
-| `deobfuscated/page--neoflix.mjs` | 2,960 | Product page: video player, scroll-snap hero, variant states |
-| `deobfuscated/page--Publications.mjs` | 2,852 | Publications page: card layout, navigation anchors |
+| `src/page--home.mjs` | 5,640 | Home page: world map, scroll-snap sections, spring animations |
+| `src/page--neoflix.mjs` | 2,538 | Product page: video player, scroll-snap hero, variant states |
+| `src/page--Publications.mjs` | 2,321 | Publications page: card layout, navigation anchors |
 
 ## What to Skip
 
 **NEVER load these into context** (41,441 lines of vendor code):
-- `deobfuscated/chunk--react-and-framer-runtime.mjs` (35,529 lines) — bundled React 18 + Framer SDK
-- `deobfuscated/chunk--framer-motion.mjs` (5,912 lines) — Framer Motion + world map + scroll-snap HOCs
+- `src/chunk--react-and-framer-runtime.mjs` (35,529 lines) — bundled React 18 + Framer SDK
+- `src/chunk--framer-motion.mjs` (5,912 lines) — Framer Motion + world map + scroll-snap HOCs
 
-**Skip these too** (tooling, archives, redundant copies):
-- `deobfuscate*.mjs`, `cleanup-html.mjs`, `rewrite-urls.mjs`, `fix-case-refs.mjs` — build/transform scripts
-- `formatted/` — prettified HTML copies (redundant with `*.html` at root)
-- `sites/2onvjkqnrbkhdnszrykaoo/*.mjs` (top-level, not in `deobfuscated/`) — original obfuscated chunks
-- `extracted/*.style2.css` — superseded by `base.css` + `*.page.css`
-- `toolbox-page-data.json` — 2.5MB raw data dump, not used at runtime
+**Skip entire directories:**
+- `archive/` — superseded files, original obfuscated chunks, formatted HTML
+- `tools/` — build/transform scripts (only needed to re-run deobfuscation)
+- `site/assets/` — binary media files
 
 **Low-value (tiny, repetitive, already maximally collapsed):**
-- `deobfuscated/metadata--toolbox_*.mjs` (29 files × 11 lines) — identical metadata stubs
-- `deobfuscated/page--Toolbox*.mjs` (29 files × 10 lines) — thin wrappers calling factory
+- `src/metadata--toolbox_*.mjs` (29 files × 11 lines) — identical metadata stubs
+- `src/page--Toolbox*.mjs` (29 files × 10 lines) — thin wrappers calling factory
 
 ## Architecture
 
@@ -82,50 +80,83 @@ Framer SSR-renders all 3 variants into HTML, hides non-matching ones with CSS, c
 ### Fonts (self-hosted)
 - Inter Bold 700 (7 unicode-range subsets)
 - Inter Medium 500, Extra Bold 800
-- DM Sans 500 (`/s/dmsans/`)
-- Montserrat 500 (`/s/montserrat/`)
+- DM Sans 500 (`site/s/dmsans/`)
+- Montserrat 500 (`site/s/montserrat/`)
 
 ### Content Model
 **Everything is hardcoded.** No CMS, no API calls, no dynamic data fetching.
 - Page text: baked into SSR HTML and React component trees
-- Video sources: literal `src` attributes (`assets/*.mp4`, `assets/*.webm`)
+- Video sources: literal `src` attributes (`site/assets/*.mp4`, `site/assets/*.webm`)
 - Toolbox content: loaded via iframe from `docs.neoflix.care` (GitBook)
-- Images: `assets/` directory + external GitHub-hosted SVG for world map
+- Images: `site/assets/` + `site/images/` + external GitHub-hosted SVG for world map
 
 ## File Organization
 
 ```
 frmrduplicate/
 ├── CLAUDE.md                          ← you are here
-├── sites/.../deobfuscated/            ← THE CODE (all .mjs files)
+├── .claudeignore                      ← files to skip in AI context
+├── .gitignore
+├── package.json
+│
+├── src/                               ← THE CODE (deobfuscated .mjs files)
 │   ├── script_main--router.mjs        ← entry point / router
-│   ├── page--home.mjs                 ← home page component
-│   ├── page--neoflix.mjs              ← neoflix page component
-│   ├── page--Publications.mjs         ← publications page component
+│   ├── page--home.mjs                 ← home page component (5,640 lines)
+│   ├── page--neoflix.mjs              ← neoflix page component (2,538 lines)
+│   ├── page--Publications.mjs         ← publications page component (2,321 lines)
 │   ├── page--Toolbox*.mjs (29 files)  ← thin wrappers → toolbox-page-factory
 │   ├── toolbox-page-factory.mjs       ← shared toolbox template
 │   ├── chunk--shared-components.mjs   ← scroll, cursor, nav items
 │   ├── chunk--embed-component.mjs     ← iframe embed + toolbox nav
 │   ├── chunk--video-*.mjs (2 files)   ← video player + controls
+│   ├── chunk--page-helpers.mjs        ← shared utilities (extracted patterns)
+│   ├── chunk--font-data.mjs           ← font loading declarations
 │   ├── chunk--framer-components.mjs   ← font config, link styles
-│   ├── chunk--react-and-framer-runtime.mjs  ← [VENDOR] React+Framer
-│   ├── chunk--framer-motion.mjs       ← [VENDOR] Motion+Map+ScrollSnap
+│   ├── chunk--react-and-framer-runtime.mjs  ← [VENDOR — skip]
+│   ├── chunk--framer-motion.mjs       ← [VENDOR — skip]
 │   ├── docs-links.mjs                 ← GitBook URL lookup table
 │   ├── metadata--*.mjs                ← page metadata (SEO, breakpoints)
-│   └── css/                           ← extracted inline CSS
-├── extracted/                         ← CSS/JS ripped from HTML
+│   └── css/                           ← extracted inline CSS per component
+│
+├── css/                               ← deduplicated page CSS
 │   ├── base.css                       ← shared 2,272-line reset+fonts+utils
-│   ├── *.page.css                     ← page-specific CSS rules
-│   └── *.style2.css                   ← [SUPERSEDED] originals with shared prefix
-├── assets/                            ← videos, fonts, images (18MB)
-├── formatted/                         ← [ARCHIVE] prettified HTML
-├── *.html / *.htm                     ← original SSR HTML shells
-└── *.mjs (root)                       ← build/transform tooling scripts
+│   ├── index.page.css                 ← home page styles (2,542 lines)
+│   ├── neoflix.page.css               ← neoflix styles (662 lines)
+│   ├── publications.page.css          ← publications styles (829 lines)
+│   └── toolbox.page.css               ← toolbox styles (195 lines)
+│
+├── site/                              ← the served website
+│   ├── index.htm                      ← home page HTML shell
+│   ├── neoflix.html                   ← neoflix HTML shell
+│   ├── publications.html              ← publications HTML shell
+│   ├── toolbox.html                   ← toolbox HTML shell
+│   ├── assets/                        ← videos, fonts, images (18MB)
+│   ├── images/                        ← additional images
+│   ├── s/                             ← self-hosted fonts
+│   └── lennartvdm/                    ← kaart iframe content
+│
+├── tools/                             ← build/transform scripts
+│   ├── deobfuscate.mjs                ← phase 1: basic name recovery
+│   ├── deobfuscate-deep.mjs           ← phase 2: import alias resolution
+│   ├── deobfuscate-phase3.mjs         ← phase 3: scope-aware renaming
+│   ├── cleanup-html.mjs               ← HTML prettification
+│   ├── rewrite-urls.mjs               ← URL rewriting for self-hosting
+│   ├── fix-case-refs.mjs              ← case-sensitive reference fixes
+│   ├── generate-toolbox-pages.mjs     ← toolbox page generator
+│   ├── download-assets.sh             ← asset downloader
+│   └── docs-links.mjs                 ← GitBook URL map (tooling copy)
+│
+└── archive/                           ← superseded / reference-only
+    ├── formatted/                     ← prettified HTML (redundant)
+    ├── original-chunks/               ← original obfuscated Framer chunks
+    ├── extracted-raw/                 ← pre-dedup CSS + extracted scripts
+    ├── toolbox-page-data.json         ← 2.5MB raw data dump
+    └── webcopy-origin.txt             ← original webcopy metadata
 ```
 
 ## Page Component Deep Dive
 
-### page--home.mjs (~5,700 lines, 14 components)
+### page--home.mjs (~5,640 lines, 14 components)
 
 The home page defines 14 Framer components inline (13 unique + 1 reused duplicate):
 
@@ -150,7 +181,7 @@ The home page defines 14 Framer components inline (13 unique + 1 reused duplicat
 - Story panels: auto-advance 3 tabs at 6600ms intervals
 - Caption hover: border-radius 0→10, text color swap
 
-### page--neoflix.mjs (~2,700 lines, 2 components)
+### page--neoflix.mjs (~2,538 lines, 2 components)
 
 | Component | displayName | What it does |
 |-----------|-------------|-------------|
@@ -165,7 +196,7 @@ The home page defines 14 Framer components inline (13 unique + 1 reused duplicat
 5. Team — "Teamwork demands constant practice"
 6. Perspectives — "Multiple perspectives in complex care"
 
-### page--Publications.mjs (~2,500 lines, 2 components)
+### page--Publications.mjs (~2,321 lines, 2 components)
 
 | Component | displayName | What it does |
 |-----------|-------------|-------------|
@@ -204,22 +235,22 @@ Common utilities extracted from repeated patterns across all pages:
 ## For AI Sessions: Recommended Loading Order
 
 1. **Always read first:** This file (`CLAUDE.md`)
-2. **For routing/structure questions:** `script_main--router.mjs`
-3. **For specific page work:** The relevant `page--*.mjs` file (see component tables above)
-4. **For shared UI:** `chunk--shared-components.mjs`, `chunk--embed-component.mjs`
-5. **For shared utilities:** `chunk--page-helpers.mjs` (common patterns)
-6. **For Toolbox changes:** `toolbox-page-factory.mjs` + `docs-links.mjs`
-7. **For CSS:** `extracted/base.css` (shared) + `extracted/*.page.css` (per-page)
-8. **Never:** `chunk--react-and-framer-runtime.mjs`, `chunk--framer-motion.mjs`
+2. **For routing/structure questions:** `src/script_main--router.mjs`
+3. **For specific page work:** The relevant `src/page--*.mjs` file (see component tables above)
+4. **For shared UI:** `src/chunk--shared-components.mjs`, `src/chunk--embed-component.mjs`
+5. **For shared utilities:** `src/chunk--page-helpers.mjs` (common patterns)
+6. **For Toolbox changes:** `src/toolbox-page-factory.mjs` + `src/docs-links.mjs`
+7. **For CSS:** `css/base.css` (shared) + `css/*.page.css` (per-page)
+8. **Never:** `src/chunk--react-and-framer-runtime.mjs`, `src/chunk--framer-motion.mjs`
 
 ## Context Budget Estimate
 
 | What to load | Lines | Tokens (est.) |
 |-------------|-------|---------------|
-| This file (CLAUDE.md) | ~200 | ~2K |
+| This file (CLAUDE.md) | ~230 | ~2K |
 | Router | 456 | ~4K |
 | Shared components + helpers | ~1,400 | ~12K |
-| One page file | 2,500–5,700 | ~20-45K |
+| One page file | 2,300–5,640 | ~18-45K |
 | Page-specific CSS | 195–2,542 | ~2-20K |
 | **Typical working set** | **~5,000** | **~40K** |
 

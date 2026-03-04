@@ -1,25 +1,43 @@
 /**
  * script_main  router
  */
-import {
-  A as g,
-  B as e,
-  C as y,
-  D as b,
-  E as F,
-  F as I,
-  I as R,
-  L as x,
-  N as z,
-  _ as A,
-  aa as T,
-  c as m,
-  f as h,
-  ma as v,
-  z as f,
-  za as E,
-} from "./chunk--react-and-framer-runtime.mjs";
-import { c as o } from "./chunk--browser-polyfills.mjs";
+/**
+ * Import aliases resolved:
+ *   g → ReactDOMExports
+ *   e → lazyLoadPage
+ *   y → RoutingContext
+ *   b → markHydrationStart
+ *   F → enableEventHandling
+ *   I → setReducedMotion
+ *   R → matchRoute
+ *   x → ComponentErrorBoundary
+ *   z → initSiteScrollBehavior
+ *   A → CursorContextProvider
+ *   T → FramerRouter
+ *   m → createElement
+ *   h → startTransition
+ *   v → cleanupSSRVariants
+ *   f → ReactDOMDefault
+ *   E → withPerformanceMark
+ *   o → window
+ */
+import { ReactDOMExports,
+  lazyLoadPage,
+  RoutingContext,
+  markHydrationStart,
+  enableEventHandling,
+  setReducedMotion,
+  matchRoute,
+  ComponentErrorBoundary,
+  initSiteScrollBehavior,
+  CursorContextProvider,
+  FramerRouter,
+  createElement,
+  startTransition,
+  cleanupSSRVariants,
+  ReactDOMDefault,
+  withPerformanceMark } from "./chunk--react-and-framer-runtime.mjs";
+import { window } from "./chunk--browser-polyfills.mjs";
 var D = "default" in g ? f : g,
   p = {},
   P = D;

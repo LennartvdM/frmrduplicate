@@ -1,15 +1,23 @@
 /**
  * framer components
  */
-import {
-  K as l,
-  M as r,
-  Q as h,
-  i,
-  l as s,
-  ra as d,
-} from "./chunk--react-and-framer-runtime.mjs";
-import { b as e } from "./chunk--browser-polyfills.mjs";
+/**
+ * Import aliases resolved:
+ *   l → RenderTarget
+ *   r → ControlType
+ *   h → useIsOnFramerCanvas
+ *   i → useEffect
+ *   s → useMemo
+ *   d → fontLoader
+ *   e → navigator
+ */
+import { RenderTarget,
+  ControlType,
+  useIsOnFramerCanvas,
+  useEffect,
+  useMemo,
+  fontLoader } from "./chunk--react-and-framer-runtime.mjs";
+import { navigator } from "./chunk--browser-polyfills.mjs";
 d.loadFonts([]);
 var M = [{ explicitInter: !0, fonts: [] }],
   R = [

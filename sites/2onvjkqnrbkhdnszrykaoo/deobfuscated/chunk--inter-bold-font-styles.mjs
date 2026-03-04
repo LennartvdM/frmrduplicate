@@ -1,4 +1,8 @@
-import { ra as e } from "./chunk--react-and-framer-runtime.mjs";
+/**
+ * Import aliases resolved:
+ *   e → fontLoader
+ */
+import { fontLoader } from "./chunk--react-and-framer-runtime.mjs";
 e.loadFonts(["Inter-Bold"]);
 var n = [
     {

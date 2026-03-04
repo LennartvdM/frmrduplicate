@@ -1,56 +1,104 @@
+/**
+ * Import aliases resolved:
+ *   qr → withScrollSnapContainer
+ *   Pe → MapComponent
+ *   Ye → MapMobile2Component
+ *   Rr → withScrollSnapChild
+ *   Xr → withScrollSnapContainerAlt
+ *   G → VideoComponent
+ *   Or → fontConfig
+ *   kr → linkPresetStyles
+ *   Ur → cssClassScope
+ *   S → useLocale
+ *   X → ControlType
+ *   T → addPropertyControls
+ *   k → cx
+ *   se → withFXWrapper
+ *   K → useDeviceSize
+ *   q → DeviceSizeContainer
+ *   ee → cssSSRMinifiedHelper
+ *   j → withCSS
+ *   yr → registerCursors
+ *   vr → CursorContext
+ *   c → ReactFragment
+ *   ie → PropertyOverridesProvider
+ *   I → forwardRef
+ *   pe → scheduleAppearAnimation
+ *   he → setAppearAnimationValues
+ *   H → useContext
+ *   gr → useEffect
+ *   _ → useId
+ *   xr → useInsertionEffect
+ *   D → useVariantAnimationCallbacks
+ *   E → useMemo
+ *   br → useVariantState
+ *   F → useRef
+ *   W → useOnVariantChange
+ *   ze → CycleSymbol
+ *   P → useVariantState
+ *   e → jsx
+ *   g → jsxs
+ *   w → MotionContext
+ *   wr → FrameComponent
+ *   O → RichTextComponent
+ *   r → motion
+ *   N → LayoutGroup
+ *   fe → SVGComponent
+ *   z → loadFonts
+ *   Z → getFonts
+ *   Cr → normalizeFontConfig
+ */
 import { a as Ve } from "./chunk-7KH5NUCF.mjs";
-import {
-  a as qr,
-  b as Pe,
-  c as Ye,
-  d as Rr,
-  e as Xr,
-} from "./chunk--framer-motion.mjs";
+import { withScrollSnapContainer,
+  MapComponent,
+  MapMobile2Component,
+  withScrollSnapChild,
+  withScrollSnapContainerAlt } from "./chunk--framer-motion.mjs";
 import "./chunk--inter-bold-font-styles.mjs";
-import { a as G } from "./chunk--video-player-component.mjs";
-import { j as Or, k as kr, l as Ur } from "./chunk--framer-components.mjs";
+import { VideoComponent } from "./chunk--video-player-component.mjs";
+import { fontConfig,
+  linkPresetStyles,
+  cssClassScope } from "./chunk--framer-components.mjs";
 import "./chunk--empty-stub.mjs";
-import {
-  $ as B,
-  H as S,
-  M as X,
-  P as T,
-  R as k,
-  S as se,
-  T as K,
-  U as q,
-  V as ee,
-  X as j,
-  Y as yr,
-  Z as vr,
-  b as c,
-  ba as ie,
-  d as I,
-  fa as pe,
-  ga as he,
-  h as H,
-  i as gr,
-  j as _,
-  k as xr,
-  ka as D,
-  l as E,
-  la as br,
-  m as F,
-  na as W,
-  oa as ze,
-  pa as P,
-  q as e,
-  r as g,
-  s as w,
-  sa as wr,
-  ta as O,
-  u as r,
-  v as N,
-  va as fe,
-  wa as z,
-  xa as Z,
-  ya as Cr,
-} from "./chunk--react-and-framer-runtime.mjs";
+import { $ as B,
+  useLocale,
+  ControlType,
+  addPropertyControls,
+  cx,
+  withFXWrapper,
+  useDeviceSize,
+  DeviceSizeContainer,
+  cssSSRMinifiedHelper,
+  withCSS,
+  registerCursors,
+  CursorContext,
+  ReactFragment,
+  PropertyOverridesProvider,
+  forwardRef,
+  scheduleAppearAnimation,
+  setAppearAnimationValues,
+  useContext,
+  useEffect,
+  useId,
+  useInsertionEffect,
+  useVariantAnimationCallbacks,
+  useMemo,
+  useVariantState,
+  useRef,
+  useOnVariantChange,
+  CycleSymbol,
+  useVariantState,
+  jsx,
+  jsxs,
+  MotionContext,
+  FrameComponent,
+  RichTextComponent,
+  motion,
+  LayoutGroup,
+  SVGComponent,
+  loadFonts,
+  getFonts,
+  normalizeFontConfig } from "./chunk--react-and-framer-runtime.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
 var $r = {
@@ -59,7 +107,7 @@ var $r = {
     transition: "scroll-snap-align 1s ease-in-out",
   },
   Ir = (t) => (a) => e(t, { ...a, style: $r });
-var ea = se(r.div),
+var ea = withFXWrapper(r.div),
   ra = { h9tfYk7K5: { hover: !0 } },
   aa = ["I5QaL6oi8", "h9tfYk7K5"],
   ta = "framer-Kv8wc",
@@ -179,14 +227,14 @@ var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
             ...ia(
               {
                 "h9tfYk7K5-hover": {
-                  __framer__presenceAnimate: he(
+                  __framer__presenceAnimate: setAppearAnimationValues(
                     "animate",
                     "pbltdq",
                     fa,
                     void 0,
                   ),
                   __framer__presenceExit: sa,
-                  __framer__presenceInitial: he(
+                  __framer__presenceInitial: setAppearAnimationValues(
                     "initial",
                     "pbltdq",
                     la,
@@ -204,7 +252,7 @@ var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
               L,
             ),
             children: [
-              e(fe, {
+              e(SVGComponent, {
                 className: "framer-1nwrmj9",
                 "data-framer-name": "Inner Ring",
                 fill: "black",
@@ -220,7 +268,7 @@ var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
                 },
                 withExternalLayout: !0,
               }),
-              e(fe, {
+              e(SVGComponent, {
                 className: "framer-1fz3tc2",
                 "data-framer-name": "Outer Ring",
                 fill: "black",
@@ -236,7 +284,7 @@ var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
                 },
                 withExternalLayout: !0,
               }),
-              e(fe, {
+              e(SVGComponent, {
                 className: "framer-v5bumn",
                 "data-framer-name": "Neoflix",
                 fill: "black",
@@ -1791,8 +1839,8 @@ z(
   ],
   { supportsExplicitInterCodegen: !0 },
 );
-var Qe = se(r.div),
-  Ze = pe(se(r.a)),
+var Qe = withFXWrapper(r.div),
+  Ze = scheduleAppearAnimation(withFXWrapper(r.a)),
   Rt = Z(le),
   Xt = Z(Ke),
   Ot = Z(We),
@@ -1927,7 +1975,7 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
       h = Dt(t, m),
       { activeVariantCallback: b, delay: V } = D(p),
       M = b(async (...ye) => {
-        await V(() => u(ze), 6600);
+        await V(() => u(CycleSymbol), 6600);
       }),
       A = b(async (...ye) => {
         if (C && (await C(...ye)) === !1) return !1;
@@ -2285,7 +2333,7 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                   }),
                 ],
               }),
-              e(wr, {
+              e(FrameComponent, {
                 background: {
                   alt: "",
                   fit: "fill",
@@ -3198,8 +3246,8 @@ z(
   ],
   { supportsExplicitInterCodegen: !0 },
 );
-var ir = se(r.div),
-  or = pe(se(r.a)),
+var ir = withFXWrapper(r.div),
+  or = scheduleAppearAnimation(withFXWrapper(r.a)),
   On = Z(G),
   kn = Z(tr),
   Un = Z(nr),
@@ -3350,7 +3398,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
       m = Bn(t, u),
       { activeVariantCallback: h, delay: b } = D(l),
       V = h(async (...xe) => {
-        await b(() => x(ze), 6600);
+        await b(() => x(CycleSymbol), 6600);
       }),
       M = h(async (...xe) => {
         await b(() => x("qvmKCdJXN"), 60);
@@ -3990,7 +4038,7 @@ T(_e, {
 z(_e, [{ explicitInter: !0, fonts: [] }, ...On, ...kn, ...Un, ...In, ..._n], {
   supportsExplicitInterCodegen: !0,
 });
-var En = se(r.div),
+var En = withFXWrapper(r.div),
   Kn = { h9tfYk7K5: { hover: !0 } },
   Wn = ["I5QaL6oi8", "h9tfYk7K5"],
   Qn = "framer-Kv8wc",
@@ -4110,14 +4158,14 @@ var Gn = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
             ...Jn(
               {
                 "h9tfYk7K5-hover": {
-                  __framer__presenceAnimate: he(
+                  __framer__presenceAnimate: setAppearAnimationValues(
                     "animate",
                     "pbltdq",
                     ei,
                     void 0,
                   ),
                   __framer__presenceExit: $n,
-                  __framer__presenceInitial: he(
+                  __framer__presenceInitial: setAppearAnimationValues(
                     "initial",
                     "pbltdq",
                     ri,
@@ -4135,7 +4183,7 @@ var Gn = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
               L,
             ),
             children: [
-              e(fe, {
+              e(SVGComponent, {
                 className: "framer-1nwrmj9",
                 "data-framer-name": "Inner Ring",
                 fill: "black",
@@ -4151,7 +4199,7 @@ var Gn = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
                 },
                 withExternalLayout: !0,
               }),
-              e(fe, {
+              e(SVGComponent, {
                 className: "framer-1fz3tc2",
                 "data-framer-name": "Outer Ring",
                 fill: "black",
@@ -4167,7 +4215,7 @@ var Gn = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
                 },
                 withExternalLayout: !0,
               }),
-              e(fe, {
+              e(SVGComponent, {
                 className: "framer-v5bumn",
                 "data-framer-name": "Neoflix",
                 fill: "black",
@@ -4206,20 +4254,20 @@ T(Ne, {
   },
 });
 z(Ne, [{ explicitInter: !0, fonts: [] }], { supportsExplicitInterCodegen: !0 });
-var li = Z(Ye),
-  ge = Rr(r.section),
+var li = Z(MapMobile2Component),
+  ge = withScrollSnapChild(r.section),
   me = Ir(r.section),
   mi = Z(G),
   di = Z(Be),
   ci = Z(Ae),
-  pi = qr(r.main),
+  pi = withScrollSnapContainer(r.main),
   hi = Z(cr),
   ui = Z(He),
-  Fe = pe(r.div),
+  Fe = scheduleAppearAnimation(r.div),
   gi = Z(dr),
   xi = Z(rr),
-  yi = Z(Pe),
-  vi = Xr(r.main),
+  yi = Z(MapComponent),
+  vi = withScrollSnapContainerAlt(r.main),
   bi = {
     CXFUsfZRE: "(max-width: 809px)",
     ueHalD28r: "(min-width: 810px) and (max-width: 1199px)",
@@ -4330,7 +4378,7 @@ var li = Z(Ye),
   Ii = I(function (t, a) {
     let { activeLocale: n, setLocale: i } = S(),
       { style: o, className: f, layoutId: s, variant: U, ...C } = Ui(t);
-    (gr(() => {
+    (useEffect(() => {
       let u = Ve(void 0, n);
       if (u.robots) {
         let m = document.querySelector('meta[name="robots"]');
@@ -4342,7 +4390,7 @@ var li = Z(Ye),
             document.head.appendChild(m));
       }
     }, [void 0, n]),
-      xr(() => {
+      useInsertionEffect(() => {
         let u = Ve(void 0, n);
         if (((document.title = u.title || ""), u.viewport)) {
           var m;
@@ -4363,7 +4411,7 @@ var li = Z(Ye),
             document.body.classList.remove(`${u.bodyClassName}-framer-qO1UX`);
         };
       }, [void 0, n]));
-    let [l, p] = br(U, bi, !1),
+    let [l, p] = useVariantState(U, bi, !1),
       L = void 0,
       y = F(null),
       d = () => (Er() ? l !== "CXFUsfZRE" : !0),
@@ -4371,8 +4419,8 @@ var li = Z(Ye),
       v = _(),
       x = [Ur];
     return (
-      yr({}),
-      e(vr.Provider, {
+      registerCursors({}),
+      e(CursorContext.Provider, {
         value: { primaryVariantId: "WQLkyLRf1", variantClassNames: wi },
         children: g(N, {
           id: s ?? v,
@@ -4399,7 +4447,7 @@ var li = Z(Ye),
                           "data-framer-name": "Logo",
                           name: "Logo",
                           whileHover: Ci,
-                          children: e(fe, {
+                          children: e(SVGComponent, {
                             className: "framer-bg8cfc",
                             "data-framer-name": "Neoflix_Logo_SVG",
                             fill: "black",
@@ -4524,7 +4572,7 @@ var li = Z(Ye),
                         className: "framer-su22bd",
                         "data-framer-name": "Worldmap",
                         name: "Worldmap",
-                        children: e(ie, {
+                        children: e(PropertyOverridesProvider, {
                           breakpoint: l,
                           overrides: {
                             CXFUsfZRE: {
@@ -4534,9 +4582,9 @@ var li = Z(Ye),
                           },
                           children: e(q, {
                             height: 1100,
-                            children: e(ee, {
+                            children: e(cssSSRMinifiedHelper, {
                               className: "framer-15e83ey-container",
-                              children: e(Ye, {
+                              children: e(MapMobile2Component, {
                                 height: "100%",
                                 id: "o7_4SypJZ",
                                 layoutId: "o7_4SypJZ",
@@ -4620,7 +4668,7 @@ var li = Z(Ye),
                                 children: e(r.a, {
                                   className: "framer-155vfoo framer-lux5qc",
                                   children: e(q, {
-                                    children: e(ee, {
+                                    children: e(cssSSRMinifiedHelper, {
                                       className: "framer-e1ey9a-container",
                                       children: e(G, {
                                         backgroundColor: "rgba(0, 0, 0, 0)",
@@ -4710,7 +4758,7 @@ var li = Z(Ye),
                                 children: e(r.a, {
                                   className: "framer-70lyct framer-lux5qc",
                                   children: e(q, {
-                                    children: e(ee, {
+                                    children: e(cssSSRMinifiedHelper, {
                                       className: "framer-19faesl-container",
                                       children: e(G, {
                                         backgroundColor: "rgba(0, 0, 0, 0)",
@@ -4862,7 +4910,7 @@ var li = Z(Ye),
                                 children: e(r.a, {
                                   className: "framer-1b0vvft framer-lux5qc",
                                   children: e(q, {
-                                    children: e(ee, {
+                                    children: e(cssSSRMinifiedHelper, {
                                       className: "framer-ni3rk9-container",
                                       children: e(G, {
                                         backgroundColor: "rgba(0, 0, 0, 0)",
@@ -4951,7 +4999,7 @@ var li = Z(Ye),
                                 children: e(r.a, {
                                   className: "framer-9inaut framer-lux5qc",
                                   children: e(q, {
-                                    children: e(ee, {
+                                    children: e(cssSSRMinifiedHelper, {
                                       className: "framer-1gc0yrt-container",
                                       children: e(G, {
                                         backgroundColor: "rgba(0, 0, 0, 0)",
@@ -5041,7 +5089,7 @@ var li = Z(Ye),
                                 children: e(r.a, {
                                   className: "framer-1udrl05 framer-lux5qc",
                                   children: e(q, {
-                                    children: e(ee, {
+                                    children: e(cssSSRMinifiedHelper, {
                                       className: "framer-18mjo87-container",
                                       children: e(G, {
                                         backgroundColor: "rgba(0, 0, 0, 0)",
@@ -5131,7 +5179,7 @@ var li = Z(Ye),
                                 children: e(r.a, {
                                   className: "framer-105urfr framer-lux5qc",
                                   children: e(q, {
-                                    children: e(ee, {
+                                    children: e(cssSSRMinifiedHelper, {
                                       className: "framer-1ta4ebg-container",
                                       children: e(G, {
                                         backgroundColor: "rgba(0, 0, 0, 0)",
@@ -5208,14 +5256,14 @@ var li = Z(Ye),
                         name: "Hero Section",
                         children: [
                           e(r.div, { className: "framer-1xzh66h" }),
-                          e(ie, {
+                          e(PropertyOverridesProvider, {
                             breakpoint: l,
                             overrides: {
                               CXFUsfZRE: { width: "99.4956vw", y: 90 },
                             },
                             children: e(q, {
                               height: 242,
-                              children: e(ee, {
+                              children: e(cssSSRMinifiedHelper, {
                                 className: "framer-u2hhht-container",
                                 whileHover: Wr,
                                 children: e(Be, {
@@ -5236,12 +5284,12 @@ var li = Z(Ye),
                             children: g(r.div, {
                               className: "framer-1nn7z0v",
                               children: [
-                                e(ie, {
+                                e(PropertyOverridesProvider, {
                                   breakpoint: l,
                                   overrides: { CXFUsfZRE: { y: 377.5 } },
                                   children: e(q, {
                                     height: 223,
-                                    children: e(ee, {
+                                    children: e(cssSSRMinifiedHelper, {
                                       className: "framer-s7m1wf-container",
                                       children: e(Ae, {
                                         height: "100%",
@@ -5293,7 +5341,7 @@ var li = Z(Ye),
                         "data-framer-name": "Hero Section",
                         name: "Hero Section",
                         children: [
-                          e(ie, {
+                          e(PropertyOverridesProvider, {
                             breakpoint: l,
                             overrides: {
                               ueHalD28r: {
@@ -5306,7 +5354,7 @@ var li = Z(Ye),
                               height: 221,
                               width: "60vw",
                               y: 221,
-                              children: e(ee, {
+                              children: e(cssSSRMinifiedHelper, {
                                 className: "framer-1bdw7m-container",
                                 transformTemplate: pr,
                                 whileHover: Wr,
@@ -5321,7 +5369,7 @@ var li = Z(Ye),
                               }),
                             }),
                           }),
-                          e(ie, {
+                          e(PropertyOverridesProvider, {
                             breakpoint: l,
                             overrides: { ueHalD28r: { transformTemplate: pr } },
                             children: e(r.div, {
@@ -5330,21 +5378,21 @@ var li = Z(Ye),
                               name: "Moment",
                               children: e(r.div, {
                                 className: "framer-1ey594a",
-                                children: e(ie, {
+                                children: e(PropertyOverridesProvider, {
                                   breakpoint: l,
                                   overrides: { ueHalD28r: { y: 600 } },
                                   children: e(q, {
                                     height: 187,
                                     width: "685px",
                                     y: 373,
-                                    children: e(ie, {
+                                    children: e(PropertyOverridesProvider, {
                                       breakpoint: l,
                                       overrides: {
                                         ueHalD28r: {
                                           transformTemplate: void 0,
                                         },
                                       },
-                                      children: e(ee, {
+                                      children: e(cssSSRMinifiedHelper, {
                                         className: "framer-1eeo48e-container",
                                         transformTemplate: pr,
                                         children: e(He, {
@@ -5445,7 +5493,7 @@ var li = Z(Ye),
                               name: "Features",
                               children: e(r.div, {
                                 className: "framer-1mxq6mp",
-                                children: e(ie, {
+                                children: e(PropertyOverridesProvider, {
                                   breakpoint: l,
                                   overrides: {
                                     ueHalD28r: {
@@ -5457,12 +5505,12 @@ var li = Z(Ye),
                                     height: 352,
                                     width: "1000px",
                                     y: 1394,
-                                    children: e(ie, {
+                                    children: e(PropertyOverridesProvider, {
                                       breakpoint: l,
                                       overrides: {
                                         ueHalD28r: { transformTemplate: Gr },
                                       },
-                                      children: e(ee, {
+                                      children: e(cssSSRMinifiedHelper, {
                                         className: "framer-1k0ssbx-container",
                                         transformTemplate: Jr,
                                         children: e(dr, {
@@ -5570,7 +5618,7 @@ var li = Z(Ye),
                                 name: "Features",
                                 children: e(r.div, {
                                   className: "framer-ezl8wv",
-                                  children: e(ie, {
+                                  children: e(PropertyOverridesProvider, {
                                     breakpoint: l,
                                     overrides: {
                                       ueHalD28r: {
@@ -5582,14 +5630,14 @@ var li = Z(Ye),
                                       height: 352,
                                       width: "1000px",
                                       y: 2398,
-                                      children: e(ie, {
+                                      children: e(PropertyOverridesProvider, {
                                         breakpoint: l,
                                         overrides: {
                                           ueHalD28r: {
                                             transformTemplate: void 0,
                                           },
                                         },
-                                        children: e(ee, {
+                                        children: e(cssSSRMinifiedHelper, {
                                           className: "framer-qjopz5-container",
                                           transformTemplate: Jr,
                                           children: e(rr, {
@@ -5619,9 +5667,9 @@ var li = Z(Ye),
                             height: 1e3,
                             width: "100vw",
                             y: 3060,
-                            children: e(ee, {
+                            children: e(cssSSRMinifiedHelper, {
                               className: "framer-14yr6pu-container",
-                              children: e(Pe, {
+                              children: e(MapComponent, {
                                 height: "100%",
                                 id: "RNjVxsq3J",
                                 layoutId: "RNjVxsq3J",
@@ -5862,7 +5910,7 @@ z(
     ...gi,
     ...xi,
     ...yi,
-    ...Cr(Or),
+    ...Cr(fontConfig),
   ],
   { supportsExplicitInterCodegen: !0 },
 );

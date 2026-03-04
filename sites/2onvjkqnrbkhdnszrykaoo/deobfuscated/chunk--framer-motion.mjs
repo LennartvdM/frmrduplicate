@@ -1,44 +1,82 @@
 /**
  * framer motion
  */
-import { a as rr, b as ar, c as tr } from "./chunk--inter-bold-font-styles.mjs";
-import {
-  $ as O,
-  H as te,
-  K as Ge,
-  M as y,
-  P as E,
-  R as ne,
-  S as Fe,
-  T as oe,
-  U as v,
-  X as ie,
-  b as m,
-  d as Z,
-  fa as Re,
+/**
+ * Import aliases resolved:
+ *   rr → interBoldFontDefs
+ *   ar → interBoldPresetCSS
+ *   tr → interBoldCSSScope
+ *   te → useLocale
+ *   Ge → RenderTarget
+ *   y → ControlType
+ *   E → addPropertyControls
+ *   ne → cx
+ *   Fe → withFXWrapper
+ *   oe → useDeviceSize
+ *   v → DeviceSizeContainer
+ *   ie → withCSS
+ *   m → ReactFragment
+ *   Z → forwardRef
+ *   Re → scheduleAppearAnimation
+ *   be → useEffect
+ *   ee → useId
+ *   le → useVariantAnimationCallbacks
+ *   V → useMemo
+ *   M → useRef
+ *   Se → useState
+ *   pe → useOnVariantChange
+ *   re → ReactModule
+ *   fe → useVariantState
+ *   e → jsx
+ *   g → jsxs
+ *   N → MotionContext
+ *   I → RichTextComponent
+ *   r → motion
+ *   ae → LayoutGroup
+ *   me → loadFonts
+ *   Te → useSpring
+ *   G → getFonts
+ *   er → normalizeFontConfig
+ *   A → window
+ */
+import { interBoldFontDefs,
+  interBoldPresetCSS,
+  interBoldCSSScope } from "./chunk--inter-bold-font-styles.mjs";
+import { $ as O,
+  useLocale,
+  RenderTarget,
+  ControlType,
+  addPropertyControls,
+  cx,
+  withFXWrapper,
+  useDeviceSize,
+  DeviceSizeContainer,
+  withCSS,
+  ReactFragment,
+  forwardRef,
+  scheduleAppearAnimation,
   h as $,
-  i as be,
-  j as ee,
-  ka as le,
-  l as V,
-  m as M,
-  n as Se,
-  na as pe,
-  o as re,
-  pa as fe,
-  q as e,
-  r as g,
-  s as N,
-  ta as I,
-  u as r,
-  v as ae,
+  useEffect,
+  useId,
+  useVariantAnimationCallbacks,
+  useMemo,
+  useRef,
+  useState,
+  useOnVariantChange,
+  ReactModule,
+  useVariantState,
+  jsx,
+  jsxs,
+  MotionContext,
+  RichTextComponent,
+  motion,
+  LayoutGroup,
   w as $e,
-  wa as me,
-  x as Te,
-  xa as G,
-  ya as er,
-} from "./chunk--react-and-framer-runtime.mjs";
-import { c as A } from "./chunk--browser-polyfills.mjs";
+  loadFonts,
+  useSpring,
+  getFonts,
+  normalizeFontConfig } from "./chunk--react-and-framer-runtime.mjs";
+import { window } from "./chunk--browser-polyfills.mjs";
 var pr = { scrollSnapType: "y mandatory" },
   Aa = (t) => (n) => e(t, { ...n, style: pr });
 var ur = {
@@ -1845,7 +1883,7 @@ function C(t) {
       let T = t[`iconStyle${u}`];
       if (T !== "Filled") return T;
     }, [...p]),
-    [_, s] = Se(R === "Home" ? or(re) : null);
+    [_, s] = useState(R === "Home" ? or(ReactModule) : null);
   async function w() {
     if (typeof Pe[R] != "number") {
       s(null);
@@ -1853,12 +1891,12 @@ function C(t) {
     }
     try {
       let X = await import(`${yr}${R}${D || ""}.js@0.0.32`);
-      F.current && s(X.default(re));
+      F.current && s(X.default(ReactModule));
     } catch {
       F.current && s(null);
     }
   }
-  be(
+  useEffect(
     () => (
       (F.current = !0),
       w(),
@@ -1868,7 +1906,7 @@ function C(t) {
     ),
     [R, ...p],
   );
-  let f = Ge.current() === Ge.canvas ? e(nr, {}) : null;
+  let f = RenderTarget.current() === RenderTarget.canvas ? e(nr, {}) : null;
   return e(r.div, {
     style: { display: "contents" },
     onClick: h,
@@ -1972,14 +2010,14 @@ function Ye(t) {
       peakZoom: c,
     } = t,
     b = M(null),
-    [k, S] = Se({ width: 0, height: 0 }),
+    [k, S] = useState({ width: 0, height: 0 }),
     o = 1440,
     L = 700,
     F = { damping: 15, stiffness: 30, mass: 1 },
-    R = Te(n, F),
-    p = Te(i, F),
-    D = Te(l, F);
-  (be(() => {
+    R = useSpring(n, F),
+    p = useSpring(i, F),
+    D = useSpring(l, F);
+  (useEffect(() => {
     (R.set(n),
       p.set(i),
       (async () => {
@@ -1987,7 +2025,7 @@ function Ye(t) {
           await D.set(l, { duration: h / 2 }));
       })());
   }, [n, i, l, h, c]),
-    be(() => {
+    useEffect(() => {
       let w = () => {
         if (b.current) {
           let { width: a, height: f } = b.current.getBoundingClientRect();
@@ -2133,7 +2171,7 @@ var Tr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
   Ur = (t, n) =>
     t.layoutDependency ? n.join("-") + t.layoutDependency : n.join("-"),
   Br = Z(function (t, n) {
-    let { activeLocale: i, setLocale: l } = te(),
+    let { activeLocale: i, setLocale: l } = useLocale(),
       { style: d, className: h, layoutId: c, variant: b, ...k } = Ar(t),
       {
         baseVariant: S,
@@ -2145,14 +2183,14 @@ var Tr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
         setGestureState: D,
         setVariant: _,
         variants: s,
-      } = fe({
+      } = useVariantState({
         cycleOrder: wr,
         defaultVariant: "OllsPURNS",
         variant: b,
         variantClassNames: Cr,
       }),
       w = Ur(t, s),
-      { activeVariantCallback: a, delay: f } = le(S),
+      { activeVariantCallback: a, delay: f } = useVariantAnimationCallbacks(S),
       u = a(async (...de) => {
         (D({ isHovered: !0 }), _("BrLRwcxoa"));
       }),
@@ -2160,10 +2198,10 @@ var Tr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
         (D({ isHovered: !1 }), _("sNIP7jJgo"));
       }),
       X = M(null),
-      Q = ee(),
+      Q = useId(),
       K = [],
-      se = oe();
-    return e(ae, {
+      se = useDeviceSize();
+    return e(LayoutGroup, {
       id: c ?? Q,
       children: e(Rr, {
         animate: s,
@@ -2173,7 +2211,7 @@ var Tr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
           children: e(r.div, {
             ...k,
             ...F,
-            className: ne(Ir, ...K, "framer-xrdmqj", h, o),
+            className: cx(Ir, ...K, "framer-xrdmqj", h, o),
             "data-framer-name": "Variant 1",
             "data-highlight": !0,
             layoutDependency: w,
@@ -2301,7 +2339,7 @@ var Nr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
   qr = (t, n) =>
     t.layoutDependency ? n.join("-") + t.layoutDependency : n.join("-"),
   _r = Z(function (t, n) {
-    let { activeLocale: i, setLocale: l } = te(),
+    let { activeLocale: i, setLocale: l } = useLocale(),
       {
         style: d,
         className: h,
@@ -2322,14 +2360,14 @@ var Nr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
         setGestureState: w,
         setVariant: a,
         variants: f,
-      } = fe({
+      } = useVariantState({
         cycleOrder: Dr,
         defaultVariant: "go4zJRoIL",
         variant: b,
         variantClassNames: Vr,
       }),
       u = qr(t, f),
-      { activeVariantCallback: T, delay: X } = le(F),
+      { activeVariantCallback: T, delay: X } = useVariantAnimationCallbacks(F),
       Q = T(async (...Y) => {
         if ((w({ isPressed: !1 }), k && (await k(...Y)) === !1)) return !1;
       }),
@@ -2342,12 +2380,12 @@ var Nr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
       de = T(async (...Y) => {
         (w({ isHovered: !1 }), a("O7UZDCuex"));
       });
-    pe(F, { default: K, TvAVq9uug: void 0 });
+    useOnVariantChange(F, { default: K, TvAVq9uug: void 0 });
     let he = M(null),
-      ge = ee(),
-      ce = [tr],
-      Ie = oe();
-    return e(ae, {
+      ge = useId(),
+      ce = [interBoldCSSScope],
+      Ie = useDeviceSize();
+    return e(LayoutGroup, {
       id: c ?? ge,
       children: e(Jr, {
         animate: f,
@@ -2357,7 +2395,7 @@ var Nr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
           children: e(r.div, {
             ...L,
             ...D,
-            className: ne(zr, ...ce, "framer-7w45hl", h, R),
+            className: cx(zr, ...ce, "framer-7w45hl", h, R),
             "data-border": !0,
             "data-framer-name": "Variant 1",
             "data-highlight": !0,
@@ -2473,7 +2511,7 @@ E(ve, {
     type: y.String,
   },
 });
-me(
+loadFonts(
   ve,
   [
     {
@@ -2541,7 +2579,7 @@ me(
         },
       ],
     },
-    ...er(rr),
+    ...er(interBoldFontDefs),
   ],
   { supportsExplicitInterCodegen: !0 },
 );
@@ -2550,7 +2588,7 @@ var Hr = G(ue),
   Gr = G(W),
   Qr = G(C),
   Kr = G(B),
-  Be = Re(Fe(r.div)),
+  Be = scheduleAppearAnimation(withFXWrapper(r.div)),
   Yr = [
     "JxNX4Rz95",
     "xKuwJW1Uo",
@@ -2662,7 +2700,7 @@ var ra = {
   la = (t, n) =>
     t.layoutDependency ? n.join("-") + t.layoutDependency : n.join("-"),
   fa = Z(function (t, n) {
-    let { activeLocale: i, setLocale: l } = te(),
+    let { activeLocale: i, setLocale: l } = useLocale(),
       {
         style: d,
         className: h,
@@ -2681,14 +2719,14 @@ var ra = {
         setGestureState: _,
         setVariant: s,
         variants: w,
-      } = fe({
+      } = useVariantState({
         cycleOrder: Yr,
         defaultVariant: "JxNX4Rz95",
         variant: b,
         variantClassNames: ea,
       }),
       a = la(t, w),
-      { activeVariantCallback: f, delay: u } = le(o),
+      { activeVariantCallback: f, delay: u } = useVariantAnimationCallbacks(o),
       T = f(async (...x) => {
         await u(() => s("xKuwJW1Uo"), 3e3);
       }),
@@ -2737,7 +2775,7 @@ var ra = {
       Oe = f(async (...x) => {
         s("l1W_ZZ_U4");
       });
-    pe(o, {
+    useOnVariantChange(o, {
       bcMqa8ndK: ge,
       default: T,
       EvvqCP6nV: Q,
@@ -2771,8 +2809,8 @@ var ra = {
       Xe = () => !!["MVG35Wb9S", "bcMqa8ndK", "l1W_ZZ_U4"].includes(o),
       He = ee(),
       Ze = [],
-      cr = oe();
-    return e(ae, {
+      cr = useDeviceSize();
+    return e(LayoutGroup, {
       id: c ?? He,
       children: e(na, {
         animate: w,
@@ -2782,7 +2820,7 @@ var ra = {
           children: g(r.div, {
             ...S,
             ...R,
-            className: ne($r, ...Ze, "framer-vz95n3", h, L),
+            className: cx($r, ...Ze, "framer-vz95n3", h, L),
             "data-framer-name": "Leiden",
             "data-highlight": !0,
             layoutDependency: a,
@@ -4060,7 +4098,7 @@ E(ke, {
     type: y.Transition,
   },
 });
-me(
+loadFonts(
   ke,
   [
     {
@@ -4199,7 +4237,7 @@ var da = G(ue),
   sa = Ue(ue),
   ca = G(B),
   pa = G(C),
-  ze = Re(Fe(r.div)),
+  ze = scheduleAppearAnimation(withFXWrapper(r.div)),
   ua = G(W),
   ha = [
     "ldXzQ12pX",
@@ -4313,7 +4351,7 @@ var ba = {
   Ca = (t, n) =>
     t.layoutDependency ? n.join("-") + t.layoutDependency : n.join("-"),
   Sa = Z(function (t, n) {
-    let { activeLocale: i, setLocale: l } = te(),
+    let { activeLocale: i, setLocale: l } = useLocale(),
       {
         style: d,
         className: h,
@@ -4332,14 +4370,14 @@ var ba = {
         setGestureState: _,
         setVariant: s,
         variants: w,
-      } = fe({
+      } = useVariantState({
         cycleOrder: ha,
         defaultVariant: "ldXzQ12pX",
         variant: b,
         variantClassNames: ya,
       }),
       a = Ca(t, w),
-      { activeVariantCallback: f, delay: u } = le(o),
+      { activeVariantCallback: f, delay: u } = useVariantAnimationCallbacks(o),
       T = f(async (...x) => {
         await u(() => s("bOuLzzMjd"), 3e3);
       }),
@@ -4388,7 +4426,7 @@ var ba = {
       Oe = f(async (...x) => {
         s("RXHfPsP4Y");
       });
-    pe(o, {
+    useOnVariantChange(o, {
       azG3hWBh4: Q,
       bOuLzzMjd: X,
       default: T,
@@ -4422,8 +4460,8 @@ var ba = {
       Xe = () => !!["EFypIGXHL", "M0Et4gTFx", "RXHfPsP4Y"].includes(o),
       He = ee(),
       Ze = [],
-      cr = oe();
-    return e(ae, {
+      cr = useDeviceSize();
+    return e(LayoutGroup, {
       id: c ?? He,
       children: e(ka, {
         animate: w,
@@ -4433,7 +4471,7 @@ var ba = {
           children: g(r.div, {
             ...S,
             ...R,
-            className: ne(ga, ...Ze, "framer-npkfjt", h, L),
+            className: cx(ga, ...Ze, "framer-npkfjt", h, L),
             "data-framer-name": "Leiden",
             "data-highlight": !0,
             layoutDependency: a,
@@ -5767,7 +5805,7 @@ E(we, {
     type: y.Transition,
   },
 });
-me(
+loadFonts(
   we,
   [
     {

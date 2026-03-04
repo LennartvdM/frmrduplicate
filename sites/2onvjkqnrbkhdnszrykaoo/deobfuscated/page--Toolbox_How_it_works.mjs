@@ -1,29 +1,50 @@
+/**
+ * Import aliases resolved:
+ *   N → useLocale
+ *   p → cx
+ *   x → withFXWrapper
+ *   h → DeviceSizeContainer
+ *   u → cssSSRMinifiedHelper
+ *   I → withCSS
+ *   X → registerCursors
+ *   R → CursorContext
+ *   Q → PropertyOverridesProvider
+ *   S → forwardRef
+ *   B → useId
+ *   k → useInsertionEffect
+ *   T → useVariantState
+ *   C → useRef
+ *   e → jsx
+ *   d → jsxs
+ *   c → motion
+ *   F → LayoutGroup
+ *   V → loadFonts
+ *   g → getFonts
+ */
 import { a as b } from "./chunk-7ATIRYTW.mjs";
 import { a as y, b as w } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
 import "./chunk--empty-stub.mjs";
-import {
-  H as N,
-  R as p,
-  S as x,
-  U as h,
-  V as u,
-  X as I,
-  Y as X,
-  Z as R,
-  ba as Q,
-  d as S,
-  j as B,
-  k,
-  la as T,
-  m as C,
-  q as e,
-  r as d,
-  u as c,
-  v as F,
-  wa as V,
-  xa as g,
-} from "./chunk--react-and-framer-runtime.mjs";
+import { useLocale,
+  cx,
+  withFXWrapper,
+  DeviceSizeContainer,
+  cssSSRMinifiedHelper,
+  withCSS,
+  registerCursors,
+  CursorContext,
+  PropertyOverridesProvider,
+  forwardRef,
+  useId,
+  useInsertionEffect,
+  useVariantState,
+  useRef,
+  jsx,
+  jsxs,
+  motion,
+  LayoutGroup,
+  loadFonts,
+  getFonts } from "./chunk--react-and-framer-runtime.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
 var H = x(c.div),

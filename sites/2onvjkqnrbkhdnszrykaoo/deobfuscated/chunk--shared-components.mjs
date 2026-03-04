@@ -1,33 +1,57 @@
 /**
  * shared components
  */
-import {
-  $ as ct,
-  H as nt,
-  M as f,
-  P as b,
-  R as at,
-  T as lt,
-  X as ht,
-  b as W,
+/**
+ * Import aliases resolved:
+ *   nt → useLocale
+ *   f → ControlType
+ *   b → addPropertyControls
+ *   at → cx
+ *   lt → useDeviceSize
+ *   ht → withCSS
+ *   W → ReactFragment
+ *   tt → useContext
+ *   F → useEffect
+ *   et → useId
+ *   it → useMemo
+ *   I → useRef
+ *   rt → MotionFragment
+ *   mt → useVariantState
+ *   m → jsx
+ *   st → jsxs
+ *   V → fontLoader
+ *   X → MotionContext
+ *   pt → RichTextComponent
+ *   C → motion
+ *   ot → LayoutGroup
+ *   ut → loadFonts
+ *   c → window
+ */
+import { $ as ct,
+  useLocale,
+  ControlType,
+  addPropertyControls,
+  cx,
+  useDeviceSize,
+  withCSS,
+  ReactFragment,
   d as $,
-  h as tt,
-  i as F,
-  j as et,
-  l as it,
-  m as I,
-  p as rt,
-  pa as mt,
-  q as m,
-  r as st,
-  ra as V,
-  s as X,
-  ta as pt,
-  u as C,
-  v as ot,
-  wa as ut,
-} from "./chunk--react-and-framer-runtime.mjs";
-import { c } from "./chunk--browser-polyfills.mjs";
+  useContext,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  MotionFragment,
+  useVariantState,
+  jsx,
+  jsxs,
+  fontLoader,
+  MotionContext,
+  RichTextComponent,
+  motion,
+  LayoutGroup,
+  loadFonts } from "./chunk--react-and-framer-runtime.mjs";
+import { window } from "./chunk--browser-polyfills.mjs";
 function U() {
   return (
     (U = Object.assign
@@ -629,7 +653,7 @@ function B(a) {
         }
       );
     }, []),
-    m(rt, {
+    m(MotionFragment, {
       children: m("style", {
         children: `
       html.lenis {
@@ -668,9 +692,9 @@ function St(a, ...t) {
 }
 var xt = { damping: 40, delay: 0, mass: 1, stiffness: 400, type: "spring" /* physics-based spring animation */ },
   wt = ({ value: a, children: t }) => {
-    let e = tt(X),
+    let e = useContext(X),
       i = a ?? e.transition,
-      s = it(() => ({ ...e, transition: i }), [JSON.stringify(i)]);
+      s = useMemo(() => ({ ...e, transition: i }), [JSON.stringify(i)]);
     return m(X.Provider, { value: s, children: t });
   },
   _t = C(W),
@@ -692,7 +716,7 @@ var xt = { damping: 40, delay: 0, mass: 1, stiffness: 400, type: "spring" /* phy
   Tt = (a, t) =>
     a.layoutDependency ? t.join("-") + a.layoutDependency : t.join("-"),
   kt = $(function (a, t) {
-    let { activeLocale: e, setLocale: i } = nt(),
+    let { activeLocale: e, setLocale: i } = useLocale(),
       {
         style: s,
         className: r,
@@ -711,7 +735,7 @@ var xt = { damping: 40, delay: 0, mass: 1, stiffness: 400, type: "spring" /* phy
         setGestureState: q,
         setVariant: P,
         variants: M,
-      } = mt({
+      } = useVariantState({
         cycleOrder: gt,
         defaultVariant: "Rwa3hKEk5",
         enabledGestures: ft,
@@ -720,10 +744,10 @@ var xt = { damping: 40, delay: 0, mass: 1, stiffness: 400, type: "spring" /* phy
       }),
       _ = Tt(a, M),
       L = I(null),
-      d = et(),
+      d = useId(),
       y = [],
-      S = lt();
-    return m(ot, {
+      S = useDeviceSize();
+    return m(LayoutGroup, {
       id: o ?? d,
       children: m(_t, {
         animate: M,
@@ -734,7 +758,7 @@ var xt = { damping: 40, delay: 0, mass: 1, stiffness: 400, type: "spring" /* phy
             href: h,
             openInNewTab: !1,
             smoothScroll: u,
-            children: st(C.a, {
+            children: jsxs(C.a, {
               ...v,
               ...w,
               className: `${at(vt, ...y, "framer-1h7km6n", r, g)} framer-1d3etll`,
@@ -771,7 +795,7 @@ var xt = { damping: 40, delay: 0, mass: 1, stiffness: 400, type: "spring" /* phy
                     },
                   },
                 }),
-                m(pt, {
+                m(RichTextComponent, {
                   __fromCanvasComponent: !0,
                   children: m(W, {
                     children: m(C.h2, {

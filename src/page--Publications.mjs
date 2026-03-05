@@ -73,13 +73,13 @@ var ICON_BG = {
   positionX: "center", positionY: "center",
   src: "./images/jnafhdwhe1hq6wcabqba0y1km.svg",
 };
-var Lr = getFonts(W),
-  Mr = getFonts(NoiseOverlayComponent),
+var W_fonts = getFonts(W),
+  NoiseOverlayComponent_fonts = getFonts(NoiseOverlayComponent),
   FXDiv = withFXWrapper(motion.div),
   Wr = ["htUh18eRJ"],
-  Gr = "framer-zeXf1",
+  Backdrop2_prefix = "framer-zeXf1",
   Or = { htUh18eRJ: "framer-v-2yaxv0" };
-var Xr = {
+var Backdrop2_presenceAnimate = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -92,7 +92,7 @@ var Xr = {
     x: 0,
     y: 0,
   },
-  Jr = {
+  Backdrop2_presenceInitial = {
     opacity: 0.001,
     rotate: 0,
     rotateX: 0,
@@ -146,12 +146,12 @@ var Xr = {
           children: jsxs(FXDiv, {
             ...restProps,
             ...gestureHandlers,
-            __framer__presenceAnimate: setAppearAnimationValues("animate", "2yaxv0", Xr, undefined),
-            __framer__presenceInitial: setAppearAnimationValues("initial", "2yaxv0", Jr, undefined),
+            __framer__presenceAnimate: setAppearAnimationValues("animate", "2yaxv0", Backdrop2_presenceAnimate, undefined),
+            __framer__presenceInitial: setAppearAnimationValues("initial", "2yaxv0", Backdrop2_presenceInitial, undefined),
             __perspectiveFX: false,
             __smartComponentFX: true,
             __targetOpacity: 1,
-            className: cx(Gr, ...additionalClassNames, "framer-2yaxv0", className, classNames),
+            className: cx(Backdrop2_prefix, ...additionalClassNames, "framer-2yaxv0", className, classNames),
             "data-framer-appear-id": "2yaxv0",
             "data-framer-name": "Variant 1",
             layoutDependency: p,
@@ -244,7 +244,7 @@ var Xr = {
   Backdrop2 = withCSS(_Backdrop2, Backdrop2_css, "framer-zeXf1");
 Backdrop2.displayName = "Backdrop2";
 Backdrop2.defaultProps = { height: 800, width: 1200 };
-loadFonts(Backdrop2, [{ explicitInter: true, fonts: [] }, ...Lr, ...Mr], {
+loadFonts(Backdrop2, [{ explicitInter: true, fonts: [] }, ...W_fonts, ...NoiseOverlayComponent_fonts], {
   supportsExplicitInterCodegen: true,
 });
 fontLoader.loadFonts([
@@ -257,15 +257,15 @@ var jr = [
     '.framer-URl6O .framer-styles-preset-1411uq:not(.rich-text-wrapper), .framer-URl6O .framer-styles-preset-1411uq.rich-text-wrapper p { --framer-font-family: "Inter", "Inter Placeholder", sans-serif; --framer-font-family-bold: "Inter", "Inter Placeholder", sans-serif; --framer-font-family-bold-italic: "Inter", "Inter Placeholder", sans-serif; --framer-font-family-italic: "Inter", "Inter Placeholder", sans-serif; --framer-font-size: 14px; --framer-font-style: normal; --framer-font-style-bold: normal; --framer-font-style-bold-italic: italic; --framer-font-style-italic: italic; --framer-font-weight: 500; --framer-font-weight-bold: 700; --framer-font-weight-bold-italic: 700; --framer-font-weight-italic: 400; --framer-letter-spacing: 0em; --framer-line-height: 1.5em; --framer-paragraph-spacing: 20px; --framer-text-alignment: start; --framer-text-color: #666666; --framer-text-decoration: none; --framer-text-stroke-color: initial; --framer-text-stroke-width: initial; --framer-text-transform: none; }',
   ],
   qr = "framer-URl6O";
-var ne = getFonts(SmoothScrollComponent),
-  fe = getFonts(Backdrop2),
-  oe = getFonts(NavItemComponent),
+var SmoothScrollComponent_fonts = getFonts(SmoothScrollComponent),
+  Backdrop2_fonts = getFonts(Backdrop2),
+  NavItemComponent_fonts = getFonts(NavItemComponent),
   J = withScrollAnimation(NavItemComponent);
-var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
-  se = () => typeof document < "u",
-  Pr = "framer-9Y9Hr",
-  le = { LKrog5PlS: "framer-v-1byrpbb", QhSlAYPb_: "framer-v-1t32e7q" },
-  ce = {
+var breakpointQueries = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
+  isBrowser = () => typeof document < "u",
+  ScrollSection_prefix = "framer-9Y9Hr",
+  ScrollSection_variantClassNames = { LKrog5PlS: "framer-v-1byrpbb", QhSlAYPb_: "framer-v-1t32e7q" },
+  ScrollSection_hover = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -275,7 +275,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     skewY: 0,
     transition: SPRING_STANDARD,
   },
-  de = {
+  ScrollSection_hover2 = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -285,7 +285,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     skewY: 0,
     transition: SPRING_STANDARD,
   },
-  H = {
+  ScrollSection_hover3 = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -297,13 +297,13 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     y: -4,
   },
   qe = _(),
-  pe = { Desktop: "QhSlAYPb_", Phone: "LKrog5PlS" },
+  ScrollSection_variantNames = { Desktop: "QhSlAYPb_", Phone: "LKrog5PlS" },
   resolveScrollSectionProps = ({ height: m, id: f, width: s, ...l }) => {
     var d, g;
     return {
       ...l,
       variant:
-        (g = (d = pe[l.variant]) !== null && d !== undefined ? d : l.variant) !==
+        (g = (d = ScrollSection_variantNames[l.variant]) !== null && d !== undefined ? d : l.variant) !==
           null && g !== undefined
           ? g
           : "QhSlAYPb_",
@@ -345,10 +345,10 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
             document.body.classList.remove(`${n.bodyClassName}-framer-9Y9Hr`);
         };
       }, [undefined, activeLocale]));
-    let [K, $] = useVariantState(variant, me, false),
+    let [K, $] = useVariantState(variant, breakpointQueries, false),
       rr = undefined,
       localRef = useRef(null),
-      Y = () => (se() ? K !== "LKrog5PlS" : true),
+      Y = () => (isBrowser() ? K !== "LKrog5PlS" : true),
       Dr = useRoute(),
       localRef2 = useRef(null),
       localRef3 = useRef(null),
@@ -361,13 +361,13 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     return (
       registerCursors({}),
       jsx(CursorContext.Provider, {
-        value: { primaryVariantId: "QhSlAYPb_", variantClassNames: le },
+        value: { primaryVariantId: "QhSlAYPb_", variantClassNames: ScrollSection_variantClassNames },
         children: jsxs(LayoutGroup, {
           id: layoutId ?? autoId,
           children: [
             jsxs(motion.div, {
               ...restProps,
-              className: cx(Pr, ...tr, "framer-1t32e7q", className),
+              className: cx(ScrollSection_prefix, ...tr, "framer-1t32e7q", className),
               ref: forwardedRef ?? localRef,
               style: { ...style },
               children: [
@@ -412,7 +412,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                             "framer-itv9bu hidden-1byrpbb framer-1gbufye",
                           "data-framer-name": "Logo",
                           name: "Logo",
-                          whileHover: ce,
+                          whileHover: ScrollSection_hover,
                           children: jsx(SVGComponent, {
                             className: "framer-12ryuvk",
                             "data-framer-name": "Neoflix_Logo_SVG",
@@ -497,7 +497,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                           href: { webPageId: "x05wlhCdy" },
                           children: jsx(motion.ReactFragment, {
                             className: "framer-1tigvyz framer-1gbufye",
-                            whileHover: de,
+                            whileHover: ScrollSection_hover2,
                             children: jsx(RichTextComponent, {
                               __fromCanvasComponent: true,
                               children: jsx(ReactFragment, {
@@ -796,7 +796,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-1n6fn8e framer-1gbufye",
-                                              whileHover: H,
+                                              whileHover: ScrollSection_hover3,
                                               children: jsx("div", {
                                                 className: "framer-1p4s167",
                                                 children: jsxs("div", {
@@ -1131,7 +1131,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-phk48i framer-1gbufye",
-                                              whileHover: H,
+                                              whileHover: ScrollSection_hover3,
                                               children: jsx("div", {
                                                 className: "framer-ogdws",
                                                 children: jsxs("div", {
@@ -1263,7 +1263,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-1kkp7lb framer-1gbufye",
-                                              whileHover: H,
+                                              whileHover: ScrollSection_hover3,
                                               children: jsx("div", {
                                                 className: "framer-lomv20",
                                                 children: jsxs("div", {
@@ -1557,7 +1557,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-xz94rp framer-1gbufye",
-                                              whileHover: H,
+                                              whileHover: ScrollSection_hover3,
                                               children: jsx("div", {
                                                 className: "framer-1wt5vp3",
                                                 children: jsxs("div", {
@@ -1689,7 +1689,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-1cwcgh1 framer-1gbufye",
-                                              whileHover: H,
+                                              whileHover: ScrollSection_hover3,
                                               children: jsx("div", {
                                                 className: "framer-sxlgbs",
                                                 children: jsxs("div", {
@@ -2136,7 +2136,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-13n7zzq framer-1gbufye",
-                                              whileHover: H,
+                                              whileHover: ScrollSection_hover3,
                                               children: jsx("div", {
                                                 className: "framer-b6mfoc",
                                                 children: jsxs("div", {
@@ -2209,7 +2209,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                 }),
               ],
             }),
-            jsx("div", { className: cx(Pr, ...tr), id: "overlay" }),
+            jsx("div", { className: cx(ScrollSection_prefix, ...tr), id: "overlay" }),
           ],
         }),
       })
@@ -2279,9 +2279,9 @@ loadFonts(
   ScrollSection,
   [
     ...interHashedFontDefs,
-    ...ne,
-    ...fe,
-    ...oe,
+    ...SmoothScrollComponent_fonts,
+    ...Backdrop2_fonts,
+    ...NavItemComponent_fonts,
     ...normalizeFontConfig(fontConfig),
     ...normalizeFontConfig(interExtraBoldFontDefs),
     ...normalizeFontConfig(interMediumFontDefs),

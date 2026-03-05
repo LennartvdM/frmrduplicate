@@ -114,11 +114,11 @@ var scrollSnapStyle = {
   },
   withScrollSnap = (t) => (a) => jsx(t, { ...a, style: scrollSnapStyle });
 var FXDiv = withFXWrapper(motion.div),
-  ra = { h9tfYk7K5: { hover: true } },
+  NeoflixAnim_gestures = { h9tfYk7K5: { hover: true } },
   NeoflixAnim_cycleOrder = ["I5QaL6oi8", "h9tfYk7K5"],
-  ta = "framer-Kv8wc",
+  NeoflixAnim_prefix = "framer-Kv8wc",
   NeoflixAnim_variantClassNames = { h9tfYk7K5: "framer-v-1kdysgy", I5QaL6oi8: "framer-v-yyb023" };
-var sa = {
+var NeoflixAnim_presenceExit = {
     opacity: 0,
     rotate: 0,
     rotateX: 0,
@@ -130,7 +130,7 @@ var sa = {
     x: 0,
     y: 0,
   },
-  fa = {
+  NeoflixAnim_presenceAnimate = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -142,7 +142,7 @@ var sa = {
     x: 0,
     y: 0,
   },
-  la = {
+  NeoflixAnim_presenceInitial = {
     opacity: 0.001,
     rotate: 0,
     rotateX: 0,
@@ -153,13 +153,13 @@ var sa = {
     x: 0,
     y: 0,
   },
-  ca = { "Variant 1": "I5QaL6oi8", "Variant 2": "h9tfYk7K5" },
+  NeoflixAnim_variantNames = { "Variant 1": "I5QaL6oi8", "Variant 2": "h9tfYk7K5" },
   resolveNeoflixAnimProps = ({ height: t, id: a, width: n, ...i }) => {
     var o, f;
     return {
       ...i,
       variant:
-        (f = (o = ca[i.variant]) !== null && o !== undefined ? o : i.variant) !==
+        (f = (o = NeoflixAnim_variantNames[i.variant]) !== null && o !== undefined ? o : i.variant) !==
           null && f !== undefined
           ? f
           : "I5QaL6oi8",
@@ -179,7 +179,7 @@ var sa = {
       } = useComponentVariantState({
         cycleOrder: NeoflixAnim_cycleOrder,
         defaultVariant: "I5QaL6oi8",
-        enabledGestures: ra,
+        enabledGestures: NeoflixAnim_gestures,
         variant: variant,
         variantClassNames: NeoflixAnim_variantClassNames,
       }),
@@ -205,7 +205,7 @@ var sa = {
           value: SPRING_HEAVY,
           children: jsxs(FXDiv, {
             ...restProps,
-            className: cx(ta, ...additionalClassNames, "framer-yyb023", className, classNames),
+            className: cx(NeoflixAnim_prefix, ...additionalClassNames, "framer-yyb023", className, classNames),
             "data-framer-name": "Variant 1",
             "data-highlight": true,
             layoutDependency: v,
@@ -223,14 +223,14 @@ var sa = {
                   __framer__presenceAnimate: setAppearAnimationValues(
                     "animate",
                     "pbltdq",
-                    fa,
+                    NeoflixAnim_presenceAnimate,
                     undefined,
                   ),
-                  __framer__presenceExit: sa,
+                  __framer__presenceExit: NeoflixAnim_presenceExit,
                   __framer__presenceInitial: setAppearAnimationValues(
                     "initial",
                     "pbltdq",
-                    la,
+                    NeoflixAnim_presenceInitial,
                     undefined,
                   ),
                   __perspectiveFX: false,
@@ -316,13 +316,13 @@ addPropertyControls(NeoflixAnim, {
 });
 loadFonts(NeoflixAnim, [{ explicitInter: true, fonts: [] }], { supportsExplicitInterCodegen: true });
 var RecordReflectRefineCopy_cycleOrder = ["jPAyFUDCD", "KVq4FzV2g", "ak_u9yeBh"],
-  ya = "framer-Kt2aq",
+  RecordReflectRefineCopy_prefix = "framer-Kt2aq",
   RecordReflectRefineCopy_variantClassNames = {
     ak_u9yeBh: "framer-v-tsw57o",
     jPAyFUDCD: "framer-v-1mo43e9",
     KVq4FzV2g: "framer-v-1xs1f2",
   };
-var wa = {
+var RecordReflectRefineCopy_variantNames = {
     "Variant 1": "jPAyFUDCD",
     "Variant 2": "KVq4FzV2g",
     "Variant 3": "ak_u9yeBh",
@@ -332,7 +332,7 @@ var wa = {
     return {
       ...i,
       variant:
-        (f = (o = wa[i.variant]) !== null && o !== undefined ? o : i.variant) !==
+        (f = (o = RecordReflectRefineCopy_variantNames[i.variant]) !== null && o !== undefined ? o : i.variant) !==
           null && f !== undefined
           ? f
           : "jPAyFUDCD",
@@ -386,7 +386,7 @@ var wa = {
           value: TWEEN_INSTANT,
           children: jsx(motion.div, {
             ...restProps,
-            className: cx(ya, ...additionalClassNames, "framer-1mo43e9", className, classNames),
+            className: cx(RecordReflectRefineCopy_prefix, ...additionalClassNames, "framer-1mo43e9", className, classNames),
             "data-framer-name": "Variant 1",
             "data-highlight": true,
             layoutDependency: v,
@@ -623,13 +623,13 @@ loadFonts(
   { supportsExplicitInterCodegen: true },
 );
 var RecordReflectRefine_cycleOrder = ["Aa5IjJyQQ", "Ds7IWPpXk", "wtxEodMdN"],
-  ka = "framer-ABLhs",
+  RecordReflectRefine_prefix = "framer-ABLhs",
   RecordReflectRefine_variantClassNames = {
     Aa5IjJyQQ: "framer-v-2fjn4z",
     Ds7IWPpXk: "framer-v-wbkwq0",
     wtxEodMdN: "framer-v-10ybi4f",
   };
-var _a = {
+var RecordReflectRefine_variantNames = {
     "Variant 1": "Aa5IjJyQQ",
     "Variant 2": "Ds7IWPpXk",
     "Variant 3": "wtxEodMdN",
@@ -639,7 +639,7 @@ var _a = {
     return {
       ...i,
       variant:
-        (f = (o = _a[i.variant]) !== null && o !== undefined ? o : i.variant) !==
+        (f = (o = RecordReflectRefine_variantNames[i.variant]) !== null && o !== undefined ? o : i.variant) !==
           null && f !== undefined
           ? f
           : "Aa5IjJyQQ",
@@ -698,7 +698,7 @@ var _a = {
           children: jsx(motion.div, {
             ...restProps,
             ...gestureHandlers,
-            className: cx(ka, ...additionalClassNames, "framer-2fjn4z", className, classNames),
+            className: cx(RecordReflectRefine_prefix, ...additionalClassNames, "framer-2fjn4z", className, classNames),
             "data-framer-name": "Variant 1",
             "data-highlight": true,
             layoutDependency: m,
@@ -1045,7 +1045,7 @@ var Sa = {
     },
     forwardedRef,
   ) {
-    let L = Sa[s] || s,
+    let Trigger_initial = Sa[s] || s,
       {
         baseVariant,
         classNames,
@@ -1058,7 +1058,7 @@ var Sa = {
         cycleOrder: Trigger_cycleOrder,
         defaultVariant: "xKACItaHS",
         transitions: Ta,
-        variant: L,
+        variant: Trigger_initial,
         variantClassNames: Trigger_variantClassNames,
       }),
       h = variants.join("-") + C.layoutDependency,
@@ -1070,7 +1070,7 @@ var Sa = {
     return jsx(LayoutGroup, {
       id: f ?? autoId,
       children: jsx(motion.div, {
-        initial: L,
+        initial: Trigger_initial,
         animate: variants,
         onHoverStart: () => setGestureState({ isHovered: true }),
         onHoverEnd: () => setGestureState({ isHovered: false }),
@@ -1134,21 +1134,21 @@ addPropertyControls(Trigger, {
 });
 loadFonts(Trigger, []);
 var Decisiveness_cycleOrder = ["QCVLxQKOQ", "XVQi0W0KO", "Xwn3H48jY"],
-  Ba = "framer-2FQXY",
+  Decisiveness_prefix = "framer-2FQXY",
   Decisiveness_variantClassNames = {
     QCVLxQKOQ: "framer-v-14h8w6j",
     XVQi0W0KO: "framer-v-1r41h02",
     Xwn3H48jY: "framer-v-548aw2",
   };
-var Ea = (t, a) => `translateX(-50%) ${a}`,
-  Qa = { Active: "XVQi0W0KO", Inactive: "Xwn3H48jY", Main: "QCVLxQKOQ" },
+var Decisiveness_transform = (t, a) => `translateX(-50%) ${a}`,
+  Decisiveness_variantNames = { Active: "XVQi0W0KO", Inactive: "Xwn3H48jY", Main: "QCVLxQKOQ" },
   resolveDecisivenessProps = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
     return {
       ...o,
       NXCj7csO1: n ?? o.NXCj7csO1,
       variant:
-        (s = (f = Qa[o.variant]) !== null && f !== undefined ? f : o.variant) !==
+        (s = (f = Decisiveness_variantNames[o.variant]) !== null && f !== undefined ? f : o.variant) !==
           null && s !== undefined
           ? s
           : "QCVLxQKOQ",
@@ -1203,7 +1203,7 @@ var Ea = (t, a) => `translateX(-50%) ${a}`,
           children: jsx(motion.div, {
             ...restProps,
             ...gestureHandlers,
-            className: cx(Ba, ...additionalClassNames, "framer-14h8w6j", className, classNames),
+            className: cx(Decisiveness_prefix, ...additionalClassNames, "framer-14h8w6j", className, classNames),
             "data-framer-name": "Main",
             "data-highlight": true,
             layoutDependency: u,
@@ -1260,7 +1260,7 @@ var Ea = (t, a) => `translateX(-50%) ${a}`,
                 "--extracted-1of0zx5": "rgb(136, 136, 136)",
                 "--framer-paragraph-spacing": "0px",
               },
-              transformTemplate: Ea,
+              transformTemplate: Decisiveness_transform,
               variants: {
                 XVQi0W0KO: {
                   "--extracted-1of0zx5":
@@ -1338,21 +1338,21 @@ loadFonts(
   { supportsExplicitInterCodegen: true },
 );
 var QuietReflection_cycleOrder = ["A73BIfYrH", "yFu0ego46", "Bq4Oqy1P7"],
-  rt = "framer-pC2CI",
+  QuietReflection_prefix = "framer-pC2CI",
   QuietReflection_variantClassNames = {
     A73BIfYrH: "framer-v-1f4gy1p",
     Bq4Oqy1P7: "framer-v-11x7aqu",
     yFu0ego46: "framer-v-tr7mnx",
   };
-var nt = (t, a) => `translateX(-50%) ${a}`,
-  st = { Active: "yFu0ego46", Inactive: "Bq4Oqy1P7", Main: "A73BIfYrH" },
+var QuietReflection_transform = (t, a) => `translateX(-50%) ${a}`,
+  QuietReflection_variantNames = { Active: "yFu0ego46", Inactive: "Bq4Oqy1P7", Main: "A73BIfYrH" },
   resolveQuietReflectionProps = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
     return {
       ...o,
       HEb3Jrr9H: n ?? o.HEb3Jrr9H,
       variant:
-        (s = (f = st[o.variant]) !== null && f !== undefined ? f : o.variant) !==
+        (s = (f = QuietReflection_variantNames[o.variant]) !== null && f !== undefined ? f : o.variant) !==
           null && s !== undefined
           ? s
           : "A73BIfYrH",
@@ -1410,7 +1410,7 @@ var nt = (t, a) => `translateX(-50%) ${a}`,
           children: jsx(motion.div, {
             ...restProps,
             ...gestureHandlers,
-            className: cx(rt, ...additionalClassNames, "framer-1f4gy1p", className, classNames),
+            className: cx(QuietReflection_prefix, ...additionalClassNames, "framer-1f4gy1p", className, classNames),
             "data-framer-name": "Main",
             "data-highlight": true,
             layoutDependency: u,
@@ -1444,7 +1444,7 @@ var nt = (t, a) => `translateX(-50%) ${a}`,
               className: "framer-1aqnoq4",
               layoutDependency: u,
               layoutId: "erKigIyyG",
-              transformTemplate: nt,
+              transformTemplate: QuietReflection_transform,
               children: jsx(RichTextComponent, {
                 __fromCanvasComponent: true,
                 children: jsx(ReactFragment, {
@@ -1556,21 +1556,21 @@ loadFonts(
   { supportsExplicitInterCodegen: true },
 );
 var TeamDynamics_cycleOrder = ["HkR7N8JHH", "qFD4z7zh2", "uLTZzDf3c"],
-  pt = "framer-gdsq7",
+  TeamDynamics_prefix = "framer-gdsq7",
   TeamDynamics_variantClassNames = {
     HkR7N8JHH: "framer-v-6uc7fk",
     qFD4z7zh2: "framer-v-13j692f",
     uLTZzDf3c: "framer-v-1ws1zva",
   };
-var gt = (t, a) => `translate(-50%, -50%) ${a}`,
-  vt = { Active: "qFD4z7zh2", Inactive: "uLTZzDf3c", Main: "HkR7N8JHH" },
+var TeamDynamics_transform = (t, a) => `translate(-50%, -50%) ${a}`,
+  TeamDynamics_variantNames = { Active: "qFD4z7zh2", Inactive: "uLTZzDf3c", Main: "HkR7N8JHH" },
   resolveTeamDynamicsProps = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
     return {
       ...o,
       E2jYS2CvR: n ?? o.E2jYS2CvR,
       variant:
-        (s = (f = vt[o.variant]) !== null && f !== undefined ? f : o.variant) !==
+        (s = (f = TeamDynamics_variantNames[o.variant]) !== null && f !== undefined ? f : o.variant) !==
           null && s !== undefined
           ? s
           : "HkR7N8JHH",
@@ -1625,7 +1625,7 @@ var gt = (t, a) => `translate(-50%, -50%) ${a}`,
           children: jsx(motion.div, {
             ...restProps,
             ...gestureHandlers,
-            className: cx(pt, ...additionalClassNames, "framer-6uc7fk", className, classNames),
+            className: cx(TeamDynamics_prefix, ...additionalClassNames, "framer-6uc7fk", className, classNames),
             "data-framer-name": "Main",
             "data-highlight": true,
             layoutDependency: u,
@@ -1683,7 +1683,7 @@ var gt = (t, a) => `translate(-50%, -50%) ${a}`,
                 "--extracted-1of0zx5": "rgb(136, 136, 136)",
                 "--framer-paragraph-spacing": "0px",
               },
-              transformTemplate: gt,
+              transformTemplate: TeamDynamics_transform,
               variants: {
                 qFD4z7zh2: {
                   "--extracted-1of0zx5":
@@ -1763,19 +1763,19 @@ loadFonts(
 );
 var FXDiv = withFXWrapper(motion.div),
   FXLink = scheduleAppearAnimation(withFXWrapper(motion.a)),
-  Rt = getFonts(Trigger),
-  Xt = getFonts(QuietReflection),
-  Ot = getFonts(TeamDynamics),
-  kt = getFonts(Decisiveness),
-  Ut = getFonts(G),
+  Trigger_fonts = getFonts(Trigger),
+  QuietReflection_fonts = getFonts(QuietReflection),
+  TeamDynamics_fonts = getFonts(TeamDynamics),
+  Decisiveness_fonts = getFonts(Decisiveness),
+  G_fonts = getFonts(G),
   StoryRight_cycleOrder = ["SoQlwVPaX", "CuHIQOWnA", "ggKLLEo3O"],
-  _t = "framer-MY1rC",
+  StoryRight_prefix = "framer-MY1rC",
   StoryRight_variantClassNames = {
     CuHIQOWnA: "framer-v-sltbvw",
     ggKLLEo3O: "framer-v-8q1l2i",
     SoQlwVPaX: "framer-v-1gwjjt4",
   };
-var Je = {
+var StoryRight_animate = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -1787,7 +1787,7 @@ var Je = {
     x: 0,
     y: 0,
   },
-  Ge = {
+  StoryRight_initial = {
     opacity: 0.001,
     rotate: 0,
     rotateX: 0,
@@ -1798,7 +1798,7 @@ var Je = {
     x: 0,
     y: 0,
   },
-  $e = {
+  StoryRight_enter = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -1810,7 +1810,7 @@ var Je = {
     x: -410,
     y: 0,
   },
-  er = {
+  StoryRight_exit = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -1823,7 +1823,7 @@ var Je = {
     x: -410,
     y: 0,
   },
-  Lt = {
+  StoryRight_hover = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -1834,7 +1834,7 @@ var Je = {
     transition: SPRING_STANDARD,
     y: -4,
   },
-  St = {
+  StoryRight_variantNames = {
     "First Tab": "SoQlwVPaX",
     "Variant 2": "CuHIQOWnA",
     "Variant 3": "ggKLLEo3O",
@@ -1845,7 +1845,7 @@ var Je = {
       ...o,
       U4TM70Ust: n ?? o.U4TM70Ust,
       variant:
-        (s = (f = St[o.variant]) !== null && f !== undefined ? f : o.variant) !==
+        (s = (f = StoryRight_variantNames[o.variant]) !== null && f !== undefined ? f : o.variant) !==
           null && s !== undefined
           ? s
           : "SoQlwVPaX",
@@ -1915,7 +1915,7 @@ var Je = {
           children: jsxs(motion.div, {
             ...restProps,
             ...gestureHandlers,
-            className: cx(_t, ...additionalClassNames, "framer-1gwjjt4", className, classNames),
+            className: cx(StoryRight_prefix, ...additionalClassNames, "framer-1gwjjt4", className, classNames),
             "data-framer-name": "First Tab",
             "data-highlight": true,
             layoutDependency: h,
@@ -1939,11 +1939,11 @@ var Je = {
                     __perspectiveFX: false,
                     __smartComponentFX: true,
                     __targetOpacity: 1,
-                    animate: Je,
+                    animate: StoryRight_animate,
                     className: "framer-yibhi7 framer-3s0w40",
                     "data-framer-appear-id": "yibhi7",
                     "data-framer-name": "Line1",
-                    initial: Ge,
+                    initial: StoryRight_initial,
                     layoutDependency: h,
                     layoutId: "d4yrklyed",
                     optimized: true,
@@ -1960,8 +1960,8 @@ var Je = {
                       children: jsx(FXDiv, {
                         __framer__animate: { transition: TWEEN_CYCLE },
                         __framer__animateOnce: true,
-                        __framer__enter: $e,
-                        __framer__exit: er,
+                        __framer__enter: StoryRight_enter,
+                        __framer__exit: StoryRight_exit,
                         __framer__styleAppearEffectEnabled: true,
                         __framer__threshold: 0.5,
                         __perspectiveFX: false,
@@ -1992,11 +1992,11 @@ var Je = {
                     __perspectiveFX: false,
                     __smartComponentFX: true,
                     __targetOpacity: 1,
-                    animate: Je,
+                    animate: StoryRight_animate,
                     className: "framer-pm8gf7 framer-3s0w40",
                     "data-framer-appear-id": "pm8gf7",
                     "data-framer-name": "Line2",
-                    initial: Ge,
+                    initial: StoryRight_initial,
                     layoutDependency: h,
                     layoutId: "AOX7QIi27",
                     optimized: true,
@@ -2013,8 +2013,8 @@ var Je = {
                       children: jsx(FXDiv, {
                         __framer__animate: { transition: TWEEN_CYCLE },
                         __framer__animateOnce: true,
-                        __framer__enter: $e,
-                        __framer__exit: er,
+                        __framer__enter: StoryRight_enter,
+                        __framer__exit: StoryRight_exit,
                         __framer__styleAppearEffectEnabled: true,
                         __framer__threshold: 0.5,
                         __perspectiveFX: false,
@@ -2045,11 +2045,11 @@ var Je = {
                     __perspectiveFX: false,
                     __smartComponentFX: true,
                     __targetOpacity: 1,
-                    animate: Je,
+                    animate: StoryRight_animate,
                     className: "framer-18rxxtg framer-3s0w40",
                     "data-framer-appear-id": "18rxxtg",
                     "data-framer-name": "Line3",
-                    initial: Ge,
+                    initial: StoryRight_initial,
                     layoutDependency: h,
                     layoutId: "KkDnWBjxk",
                     optimized: true,
@@ -2066,8 +2066,8 @@ var Je = {
                       children: jsx(FXDiv, {
                         __framer__animate: { transition: TWEEN_CYCLE },
                         __framer__animateOnce: true,
-                        __framer__enter: $e,
-                        __framer__exit: er,
+                        __framer__enter: StoryRight_enter,
+                        __framer__exit: StoryRight_exit,
                         __framer__styleAppearEffectEnabled: true,
                         __framer__threshold: 0.5,
                         __perspectiveFX: false,
@@ -2284,7 +2284,7 @@ var Je = {
                       borderTopRightRadius: 20,
                       boxShadow: "1px 2px 2px 0px rgba(0,0,0,0.25)",
                     },
-                    whileHover: Lt,
+                    whileHover: StoryRight_hover,
                     children: [
                       jsx(DeviceSizeContainer, {
                         children: jsx(motion.div, {
@@ -2450,25 +2450,25 @@ addPropertyControls(StoryRight, {
   },
   U4TM70Ust: { title: "Tap", type: ControlType.EventHandler },
 });
-loadFonts(StoryRight, [{ explicitInter: true, fonts: [] }, ...Rt, ...Xt, ...Ot, ...kt, ...Ut], {
+loadFonts(StoryRight, [{ explicitInter: true, fonts: [] }, ...Trigger_fonts, ...QuietReflection_fonts, ...TeamDynamics_fonts, ...Decisiveness_fonts, ...G_fonts], {
   supportsExplicitInterCodegen: true,
 });
 var TunnelVision_cycleOrder = ["NFc0G3jDM", "NH6OUC_9N", "Bx08xEGah"],
-  At = "framer-Z1wid",
+  TunnelVision_prefix = "framer-Z1wid",
   TunnelVision_variantClassNames = {
     Bx08xEGah: "framer-v-s81sxb",
     NFc0G3jDM: "framer-v-r8ywzq",
     NH6OUC_9N: "framer-v-3v0an8",
   };
-var Kt = (t, a) => `translateX(-50%) ${a}`,
-  Zt = { "Variant 1": "NFc0G3jDM", Inactive: "Bx08xEGah", Raised: "NH6OUC_9N" },
+var TunnelVision_transform = (t, a) => `translateX(-50%) ${a}`,
+  TunnelVision_variantNames = { "Variant 1": "NFc0G3jDM", Inactive: "Bx08xEGah", Raised: "NH6OUC_9N" },
   resolveTunnelVisionProps = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
     return {
       ...o,
       UGmfn7WC9: n ?? o.UGmfn7WC9,
       variant:
-        (s = (f = Zt[o.variant]) !== null && f !== undefined ? f : o.variant) !==
+        (s = (f = TunnelVision_variantNames[o.variant]) !== null && f !== undefined ? f : o.variant) !==
           null && s !== undefined
           ? s
           : "NFc0G3jDM",
@@ -2523,7 +2523,7 @@ var Kt = (t, a) => `translateX(-50%) ${a}`,
           value: SPRING_CAPTION,
           children: jsx(motion.div, {
             ...restProps,
-            className: cx(At, ...additionalClassNames, "framer-r8ywzq", className, classNames),
+            className: cx(TunnelVision_prefix, ...additionalClassNames, "framer-r8ywzq", className, classNames),
             "data-framer-name": "Variant 1",
             "data-highlight": true,
             layoutDependency: x,
@@ -2588,7 +2588,7 @@ var Kt = (t, a) => `translateX(-50%) ${a}`,
                   "var(--token-11283d1d-910e-47f4-b268-f6a3911b834b, rgb(128, 128, 128))",
                 "--framer-paragraph-spacing": "0px",
               },
-              transformTemplate: Kt,
+              transformTemplate: TunnelVision_transform,
               variants: {
                 NH6OUC_9N: {
                   "--extracted-1of0zx5":
@@ -2671,21 +2671,21 @@ loadFonts(
   { supportsExplicitInterCodegen: true },
 );
 var Urgency_cycleOrder = ["zsZ4Z5z6N", "j8drpudA2", "gO1Oy0ksh"],
-  an = "framer-0umfc",
+  Urgency_prefix = "framer-0umfc",
   Urgency_variantClassNames = {
     gO1Oy0ksh: "framer-v-138ztx9",
     j8drpudA2: "framer-v-1elz6w7",
     zsZ4Z5z6N: "framer-v-1g1moqd",
   };
-var on = (t, a) => `translateY(-50%) ${a}`,
-  ln = { inactive: "gO1Oy0ksh", Main: "zsZ4Z5z6N", Raised: "j8drpudA2" },
+var Urgency_transform = (t, a) => `translateY(-50%) ${a}`,
+  Urgency_variantNames = { inactive: "gO1Oy0ksh", Main: "zsZ4Z5z6N", Raised: "j8drpudA2" },
   resolveUrgencyProps = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
     return {
       ...o,
       mBC2PxMBg: n ?? o.mBC2PxMBg,
       variant:
-        (s = (f = ln[o.variant]) !== null && f !== undefined ? f : o.variant) !==
+        (s = (f = Urgency_variantNames[o.variant]) !== null && f !== undefined ? f : o.variant) !==
           null && s !== undefined
           ? s
           : "zsZ4Z5z6N",
@@ -2738,7 +2738,7 @@ var on = (t, a) => `translateY(-50%) ${a}`,
           value: SPRING_CAPTION,
           children: jsxs(motion.div, {
             ...restProps,
-            className: cx(an, ...additionalClassNames, "framer-1g1moqd", className, classNames),
+            className: cx(Urgency_prefix, ...additionalClassNames, "framer-1g1moqd", className, classNames),
             "data-framer-name": "Main",
             "data-highlight": true,
             layoutDependency: x,
@@ -2778,7 +2778,7 @@ var on = (t, a) => `translateY(-50%) ${a}`,
                   className: "framer-zcizhz",
                   layoutDependency: x,
                   layoutId: "IXgMWqBN9",
-                  transformTemplate: on,
+                  transformTemplate: Urgency_transform,
                 }),
               jsx(RichTextComponent, {
                 __fromCanvasComponent: true,
@@ -2890,21 +2890,21 @@ loadFonts(
   { supportsExplicitInterCodegen: true },
 );
 var Coordination_cycleOrder = ["S3kYznUP4", "xZIBSRPrK", "aJO1FcIHC"],
-  un = "framer-DCwjj",
+  Coordination_prefix = "framer-DCwjj",
   Coordination_variantClassNames = {
     aJO1FcIHC: "framer-v-1q68uxm",
     S3kYznUP4: "framer-v-11b0mpr",
     xZIBSRPrK: "framer-v-327s0c",
   };
-var yn = (t, a) => `translateY(-50%) ${a}`,
-  wn = { Inactive: "aJO1FcIHC", Main: "S3kYznUP4", Raised: "xZIBSRPrK" },
+var Coordination_transform = (t, a) => `translateY(-50%) ${a}`,
+  Coordination_variantNames = { Inactive: "aJO1FcIHC", Main: "S3kYznUP4", Raised: "xZIBSRPrK" },
   resolveCoordinationProps = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
     return {
       ...o,
       kJZ82E8Mx: n ?? o.kJZ82E8Mx,
       variant:
-        (s = (f = wn[o.variant]) !== null && f !== undefined ? f : o.variant) !==
+        (s = (f = Coordination_variantNames[o.variant]) !== null && f !== undefined ? f : o.variant) !==
           null && s !== undefined
           ? s
           : "S3kYznUP4",
@@ -2957,7 +2957,7 @@ var yn = (t, a) => `translateY(-50%) ${a}`,
           value: SPRING_CAPTION,
           children: jsxs(motion.div, {
             ...restProps,
-            className: cx(un, ...additionalClassNames, "framer-11b0mpr", className, classNames),
+            className: cx(Coordination_prefix, ...additionalClassNames, "framer-11b0mpr", className, classNames),
             "data-framer-name": "Main",
             "data-highlight": true,
             layoutDependency: x,
@@ -2997,7 +2997,7 @@ var yn = (t, a) => `translateY(-50%) ${a}`,
                   className: "framer-jjhh2s",
                   layoutDependency: x,
                   layoutId: "TkGeRqFTC",
-                  transformTemplate: yn,
+                  transformTemplate: Coordination_transform,
                   children: jsx(motion.div, {
                     className: "framer-1bvamph",
                     layoutDependency: x,
@@ -3115,19 +3115,19 @@ loadFonts(
 );
 var FXDiv = withFXWrapper(motion.div),
   FXLink = scheduleAppearAnimation(withFXWrapper(motion.a)),
-  On = getFonts(G),
-  kn = getFonts(Urgency),
-  Un = getFonts(Coordination),
-  In = getFonts(TunnelVision),
-  _n = getFonts(Trigger),
+  G_fonts2 = getFonts(G),
+  Urgency_fonts = getFonts(Urgency),
+  Coordination_fonts = getFonts(Coordination),
+  TunnelVision_fonts = getFonts(TunnelVision),
+  Trigger_fonts2 = getFonts(Trigger),
   StoryLeft2_cycleOrder = ["Q1DJ9ntwf", "qvmKCdJXN", "hxzAUWcy0"],
-  jn = "framer-sRCsS",
+  StoryLeft2_prefix = "framer-sRCsS",
   StoryLeft2_variantClassNames = {
     hxzAUWcy0: "framer-v-jxbueo",
     Q1DJ9ntwf: "framer-v-khfq23",
     qvmKCdJXN: "framer-v-1m0rm34",
   };
-var Br = {
+var StoryLeft2_animate = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -3139,7 +3139,7 @@ var Br = {
     x: 0,
     y: 0,
   },
-  sr = {
+  StoryLeft2_initial = {
     opacity: 0.001,
     rotate: 0,
     rotateX: 0,
@@ -3150,7 +3150,7 @@ var Br = {
     x: 0,
     y: 0,
   },
-  fr = {
+  StoryLeft2_enter = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -3162,7 +3162,7 @@ var Br = {
     x: -410,
     y: 0,
   },
-  lr = {
+  StoryLeft2_exit = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -3175,7 +3175,7 @@ var Br = {
     x: -410,
     y: 0,
   },
-  Fn = {
+  StoryLeft2_animate2 = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -3187,7 +3187,7 @@ var Br = {
     x: 0,
     y: 0,
   },
-  Sn = {
+  StoryLeft2_hover = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -3198,7 +3198,7 @@ var Br = {
     transition: SPRING_STANDARD,
     y: -4,
   },
-  mr = {
+  StoryLeft2_hover2 = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -3209,7 +3209,7 @@ var Br = {
     transition: SPRING_STANDARD,
     y: -4,
   },
-  Pn = {
+  StoryLeft2_variantNames = {
     "First tab": "Q1DJ9ntwf",
     "SECOND TAB": "qvmKCdJXN",
     "Third Tab": "hxzAUWcy0",
@@ -3219,7 +3219,7 @@ var Br = {
     return {
       ...i,
       variant:
-        (f = (o = Pn[i.variant]) !== null && o !== undefined ? o : i.variant) !==
+        (f = (o = StoryLeft2_variantNames[i.variant]) !== null && o !== undefined ? o : i.variant) !==
           null && f !== undefined
           ? f
           : "Q1DJ9ntwf",
@@ -3278,7 +3278,7 @@ var Br = {
           children: jsxs(motion.div, {
             ...restProps,
             ...gestureHandlers,
-            className: cx(jn, ...additionalClassNames, "framer-khfq23", className, classNames),
+            className: cx(StoryLeft2_prefix, ...additionalClassNames, "framer-khfq23", className, classNames),
             "data-framer-name": "First tab",
             "data-highlight": true,
             layoutDependency: m,
@@ -3303,11 +3303,11 @@ var Br = {
                     __perspectiveFX: false,
                     __smartComponentFX: true,
                     __targetOpacity: 1,
-                    animate: Br,
+                    animate: StoryLeft2_animate,
                     className: "framer-5fo9sd framer-rf24a0",
                     "data-framer-appear-id": "5fo9sd",
                     "data-framer-name": "Line1",
-                    initial: sr,
+                    initial: StoryLeft2_initial,
                     layoutDependency: m,
                     layoutId: "ym2GR63Iz",
                     optimized: true,
@@ -3324,8 +3324,8 @@ var Br = {
                       children: jsx(FXDiv, {
                         __framer__animate: { transition: TWEEN_CYCLE },
                         __framer__animateOnce: true,
-                        __framer__enter: fr,
-                        __framer__exit: lr,
+                        __framer__enter: StoryLeft2_enter,
+                        __framer__exit: StoryLeft2_exit,
                         __framer__styleAppearEffectEnabled: true,
                         __framer__threshold: 0.5,
                         __perspectiveFX: false,
@@ -3356,11 +3356,11 @@ var Br = {
                     __perspectiveFX: false,
                     __smartComponentFX: true,
                     __targetOpacity: 1,
-                    animate: Br,
+                    animate: StoryLeft2_animate,
                     className: "framer-1ssjips framer-rf24a0",
                     "data-framer-appear-id": "1ssjips",
                     "data-framer-name": "Line2",
-                    initial: sr,
+                    initial: StoryLeft2_initial,
                     layoutDependency: m,
                     layoutId: "kVKqiec1R",
                     optimized: true,
@@ -3377,8 +3377,8 @@ var Br = {
                       children: jsx(FXDiv, {
                         __framer__animate: { transition: TWEEN_CYCLE },
                         __framer__animateOnce: true,
-                        __framer__enter: fr,
-                        __framer__exit: lr,
+                        __framer__enter: StoryLeft2_enter,
+                        __framer__exit: StoryLeft2_exit,
                         __framer__styleAppearEffectEnabled: true,
                         __framer__threshold: 0.5,
                         __perspectiveFX: false,
@@ -3409,11 +3409,11 @@ var Br = {
                     __perspectiveFX: false,
                     __smartComponentFX: true,
                     __targetOpacity: 1,
-                    animate: Fn,
+                    animate: StoryLeft2_animate2,
                     className: "framer-75yx8m framer-rf24a0",
                     "data-framer-appear-id": "75yx8m",
                     "data-framer-name": "Line3",
-                    initial: sr,
+                    initial: StoryLeft2_initial,
                     layoutDependency: m,
                     layoutId: "VLlZAE501",
                     optimized: true,
@@ -3430,8 +3430,8 @@ var Br = {
                       children: jsx(FXDiv, {
                         __framer__animate: { transition: TWEEN_CYCLE },
                         __framer__animateOnce: true,
-                        __framer__enter: fr,
-                        __framer__exit: lr,
+                        __framer__enter: StoryLeft2_enter,
+                        __framer__exit: StoryLeft2_exit,
                         __framer__styleAppearEffectEnabled: true,
                         __framer__threshold: 0.5,
                         __perspectiveFX: false,
@@ -3487,7 +3487,7 @@ var Br = {
                     borderTopLeftRadius: 20,
                     borderTopRightRadius: 20,
                   },
-                  whileHover: Sn,
+                  whileHover: StoryLeft2_hover,
                   ...mergeVariantProps(
                     {
                       hxzAUWcy0: {
@@ -3687,7 +3687,7 @@ var Br = {
                         className: "framer-ho4a6n-container",
                         layoutDependency: m,
                         layoutId: "Kjarh8b0F-container",
-                        whileHover: mr,
+                        whileHover: StoryLeft2_hover2,
                         children: jsx(Urgency, {
                           height: "100%",
                           id: "Kjarh8b0F",
@@ -3718,7 +3718,7 @@ var Br = {
                         className: "framer-17nq8nm-container",
                         layoutDependency: m,
                         layoutId: "Qw2n1EueW-container",
-                        whileHover: mr,
+                        whileHover: StoryLeft2_hover2,
                         ...mergeVariantProps({ qvmKCdJXN: { whileHover: undefined } }, baseVariant, gestureVariant),
                         children: jsx(Coordination, {
                           height: "100%",
@@ -3737,7 +3737,7 @@ var Br = {
                         className: "framer-6if8f0-container",
                         layoutDependency: m,
                         layoutId: "BPtfXhKGl-container",
-                        whileHover: mr,
+                        whileHover: StoryLeft2_hover2,
                         ...mergeVariantProps({ hxzAUWcy0: { whileHover: undefined } }, baseVariant, gestureVariant),
                         children: jsx(TunnelVision, {
                           height: "100%",
@@ -3885,36 +3885,36 @@ addPropertyControls(StoryLeft2, {
     type: ControlType.Enum,
   },
 });
-loadFonts(StoryLeft2, [{ explicitInter: true, fonts: [] }, ...On, ...kn, ...Un, ...In, ..._n], {
+loadFonts(StoryLeft2, [{ explicitInter: true, fonts: [] }, ...G_fonts2, ...Urgency_fonts, ...Coordination_fonts, ...TunnelVision_fonts, ...Trigger_fonts2], {
   supportsExplicitInterCodegen: true,
 });
-var li = getFonts(MapMobile2Component),
-  ge = withScrollSnapChild(motion.section),
-  me = withScrollSnap(motion.section),
-  mi = getFonts(G),
-  di = getFonts(NeoflixAnim),
-  ci = getFonts(RecordReflectRefineCopy),
-  pi = withScrollSnapContainer(motion.main),
-  hi = getFonts(NeoflixAnim),
-  ui = getFonts(RecordReflectRefine),
-  Fe = scheduleAppearAnimation(motion.div),
-  gi = getFonts(StoryLeft2),
-  xi = getFonts(StoryRight),
-  yi = getFonts(MapComponent),
-  vi = withScrollSnapContainerAlt(motion.main),
-  bi = {
+var MapMobile2Component_fonts = getFonts(MapMobile2Component),
+  ScrollSnapSection = withScrollSnapChild(motion.section),
+  ScrollSnapSectionWrap = withScrollSnap(motion.section),
+  G_fonts3 = getFonts(G),
+  NeoflixAnim_fonts = getFonts(NeoflixAnim),
+  RecordReflectRefineCopy_fonts = getFonts(RecordReflectRefineCopy),
+  ScrollSnapMain = withScrollSnapContainer(motion.main),
+  NeoflixAnim_fonts2 = getFonts(NeoflixAnim),
+  RecordReflectRefine_fonts = getFonts(RecordReflectRefine),
+  AppearDiv = scheduleAppearAnimation(motion.div),
+  StoryLeft2_fonts = getFonts(StoryLeft2),
+  StoryRight_fonts = getFonts(StoryRight),
+  MapComponent_fonts = getFonts(MapComponent),
+  ScrollSnapMainAlt = withScrollSnapContainerAlt(motion.main),
+  breakpointQueries = {
     CXFUsfZRE: "(max-width: 809px)",
     ueHalD28r: "(min-width: 810px) and (max-width: 1199px)",
     WQLkyLRf1: "(min-width: 1200px)",
   },
-  Er = () => typeof document < "u",
-  Kr = "framer-qO1UX",
-  wi = {
+  isBrowser = () => typeof document < "u",
+  Home_prefix = "framer-qO1UX",
+  Home_variantClassNames = {
     CXFUsfZRE: "framer-v-1jamxon",
     ueHalD28r: "framer-v-1uu5wld",
     WQLkyLRf1: "framer-v-72rtr7",
   },
-  Ci = {
+  Home_hover = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -3924,7 +3924,7 @@ var li = getFonts(MapMobile2Component),
     skewY: 0,
     transition: SPRING_STANDARD,
   },
-  qi = {
+  Home_hover2 = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -3934,7 +3934,7 @@ var li = getFonts(MapMobile2Component),
     skewY: 0,
     transition: SPRING_STANDARD,
   },
-  Wr = {
+  Home_hover3 = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -3945,9 +3945,9 @@ var li = getFonts(MapMobile2Component),
     transition: SPRING_STANDARD,
     y: -4,
   },
-  pr = (t, a) => `translateX(-50%) ${a}`,
+  Home_transform = (t, a) => `translateX(-50%) ${a}`,
   Ri = { damping: 30, delay: 1, mass: 1, stiffness: 400, type: "spring" /* physics-based spring animation */ },
-  Qr = {
+  Home_animate = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -3959,7 +3959,7 @@ var li = getFonts(MapMobile2Component),
     x: 0,
     y: 0,
   },
-  Se = {
+  Home_initial = {
     opacity: 0.001,
     rotate: 0,
     rotateX: 0,
@@ -3971,7 +3971,7 @@ var li = getFonts(MapMobile2Component),
     y: 0,
   },
   Xi = { damping: 30, delay: 0.9, mass: 1, stiffness: 400, type: "spring" /* physics-based spring animation */ },
-  Zr = {
+  Home_animate2 = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -3983,9 +3983,9 @@ var li = getFonts(MapMobile2Component),
     x: 0,
     y: 0,
   },
-  Jr = (t, a) => `translate(-50%, -50%) ${a}`,
-  Gr = (t, a) => `translateY(-50%) ${a}`,
-  Oi = {
+  Home_transform2 = (t, a) => `translate(-50%, -50%) ${a}`,
+  Home_transform3 = (t, a) => `translateY(-50%) ${a}`,
+  Home_hover4 = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -3996,13 +3996,13 @@ var li = getFonts(MapMobile2Component),
     transition: SPRING_STANDARD,
   },
   hr = Ve(),
-  ki = { Desktop: "WQLkyLRf1", Phone: "CXFUsfZRE", Tablet: "ueHalD28r" },
+  Home_variantNames = { Desktop: "WQLkyLRf1", Phone: "CXFUsfZRE", Tablet: "ueHalD28r" },
   resolveHomeProps = ({ height: t, id: a, width: n, ...i }) => {
     var o, f;
     return {
       ...i,
       variant:
-        (f = (o = ki[i.variant]) !== null && o !== undefined ? o : i.variant) !==
+        (f = (o = Home_variantNames[i.variant]) !== null && o !== undefined ? o : i.variant) !==
           null && f !== undefined
           ? f
           : "WQLkyLRf1",
@@ -4044,23 +4044,23 @@ var li = getFonts(MapMobile2Component),
             document.body.classList.remove(`${u.bodyClassName}-framer-qO1UX`);
         };
       }, [undefined, activeLocale]));
-    let [l, p] = useVariantState(variant, bi, false),
-      L = undefined,
+    let [l, p] = useVariantState(variant, breakpointQueries, false),
+      Trigger_initial = undefined,
       localRef = useRef(null),
-      d = () => (Er() ? l !== "CXFUsfZRE" : true),
-      R = () => !Er() || l === "CXFUsfZRE",
+      d = () => (isBrowser() ? l !== "CXFUsfZRE" : true),
+      R = () => !isBrowser() || l === "CXFUsfZRE",
       autoId = useId(),
       x = [cssClassScope];
     return (
       registerCursors({}),
       jsx(CursorContext.Provider, {
-        value: { primaryVariantId: "WQLkyLRf1", variantClassNames: wi },
+        value: { primaryVariantId: "WQLkyLRf1", variantClassNames: Home_variantClassNames },
         children: jsxs(LayoutGroup, {
           id: layoutId ?? autoId,
           children: [
             jsxs(motion.div, {
               ...restProps,
-              className: cx(Kr, ...x, "framer-72rtr7", className),
+              className: cx(Home_prefix, ...x, "framer-72rtr7", className),
               ref: forwardedRef ?? localRef,
               style: { ...style },
               children: [
@@ -4079,7 +4079,7 @@ var li = getFonts(MapMobile2Component),
                             "framer-xvlq3 hidden-1jamxon framer-lux5qc",
                           "data-framer-name": "Logo",
                           name: "Logo",
-                          whileHover: Ci,
+                          whileHover: Home_hover,
                           children: jsx(SVGComponent, {
                             className: "framer-bg8cfc",
                             "data-framer-name": "Neoflix_Logo_SVG",
@@ -4164,7 +4164,7 @@ var li = getFonts(MapMobile2Component),
                           href: { webPageId: "x05wlhCdy" },
                           children: jsx(motion.a, {
                             className: "framer-pi7ax framer-lux5qc",
-                            whileHover: qi,
+                            whileHover: Home_hover2,
                             children: jsx(RichTextComponent, {
                               __fromCanvasComponent: true,
                               children: jsx(ReactFragment, {
@@ -4196,12 +4196,12 @@ var li = getFonts(MapMobile2Component),
                   ],
                 }),
                 R() &&
-                  jsxs(pi, {
+                  jsxs(ScrollSnapMain, {
                     className: "framer-2oid04 hidden-72rtr7 hidden-1uu5wld",
                     "data-framer-name": "Main",
                     name: "Main",
                     children: [
-                      jsx(ge, {
+                      jsx(ScrollSnapSection, {
                         className: "framer-su22bd",
                         "data-framer-name": "Worldmap",
                         name: "Worldmap",
@@ -4235,7 +4235,7 @@ var li = getFonts(MapMobile2Component),
                           }),
                         }),
                       }),
-                      jsx(me, {
+                      jsx(ScrollSnapSectionWrap, {
                         className: "framer-1ik8i4i",
                         "data-framer-name": "Section-Intermission",
                         name: "Section-Intermission",
@@ -4282,7 +4282,7 @@ var li = getFonts(MapMobile2Component),
                           }),
                         }),
                       }),
-                      jsx(me, {
+                      jsx(ScrollSnapSectionWrap, {
                         className: "framer-pbgesn",
                         "data-framer-name": "Section-Dance",
                         name: "Section-Dance",
@@ -4372,7 +4372,7 @@ var li = getFonts(MapMobile2Component),
                           ],
                         }),
                       }),
-                      jsx(me, {
+                      jsx(ScrollSnapSectionWrap, {
                         className: "framer-15vmt0k",
                         "data-framer-name": "Section-Cost",
                         name: "Section-Cost",
@@ -4462,7 +4462,7 @@ var li = getFonts(MapMobile2Component),
                           ],
                         }),
                       }),
-                      jsx(me, {
+                      jsx(ScrollSnapSectionWrap, {
                         className: "framer-h6e4v4",
                         "data-framer-name": "Section-Intermission",
                         name: "Section-Intermission",
@@ -4524,7 +4524,7 @@ var li = getFonts(MapMobile2Component),
                           }),
                         }),
                       }),
-                      jsx(me, {
+                      jsx(ScrollSnapSectionWrap, {
                         className: "framer-1h5rsno",
                         "data-framer-name": "Section-Skills",
                         name: "Section-Skills",
@@ -4614,7 +4614,7 @@ var li = getFonts(MapMobile2Component),
                           ],
                         }),
                       }),
-                      jsx(me, {
+                      jsx(ScrollSnapSectionWrap, {
                         className: "framer-1o8tkgz",
                         "data-framer-name": "Section-Team",
                         name: "Section-Team",
@@ -4703,7 +4703,7 @@ var li = getFonts(MapMobile2Component),
                           ],
                         }),
                       }),
-                      jsx(me, {
+                      jsx(ScrollSnapSectionWrap, {
                         className: "framer-bstmck",
                         "data-framer-name": "Section-Perspective",
                         name: "Section-Perspective",
@@ -4793,7 +4793,7 @@ var li = getFonts(MapMobile2Component),
                           ],
                         }),
                       }),
-                      jsx(me, {
+                      jsx(ScrollSnapSectionWrap, {
                         className: "framer-14fyi8v",
                         "data-framer-name": "Section-Time",
                         name: "Section-Time",
@@ -4883,7 +4883,7 @@ var li = getFonts(MapMobile2Component),
                           ],
                         }),
                       }),
-                      jsxs(me, {
+                      jsxs(ScrollSnapSectionWrap, {
                         className: "framer-vsn0zu",
                         "data-framer-name": "Hero Section",
                         name: "Hero Section",
@@ -4898,7 +4898,7 @@ var li = getFonts(MapMobile2Component),
                               height: 242,
                               children: jsx(cssSSRMinifiedHelper, {
                                 className: "framer-u2hhht-container",
-                                whileHover: Wr,
+                                whileHover: Home_hover3,
                                 children: jsx(NeoflixAnim, {
                                   height: "100%",
                                   id: "qzyMp3yoL",
@@ -4964,12 +4964,12 @@ var li = getFonts(MapMobile2Component),
                     ],
                   }),
                 d() &&
-                  jsxs(vi, {
+                  jsxs(ScrollSnapMainAlt, {
                     className: "framer-1vtk60x hidden-1jamxon",
                     "data-framer-name": "Main",
                     name: "Main",
                     children: [
-                      jsxs(ge, {
+                      jsxs(ScrollSnapSection, {
                         className: "framer-p8551w",
                         "data-framer-name": "Hero Section",
                         name: "Hero Section",
@@ -4989,8 +4989,8 @@ var li = getFonts(MapMobile2Component),
                               y: 221,
                               children: jsx(cssSSRMinifiedHelper, {
                                 className: "framer-1bdw7m-container",
-                                transformTemplate: pr,
-                                whileHover: Wr,
+                                transformTemplate: Home_transform,
+                                whileHover: Home_hover3,
                                 children: jsx(NeoflixAnim, {
                                   height: "100%",
                                   id: "tW6wrwedt",
@@ -5004,7 +5004,7 @@ var li = getFonts(MapMobile2Component),
                           }),
                           jsx(PropertyOverridesProvider, {
                             breakpoint: l,
-                            overrides: { ueHalD28r: { transformTemplate: pr } },
+                            overrides: { ueHalD28r: { transformTemplate: Home_transform } },
                             children: jsx(motion.div, {
                               className: "framer-g3ro50",
                               "data-framer-name": "Moment",
@@ -5027,7 +5027,7 @@ var li = getFonts(MapMobile2Component),
                                       },
                                       children: jsx(cssSSRMinifiedHelper, {
                                         className: "framer-1eeo48e-container",
-                                        transformTemplate: pr,
+                                        transformTemplate: Home_transform,
                                         children: jsx(RecordReflectRefine, {
                                           height: "100%",
                                           id: "NP_oewk8B",
@@ -5045,17 +5045,17 @@ var li = getFonts(MapMobile2Component),
                           }),
                         ],
                       }),
-                      jsxs(ge, {
+                      jsxs(ScrollSnapSection, {
                         className: "framer-15cs0zp",
                         "data-framer-name": "Only the patient",
                         name: "Only the patient",
                         children: [
-                          jsxs(Fe, {
-                            animate: Qr,
+                          jsxs(AppearDiv, {
+                            animate: Home_animate,
                             className: "framer-1b5k5bb",
                             "data-framer-appear-id": "1b5k5bb",
                             "data-framer-name": "Moment header",
-                            initial: Se,
+                            initial: Home_initial,
                             name: "Moment header",
                             optimized: true,
                             children: [
@@ -5112,12 +5112,12 @@ var li = getFonts(MapMobile2Component),
                               }),
                             ],
                           }),
-                          jsx(Fe, {
-                            animate: Zr,
+                          jsx(AppearDiv, {
+                            animate: Home_animate2,
                             className: "framer-j6gb99",
                             "data-framer-appear-id": "j6gb99",
                             "data-framer-name": "Animation Left",
-                            initial: Se,
+                            initial: Home_initial,
                             name: "Animation Left",
                             optimized: true,
                             children: jsx(motion.div, {
@@ -5141,11 +5141,11 @@ var li = getFonts(MapMobile2Component),
                                     children: jsx(PropertyOverridesProvider, {
                                       breakpoint: l,
                                       overrides: {
-                                        ueHalD28r: { transformTemplate: Gr },
+                                        ueHalD28r: { transformTemplate: Home_transform3 },
                                       },
                                       children: jsx(cssSSRMinifiedHelper, {
                                         className: "framer-1k0ssbx-container",
-                                        transformTemplate: Jr,
+                                        transformTemplate: Home_transform2,
                                         children: jsx(StoryLeft2, {
                                           height: "100%",
                                           id: "oxXlQ801e",
@@ -5163,21 +5163,21 @@ var li = getFonts(MapMobile2Component),
                           }),
                         ],
                       }),
-                      jsx(ge, {
+                      jsx(ScrollSnapSection, {
                         className: "framer-3oh3yy",
                         "data-framer-name": "Yet, Reflection",
                         name: "Yet, Reflection",
-                        children: jsxs(ge, {
+                        children: jsxs(ScrollSnapSection, {
                           className: "framer-11411eu",
                           "data-framer-name": "Reflection strengthens",
                           name: "Reflection strengthens",
                           children: [
-                            jsxs(Fe, {
-                              animate: Qr,
+                            jsxs(AppearDiv, {
+                              animate: Home_animate,
                               className: "framer-6axhfk",
                               "data-framer-appear-id": "6axhfk",
                               "data-framer-name": "Moment header",
-                              initial: Se,
+                              initial: Home_initial,
                               name: "Moment header",
                               optimized: true,
                               children: [
@@ -5237,12 +5237,12 @@ var li = getFonts(MapMobile2Component),
                                 }),
                               ],
                             }),
-                            jsx(Fe, {
-                              animate: Zr,
+                            jsx(AppearDiv, {
+                              animate: Home_animate2,
                               className: "framer-x5gqdq",
                               "data-framer-appear-id": "x5gqdq",
                               "data-framer-name": "Animation Right",
-                              initial: Se,
+                              initial: Home_initial,
                               name: "Animation Right",
                               optimized: true,
                               children: jsx(motion.div, {
@@ -5272,7 +5272,7 @@ var li = getFonts(MapMobile2Component),
                                         },
                                         children: jsx(cssSSRMinifiedHelper, {
                                           className: "framer-qjopz5-container",
-                                          transformTemplate: Jr,
+                                          transformTemplate: Home_transform2,
                                           children: jsx(StoryRight, {
                                             height: "100%",
                                             id: "vc1jCsqkh",
@@ -5291,7 +5291,7 @@ var li = getFonts(MapMobile2Component),
                           ],
                         }),
                       }),
-                      jsxs(ge, {
+                      jsxs(ScrollSnapSection, {
                         className: "framer-1j5oyue",
                         "data-framer-name": "Worldmap",
                         name: "Worldmap",
@@ -5330,7 +5330,7 @@ var li = getFonts(MapMobile2Component),
                                 openInNewTab: false,
                                 children: jsx(motion.a, {
                                   className: "framer-djajqq framer-lux5qc",
-                                  whileHover: Oi,
+                                  whileHover: Home_hover4,
                                   children: jsx(RichTextComponent, {
                                     __fromCanvasComponent: true,
                                     children: jsx(ReactFragment, {
@@ -5360,7 +5360,7 @@ var li = getFonts(MapMobile2Component),
                                     }),
                                     className: "framer-w7thi6",
                                     fonts: ["GF;Inter-700"],
-                                    transformTemplate: Gr,
+                                    transformTemplate: Home_transform3,
                                     verticalAlignment: "top",
                                     withExternalLayout: true,
                                   }),
@@ -5374,7 +5374,7 @@ var li = getFonts(MapMobile2Component),
                   }),
               ],
             }),
-            jsx("div", { className: cx(Kr, ...x), id: "overlay" }),
+            jsx("div", { className: cx(Home_prefix, ...x), id: "overlay" }),
           ],
         }),
       })
@@ -5533,15 +5533,15 @@ loadFonts(
         },
       ],
     },
-    ...li,
-    ...mi,
-    ...di,
-    ...ci,
-    ...hi,
-    ...ui,
-    ...gi,
-    ...xi,
-    ...yi,
+    ...MapMobile2Component_fonts,
+    ...G_fonts3,
+    ...NeoflixAnim_fonts,
+    ...RecordReflectRefineCopy_fonts,
+    ...NeoflixAnim_fonts2,
+    ...RecordReflectRefine_fonts,
+    ...StoryLeft2_fonts,
+    ...StoryRight_fonts,
+    ...MapComponent_fonts,
     ...normalizeFontConfig(fontConfig),
   ],
   { supportsExplicitInterCodegen: true },

@@ -90,8 +90,8 @@ var TrailingBreak = () => jsx("p", {
   style: { "--framer-text-alignment": "left" },
   children: jsx("br", { className: "trailing-break" }),
 });
-var Ye = getFonts(c),
-  Ze = getFonts(NoiseOverlayComponent),
+var c_fonts = getFonts(c),
+  NoiseOverlayComponent_fonts = getFonts(NoiseOverlayComponent),
   We = [
     "Rre_u8WuV",
     "DkxmDygok",
@@ -100,8 +100,8 @@ var Ye = getFonts(c),
     "sJR17n1rz",
     "gRcraNE8T",
   ],
-  He = "framer-v0tbV",
-  Ke = {
+  Backdrop_prefix = "framer-v0tbV",
+  Backdrop_variantClassNames = {
     DkxmDygok: "framer-v-92htoe",
     eMNO9x2r7: "framer-v-1d3z733",
     gRcraNE8T: "framer-v-2ke98f",
@@ -109,7 +109,7 @@ var Ye = getFonts(c),
     sJR17n1rz: "framer-v-1evn86j",
     tcTKLfIBw: "framer-v-424790",
   };
-var Qe = {
+var Backdrop_variantNames = {
     Cost: "tcTKLfIBw",
     Dance: "DkxmDygok",
     Perspective: "gRcraNE8T",
@@ -122,7 +122,7 @@ var Qe = {
     return {
       ...d,
       variant:
-        (y = (g = Qe[d.variant]) !== null && g !== undefined ? g : d.variant) !==
+        (y = (g = Backdrop_variantNames[d.variant]) !== null && g !== undefined ? g : d.variant) !==
           null && y !== undefined
           ? y
           : "Rre_u8WuV",
@@ -145,7 +145,7 @@ var Qe = {
         cycleOrder: We,
         defaultVariant: "Rre_u8WuV",
         variant: variant,
-        variantClassNames: Ke,
+        variantClassNames: Backdrop_variantClassNames,
       }),
       l = Backdrop_layoutKey(props, variants),
       localRef = useRef(null),
@@ -167,7 +167,7 @@ var Qe = {
           children: jsxs(motion.div, {
             ...restProps,
             ...gestureHandlers,
-            className: cx(He, ...additionalClassNames, "framer-1ewt70r", className, classNames),
+            className: cx(Backdrop_prefix, ...additionalClassNames, "framer-1ewt70r", className, classNames),
             "data-framer-name": "Time",
             layoutDependency: l,
             layoutId: "Rre_u8WuV",
@@ -428,7 +428,7 @@ addPropertyControls(Backdrop, {
     type: ControlType.Enum,
   },
 });
-loadFonts(Backdrop, [{ explicitInter: true, fonts: [] }, ...Ye, ...Ze], {
+loadFonts(Backdrop, [{ explicitInter: true, fonts: [] }, ...c_fonts, ...NoiseOverlayComponent_fonts], {
   supportsExplicitInterCodegen: true,
 });
 fontLoader.loadFonts([]);
@@ -437,17 +437,17 @@ var Ae = [{ explicitInter: true, fonts: [] }],
     ".framer-1BPWo .framer-styles-preset-1wicq5s:not(.rich-text-wrapper), .framer-1BPWo .framer-styles-preset-1wicq5s.rich-text-wrapper a { --framer-link-current-text-color: var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, #383437); --framer-link-current-text-decoration: none; --framer-link-hover-text-color: var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, #529c9c); --framer-link-hover-text-decoration: underline; --framer-link-text-color: var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, #00333b); --framer-link-text-decoration: none; }",
   ],
   Be = "framer-1BPWo";
-var ir = getFonts(SmoothScrollComponent),
-  sr = getFonts(Backdrop),
-  nr = $(Backdrop),
-  or = getFonts(c),
-  lr = getFonts(NavItemComponent),
-  N = $(NavItemComponent);
-var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
-  cr = () => typeof document < "u",
-  Le = "framer-CacIk",
-  fr = { AlOztWgAm: "framer-v-p363ye", vtnUon983: "framer-v-18oda3j" },
-  hr = {
+var SmoothScrollComponent_fonts = getFonts(SmoothScrollComponent),
+  Backdrop_fonts = getFonts(Backdrop),
+  Backdrop_variantProps = $(Backdrop),
+  c_fonts2 = getFonts(c),
+  NavItemComponent_fonts = getFonts(NavItemComponent),
+  NavItemComponent_variantProps = $(NavItemComponent);
+var breakpointQueries = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
+  isBrowser = () => typeof document < "u",
+  Layer22_prefix = "framer-CacIk",
+  Layer22_variantClassNames = { AlOztWgAm: "framer-v-p363ye", vtnUon983: "framer-v-18oda3j" },
+  Layer22_animate = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -460,7 +460,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     x: 0,
     y: 0,
   },
-  pr = {
+  Layer22_initial = {
     opacity: 0.001,
     rotate: 0,
     rotateX: 0,
@@ -472,7 +472,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     x: 0,
     y: 0,
   },
-  ur = {
+  Layer22_hover = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -482,7 +482,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     skewY: 0,
     transition: SPRING_STANDARD,
   },
-  gr = {
+  Layer22_hover2 = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -493,13 +493,13 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     transition: SPRING_STANDARD,
   },
   Mr = Y(),
-  yr = { Desktop: "vtnUon983", Phone: "AlOztWgAm" },
+  Layer22_variantNames = { Desktop: "vtnUon983", Phone: "AlOztWgAm" },
   resolveLayer22Props = ({ height: f, id: n, width: u, ...d }) => {
     var g, y;
     return {
       ...d,
       variant:
-        (y = (g = yr[d.variant]) !== null && g !== undefined ? g : d.variant) !==
+        (y = (g = Layer22_variantNames[d.variant]) !== null && g !== undefined ? g : d.variant) !==
           null && y !== undefined
           ? y
           : "vtnUon983",
@@ -541,10 +541,10 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
             document.body.classList.remove(`${i.bodyClassName}-framer-CacIk`);
         };
       }, [undefined, activeLocale]));
-    let [h, ie] = useVariantState(variant, mr, false),
+    let [h, ie] = useVariantState(variant, breakpointQueries, false),
       se = undefined,
       localRef = useRef(null),
-      R = () => (cr() ? h !== "AlOztWgAm" : true),
+      R = () => (isBrowser() ? h !== "AlOztWgAm" : true),
       ne = resolveLinks("WjO84y3BZ"),
       localRef2 = useRef(null),
       l = resolveLinks("dbtg_NZW8"),
@@ -563,13 +563,13 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     return (
       registerCursors({}),
       jsx(CursorContext.Provider, {
-        value: { primaryVariantId: "vtnUon983", variantClassNames: fr },
+        value: { primaryVariantId: "vtnUon983", variantClassNames: Layer22_variantClassNames },
         children: jsxs(LayoutGroup, {
           id: layoutId ?? autoId,
           children: [
             jsxs(motion.div, {
               ...restProps,
-              className: cx(Le, ...oe, "framer-18oda3j", className),
+              className: cx(Layer22_prefix, ...oe, "framer-18oda3j", className),
               ref: forwardedRef ?? localRef,
               style: { ...style },
               children: [
@@ -588,14 +588,14 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                 jsx(DeviceSizeContainer, {
                   width: "100vw",
                   children: jsx(cssSSRMinifiedHelper, {
-                    animate: hr,
+                    animate: Layer22_animate,
                     className: "framer-12f3lu4-container",
                     "data-framer-appear-id": "12f3lu4",
-                    initial: pr,
+                    initial: Layer22_initial,
                     layoutScroll: true,
                     optimized: true,
                     style: { transformPerspective: 1200 },
-                    children: jsx(nr, {
+                    children: jsx(Backdrop_variantProps, {
                       __framer__animateOnce: false,
                       __framer__threshold: 0.5,
                       __framer__variantAppearEffectEnabled: true,
@@ -1886,7 +1886,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                             "framer-il55l2 hidden-p363ye framer-p7mxce",
                           "data-framer-name": "Logo",
                           name: "Logo",
-                          whileHover: ur,
+                          whileHover: Layer22_hover,
                           children: jsx(SVGComponent, {
                             className: "framer-13rf3nq",
                             "data-framer-name": "Neoflix_Logo_SVG",
@@ -1971,7 +1971,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           href: { webPageId: "x05wlhCdy" },
                           children: jsx(motion.a, {
                             className: "framer-whs8ci framer-p7mxce",
-                            whileHover: gr,
+                            whileHover: Layer22_hover2,
                             children: jsx(RichTextComponent, {
                               __fromCanvasComponent: true,
                               children: jsx(ReactFragment, {
@@ -2050,7 +2050,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                               "framer-144xu0w-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: jsx(N, {
+                                            children: jsx(NavItemComponent_variantProps, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
                                                 { ref: localRef2, target: "f7_6jHMU5" },
@@ -2091,7 +2091,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                               "framer-13oq9sc-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: jsx(N, {
+                                            children: jsx(NavItemComponent_variantProps, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
                                                 { ref: localRef3, target: "f7_6jHMU5" },
@@ -2132,7 +2132,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                               "framer-1lxqg2f-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: jsx(N, {
+                                            children: jsx(NavItemComponent_variantProps, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
                                                 { ref: localRef4, target: "f7_6jHMU5" },
@@ -2174,7 +2174,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                               "framer-1oawkpd-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: jsx(N, {
+                                            children: jsx(NavItemComponent_variantProps, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
                                                 { ref: localRef5, target: "f7_6jHMU5" },
@@ -2215,7 +2215,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                               "framer-1aw20d8-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: jsx(N, {
+                                            children: jsx(NavItemComponent_variantProps, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
                                                 { ref: localRef6, target: "f7_6jHMU5" },
@@ -2257,7 +2257,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                               "framer-yle7l6-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: jsx(N, {
+                                            children: jsx(NavItemComponent_variantProps, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
                                                 { ref: localRef7, target: "f7_6jHMU5" },
@@ -2302,7 +2302,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                   }),
               ],
             }),
-            jsx("div", { className: cx(Le, ...oe), id: "overlay" }),
+            jsx("div", { className: cx(Layer22_prefix, ...oe), id: "overlay" }),
           ],
         }),
       })
@@ -2493,10 +2493,10 @@ loadFonts(
         },
       ],
     },
-    ...ir,
-    ...sr,
-    ...or,
-    ...lr,
+    ...SmoothScrollComponent_fonts,
+    ...Backdrop_fonts,
+    ...c_fonts2,
+    ...NavItemComponent_fonts,
     ...normalizeFontConfig(interExtraBoldFontDefs),
     ...normalizeFontConfig(interMediumFontDefs),
     ...normalizeFontConfig(Ae),

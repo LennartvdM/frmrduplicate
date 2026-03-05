@@ -75,12 +75,11 @@ var ICON_BG = {
 };
 var Lr = getFonts(W),
   Mr = getFonts(NoiseOverlayComponent),
-  Tr = withFXWrapper(motion.div),
+  FXDiv = withFXWrapper(motion.div),
   Wr = ["htUh18eRJ"],
   Gr = "framer-zeXf1",
   Or = { htUh18eRJ: "framer-v-2yaxv0" };
-var Zr = TWEEN_APPEAR,
-  Xr = {
+var Xr = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -89,7 +88,7 @@ var Zr = TWEEN_APPEAR,
     skewX: 0,
     skewY: 0,
     transformPerspective: 1200,
-    transition: Zr,
+    transition: TWEEN_APPEAR,
     x: 0,
     y: 0,
   },
@@ -105,7 +104,6 @@ var Zr = TWEEN_APPEAR,
     x: 0,
     y: 0,
   },
-  Qr = SPRING_CAPTION,
   Kr = ({ value: m, children: f }) => {
     let s = useContext(MotionContext),
       l = m ?? s.transition,
@@ -113,12 +111,12 @@ var Zr = TWEEN_APPEAR,
     return jsx(MotionContext.Provider, { value: d, children: f });
   },
   $r = motion(ReactFragment),
-  re = ({ height: m, id: f, width: s, ...l }) => ({ ...l }),
-  ee = (m, f) =>
+  resolveBackdrop2Props = ({ height: m, id: f, width: s, ...l }) => ({ ...l }),
+  Backdrop2_layoutKey = (m, f) =>
     m.layoutDependency ? f.join("-") + m.layoutDependency : f.join("-"),
   _Backdrop2 = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
-      { style, className, layoutId, variant, ...restProps } = re(props),
+      { style, className, layoutId, variant, ...restProps } = resolveBackdrop2Props(props),
       {
         baseVariant,
         classNames,
@@ -133,7 +131,7 @@ var Zr = TWEEN_APPEAR,
         variant: variant,
         variantClassNames: Or,
       }),
-      p = ee(props, variants),
+      p = Backdrop2_layoutKey(props, variants),
       localRef = useRef(null),
       autoId = useId(),
       additionalClassNames = [],
@@ -144,8 +142,8 @@ var Zr = TWEEN_APPEAR,
         animate: variants,
         initial: false,
         children: jsx(Kr, {
-          value: Qr,
-          children: jsxs(Tr, {
+          value: SPRING_CAPTION,
+          children: jsxs(FXDiv, {
             ...restProps,
             ...gestureHandlers,
             __framer__presenceAnimate: setAppearAnimationValues("animate", "2yaxv0", Xr, undefined),
@@ -236,14 +234,14 @@ var Zr = TWEEN_APPEAR,
       }),
     });
   }),
-  te = [
+  Backdrop2_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-zeXf1.framer-1hmkm8a, .framer-zeXf1 .framer-1hmkm8a { display: block; }",
     ".framer-zeXf1.framer-2yaxv0 { height: 800px; overflow: hidden; pointer-events: none; position: relative; width: 1200px; }",
     ".framer-zeXf1 .framer-15s3poq, .framer-zeXf1 .framer-1k92q7k-container, .framer-zeXf1 .framer-ksez6a-container { bottom: 0px; flex: none; left: 0px; position: absolute; right: 0px; top: 0px; }",
     ".framer-zeXf1 .framer-1m9pxy0 { bottom: 0px; flex: none; left: 0px; mix-blend-mode: screen; overflow: visible; position: absolute; right: 0px; top: 0px; }",
   ],
-  Backdrop2 = withCSS(_Backdrop2, te, "framer-zeXf1");
+  Backdrop2 = withCSS(_Backdrop2, Backdrop2_css, "framer-zeXf1");
 Backdrop2.displayName = "Backdrop2";
 Backdrop2.defaultProps = { height: 800, width: 1200 };
 loadFonts(Backdrop2, [{ explicitInter: true, fonts: [] }, ...Lr, ...Mr], {
@@ -267,7 +265,6 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
   se = () => typeof document < "u",
   Pr = "framer-9Y9Hr",
   le = { LKrog5PlS: "framer-v-1byrpbb", QhSlAYPb_: "framer-v-1t32e7q" },
-  Q = SPRING_STANDARD,
   ce = {
     opacity: 1,
     rotate: 0,
@@ -276,7 +273,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     scale: 1.1,
     skewX: 0,
     skewY: 0,
-    transition: Q,
+    transition: SPRING_STANDARD,
   },
   de = {
     opacity: 1,
@@ -286,7 +283,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     scale: 1.05,
     skewX: 0,
     skewY: 0,
-    transition: Q,
+    transition: SPRING_STANDARD,
   },
   H = {
     opacity: 1,
@@ -296,12 +293,12 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     scale: 1.01,
     skewX: 0,
     skewY: 0,
-    transition: Q,
+    transition: SPRING_STANDARD,
     y: -4,
   },
   qe = _(),
   pe = { Desktop: "QhSlAYPb_", Phone: "LKrog5PlS" },
-  he = ({ height: m, id: f, width: s, ...l }) => {
+  resolveScrollSectionProps = ({ height: m, id: f, width: s, ...l }) => {
     var d, g;
     return {
       ...l,
@@ -314,7 +311,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
   },
   _ScrollSection = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
-      { style, className, layoutId, variant, ...restProps } = he(props);
+      { style, className, layoutId, variant, ...restProps } = resolveScrollSectionProps(props);
     (useEffect(() => {
       let n = _(undefined, activeLocale);
       if (n.robots) {
@@ -2218,7 +2215,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
       })
     );
   }),
-  ue = [
+  ScrollSection_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-9Y9Hr.framer-1gbufye, .framer-9Y9Hr .framer-1gbufye { display: block; }",
     ".framer-9Y9Hr.framer-1t32e7q { align-content: center; align-items: center; display: flex; flex-direction: column; flex-wrap: nowrap; gap: 0px; height: min-content; justify-content: flex-start; overflow: hidden; padding: 0px; position: relative; width: 1200px; }",
@@ -2275,7 +2272,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     '.framer-9Y9Hr[data-hide-scrollbars="true"]::-webkit-scrollbar, .framer-9Y9Hr [data-hide-scrollbars="true"]::-webkit-scrollbar { width: 0px; height: 0px; }',
     '.framer-9Y9Hr[data-hide-scrollbars="true"]::-webkit-scrollbar-thumb, .framer-9Y9Hr [data-hide-scrollbars="true"]::-webkit-scrollbar-thumb { background: transparent; }',
   ],
-  ScrollSection = withCSS(_ScrollSection, ue, "framer-9Y9Hr");
+  ScrollSection = withCSS(_ScrollSection, ScrollSection_css, "framer-9Y9Hr");
 ScrollSection.displayName = "Scroll Section";
 ScrollSection.defaultProps = { height: 7273, width: 1200 };
 loadFonts(

@@ -109,8 +109,7 @@ var Ye = getFonts(c),
     sJR17n1rz: "framer-v-1evn86j",
     tcTKLfIBw: "framer-v-424790",
   };
-var Xe = TWEEN_QUICK,
-  Qe = {
+var Qe = {
     Cost: "tcTKLfIBw",
     Dance: "DkxmDygok",
     Perspective: "gRcraNE8T",
@@ -118,7 +117,7 @@ var Xe = TWEEN_QUICK,
     Team: "sJR17n1rz",
     Time: "Rre_u8WuV",
   },
-  $e = ({ height: f, id: n, width: u, ...d }) => {
+  resolveBackdropProps = ({ height: f, id: n, width: u, ...d }) => {
     var g, y;
     return {
       ...d,
@@ -129,11 +128,11 @@ var Xe = TWEEN_QUICK,
           : "Rre_u8WuV",
     };
   },
-  er = (f, n) =>
+  Backdrop_layoutKey = (f, n) =>
     f.layoutDependency ? n.join("-") + f.layoutDependency : n.join("-"),
   _Backdrop = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
-      { style, className, layoutId, variant, ...restProps } = $e(props),
+      { style, className, layoutId, variant, ...restProps } = resolveBackdropProps(props),
       {
         baseVariant,
         classNames,
@@ -148,7 +147,7 @@ var Xe = TWEEN_QUICK,
         variant: variant,
         variantClassNames: Ke,
       }),
-      l = er(props, variants),
+      l = Backdrop_layoutKey(props, variants),
       localRef = useRef(null),
       S = () => baseVariant !== "sJR17n1rz",
       U = () => baseVariant === "sJR17n1rz",
@@ -164,7 +163,7 @@ var Xe = TWEEN_QUICK,
         animate: variants,
         initial: false,
         children: jsx(TransitionProvider, {
-          value: Xe,
+          value: TWEEN_QUICK,
           children: jsxs(motion.div, {
             ...restProps,
             ...gestureHandlers,
@@ -402,7 +401,7 @@ var Xe = TWEEN_QUICK,
       }),
     });
   }),
-  ar = [
+  Backdrop_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-v0tbV.framer-12qjzrj, .framer-v0tbV .framer-12qjzrj { display: block; }",
     ".framer-v0tbV.framer-1ewt70r { height: 600px; overflow: hidden; position: relative; width: 800px; }",
@@ -411,7 +410,7 @@ var Xe = TWEEN_QUICK,
     ".framer-v0tbV .framer-1xyvsbf { bottom: 0px; flex: none; left: 0px; overflow: hidden; position: absolute; right: 0px; top: 0px; }",
     ".framer-v0tbV .framer-pq83k9 { bottom: 0px; flex: none; left: 0px; mix-blend-mode: screen; overflow: visible; position: absolute; right: 0px; top: 0px; }",
   ],
-  Backdrop = withCSS(_Backdrop, ar, "framer-v0tbV");
+  Backdrop = withCSS(_Backdrop, Backdrop_css, "framer-v0tbV");
 Backdrop.displayName = "Backdrop";
 Backdrop.defaultProps = { height: 600, width: 800 };
 addPropertyControls(Backdrop, {
@@ -448,7 +447,6 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
   cr = () => typeof document < "u",
   Le = "framer-CacIk",
   fr = { AlOztWgAm: "framer-v-p363ye", vtnUon983: "framer-v-18oda3j" },
-  dr = TWEEN_APPEAR,
   hr = {
     opacity: 1,
     rotate: 0,
@@ -458,7 +456,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     skewX: 0,
     skewY: 0,
     transformPerspective: 1200,
-    transition: dr,
+    transition: TWEEN_APPEAR,
     x: 0,
     y: 0,
   },
@@ -474,7 +472,6 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     x: 0,
     y: 0,
   },
-  De = SPRING_STANDARD,
   ur = {
     opacity: 1,
     rotate: 0,
@@ -483,7 +480,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     scale: 1.1,
     skewX: 0,
     skewY: 0,
-    transition: De,
+    transition: SPRING_STANDARD,
   },
   gr = {
     opacity: 1,
@@ -493,11 +490,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     scale: 1.05,
     skewX: 0,
     skewY: 0,
-    transition: De,
+    transition: SPRING_STANDARD,
   },
   Mr = Y(),
   yr = { Desktop: "vtnUon983", Phone: "AlOztWgAm" },
-  xr = ({ height: f, id: n, width: u, ...d }) => {
+  resolveLayer22Props = ({ height: f, id: n, width: u, ...d }) => {
     var g, y;
     return {
       ...d,
@@ -510,7 +507,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
   },
   _Layer22 = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
-      { style, className, layoutId, variant, ...restProps } = xr(props);
+      { style, className, layoutId, variant, ...restProps } = resolveLayer22Props(props);
     (useEffect(() => {
       let i = Y(undefined, activeLocale);
       if (i.robots) {
@@ -2311,7 +2308,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
       })
     );
   }),
-  br = [
+  Layer22_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-CacIk.framer-p7mxce, .framer-CacIk .framer-p7mxce { display: block; }",
     ".framer-CacIk.framer-18oda3j { align-content: center; align-items: center; display: flex; flex-direction: column; flex-wrap: nowrap; gap: 0px; height: min-content; justify-content: flex-start; overflow: visible; padding: 0px; position: relative; width: 1200px; }",
@@ -2358,7 +2355,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     '.framer-CacIk[data-hide-scrollbars="true"]::-webkit-scrollbar, .framer-CacIk [data-hide-scrollbars="true"]::-webkit-scrollbar { width: 0px; height: 0px; }',
     '.framer-CacIk[data-hide-scrollbars="true"]::-webkit-scrollbar-thumb, .framer-CacIk [data-hide-scrollbars="true"]::-webkit-scrollbar-thumb { background: transparent; }',
   ],
-  Layer22 = withCSS(_Layer22, br, "framer-CacIk");
+  Layer22 = withCSS(_Layer22, Layer22_css, "framer-CacIk");
 Layer22.displayName = "Layer2 2";
 Layer22.defaultProps = { height: 8880, width: 1200 };
 loadFonts(

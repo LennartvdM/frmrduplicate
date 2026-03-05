@@ -107,20 +107,18 @@ import { mergeVariantProps, TransitionProvider, AnimatedFragment, SPRING_STANDAR
  * EXPORTS / page metadata ............................. ~5466–end
  * ============================================================================ */
 
-var $r = {
+var scrollSnapStyle = {
     scrollSnapAlign: "start",
     scrollSnapStop: "always",
     transition: "scroll-snap-align 1s ease-in-out",
   },
-  Ir = (t) => (a) => jsx(t, { ...a, style: $r });
-var ea = withFXWrapper(motion.div),
+  withScrollSnap = (t) => (a) => jsx(t, { ...a, style: scrollSnapStyle });
+var FXDiv = withFXWrapper(motion.div),
   ra = { h9tfYk7K5: { hover: true } },
-  aa = ["I5QaL6oi8", "h9tfYk7K5"],
+  NeoflixAnim_cycleOrder = ["I5QaL6oi8", "h9tfYk7K5"],
   ta = "framer-Kv8wc",
-  na = { h9tfYk7K5: "framer-v-1kdysgy", I5QaL6oi8: "framer-v-yyb023" };
-var oa = SPRING_HEAVY,
-  _r = SPRING_STANDARD,
-  sa = {
+  NeoflixAnim_variantClassNames = { h9tfYk7K5: "framer-v-1kdysgy", I5QaL6oi8: "framer-v-yyb023" };
+var sa = {
     opacity: 0,
     rotate: 0,
     rotateX: 0,
@@ -128,7 +126,7 @@ var oa = SPRING_HEAVY,
     scale: 1.01,
     skewX: 0,
     skewY: 0,
-    transition: _r,
+    transition: SPRING_STANDARD,
     x: 0,
     y: 0,
   },
@@ -140,7 +138,7 @@ var oa = SPRING_HEAVY,
     scale: 1,
     skewX: 0,
     skewY: 0,
-    transition: _r,
+    transition: SPRING_STANDARD,
     x: 0,
     y: 0,
   },
@@ -156,7 +154,7 @@ var oa = SPRING_HEAVY,
     y: 0,
   },
   ca = { "Variant 1": "I5QaL6oi8", "Variant 2": "h9tfYk7K5" },
-  pa = ({ height: t, id: a, width: n, ...i }) => {
+  resolveNeoflixAnimProps = ({ height: t, id: a, width: n, ...i }) => {
     var o, f;
     return {
       ...i,
@@ -167,10 +165,10 @@ var oa = SPRING_HEAVY,
           : "I5QaL6oi8",
     };
   },
-  ha = (t, a) => a.join("-") + t.layoutDependency,
+  NeoflixAnim_layoutKey = (t, a) => a.join("-") + t.layoutDependency,
   _NeoflixAnim = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
-      { style, className, layoutId, variant, ...restProps } = pa(props),
+      { style, className, layoutId, variant, ...restProps } = resolveNeoflixAnimProps(props),
       {
         baseVariant,
         classNames,
@@ -179,13 +177,13 @@ var oa = SPRING_HEAVY,
         setVariant,
         variants,
       } = useComponentVariantState({
-        cycleOrder: aa,
+        cycleOrder: NeoflixAnim_cycleOrder,
         defaultVariant: "I5QaL6oi8",
         enabledGestures: ra,
         variant: variant,
-        variantClassNames: na,
+        variantClassNames: NeoflixAnim_variantClassNames,
       }),
-      v = ha(props, variants),
+      v = NeoflixAnim_layoutKey(props, variants),
       { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
       m = activeVariantCallback(async (...Y) => {
         await delay(() => setVariant("h9tfYk7K5"), 400);
@@ -204,8 +202,8 @@ var oa = SPRING_HEAVY,
         animate: variants,
         initial: false,
         children: jsx(TransitionProvider, {
-          value: oa,
-          children: jsxs(ea, {
+          value: SPRING_HEAVY,
+          children: jsxs(FXDiv, {
             ...restProps,
             className: cx(ta, ...additionalClassNames, "framer-yyb023", className, classNames),
             "data-framer-name": "Variant 1",
@@ -296,7 +294,7 @@ var oa = SPRING_HEAVY,
       }),
     });
   }),
-  ga = [
+  NeoflixAnim_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-Kv8wc.framer-1lhwvl1, .framer-Kv8wc .framer-1lhwvl1 { display: block; }",
     ".framer-Kv8wc.framer-yyb023 { height: 287px; overflow: visible; position: relative; width: 935px; }",
@@ -305,7 +303,7 @@ var oa = SPRING_HEAVY,
     ".framer-Kv8wc .framer-v5bumn { aspect-ratio: 4.52020202020202 / 1; bottom: 0px; flex: none; height: 50%; position: absolute; right: 0px; width: var(--framer-aspect-ratio-supported, 646px); z-index: 1; }",
     ".framer-Kv8wc.framer-v-1kdysgy.framer-yyb023 { cursor: pointer; }",
   ],
-  NeoflixAnim = withCSS(_NeoflixAnim, ga, "framer-Kv8wc");
+  NeoflixAnim = withCSS(_NeoflixAnim, NeoflixAnim_css, "framer-Kv8wc");
 NeoflixAnim.displayName = "Neoflix anim";
 NeoflixAnim.defaultProps = { height: 287, width: 935 };
 addPropertyControls(NeoflixAnim, {
@@ -317,20 +315,19 @@ addPropertyControls(NeoflixAnim, {
   },
 });
 loadFonts(NeoflixAnim, [{ explicitInter: true, fonts: [] }], { supportsExplicitInterCodegen: true });
-var xa = ["jPAyFUDCD", "KVq4FzV2g", "ak_u9yeBh"],
+var RecordReflectRefineCopy_cycleOrder = ["jPAyFUDCD", "KVq4FzV2g", "ak_u9yeBh"],
   ya = "framer-Kt2aq",
-  va = {
+  RecordReflectRefineCopy_variantClassNames = {
     ak_u9yeBh: "framer-v-tsw57o",
     jPAyFUDCD: "framer-v-1mo43e9",
     KVq4FzV2g: "framer-v-1xs1f2",
   };
-var jr = TWEEN_INSTANT,
-  wa = {
+var wa = {
     "Variant 1": "jPAyFUDCD",
     "Variant 2": "KVq4FzV2g",
     "Variant 3": "ak_u9yeBh",
   },
-  Ca = ({ height: t, id: a, width: n, ...i }) => {
+  resolveRecordReflectRefineCopyProps = ({ height: t, id: a, width: n, ...i }) => {
     var o, f;
     return {
       ...i,
@@ -341,10 +338,10 @@ var jr = TWEEN_INSTANT,
           : "jPAyFUDCD",
     };
   },
-  qa = (t, a) => a.join("-") + t.layoutDependency,
+  RecordReflectRefineCopy_layoutKey = (t, a) => a.join("-") + t.layoutDependency,
   _RecordReflectRefineCopy = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
-      { style, className, layoutId, variant, ...restProps } = Ca(props),
+      { style, className, layoutId, variant, ...restProps } = resolveRecordReflectRefineCopyProps(props),
       {
         baseVariant,
         classNames,
@@ -353,12 +350,12 @@ var jr = TWEEN_INSTANT,
         setVariant,
         variants,
       } = useComponentVariantState({
-        cycleOrder: xa,
+        cycleOrder: RecordReflectRefineCopy_cycleOrder,
         defaultVariant: "jPAyFUDCD",
         variant: variant,
-        variantClassNames: va,
+        variantClassNames: RecordReflectRefineCopy_variantClassNames,
       }),
-      v = qa(props, variants),
+      v = RecordReflectRefineCopy_layoutKey(props, variants),
       { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
       m = activeVariantCallback(async (...J) => {
         await delay(() => setVariant("KVq4FzV2g"), 1800);
@@ -386,7 +383,7 @@ var jr = TWEEN_INSTANT,
         animate: variants,
         initial: false,
         children: jsx(TransitionProvider, {
-          value: jr,
+          value: TWEEN_INSTANT,
           children: jsx(motion.div, {
             ...restProps,
             className: cx(ya, ...additionalClassNames, "framer-1mo43e9", className, classNames),
@@ -410,7 +407,7 @@ var jr = TWEEN_INSTANT,
               gestureVariant,
             ),
             children: jsx(TransitionProvider, {
-              value: jr,
+              value: TWEEN_INSTANT,
               children: jsx(RichTextComponent, {
                 __fromCanvasComponent: true,
                 children: jsx(ReactFragment, {
@@ -579,7 +576,7 @@ var jr = TWEEN_INSTANT,
       }),
     });
   }),
-  Xa = [
+  RecordReflectRefineCopy_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-Kt2aq.framer-1npt7uu, .framer-Kt2aq .framer-1npt7uu { display: block; }",
     ".framer-Kt2aq.framer-1mo43e9 { align-content: center; align-items: center; display: flex; flex-direction: column; flex-wrap: nowrap; gap: 20px; height: auto; justify-content: center; max-width: 2018px; padding: 0px 0px 0px 0px; position: relative; width: auto; }",
@@ -589,7 +586,7 @@ var jr = TWEEN_INSTANT,
     ".framer-Kt2aq.framer-v-tsw57o.framer-1mo43e9 { gap: 0px; }",
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-Kt2aq.framer-v-tsw57o.framer-1mo43e9 { gap: 0px; } .framer-Kt2aq.framer-v-tsw57o.framer-1mo43e9 > * { margin: 0px; margin-bottom: calc(0px / 2); margin-top: calc(0px / 2); } .framer-Kt2aq.framer-v-tsw57o.framer-1mo43e9 > :first-child { margin-top: 0px; } .framer-Kt2aq.framer-v-tsw57o.framer-1mo43e9 > :last-child { margin-bottom: 0px; } }",
   ],
-  RecordReflectRefineCopy = withCSS(_RecordReflectRefineCopy, Xa, "framer-Kt2aq");
+  RecordReflectRefineCopy = withCSS(_RecordReflectRefineCopy, RecordReflectRefineCopy_css, "framer-Kt2aq");
 RecordReflectRefineCopy.displayName = "Record Reflect Refine Copy";
 RecordReflectRefineCopy.defaultProps = { height: 223, width: 226 };
 addPropertyControls(RecordReflectRefineCopy, {
@@ -625,20 +622,19 @@ loadFonts(
   ],
   { supportsExplicitInterCodegen: true },
 );
-var Oa = ["Aa5IjJyQQ", "Ds7IWPpXk", "wtxEodMdN"],
+var RecordReflectRefine_cycleOrder = ["Aa5IjJyQQ", "Ds7IWPpXk", "wtxEodMdN"],
   ka = "framer-ABLhs",
-  Ua = {
+  RecordReflectRefine_variantClassNames = {
     Aa5IjJyQQ: "framer-v-2fjn4z",
     Ds7IWPpXk: "framer-v-wbkwq0",
     wtxEodMdN: "framer-v-10ybi4f",
   };
-var Lr = TWEEN_INSTANT,
-  _a = {
+var _a = {
     "Variant 1": "Aa5IjJyQQ",
     "Variant 2": "Ds7IWPpXk",
     "Variant 3": "wtxEodMdN",
   },
-  Na = ({ height: t, id: a, width: n, ...i }) => {
+  resolveRecordReflectRefineProps = ({ height: t, id: a, width: n, ...i }) => {
     var o, f;
     return {
       ...i,
@@ -649,11 +645,11 @@ var Lr = TWEEN_INSTANT,
           : "Aa5IjJyQQ",
     };
   },
-  ja = (t, a) =>
+  RecordReflectRefine_layoutKey = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
   _RecordReflectRefine = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
-      { style, className, layoutId, variant, ...restProps } = Na(props),
+      { style, className, layoutId, variant, ...restProps } = resolveRecordReflectRefineProps(props),
       {
         baseVariant,
         classNames,
@@ -665,12 +661,12 @@ var Lr = TWEEN_INSTANT,
         setVariant,
         variants,
       } = useComponentVariantState({
-        cycleOrder: Oa,
+        cycleOrder: RecordReflectRefine_cycleOrder,
         defaultVariant: "Aa5IjJyQQ",
         variant: variant,
-        variantClassNames: Ua,
+        variantClassNames: RecordReflectRefine_variantClassNames,
       }),
-      m = ja(props, variants),
+      m = RecordReflectRefine_layoutKey(props, variants),
       { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
       V = activeVariantCallback(async (...de) => {
         await delay(() => setVariant("Ds7IWPpXk"), 1800);
@@ -698,7 +694,7 @@ var Lr = TWEEN_INSTANT,
         animate: variants,
         initial: false,
         children: jsx(TransitionProvider, {
-          value: Lr,
+          value: TWEEN_INSTANT,
           children: jsx(motion.div, {
             ...restProps,
             ...gestureHandlers,
@@ -718,7 +714,7 @@ var Lr = TWEEN_INSTANT,
               gestureVariant,
             ),
             children: jsx(TransitionProvider, {
-              value: Lr,
+              value: TWEEN_INSTANT,
               children: jsx(RichTextComponent, {
                 __fromCanvasComponent: true,
                 children: jsx(ReactFragment, {
@@ -962,7 +958,7 @@ var Lr = TWEEN_INSTANT,
       }),
     });
   }),
-  Va = [
+  RecordReflectRefine_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-ABLhs.framer-1khxqi7, .framer-ABLhs .framer-1khxqi7 { display: block; }",
     ".framer-ABLhs.framer-2fjn4z { align-content: flex-start; align-items: flex-start; display: flex; flex-direction: column; flex-wrap: nowrap; gap: 20px; height: min-content; justify-content: center; max-width: 2018px; padding: 0px; position: relative; width: 717px; }",
@@ -970,7 +966,7 @@ var Lr = TWEEN_INSTANT,
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-ABLhs.framer-2fjn4z { gap: 0px; } .framer-ABLhs.framer-2fjn4z > * { margin: 0px; margin-bottom: calc(20px / 2); margin-top: calc(20px / 2); } .framer-ABLhs.framer-2fjn4z > :first-child { margin-top: 0px; } .framer-ABLhs.framer-2fjn4z > :last-child { margin-bottom: 0px; } }",
     ".framer-ABLhs.framer-v-wbkwq0 .framer-1tufjen, .framer-ABLhs.framer-v-10ybi4f .framer-1tufjen { cursor: pointer; }",
   ],
-  RecordReflectRefine = withCSS(_RecordReflectRefine, Va, "framer-ABLhs");
+  RecordReflectRefine = withCSS(_RecordReflectRefine, RecordReflectRefine_css, "framer-ABLhs");
 RecordReflectRefine.displayName = "Record Reflect Refine";
 RecordReflectRefine.defaultProps = { height: 187, width: 717 };
 addPropertyControls(RecordReflectRefine, {
@@ -1013,8 +1009,8 @@ loadFonts(
   ],
   { supportsExplicitInterCodegen: true },
 );
-var La = ["xKACItaHS", "rgX5PDpQJ", "xeZKtnsQM"],
-  Ma = {
+var Trigger_cycleOrder = ["xKACItaHS", "rgX5PDpQJ", "xeZKtnsQM"],
+  Trigger_variantClassNames = {
     rgX5PDpQJ: "framer-v-1um4wiz",
     xeZKtnsQM: "framer-v-n8ebt9",
     xKACItaHS: "framer-v-4hw3vi",
@@ -1059,11 +1055,11 @@ var Sa = {
         transition,
         variants,
       } = useComponentVariantState({
-        cycleOrder: La,
+        cycleOrder: Trigger_cycleOrder,
         defaultVariant: "xKACItaHS",
         transitions: Ta,
         variant: L,
-        variantClassNames: Ma,
+        variantClassNames: Trigger_variantClassNames,
       }),
       h = variants.join("-") + C.layoutDependency,
       { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
@@ -1117,14 +1113,14 @@ var Sa = {
       }),
     });
   }),
-  Pa = [
+  Trigger_css = [
     '.framer-7RIWM [data-border="true"]::after { content: ""; border-width: var(--border-top-width, 0) var(--border-right-width, 0) var(--border-bottom-width, 0) var(--border-left-width, 0); border-color: var(--border-color, none); border-style: var(--border-style, none); width: 100%; height: 100%; position: absolute; box-sizing: border-box; left: 0; top: 0; border-radius: inherit; pointer-events: none; }',
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-7RIWM * { box-sizing: border-box; }",
     ".framer-7RIWM .framer-ibx2dq { display: block; }",
     ".framer-7RIWM .framer-4hw3vi { height: 54px; overflow: visible; position: relative; width: 238px; }",
   ],
-  Trigger = withCSS(_Trigger, Pa, "framer-7RIWM");
+  Trigger = withCSS(_Trigger, Trigger_css, "framer-7RIWM");
 Trigger.displayName = "Trigger";
 Trigger.defaultProps = { height: 54, width: 238 };
 addPropertyControls(Trigger, {
@@ -1137,17 +1133,16 @@ addPropertyControls(Trigger, {
   e8FqqnNOm: { title: "Hover", type: ControlType.EventHandler },
 });
 loadFonts(Trigger, []);
-var Ya = ["QCVLxQKOQ", "XVQi0W0KO", "Xwn3H48jY"],
+var Decisiveness_cycleOrder = ["QCVLxQKOQ", "XVQi0W0KO", "Xwn3H48jY"],
   Ba = "framer-2FQXY",
-  Aa = {
+  Decisiveness_variantClassNames = {
     QCVLxQKOQ: "framer-v-14h8w6j",
     XVQi0W0KO: "framer-v-1r41h02",
     Xwn3H48jY: "framer-v-548aw2",
   };
-var Ha = SPRING_CAPTION,
-  Ea = (t, a) => `translateX(-50%) ${a}`,
+var Ea = (t, a) => `translateX(-50%) ${a}`,
   Qa = { Active: "XVQi0W0KO", Inactive: "Xwn3H48jY", Main: "QCVLxQKOQ" },
-  Za = ({ height: t, id: a, tap: n, width: i, ...o }) => {
+  resolveDecisivenessProps = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
     return {
       ...o,
@@ -1159,7 +1154,7 @@ var Ha = SPRING_CAPTION,
           : "QCVLxQKOQ",
     };
   },
-  Ja = (t, a) =>
+  Decisiveness_layoutKey = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
   _Decisiveness = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
@@ -1170,7 +1165,7 @@ var Ha = SPRING_CAPTION,
         variant,
         NXCj7csO1,
         ...restProps
-      } = Za(props),
+      } = resolveDecisivenessProps(props),
       {
         baseVariant,
         classNames,
@@ -1180,12 +1175,12 @@ var Ha = SPRING_CAPTION,
         setVariant,
         variants,
       } = useComponentVariantState({
-        cycleOrder: Ya,
+        cycleOrder: Decisiveness_cycleOrder,
         defaultVariant: "QCVLxQKOQ",
         variant: variant,
-        variantClassNames: Aa,
+        variantClassNames: Decisiveness_variantClassNames,
       }),
-      u = Ja(props, variants),
+      u = Decisiveness_layoutKey(props, variants),
       { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
       b = activeVariantCallback(async (...Q) => {
         if ((setGestureState({ isPressed: false }), NXCj7csO1 && (await NXCj7csO1(...Q)) === false)) return false;
@@ -1204,7 +1199,7 @@ var Ha = SPRING_CAPTION,
         animate: variants,
         initial: false,
         children: jsx(TransitionProvider, {
-          value: Ha,
+          value: SPRING_CAPTION,
           children: jsx(motion.div, {
             ...restProps,
             ...gestureHandlers,
@@ -1305,14 +1300,14 @@ var Ha = SPRING_CAPTION,
       }),
     });
   }),
-  $a = [
+  Decisiveness_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-2FQXY.framer-1919kbd, .framer-2FQXY .framer-1919kbd { display: block; }",
     ".framer-2FQXY.framer-14h8w6j { cursor: pointer; height: 72px; overflow: visible; position: relative; width: 380px; }",
     ".framer-2FQXY .framer-1c06u0h { -webkit-user-select: none; bottom: 0px; flex: none; height: auto; left: 50%; overflow: visible; position: absolute; user-select: none; white-space: pre-wrap; width: 360px; word-break: break-word; word-wrap: break-word; }",
     ".framer-2FQXY.framer-v-1r41h02.framer-14h8w6j { overflow: hidden; will-change: var(--framer-will-change-override, transform); }",
   ],
-  Decisiveness = withCSS(_Decisiveness, $a, "framer-2FQXY");
+  Decisiveness = withCSS(_Decisiveness, Decisiveness_css, "framer-2FQXY");
 Decisiveness.displayName = "Decisiveness";
 Decisiveness.defaultProps = { height: 72, width: 380 };
 addPropertyControls(Decisiveness, {
@@ -1342,17 +1337,16 @@ loadFonts(
   ],
   { supportsExplicitInterCodegen: true },
 );
-var et = ["A73BIfYrH", "yFu0ego46", "Bq4Oqy1P7"],
+var QuietReflection_cycleOrder = ["A73BIfYrH", "yFu0ego46", "Bq4Oqy1P7"],
   rt = "framer-pC2CI",
-  at = {
+  QuietReflection_variantClassNames = {
     A73BIfYrH: "framer-v-1f4gy1p",
     Bq4Oqy1P7: "framer-v-11x7aqu",
     yFu0ego46: "framer-v-tr7mnx",
   };
-var tt = SPRING_CAPTION,
-  nt = (t, a) => `translateX(-50%) ${a}`,
+var nt = (t, a) => `translateX(-50%) ${a}`,
   st = { Active: "yFu0ego46", Inactive: "Bq4Oqy1P7", Main: "A73BIfYrH" },
-  ft = ({ height: t, id: a, tap: n, width: i, ...o }) => {
+  resolveQuietReflectionProps = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
     return {
       ...o,
@@ -1364,7 +1358,7 @@ var tt = SPRING_CAPTION,
           : "A73BIfYrH",
     };
   },
-  lt = (t, a) =>
+  QuietReflection_layoutKey = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
   _QuietReflection = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
@@ -1375,7 +1369,7 @@ var tt = SPRING_CAPTION,
         variant,
         HEb3Jrr9H,
         ...restProps
-      } = ft(props),
+      } = resolveQuietReflectionProps(props),
       {
         baseVariant,
         classNames,
@@ -1385,12 +1379,12 @@ var tt = SPRING_CAPTION,
         setVariant,
         variants,
       } = useComponentVariantState({
-        cycleOrder: et,
+        cycleOrder: QuietReflection_cycleOrder,
         defaultVariant: "A73BIfYrH",
         variant: variant,
-        variantClassNames: at,
+        variantClassNames: QuietReflection_variantClassNames,
       }),
-      u = lt(props, variants),
+      u = QuietReflection_layoutKey(props, variants),
       { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
       b = activeVariantCallback(async (...J) => {
         if ((setGestureState({ isPressed: false }), HEb3Jrr9H && (await HEb3Jrr9H(...J)) === false)) return false;
@@ -1412,7 +1406,7 @@ var tt = SPRING_CAPTION,
         animate: variants,
         initial: false,
         children: jsx(TransitionProvider, {
-          value: tt,
+          value: SPRING_CAPTION,
           children: jsx(motion.div, {
             ...restProps,
             ...gestureHandlers,
@@ -1522,7 +1516,7 @@ var tt = SPRING_CAPTION,
       }),
     });
   }),
-  dt = [
+  QuietReflection_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-pC2CI.framer-1nchnn2, .framer-pC2CI .framer-1nchnn2 { display: block; }",
     ".framer-pC2CI.framer-1f4gy1p { cursor: pointer; height: 72px; overflow: visible; position: relative; width: 380px; }",
@@ -1531,7 +1525,7 @@ var tt = SPRING_CAPTION,
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-pC2CI .framer-1aqnoq4 { gap: 0px; } .framer-pC2CI .framer-1aqnoq4 > * { margin: 0px; margin-bottom: calc(10px / 2); margin-top: calc(10px / 2); } .framer-pC2CI .framer-1aqnoq4 > :first-child { margin-top: 0px; } .framer-pC2CI .framer-1aqnoq4 > :last-child { margin-bottom: 0px; } }",
     ".framer-pC2CI.framer-v-tr7mnx.framer-1f4gy1p { overflow: hidden; will-change: var(--framer-will-change-override, transform); }",
   ],
-  QuietReflection = withCSS(_QuietReflection, dt, "framer-pC2CI");
+  QuietReflection = withCSS(_QuietReflection, QuietReflection_css, "framer-pC2CI");
 QuietReflection.displayName = "Quiet Reflection";
 QuietReflection.defaultProps = { height: 72, width: 380 };
 addPropertyControls(QuietReflection, {
@@ -1561,17 +1555,16 @@ loadFonts(
   ],
   { supportsExplicitInterCodegen: true },
 );
-var ct = ["HkR7N8JHH", "qFD4z7zh2", "uLTZzDf3c"],
+var TeamDynamics_cycleOrder = ["HkR7N8JHH", "qFD4z7zh2", "uLTZzDf3c"],
   pt = "framer-gdsq7",
-  ht = {
+  TeamDynamics_variantClassNames = {
     HkR7N8JHH: "framer-v-6uc7fk",
     qFD4z7zh2: "framer-v-13j692f",
     uLTZzDf3c: "framer-v-1ws1zva",
   };
-var ut = SPRING_CAPTION,
-  gt = (t, a) => `translate(-50%, -50%) ${a}`,
+var gt = (t, a) => `translate(-50%, -50%) ${a}`,
   vt = { Active: "qFD4z7zh2", Inactive: "uLTZzDf3c", Main: "HkR7N8JHH" },
-  bt = ({ height: t, id: a, tap: n, width: i, ...o }) => {
+  resolveTeamDynamicsProps = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
     return {
       ...o,
@@ -1583,7 +1576,7 @@ var ut = SPRING_CAPTION,
           : "HkR7N8JHH",
     };
   },
-  wt = (t, a) =>
+  TeamDynamics_layoutKey = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
   _TeamDynamics = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
@@ -1594,7 +1587,7 @@ var ut = SPRING_CAPTION,
         variant,
         E2jYS2CvR,
         ...restProps
-      } = bt(props),
+      } = resolveTeamDynamicsProps(props),
       {
         baseVariant,
         classNames,
@@ -1604,12 +1597,12 @@ var ut = SPRING_CAPTION,
         setVariant,
         variants,
       } = useComponentVariantState({
-        cycleOrder: ct,
+        cycleOrder: TeamDynamics_cycleOrder,
         defaultVariant: "HkR7N8JHH",
         variant: variant,
-        variantClassNames: ht,
+        variantClassNames: TeamDynamics_variantClassNames,
       }),
-      u = wt(props, variants),
+      u = TeamDynamics_layoutKey(props, variants),
       { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
       b = activeVariantCallback(async (...Q) => {
         if ((setGestureState({ isPressed: false }), E2jYS2CvR && (await E2jYS2CvR(...Q)) === false)) return false;
@@ -1628,7 +1621,7 @@ var ut = SPRING_CAPTION,
         animate: variants,
         initial: false,
         children: jsx(TransitionProvider, {
-          value: ut,
+          value: SPRING_CAPTION,
           children: jsx(motion.div, {
             ...restProps,
             ...gestureHandlers,
@@ -1731,14 +1724,14 @@ var ut = SPRING_CAPTION,
       }),
     });
   }),
-  qt = [
+  TeamDynamics_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-gdsq7.framer-71ejvw, .framer-gdsq7 .framer-71ejvw { display: block; }",
     ".framer-gdsq7.framer-6uc7fk { cursor: pointer; height: 72px; overflow: visible; position: relative; width: 380px; }",
     ".framer-gdsq7 .framer-1pt2td0 { -webkit-user-select: none; flex: none; height: auto; left: 50%; overflow: visible; position: absolute; top: 50%; user-select: none; white-space: pre-wrap; width: 360px; word-break: break-word; word-wrap: break-word; }",
     ".framer-gdsq7.framer-v-13j692f.framer-6uc7fk { overflow: hidden; will-change: var(--framer-will-change-override, transform); }",
   ],
-  TeamDynamics = withCSS(_TeamDynamics, qt, "framer-gdsq7");
+  TeamDynamics = withCSS(_TeamDynamics, TeamDynamics_css, "framer-gdsq7");
 TeamDynamics.displayName = "Team Dynamics";
 TeamDynamics.defaultProps = { height: 72, width: 380 };
 addPropertyControls(TeamDynamics, {
@@ -1768,23 +1761,21 @@ loadFonts(
   ],
   { supportsExplicitInterCodegen: true },
 );
-var Qe = withFXWrapper(motion.div),
-  Ze = scheduleAppearAnimation(withFXWrapper(motion.a)),
+var FXDiv = withFXWrapper(motion.div),
+  FXLink = scheduleAppearAnimation(withFXWrapper(motion.a)),
   Rt = getFonts(Trigger),
   Xt = getFonts(QuietReflection),
   Ot = getFonts(TeamDynamics),
   kt = getFonts(Decisiveness),
   Ut = getFonts(G),
-  It = ["SoQlwVPaX", "CuHIQOWnA", "ggKLLEo3O"],
+  StoryRight_cycleOrder = ["SoQlwVPaX", "CuHIQOWnA", "ggKLLEo3O"],
   _t = "framer-MY1rC",
-  Nt = {
+  StoryRight_variantClassNames = {
     CuHIQOWnA: "framer-v-sltbvw",
     ggKLLEo3O: "framer-v-8q1l2i",
     SoQlwVPaX: "framer-v-1gwjjt4",
   };
-var jt = TWEEN_MEDIUM,
-  zt = TWEEN_LONG,
-  Je = {
+var Je = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -1792,7 +1783,7 @@ var jt = TWEEN_MEDIUM,
     scale: 1,
     skewX: 0,
     skewY: 0,
-    transition: zt,
+    transition: TWEEN_LONG,
     x: 0,
     y: 0,
   },
@@ -1819,7 +1810,6 @@ var jt = TWEEN_MEDIUM,
     x: -410,
     y: 0,
   },
-  Le = TWEEN_CYCLE,
   er = {
     opacity: 1,
     rotate: 0,
@@ -1829,11 +1819,10 @@ var jt = TWEEN_MEDIUM,
     skewX: 0,
     skewY: 0,
     transformPerspective: 1200,
-    transition: Le,
+    transition: TWEEN_CYCLE,
     x: -410,
     y: 0,
   },
-  Vt = SPRING_STANDARD,
   Lt = {
     opacity: 1,
     rotate: 0,
@@ -1842,7 +1831,7 @@ var jt = TWEEN_MEDIUM,
     scale: 1.02,
     skewX: 0,
     skewY: 0,
-    transition: Vt,
+    transition: SPRING_STANDARD,
     y: -4,
   },
   St = {
@@ -1850,7 +1839,7 @@ var jt = TWEEN_MEDIUM,
     "Variant 2": "CuHIQOWnA",
     "Variant 3": "ggKLLEo3O",
   },
-  Tt = ({ height: t, id: a, tap: n, width: i, ...o }) => {
+  resolveStoryRightProps = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
     return {
       ...o,
@@ -1862,7 +1851,7 @@ var jt = TWEEN_MEDIUM,
           : "SoQlwVPaX",
     };
   },
-  Dt = (t, a) =>
+  StoryRight_layoutKey = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
   _StoryRight = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
@@ -1873,7 +1862,7 @@ var jt = TWEEN_MEDIUM,
         variant,
         U4TM70Ust,
         ...restProps
-      } = Tt(props),
+      } = resolveStoryRightProps(props),
       {
         baseVariant,
         classNames,
@@ -1885,12 +1874,12 @@ var jt = TWEEN_MEDIUM,
         setVariant,
         variants,
       } = useComponentVariantState({
-        cycleOrder: It,
+        cycleOrder: StoryRight_cycleOrder,
         defaultVariant: "SoQlwVPaX",
         variant: variant,
-        variantClassNames: Nt,
+        variantClassNames: StoryRight_variantClassNames,
       }),
-      h = Dt(props, variants),
+      h = StoryRight_layoutKey(props, variants),
       { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
       M = activeVariantCallback(async (...ye) => {
         await delay(() => setVariant(CycleSymbol), 6600);
@@ -1922,7 +1911,7 @@ var jt = TWEEN_MEDIUM,
         animate: variants,
         initial: false,
         children: jsx(TransitionProvider, {
-          value: jt,
+          value: TWEEN_MEDIUM,
           children: jsxs(motion.div, {
             ...restProps,
             ...gestureHandlers,
@@ -1946,7 +1935,7 @@ var jt = TWEEN_MEDIUM,
                 jsx(B, {
                   href: { hash: ":mRVhqybMB", webPageId: "bzydBB85Y" },
                   openInNewTab: false,
-                  children: jsx(Ze, {
+                  children: jsx(FXLink, {
                     __perspectiveFX: false,
                     __smartComponentFX: true,
                     __targetOpacity: 1,
@@ -1968,8 +1957,8 @@ var jt = TWEEN_MEDIUM,
                       className: "framer-kf2wna",
                       layoutDependency: h,
                       layoutId: "sJrvLCmSo",
-                      children: jsx(Qe, {
-                        __framer__animate: { transition: Le },
+                      children: jsx(FXDiv, {
+                        __framer__animate: { transition: TWEEN_CYCLE },
                         __framer__animateOnce: true,
                         __framer__enter: $e,
                         __framer__exit: er,
@@ -1999,7 +1988,7 @@ var jt = TWEEN_MEDIUM,
                 jsx(B, {
                   href: { hash: ":NYP2seWhD", webPageId: "bzydBB85Y" },
                   openInNewTab: false,
-                  children: jsx(Ze, {
+                  children: jsx(FXLink, {
                     __perspectiveFX: false,
                     __smartComponentFX: true,
                     __targetOpacity: 1,
@@ -2021,8 +2010,8 @@ var jt = TWEEN_MEDIUM,
                       className: "framer-12ws8fg",
                       layoutDependency: h,
                       layoutId: "HA4XkAUHM",
-                      children: jsx(Qe, {
-                        __framer__animate: { transition: Le },
+                      children: jsx(FXDiv, {
+                        __framer__animate: { transition: TWEEN_CYCLE },
                         __framer__animateOnce: true,
                         __framer__enter: $e,
                         __framer__exit: er,
@@ -2052,7 +2041,7 @@ var jt = TWEEN_MEDIUM,
                 jsx(B, {
                   href: { hash: ":DXqsCYt4L", webPageId: "bzydBB85Y" },
                   openInNewTab: false,
-                  children: jsx(Ze, {
+                  children: jsx(FXLink, {
                     __perspectiveFX: false,
                     __smartComponentFX: true,
                     __targetOpacity: 1,
@@ -2074,8 +2063,8 @@ var jt = TWEEN_MEDIUM,
                       className: "framer-1scv3mw",
                       layoutDependency: h,
                       layoutId: "Xhd69UAep",
-                      children: jsx(Qe, {
-                        __framer__animate: { transition: Le },
+                      children: jsx(FXDiv, {
+                        __framer__animate: { transition: TWEEN_CYCLE },
                         __framer__animateOnce: true,
                         __framer__enter: $e,
                         __framer__exit: er,
@@ -2427,7 +2416,7 @@ var jt = TWEEN_MEDIUM,
       }),
     });
   }),
-  Yt = [
+  StoryRight_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-MY1rC.framer-3s0w40, .framer-MY1rC .framer-3s0w40 { display: block; }",
     ".framer-MY1rC.framer-1gwjjt4 { align-content: center; align-items: center; display: flex; flex-direction: row; flex-wrap: wrap; gap: 80px; height: min-content; justify-content: center; overflow: visible; padding: 0px; position: relative; width: 1000px; }",
@@ -2449,7 +2438,7 @@ var jt = TWEEN_MEDIUM,
     ".framer-MY1rC.framer-v-sltbvw .framer-wcqno7 { top: calc(50.00000000000002% - 90px / 2); }",
     ".framer-MY1rC.framer-v-8q1l2i .framer-wcqno7 { bottom: -11px; top: unset; }",
   ],
-  StoryRight = withCSS(_StoryRight, Yt, "framer-MY1rC");
+  StoryRight = withCSS(_StoryRight, StoryRight_css, "framer-MY1rC");
 StoryRight.displayName = "Story Right";
 StoryRight.defaultProps = { height: 352, width: 1e3 };
 addPropertyControls(StoryRight, {
@@ -2464,17 +2453,16 @@ addPropertyControls(StoryRight, {
 loadFonts(StoryRight, [{ explicitInter: true, fonts: [] }, ...Rt, ...Xt, ...Ot, ...kt, ...Ut], {
   supportsExplicitInterCodegen: true,
 });
-var Bt = ["NFc0G3jDM", "NH6OUC_9N", "Bx08xEGah"],
+var TunnelVision_cycleOrder = ["NFc0G3jDM", "NH6OUC_9N", "Bx08xEGah"],
   At = "framer-Z1wid",
-  Ht = {
+  TunnelVision_variantClassNames = {
     Bx08xEGah: "framer-v-s81sxb",
     NFc0G3jDM: "framer-v-r8ywzq",
     NH6OUC_9N: "framer-v-3v0an8",
   };
-var Et = SPRING_CAPTION,
-  Kt = (t, a) => `translateX(-50%) ${a}`,
+var Kt = (t, a) => `translateX(-50%) ${a}`,
   Zt = { "Variant 1": "NFc0G3jDM", Inactive: "Bx08xEGah", Raised: "NH6OUC_9N" },
-  Jt = ({ height: t, id: a, tap: n, width: i, ...o }) => {
+  resolveTunnelVisionProps = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
     return {
       ...o,
@@ -2486,7 +2474,7 @@ var Et = SPRING_CAPTION,
           : "NFc0G3jDM",
     };
   },
-  Gt = (t, a) => a.join("-") + t.layoutDependency,
+  TunnelVision_layoutKey = (t, a) => a.join("-") + t.layoutDependency,
   _TunnelVision = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       {
@@ -2496,7 +2484,7 @@ var Et = SPRING_CAPTION,
         variant,
         UGmfn7WC9,
         ...restProps
-      } = Jt(props),
+      } = resolveTunnelVisionProps(props),
       {
         baseVariant,
         classNames,
@@ -2505,12 +2493,12 @@ var Et = SPRING_CAPTION,
         setVariant,
         variants,
       } = useComponentVariantState({
-        cycleOrder: Bt,
+        cycleOrder: TunnelVision_cycleOrder,
         defaultVariant: "NFc0G3jDM",
         variant: variant,
-        variantClassNames: Ht,
+        variantClassNames: TunnelVision_variantClassNames,
       }),
-      x = Gt(props, variants),
+      x = TunnelVision_layoutKey(props, variants),
       { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
       h = activeVariantCallback(async (...Q) => {
         if ((setGestureState({ isPressed: false }), UGmfn7WC9 && (await UGmfn7WC9(...Q)) === false)) return false;
@@ -2532,7 +2520,7 @@ var Et = SPRING_CAPTION,
         animate: variants,
         initial: false,
         children: jsx(TransitionProvider, {
-          value: Et,
+          value: SPRING_CAPTION,
           children: jsx(motion.div, {
             ...restProps,
             className: cx(At, ...additionalClassNames, "framer-r8ywzq", className, classNames),
@@ -2644,7 +2632,7 @@ var Et = SPRING_CAPTION,
       }),
     });
   }),
-  en = [
+  TunnelVision_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-Z1wid.framer-5pcjz4, .framer-Z1wid .framer-5pcjz4 { display: block; }",
     ".framer-Z1wid.framer-r8ywzq { cursor: pointer; height: 72px; overflow: visible; position: relative; width: 380px; }",
@@ -2652,7 +2640,7 @@ var Et = SPRING_CAPTION,
     ".framer-Z1wid.framer-v-3v0an8.framer-r8ywzq { overflow: hidden; will-change: var(--framer-will-change-override, transform); }",
     ".framer-Z1wid.framer-v-3v0an8 .framer-1i486jk, .framer-Z1wid.framer-v-s81sxb .framer-1i486jk { cursor: unset; }",
   ],
-  TunnelVision = withCSS(_TunnelVision, en, "framer-Z1wid");
+  TunnelVision = withCSS(_TunnelVision, TunnelVision_css, "framer-Z1wid");
 TunnelVision.displayName = "Tunnel vision";
 TunnelVision.defaultProps = { height: 72, width: 380 };
 addPropertyControls(TunnelVision, {
@@ -2682,17 +2670,16 @@ loadFonts(
   ],
   { supportsExplicitInterCodegen: true },
 );
-var rn = ["zsZ4Z5z6N", "j8drpudA2", "gO1Oy0ksh"],
+var Urgency_cycleOrder = ["zsZ4Z5z6N", "j8drpudA2", "gO1Oy0ksh"],
   an = "framer-0umfc",
-  tn = {
+  Urgency_variantClassNames = {
     gO1Oy0ksh: "framer-v-138ztx9",
     j8drpudA2: "framer-v-1elz6w7",
     zsZ4Z5z6N: "framer-v-1g1moqd",
   };
-var nn = SPRING_CAPTION,
-  on = (t, a) => `translateY(-50%) ${a}`,
+var on = (t, a) => `translateY(-50%) ${a}`,
   ln = { inactive: "gO1Oy0ksh", Main: "zsZ4Z5z6N", Raised: "j8drpudA2" },
-  mn = ({ height: t, id: a, tap: n, width: i, ...o }) => {
+  resolveUrgencyProps = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
     return {
       ...o,
@@ -2704,7 +2691,7 @@ var nn = SPRING_CAPTION,
           : "zsZ4Z5z6N",
     };
   },
-  dn = (t, a) => a.join("-") + t.layoutDependency,
+  Urgency_layoutKey = (t, a) => a.join("-") + t.layoutDependency,
   _Urgency = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       {
@@ -2714,7 +2701,7 @@ var nn = SPRING_CAPTION,
         variant,
         mBC2PxMBg,
         ...restProps
-      } = mn(props),
+      } = resolveUrgencyProps(props),
       {
         baseVariant,
         classNames,
@@ -2723,12 +2710,12 @@ var nn = SPRING_CAPTION,
         setVariant,
         variants,
       } = useComponentVariantState({
-        cycleOrder: rn,
+        cycleOrder: Urgency_cycleOrder,
         defaultVariant: "zsZ4Z5z6N",
         variant: variant,
-        variantClassNames: tn,
+        variantClassNames: Urgency_variantClassNames,
       }),
-      x = dn(props, variants),
+      x = Urgency_layoutKey(props, variants),
       { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
       h = activeVariantCallback(async (...Q) => {
         if ((setGestureState({ isPressed: false }), mBC2PxMBg && (await mBC2PxMBg(...Q)) === false)) return false;
@@ -2748,7 +2735,7 @@ var nn = SPRING_CAPTION,
         animate: variants,
         initial: false,
         children: jsx(TransitionProvider, {
-          value: nn,
+          value: SPRING_CAPTION,
           children: jsxs(motion.div, {
             ...restProps,
             className: cx(an, ...additionalClassNames, "framer-1g1moqd", className, classNames),
@@ -2863,7 +2850,7 @@ var nn = SPRING_CAPTION,
       }),
     });
   }),
-  pn = [
+  Urgency_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-0umfc.framer-ut790n, .framer-0umfc .framer-ut790n { display: block; }",
     ".framer-0umfc.framer-1g1moqd { cursor: pointer; height: 72px; overflow: visible; position: relative; width: 380px; }",
@@ -2872,7 +2859,7 @@ var nn = SPRING_CAPTION,
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-0umfc .framer-zcizhz { gap: 0px; } .framer-0umfc .framer-zcizhz > * { margin: 0px; margin-bottom: calc(10px / 2); margin-top: calc(10px / 2); } .framer-0umfc .framer-zcizhz > :first-child { margin-top: 0px; } .framer-0umfc .framer-zcizhz > :last-child { margin-bottom: 0px; } }",
     ".framer-0umfc.framer-v-1elz6w7.framer-1g1moqd { width: 410px; }",
   ],
-  Urgency = withCSS(_Urgency, pn, "framer-0umfc");
+  Urgency = withCSS(_Urgency, Urgency_css, "framer-0umfc");
 Urgency.displayName = "Urgency";
 Urgency.defaultProps = { height: 72, width: 380 };
 addPropertyControls(Urgency, {
@@ -2902,17 +2889,16 @@ loadFonts(
   ],
   { supportsExplicitInterCodegen: true },
 );
-var hn = ["S3kYznUP4", "xZIBSRPrK", "aJO1FcIHC"],
+var Coordination_cycleOrder = ["S3kYznUP4", "xZIBSRPrK", "aJO1FcIHC"],
   un = "framer-DCwjj",
-  gn = {
+  Coordination_variantClassNames = {
     aJO1FcIHC: "framer-v-1q68uxm",
     S3kYznUP4: "framer-v-11b0mpr",
     xZIBSRPrK: "framer-v-327s0c",
   };
-var xn = SPRING_CAPTION,
-  yn = (t, a) => `translateY(-50%) ${a}`,
+var yn = (t, a) => `translateY(-50%) ${a}`,
   wn = { Inactive: "aJO1FcIHC", Main: "S3kYznUP4", Raised: "xZIBSRPrK" },
-  Cn = ({ height: t, id: a, tap: n, width: i, ...o }) => {
+  resolveCoordinationProps = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
     return {
       ...o,
@@ -2924,7 +2910,7 @@ var xn = SPRING_CAPTION,
           : "S3kYznUP4",
     };
   },
-  qn = (t, a) => a.join("-") + t.layoutDependency,
+  Coordination_layoutKey = (t, a) => a.join("-") + t.layoutDependency,
   _Coordination = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       {
@@ -2934,7 +2920,7 @@ var xn = SPRING_CAPTION,
         variant,
         kJZ82E8Mx,
         ...restProps
-      } = Cn(props),
+      } = resolveCoordinationProps(props),
       {
         baseVariant,
         classNames,
@@ -2943,12 +2929,12 @@ var xn = SPRING_CAPTION,
         setVariant,
         variants,
       } = useComponentVariantState({
-        cycleOrder: hn,
+        cycleOrder: Coordination_cycleOrder,
         defaultVariant: "S3kYznUP4",
         variant: variant,
-        variantClassNames: gn,
+        variantClassNames: Coordination_variantClassNames,
       }),
-      x = qn(props, variants),
+      x = Coordination_layoutKey(props, variants),
       { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
       h = activeVariantCallback(async (...Q) => {
         if ((setGestureState({ isPressed: false }), kJZ82E8Mx && (await kJZ82E8Mx(...Q)) === false)) return false;
@@ -2968,7 +2954,7 @@ var xn = SPRING_CAPTION,
         animate: variants,
         initial: false,
         children: jsx(TransitionProvider, {
-          value: xn,
+          value: SPRING_CAPTION,
           children: jsxs(motion.div, {
             ...restProps,
             className: cx(un, ...additionalClassNames, "framer-11b0mpr", className, classNames),
@@ -3087,7 +3073,7 @@ var xn = SPRING_CAPTION,
       }),
     });
   }),
-  Xn = [
+  Coordination_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-DCwjj.framer-1fjq90v, .framer-DCwjj .framer-1fjq90v { display: block; }",
     ".framer-DCwjj.framer-11b0mpr { cursor: pointer; height: 72px; overflow: visible; position: relative; width: 380px; }",
@@ -3097,7 +3083,7 @@ var xn = SPRING_CAPTION,
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-DCwjj .framer-jjhh2s, .framer-DCwjj .framer-1bvamph { gap: 0px; } .framer-DCwjj .framer-jjhh2s > * { margin: 0px; margin-bottom: calc(10px / 2); margin-top: calc(10px / 2); } .framer-DCwjj .framer-jjhh2s > :first-child { margin-top: 0px; } .framer-DCwjj .framer-jjhh2s > :last-child { margin-bottom: 0px; } .framer-DCwjj .framer-1bvamph > * { margin: 0px; margin-left: calc(10px / 2); margin-right: calc(10px / 2); } .framer-DCwjj .framer-1bvamph > :first-child { margin-left: 0px; } .framer-DCwjj .framer-1bvamph > :last-child { margin-right: 0px; } }",
     ".framer-DCwjj.framer-v-327s0c.framer-11b0mpr { overflow: hidden; will-change: var(--framer-will-change-override, transform); }",
   ],
-  Coordination = withCSS(_Coordination, Xn, "framer-DCwjj");
+  Coordination = withCSS(_Coordination, Coordination_css, "framer-DCwjj");
 Coordination.displayName = "Coordination";
 Coordination.defaultProps = { height: 72, width: 380 };
 addPropertyControls(Coordination, {
@@ -3127,23 +3113,21 @@ loadFonts(
   ],
   { supportsExplicitInterCodegen: true },
 );
-var ir = withFXWrapper(motion.div),
-  or = scheduleAppearAnimation(withFXWrapper(motion.a)),
+var FXDiv = withFXWrapper(motion.div),
+  FXLink = scheduleAppearAnimation(withFXWrapper(motion.a)),
   On = getFonts(G),
   kn = getFonts(Urgency),
   Un = getFonts(Coordination),
   In = getFonts(TunnelVision),
   _n = getFonts(Trigger),
-  Nn = ["Q1DJ9ntwf", "qvmKCdJXN", "hxzAUWcy0"],
+  StoryLeft2_cycleOrder = ["Q1DJ9ntwf", "qvmKCdJXN", "hxzAUWcy0"],
   jn = "framer-sRCsS",
-  zn = {
+  StoryLeft2_variantClassNames = {
     hxzAUWcy0: "framer-v-jxbueo",
     Q1DJ9ntwf: "framer-v-khfq23",
     qvmKCdJXN: "framer-v-1m0rm34",
   };
-var Vn = TWEEN_MEDIUM,
-  Ln = TWEEN_LONG,
-  Br = {
+var Br = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -3151,7 +3135,7 @@ var Vn = TWEEN_MEDIUM,
     scale: 1,
     skewX: 0,
     skewY: 0,
-    transition: Ln,
+    transition: TWEEN_LONG,
     x: 0,
     y: 0,
   },
@@ -3178,7 +3162,6 @@ var Vn = TWEEN_MEDIUM,
     x: -410,
     y: 0,
   },
-  Me = TWEEN_CYCLE,
   lr = {
     opacity: 1,
     rotate: 0,
@@ -3188,11 +3171,10 @@ var Vn = TWEEN_MEDIUM,
     skewX: 0,
     skewY: 0,
     transformPerspective: 1200,
-    transition: Me,
+    transition: TWEEN_CYCLE,
     x: -410,
     y: 0,
   },
-  Mn = TWEEN_SLOW,
   Fn = {
     opacity: 1,
     rotate: 0,
@@ -3201,11 +3183,10 @@ var Vn = TWEEN_MEDIUM,
     scale: 1,
     skewX: 0,
     skewY: 0,
-    transition: Mn,
+    transition: TWEEN_SLOW,
     x: 0,
     y: 0,
   },
-  Ar = SPRING_STANDARD,
   Sn = {
     opacity: 1,
     rotate: 0,
@@ -3214,7 +3195,7 @@ var Vn = TWEEN_MEDIUM,
     scale: 1.005,
     skewX: 0,
     skewY: 0,
-    transition: Ar,
+    transition: SPRING_STANDARD,
     y: -4,
   },
   mr = {
@@ -3225,7 +3206,7 @@ var Vn = TWEEN_MEDIUM,
     scale: 1,
     skewX: 0,
     skewY: 0,
-    transition: Ar,
+    transition: SPRING_STANDARD,
     y: -4,
   },
   Pn = {
@@ -3233,7 +3214,7 @@ var Vn = TWEEN_MEDIUM,
     "SECOND TAB": "qvmKCdJXN",
     "Third Tab": "hxzAUWcy0",
   },
-  Yn = ({ height: t, id: a, width: n, ...i }) => {
+  resolveStoryLeft2Props = ({ height: t, id: a, width: n, ...i }) => {
     var o, f;
     return {
       ...i,
@@ -3244,11 +3225,11 @@ var Vn = TWEEN_MEDIUM,
           : "Q1DJ9ntwf",
     };
   },
-  Bn = (t, a) =>
+  StoryLeft2_layoutKey = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
   _StoryLeft2 = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
-      { style, className, layoutId, variant, ...restProps } = Yn(props),
+      { style, className, layoutId, variant, ...restProps } = resolveStoryLeft2Props(props),
       {
         baseVariant,
         classNames,
@@ -3260,12 +3241,12 @@ var Vn = TWEEN_MEDIUM,
         setVariant,
         variants,
       } = useComponentVariantState({
-        cycleOrder: Nn,
+        cycleOrder: StoryLeft2_cycleOrder,
         defaultVariant: "Q1DJ9ntwf",
         variant: variant,
-        variantClassNames: zn,
+        variantClassNames: StoryLeft2_variantClassNames,
       }),
-      m = Bn(props, variants),
+      m = StoryLeft2_layoutKey(props, variants),
       { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
       V = activeVariantCallback(async (...xe) => {
         await delay(() => setVariant(CycleSymbol), 6600);
@@ -3293,7 +3274,7 @@ var Vn = TWEEN_MEDIUM,
         animate: variants,
         initial: false,
         children: jsx(TransitionProvider, {
-          value: Vn,
+          value: TWEEN_MEDIUM,
           children: jsxs(motion.div, {
             ...restProps,
             ...gestureHandlers,
@@ -3318,7 +3299,7 @@ var Vn = TWEEN_MEDIUM,
                   href: { hash: ":WjO84y3BZ", webPageId: "bzydBB85Y" },
                   openInNewTab: false,
                   smoothScroll: true,
-                  children: jsx(or, {
+                  children: jsx(FXLink, {
                     __perspectiveFX: false,
                     __smartComponentFX: true,
                     __targetOpacity: 1,
@@ -3340,8 +3321,8 @@ var Vn = TWEEN_MEDIUM,
                       className: "framer-1l53x7w",
                       layoutDependency: m,
                       layoutId: "rP4Qgd3xN",
-                      children: jsx(ir, {
-                        __framer__animate: { transition: Me },
+                      children: jsx(FXDiv, {
+                        __framer__animate: { transition: TWEEN_CYCLE },
                         __framer__animateOnce: true,
                         __framer__enter: fr,
                         __framer__exit: lr,
@@ -3371,7 +3352,7 @@ var Vn = TWEEN_MEDIUM,
                 jsx(B, {
                   href: { hash: ":dbtg_NZW8", webPageId: "bzydBB85Y" },
                   openInNewTab: false,
-                  children: jsx(or, {
+                  children: jsx(FXLink, {
                     __perspectiveFX: false,
                     __smartComponentFX: true,
                     __targetOpacity: 1,
@@ -3393,8 +3374,8 @@ var Vn = TWEEN_MEDIUM,
                       className: "framer-rmlb7z",
                       layoutDependency: m,
                       layoutId: "dyJ8qqujy",
-                      children: jsx(ir, {
-                        __framer__animate: { transition: Me },
+                      children: jsx(FXDiv, {
+                        __framer__animate: { transition: TWEEN_CYCLE },
                         __framer__animateOnce: true,
                         __framer__enter: fr,
                         __framer__exit: lr,
@@ -3424,7 +3405,7 @@ var Vn = TWEEN_MEDIUM,
                 jsx(B, {
                   href: { hash: ":tftSCv8zZ", webPageId: "bzydBB85Y" },
                   openInNewTab: false,
-                  children: jsx(or, {
+                  children: jsx(FXLink, {
                     __perspectiveFX: false,
                     __smartComponentFX: true,
                     __targetOpacity: 1,
@@ -3446,8 +3427,8 @@ var Vn = TWEEN_MEDIUM,
                       className: "framer-1lbny7u",
                       layoutDependency: m,
                       layoutId: "mholq0un4",
-                      children: jsx(ir, {
-                        __framer__animate: { transition: Me },
+                      children: jsx(FXDiv, {
+                        __framer__animate: { transition: TWEEN_CYCLE },
                         __framer__animateOnce: true,
                         __framer__enter: fr,
                         __framer__exit: lr,
@@ -3863,7 +3844,7 @@ var Vn = TWEEN_MEDIUM,
       }),
     });
   }),
-  Hn = [
+  StoryLeft2_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-sRCsS.framer-rf24a0, .framer-sRCsS .framer-rf24a0 { display: block; }",
     ".framer-sRCsS.framer-khfq23 { align-content: center; align-items: center; display: flex; flex-direction: row; flex-wrap: wrap; gap: 80px; height: min-content; justify-content: center; overflow: visible; padding: 0px 20px 0px 0px; position: relative; width: 1000px; }",
@@ -3893,7 +3874,7 @@ var Vn = TWEEN_MEDIUM,
     ".framer-sRCsS.framer-v-jxbueo .framer-h0n0bm { text-decoration: none; }",
     ".framer-sRCsS.framer-v-jxbueo .framer-gr8coz { bottom: unset; height: 90px; left: calc(51.05263157894739% - 411px / 2); order: 3; right: unset; top: calc(85.93750000000003% - 90px / 2); width: 411px; }",
   ],
-  StoryLeft2 = withCSS(_StoryLeft2, Hn, "framer-sRCsS");
+  StoryLeft2 = withCSS(_StoryLeft2, StoryLeft2_css, "framer-sRCsS");
 StoryLeft2.displayName = "Story Left2";
 StoryLeft2.defaultProps = { height: 352, width: 1e3 };
 addPropertyControls(StoryLeft2, {
@@ -3909,7 +3890,7 @@ loadFonts(StoryLeft2, [{ explicitInter: true, fonts: [] }, ...On, ...kn, ...Un, 
 });
 var li = getFonts(MapMobile2Component),
   ge = withScrollSnapChild(motion.section),
-  me = Ir(motion.section),
+  me = withScrollSnap(motion.section),
   mi = getFonts(G),
   di = getFonts(NeoflixAnim),
   ci = getFonts(RecordReflectRefineCopy),
@@ -3933,7 +3914,6 @@ var li = getFonts(MapMobile2Component),
     ueHalD28r: "framer-v-1uu5wld",
     WQLkyLRf1: "framer-v-72rtr7",
   },
-  Te = SPRING_STANDARD,
   Ci = {
     opacity: 1,
     rotate: 0,
@@ -3942,7 +3922,7 @@ var li = getFonts(MapMobile2Component),
     scale: 1.1,
     skewX: 0,
     skewY: 0,
-    transition: Te,
+    transition: SPRING_STANDARD,
   },
   qi = {
     opacity: 1,
@@ -3952,7 +3932,7 @@ var li = getFonts(MapMobile2Component),
     scale: 1.05,
     skewX: 0,
     skewY: 0,
-    transition: Te,
+    transition: SPRING_STANDARD,
   },
   Wr = {
     opacity: 1,
@@ -3962,7 +3942,7 @@ var li = getFonts(MapMobile2Component),
     scale: 1.01,
     skewX: 0,
     skewY: 0,
-    transition: Te,
+    transition: SPRING_STANDARD,
     y: -4,
   },
   pr = (t, a) => `translateX(-50%) ${a}`,
@@ -4013,11 +3993,11 @@ var li = getFonts(MapMobile2Component),
     scale: 1.02,
     skewX: 0,
     skewY: 0,
-    transition: Te,
+    transition: SPRING_STANDARD,
   },
   hr = Ve(),
   ki = { Desktop: "WQLkyLRf1", Phone: "CXFUsfZRE", Tablet: "ueHalD28r" },
-  Ui = ({ height: t, id: a, width: n, ...i }) => {
+  resolveHomeProps = ({ height: t, id: a, width: n, ...i }) => {
     var o, f;
     return {
       ...i,
@@ -4030,7 +4010,7 @@ var li = getFonts(MapMobile2Component),
   },
   _Home = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
-      { style, className, layoutId, variant, ...restProps } = Ui(props);
+      { style, className, layoutId, variant, ...restProps } = resolveHomeProps(props);
     (useEffect(() => {
       let u = Ve(undefined, activeLocale);
       if (u.robots) {
@@ -5400,7 +5380,7 @@ var li = getFonts(MapMobile2Component),
       })
     );
   }),
-  _i = [
+  Home_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     `.${hr.bodyClassName}-framer-qO1UX { background: white; }`,
     ".framer-qO1UX.framer-lux5qc, .framer-qO1UX .framer-lux5qc { display: block; }",
@@ -5468,7 +5448,7 @@ var li = getFonts(MapMobile2Component),
     ...linkPresetStyles,
     '.framer-qO1UX[data-border="true"]::after, .framer-qO1UX [data-border="true"]::after { content: ""; border-width: var(--border-top-width, 0) var(--border-right-width, 0) var(--border-bottom-width, 0) var(--border-left-width, 0); border-color: var(--border-color, none); border-style: var(--border-style, none); width: 100%; height: 100%; position: absolute; box-sizing: border-box; left: 0; top: 0; border-radius: inherit; pointer-events: none; }',
   ],
-  Home = withCSS(_Home, _i, "framer-qO1UX");
+  Home = withCSS(_Home, Home_css, "framer-qO1UX");
 Home.displayName = "Home";
 Home.defaultProps = { height: 860, width: 1200 };
 loadFonts(

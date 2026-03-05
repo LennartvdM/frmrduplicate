@@ -118,7 +118,6 @@ var ea = withFXWrapper(motion.div),
   aa = ["I5QaL6oi8", "h9tfYk7K5"],
   ta = "framer-Kv8wc",
   na = { h9tfYk7K5: "framer-v-1kdysgy", I5QaL6oi8: "framer-v-yyb023" };
-var ia = mergeVariantProps;
 var oa = SPRING_HEAVY,
   _r = SPRING_STANDARD,
   sa = {
@@ -156,8 +155,6 @@ var oa = SPRING_HEAVY,
     x: 0,
     y: 0,
   },
-  ma = TransitionProvider,
-  da = AnimatedFragment,
   ca = { "Variant 1": "I5QaL6oi8", "Variant 2": "h9tfYk7K5" },
   pa = ({ height: t, id: a, width: n, ...i }) => {
     var o, f;
@@ -171,7 +168,7 @@ var oa = SPRING_HEAVY,
     };
   },
   ha = (t, a) => a.join("-") + t.layoutDependency,
-  ua = forwardRef(function (props, forwardedRef) {
+  _NeoflixAnim = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       { style, className, layoutId, variant, ...restProps } = pa(props),
       {
@@ -203,10 +200,10 @@ var oa = SPRING_HEAVY,
       deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
       id: layoutId ?? autoId,
-      children: jsx(da, {
+      children: jsx(AnimatedFragment, {
         animate: variants,
         initial: false,
-        children: jsx(ma, {
+        children: jsx(TransitionProvider, {
           value: oa,
           children: jsxs(ea, {
             ...restProps,
@@ -222,7 +219,7 @@ var oa = SPRING_HEAVY,
             onTapStart: () => setGestureState({ isPressed: true }),
             ref: forwardedRef ?? localRef,
             style: { ...style },
-            ...ia(
+            ...mergeVariantProps(
               {
                 "h9tfYk7K5-hover": {
                   __framer__presenceAnimate: setAppearAnimationValues(
@@ -308,11 +305,10 @@ var oa = SPRING_HEAVY,
     ".framer-Kv8wc .framer-v5bumn { aspect-ratio: 4.52020202020202 / 1; bottom: 0px; flex: none; height: 50%; position: absolute; right: 0px; width: var(--framer-aspect-ratio-supported, 646px); z-index: 1; }",
     ".framer-Kv8wc.framer-v-1kdysgy.framer-yyb023 { cursor: pointer; }",
   ],
-  ve = withCSS(ua, ga, "framer-Kv8wc"),
-  Be = ve;
-ve.displayName = "Neoflix anim";
-ve.defaultProps = { height: 287, width: 935 };
-addPropertyControls(ve, {
+  NeoflixAnim = withCSS(_NeoflixAnim, ga, "framer-Kv8wc");
+NeoflixAnim.displayName = "Neoflix anim";
+NeoflixAnim.defaultProps = { height: 287, width: 935 };
+addPropertyControls(NeoflixAnim, {
   variant: {
     options: ["I5QaL6oi8", "h9tfYk7K5"],
     optionTitles: ["Variant 1", "Variant 2"],
@@ -320,7 +316,7 @@ addPropertyControls(ve, {
     type: ControlType.Enum,
   },
 });
-loadFonts(ve, [{ explicitInter: true, fonts: [] }], { supportsExplicitInterCodegen: true });
+loadFonts(NeoflixAnim, [{ explicitInter: true, fonts: [] }], { supportsExplicitInterCodegen: true });
 var xa = ["jPAyFUDCD", "KVq4FzV2g", "ak_u9yeBh"],
   ya = "framer-Kt2aq",
   va = {
@@ -328,10 +324,7 @@ var xa = ["jPAyFUDCD", "KVq4FzV2g", "ak_u9yeBh"],
     jPAyFUDCD: "framer-v-1mo43e9",
     KVq4FzV2g: "framer-v-1xs1f2",
   };
-var Nr = mergeVariantProps;
 var jr = TWEEN_INSTANT,
-  zr = TransitionProvider,
-  ba = AnimatedFragment,
   wa = {
     "Variant 1": "jPAyFUDCD",
     "Variant 2": "KVq4FzV2g",
@@ -349,7 +342,7 @@ var jr = TWEEN_INSTANT,
     };
   },
   qa = (t, a) => a.join("-") + t.layoutDependency,
-  Ra = forwardRef(function (props, forwardedRef) {
+  _RecordReflectRefineCopy = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       { style, className, layoutId, variant, ...restProps } = Ca(props),
       {
@@ -389,10 +382,10 @@ var jr = TWEEN_INSTANT,
       deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
       id: layoutId ?? autoId,
-      children: jsx(ba, {
+      children: jsx(AnimatedFragment, {
         animate: variants,
         initial: false,
-        children: jsx(zr, {
+        children: jsx(TransitionProvider, {
           value: jr,
           children: jsx(motion.div, {
             ...restProps,
@@ -408,7 +401,7 @@ var jr = TWEEN_INSTANT,
             onTapStart: () => setGestureState({ isPressed: true }),
             ref: forwardedRef ?? localRef,
             style: { ...style },
-            ...Nr(
+            ...mergeVariantProps(
               {
                 ak_u9yeBh: { "data-framer-name": "Variant 3" },
                 KVq4FzV2g: { "data-framer-name": "Variant 2" },
@@ -416,7 +409,7 @@ var jr = TWEEN_INSTANT,
               baseVariant,
               gestureVariant,
             ),
-            children: jsx(zr, {
+            children: jsx(TransitionProvider, {
               value: jr,
               children: jsx(RichTextComponent, {
                 __fromCanvasComponent: true,
@@ -485,7 +478,7 @@ var jr = TWEEN_INSTANT,
                 },
                 verticalAlignment: "top",
                 withExternalLayout: true,
-                ...Nr(
+                ...mergeVariantProps(
                   {
                     ak_u9yeBh: {
                       "data-highlight": true,
@@ -596,11 +589,10 @@ var jr = TWEEN_INSTANT,
     ".framer-Kt2aq.framer-v-tsw57o.framer-1mo43e9 { gap: 0px; }",
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-Kt2aq.framer-v-tsw57o.framer-1mo43e9 { gap: 0px; } .framer-Kt2aq.framer-v-tsw57o.framer-1mo43e9 > * { margin: 0px; margin-bottom: calc(0px / 2); margin-top: calc(0px / 2); } .framer-Kt2aq.framer-v-tsw57o.framer-1mo43e9 > :first-child { margin-top: 0px; } .framer-Kt2aq.framer-v-tsw57o.framer-1mo43e9 > :last-child { margin-bottom: 0px; } }",
   ],
-  be = withCSS(Ra, Xa, "framer-Kt2aq"),
-  Ae = be;
-be.displayName = "Record Reflect Refine Copy";
-be.defaultProps = { height: 223, width: 226 };
-addPropertyControls(be, {
+  RecordReflectRefineCopy = withCSS(_RecordReflectRefineCopy, Xa, "framer-Kt2aq");
+RecordReflectRefineCopy.displayName = "Record Reflect Refine Copy";
+RecordReflectRefineCopy.defaultProps = { height: 223, width: 226 };
+addPropertyControls(RecordReflectRefineCopy, {
   variant: {
     options: ["jPAyFUDCD", "KVq4FzV2g", "ak_u9yeBh"],
     optionTitles: ["Variant 1", "Variant 2", "Variant 3"],
@@ -609,7 +601,7 @@ addPropertyControls(be, {
   },
 });
 loadFonts(
-  be,
+  RecordReflectRefineCopy,
   [
     {
       explicitInter: true,
@@ -640,10 +632,7 @@ var Oa = ["Aa5IjJyQQ", "Ds7IWPpXk", "wtxEodMdN"],
     Ds7IWPpXk: "framer-v-wbkwq0",
     wtxEodMdN: "framer-v-10ybi4f",
   };
-var Vr = mergeVariantProps;
 var Lr = TWEEN_INSTANT,
-  Mr = TransitionProvider,
-  Ia = AnimatedFragment,
   _a = {
     "Variant 1": "Aa5IjJyQQ",
     "Variant 2": "Ds7IWPpXk",
@@ -662,7 +651,7 @@ var Lr = TWEEN_INSTANT,
   },
   ja = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  za = forwardRef(function (props, forwardedRef) {
+  _RecordReflectRefine = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       { style, className, layoutId, variant, ...restProps } = Na(props),
       {
@@ -705,10 +694,10 @@ var Lr = TWEEN_INSTANT,
       deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
       id: layoutId ?? autoId,
-      children: jsx(Ia, {
+      children: jsx(AnimatedFragment, {
         animate: variants,
         initial: false,
-        children: jsx(Mr, {
+        children: jsx(TransitionProvider, {
           value: Lr,
           children: jsx(motion.div, {
             ...restProps,
@@ -720,7 +709,7 @@ var Lr = TWEEN_INSTANT,
             layoutId: "Aa5IjJyQQ",
             ref: forwardedRef ?? localRef,
             style: { ...style },
-            ...Vr(
+            ...mergeVariantProps(
               {
                 Ds7IWPpXk: { "data-framer-name": "Variant 2" },
                 wtxEodMdN: { "data-framer-name": "Variant 3" },
@@ -728,7 +717,7 @@ var Lr = TWEEN_INSTANT,
               baseVariant,
               gestureVariant,
             ),
-            children: jsx(Mr, {
+            children: jsx(TransitionProvider, {
               value: Lr,
               children: jsx(RichTextComponent, {
                 __fromCanvasComponent: true,
@@ -824,7 +813,7 @@ var Lr = TWEEN_INSTANT,
                 },
                 verticalAlignment: "top",
                 withExternalLayout: true,
-                ...Vr(
+                ...mergeVariantProps(
                   {
                     Ds7IWPpXk: {
                       "data-highlight": true,
@@ -981,11 +970,10 @@ var Lr = TWEEN_INSTANT,
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-ABLhs.framer-2fjn4z { gap: 0px; } .framer-ABLhs.framer-2fjn4z > * { margin: 0px; margin-bottom: calc(20px / 2); margin-top: calc(20px / 2); } .framer-ABLhs.framer-2fjn4z > :first-child { margin-top: 0px; } .framer-ABLhs.framer-2fjn4z > :last-child { margin-bottom: 0px; } }",
     ".framer-ABLhs.framer-v-wbkwq0 .framer-1tufjen, .framer-ABLhs.framer-v-10ybi4f .framer-1tufjen { cursor: pointer; }",
   ],
-  we = withCSS(za, Va, "framer-ABLhs"),
-  He = we;
-we.displayName = "Record Reflect Refine";
-we.defaultProps = { height: 187, width: 717 };
-addPropertyControls(we, {
+  RecordReflectRefine = withCSS(_RecordReflectRefine, Va, "framer-ABLhs");
+RecordReflectRefine.displayName = "Record Reflect Refine";
+RecordReflectRefine.defaultProps = { height: 187, width: 717 };
+addPropertyControls(RecordReflectRefine, {
   variant: {
     options: ["Aa5IjJyQQ", "Ds7IWPpXk", "wtxEodMdN"],
     optionTitles: ["Variant 1", "Variant 2", "Variant 3"],
@@ -994,7 +982,7 @@ addPropertyControls(we, {
   },
 });
 loadFonts(
-  we,
+  RecordReflectRefine,
   [
     {
       explicitInter: true,
@@ -1031,7 +1019,6 @@ var La = ["xKACItaHS", "rgX5PDpQJ", "xeZKtnsQM"],
     xeZKtnsQM: "framer-v-n8ebt9",
     xKACItaHS: "framer-v-4hw3vi",
   };
-var Fa = mergeVariantProps;
 var Sa = {
     "Variant 1": "xKACItaHS",
     "Variant 2": "rgX5PDpQJ",
@@ -1048,7 +1035,7 @@ var Sa = {
       type: "spring" /* physics-based spring animation */,
     },
   },
-  Da = forwardRef(function (
+  _Trigger = forwardRef(function (
     {
       id: t,
       style: a,
@@ -1118,7 +1105,7 @@ var Sa = {
             rgX5PDpQJ: { backgroundColor: "rgb(153, 204, 102)" },
             xeZKtnsQM: { backgroundColor: "rgb(119, 85, 204)" },
           },
-          ...Fa(
+          ...mergeVariantProps(
             {
               rgX5PDpQJ: { "data-framer-name": "Variant 2" },
               xeZKtnsQM: { "data-framer-name": "Variant 3" },
@@ -1137,11 +1124,10 @@ var Sa = {
     ".framer-7RIWM .framer-ibx2dq { display: block; }",
     ".framer-7RIWM .framer-4hw3vi { height: 54px; overflow: visible; position: relative; width: 238px; }",
   ],
-  Ce = withCSS(Da, Pa, "framer-7RIWM"),
-  le = Ce;
-Ce.displayName = "Trigger";
-Ce.defaultProps = { height: 54, width: 238 };
-addPropertyControls(Ce, {
+  Trigger = withCSS(_Trigger, Pa, "framer-7RIWM");
+Trigger.displayName = "Trigger";
+Trigger.defaultProps = { height: 54, width: 238 };
+addPropertyControls(Trigger, {
   variant: {
     options: ["xKACItaHS", "rgX5PDpQJ", "xeZKtnsQM"],
     optionTitles: ["Variant 1", "Variant 2", "Variant 3"],
@@ -1150,7 +1136,7 @@ addPropertyControls(Ce, {
   },
   e8FqqnNOm: { title: "Hover", type: ControlType.EventHandler },
 });
-loadFonts(Ce, []);
+loadFonts(Trigger, []);
 var Ya = ["QCVLxQKOQ", "XVQi0W0KO", "Xwn3H48jY"],
   Ba = "framer-2FQXY",
   Aa = {
@@ -1158,11 +1144,8 @@ var Ya = ["QCVLxQKOQ", "XVQi0W0KO", "Xwn3H48jY"],
     XVQi0W0KO: "framer-v-1r41h02",
     Xwn3H48jY: "framer-v-548aw2",
   };
-var Fr = mergeVariantProps;
 var Ha = SPRING_CAPTION,
   Ea = (t, a) => `translateX(-50%) ${a}`,
-  Ka = TransitionProvider,
-  Wa = AnimatedFragment,
   Qa = { Active: "XVQi0W0KO", Inactive: "Xwn3H48jY", Main: "QCVLxQKOQ" },
   Za = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -1178,7 +1161,7 @@ var Ha = SPRING_CAPTION,
   },
   Ja = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  Ga = forwardRef(function (props, forwardedRef) {
+  _Decisiveness = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       {
         style,
@@ -1217,10 +1200,10 @@ var Ha = SPRING_CAPTION,
       deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
       id: layoutId ?? autoId,
-      children: jsx(Wa, {
+      children: jsx(AnimatedFragment, {
         animate: variants,
         initial: false,
-        children: jsx(Ka, {
+        children: jsx(TransitionProvider, {
           value: Ha,
           children: jsx(motion.div, {
             ...restProps,
@@ -1247,7 +1230,7 @@ var Ha = SPRING_CAPTION,
                 borderTopRightRadius: 10,
               },
             },
-            ...Fr(
+            ...mergeVariantProps(
               {
                 XVQi0W0KO: { "data-framer-name": "Active" },
                 Xwn3H48jY: { "data-framer-name": "Inactive" },
@@ -1291,7 +1274,7 @@ var Ha = SPRING_CAPTION,
               },
               verticalAlignment: "top",
               withExternalLayout: true,
-              ...Fr(
+              ...mergeVariantProps(
                 {
                   XVQi0W0KO: {
                     children: jsx(ReactFragment, {
@@ -1329,11 +1312,10 @@ var Ha = SPRING_CAPTION,
     ".framer-2FQXY .framer-1c06u0h { -webkit-user-select: none; bottom: 0px; flex: none; height: auto; left: 50%; overflow: visible; position: absolute; user-select: none; white-space: pre-wrap; width: 360px; word-break: break-word; word-wrap: break-word; }",
     ".framer-2FQXY.framer-v-1r41h02.framer-14h8w6j { overflow: hidden; will-change: var(--framer-will-change-override, transform); }",
   ],
-  qe = withCSS(Ga, $a, "framer-2FQXY"),
-  Ee = qe;
-qe.displayName = "Decisiveness";
-qe.defaultProps = { height: 72, width: 380 };
-addPropertyControls(qe, {
+  Decisiveness = withCSS(_Decisiveness, $a, "framer-2FQXY");
+Decisiveness.displayName = "Decisiveness";
+Decisiveness.defaultProps = { height: 72, width: 380 };
+addPropertyControls(Decisiveness, {
   variant: {
     options: ["QCVLxQKOQ", "XVQi0W0KO", "Xwn3H48jY"],
     optionTitles: ["Main", "Active", "Inactive"],
@@ -1343,7 +1325,7 @@ addPropertyControls(qe, {
   NXCj7csO1: { title: "Tap", type: ControlType.EventHandler },
 });
 loadFonts(
-  qe,
+  Decisiveness,
   [
     {
       explicitInter: true,
@@ -1367,11 +1349,8 @@ var et = ["A73BIfYrH", "yFu0ego46", "Bq4Oqy1P7"],
     Bq4Oqy1P7: "framer-v-11x7aqu",
     yFu0ego46: "framer-v-tr7mnx",
   };
-var Sr = mergeVariantProps;
 var tt = SPRING_CAPTION,
   nt = (t, a) => `translateX(-50%) ${a}`,
-  it = TransitionProvider,
-  ot = AnimatedFragment,
   st = { Active: "yFu0ego46", Inactive: "Bq4Oqy1P7", Main: "A73BIfYrH" },
   ft = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -1387,7 +1366,7 @@ var tt = SPRING_CAPTION,
   },
   lt = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  mt = forwardRef(function (props, forwardedRef) {
+  _QuietReflection = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       {
         style,
@@ -1429,10 +1408,10 @@ var tt = SPRING_CAPTION,
       deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
       id: layoutId ?? autoId,
-      children: jsx(ot, {
+      children: jsx(AnimatedFragment, {
         animate: variants,
         initial: false,
-        children: jsx(it, {
+        children: jsx(TransitionProvider, {
           value: tt,
           children: jsx(motion.div, {
             ...restProps,
@@ -1459,7 +1438,7 @@ var tt = SPRING_CAPTION,
                 borderTopRightRadius: 10,
               },
             },
-            ...Sr(
+            ...mergeVariantProps(
               {
                 Bq4Oqy1P7: { "data-framer-name": "Inactive" },
                 yFu0ego46: { "data-framer-name": "Active" },
@@ -1510,7 +1489,7 @@ var tt = SPRING_CAPTION,
                 },
                 verticalAlignment: "top",
                 withExternalLayout: true,
-                ...Sr(
+                ...mergeVariantProps(
                   {
                     yFu0ego46: {
                       children: jsx(ReactFragment, {
@@ -1552,11 +1531,10 @@ var tt = SPRING_CAPTION,
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-pC2CI .framer-1aqnoq4 { gap: 0px; } .framer-pC2CI .framer-1aqnoq4 > * { margin: 0px; margin-bottom: calc(10px / 2); margin-top: calc(10px / 2); } .framer-pC2CI .framer-1aqnoq4 > :first-child { margin-top: 0px; } .framer-pC2CI .framer-1aqnoq4 > :last-child { margin-bottom: 0px; } }",
     ".framer-pC2CI.framer-v-tr7mnx.framer-1f4gy1p { overflow: hidden; will-change: var(--framer-will-change-override, transform); }",
   ],
-  Re = withCSS(mt, dt, "framer-pC2CI"),
-  Ke = Re;
-Re.displayName = "Quiet Reflection";
-Re.defaultProps = { height: 72, width: 380 };
-addPropertyControls(Re, {
+  QuietReflection = withCSS(_QuietReflection, dt, "framer-pC2CI");
+QuietReflection.displayName = "Quiet Reflection";
+QuietReflection.defaultProps = { height: 72, width: 380 };
+addPropertyControls(QuietReflection, {
   variant: {
     options: ["A73BIfYrH", "yFu0ego46", "Bq4Oqy1P7"],
     optionTitles: ["Main", "Active", "Inactive"],
@@ -1566,7 +1544,7 @@ addPropertyControls(Re, {
   HEb3Jrr9H: { title: "Tap", type: ControlType.EventHandler },
 });
 loadFonts(
-  Re,
+  QuietReflection,
   [
     {
       explicitInter: true,
@@ -1590,11 +1568,8 @@ var ct = ["HkR7N8JHH", "qFD4z7zh2", "uLTZzDf3c"],
     qFD4z7zh2: "framer-v-13j692f",
     uLTZzDf3c: "framer-v-1ws1zva",
   };
-var Tr = mergeVariantProps;
 var ut = SPRING_CAPTION,
   gt = (t, a) => `translate(-50%, -50%) ${a}`,
-  xt = TransitionProvider,
-  yt = AnimatedFragment,
   vt = { Active: "qFD4z7zh2", Inactive: "uLTZzDf3c", Main: "HkR7N8JHH" },
   bt = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -1610,7 +1585,7 @@ var ut = SPRING_CAPTION,
   },
   wt = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  Ct = forwardRef(function (props, forwardedRef) {
+  _TeamDynamics = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       {
         style,
@@ -1649,10 +1624,10 @@ var ut = SPRING_CAPTION,
       deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
       id: layoutId ?? autoId,
-      children: jsx(yt, {
+      children: jsx(AnimatedFragment, {
         animate: variants,
         initial: false,
-        children: jsx(xt, {
+        children: jsx(TransitionProvider, {
           value: ut,
           children: jsx(motion.div, {
             ...restProps,
@@ -1679,7 +1654,7 @@ var ut = SPRING_CAPTION,
                 borderTopRightRadius: 10,
               },
             },
-            ...Tr(
+            ...mergeVariantProps(
               {
                 qFD4z7zh2: { "data-framer-name": "Active" },
                 uLTZzDf3c: { "data-framer-name": "Inactive" },
@@ -1724,7 +1699,7 @@ var ut = SPRING_CAPTION,
               },
               verticalAlignment: "top",
               withExternalLayout: true,
-              ...Tr(
+              ...mergeVariantProps(
                 {
                   qFD4z7zh2: {
                     children: jsx(ReactFragment, {
@@ -1763,11 +1738,10 @@ var ut = SPRING_CAPTION,
     ".framer-gdsq7 .framer-1pt2td0 { -webkit-user-select: none; flex: none; height: auto; left: 50%; overflow: visible; position: absolute; top: 50%; user-select: none; white-space: pre-wrap; width: 360px; word-break: break-word; word-wrap: break-word; }",
     ".framer-gdsq7.framer-v-13j692f.framer-6uc7fk { overflow: hidden; will-change: var(--framer-will-change-override, transform); }",
   ],
-  Xe = withCSS(Ct, qt, "framer-gdsq7"),
-  We = Xe;
-Xe.displayName = "Team Dynamics";
-Xe.defaultProps = { height: 72, width: 380 };
-addPropertyControls(Xe, {
+  TeamDynamics = withCSS(_TeamDynamics, qt, "framer-gdsq7");
+TeamDynamics.displayName = "Team Dynamics";
+TeamDynamics.defaultProps = { height: 72, width: 380 };
+addPropertyControls(TeamDynamics, {
   variant: {
     options: ["HkR7N8JHH", "qFD4z7zh2", "uLTZzDf3c"],
     optionTitles: ["Main", "Active", "Inactive"],
@@ -1777,7 +1751,7 @@ addPropertyControls(Xe, {
   E2jYS2CvR: { title: "Tap", type: ControlType.EventHandler },
 });
 loadFonts(
-  Xe,
+  TeamDynamics,
   [
     {
       explicitInter: true,
@@ -1796,10 +1770,10 @@ loadFonts(
 );
 var Qe = withFXWrapper(motion.div),
   Ze = scheduleAppearAnimation(withFXWrapper(motion.a)),
-  Rt = getFonts(le),
-  Xt = getFonts(Ke),
-  Ot = getFonts(We),
-  kt = getFonts(Ee),
+  Rt = getFonts(Trigger),
+  Xt = getFonts(QuietReflection),
+  Ot = getFonts(TeamDynamics),
+  kt = getFonts(Decisiveness),
   Ut = getFonts(G),
   It = ["SoQlwVPaX", "CuHIQOWnA", "ggKLLEo3O"],
   _t = "framer-MY1rC",
@@ -1808,7 +1782,6 @@ var Qe = withFXWrapper(motion.div),
     ggKLLEo3O: "framer-v-8q1l2i",
     SoQlwVPaX: "framer-v-1gwjjt4",
   };
-var ue = mergeVariantProps;
 var jt = TWEEN_MEDIUM,
   zt = TWEEN_LONG,
   Je = {
@@ -1872,8 +1845,6 @@ var jt = TWEEN_MEDIUM,
     transition: Vt,
     y: -4,
   },
-  Mt = TransitionProvider,
-  Ft = AnimatedFragment,
   St = {
     "First Tab": "SoQlwVPaX",
     "Variant 2": "CuHIQOWnA",
@@ -1893,7 +1864,7 @@ var jt = TWEEN_MEDIUM,
   },
   Dt = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  Pt = forwardRef(function (props, forwardedRef) {
+  _StoryRight = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       {
         style,
@@ -1947,10 +1918,10 @@ var jt = TWEEN_MEDIUM,
       deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
       id: layoutId ?? autoId,
-      children: jsx(Ft, {
+      children: jsx(AnimatedFragment, {
         animate: variants,
         initial: false,
-        children: jsx(Mt, {
+        children: jsx(TransitionProvider, {
           value: jt,
           children: jsxs(motion.div, {
             ...restProps,
@@ -1962,7 +1933,7 @@ var jt = TWEEN_MEDIUM,
             layoutId: "SoQlwVPaX",
             ref: forwardedRef ?? localRef,
             style: { ...style },
-            ...ue(
+            ...mergeVariantProps(
               {
                 CuHIQOWnA: { "data-framer-name": "Variant 2" },
                 ggKLLEo3O: { "data-framer-name": "Variant 3" },
@@ -2145,14 +2116,14 @@ var jt = TWEEN_MEDIUM,
                         layoutDependency: h,
                         layoutId: "mwqNaEEJ5-container",
                         style: { opacity: 0 },
-                        children: jsx(le, {
+                        children: jsx(Trigger, {
                           height: "100%",
                           id: "mwqNaEEJ5",
                           layoutId: "mwqNaEEJ5",
                           style: { height: "100%", width: "100%" },
                           variant: "xKACItaHS",
                           width: "100%",
-                          ...ue(
+                          ...mergeVariantProps(
                             {
                               CuHIQOWnA: { hover: A },
                               ggKLLEo3O: { hover: Y },
@@ -2169,7 +2140,7 @@ var jt = TWEEN_MEDIUM,
                         layoutDependency: h,
                         layoutId: "qkqShLL2U-container",
                         style: { opacity: 0 },
-                        children: jsx(le, {
+                        children: jsx(Trigger, {
                           height: "100%",
                           hover: $,
                           id: "qkqShLL2U",
@@ -2186,7 +2157,7 @@ var jt = TWEEN_MEDIUM,
                         layoutDependency: h,
                         layoutId: "B8p7HqPsG-container",
                         style: { opacity: 0 },
-                        children: jsx(le, {
+                        children: jsx(Trigger, {
                           height: "100%",
                           hover: Q,
                           id: "B8p7HqPsG",
@@ -2212,14 +2183,14 @@ var jt = TWEEN_MEDIUM,
                       className: "framer-1x25rle-container",
                       layoutDependency: h,
                       layoutId: "cMLiBJIJv-container",
-                      children: jsx(Ke, {
+                      children: jsx(QuietReflection, {
                         height: "100%",
                         id: "cMLiBJIJv",
                         layoutId: "cMLiBJIJv",
                         style: { height: "100%", width: "100%" },
                         variant: "A73BIfYrH",
                         width: "100%",
-                        ...ue(
+                        ...mergeVariantProps(
                           {
                             CuHIQOWnA: { variant: "Bq4Oqy1P7" },
                             ggKLLEo3O: { variant: "Bq4Oqy1P7" },
@@ -2236,14 +2207,14 @@ var jt = TWEEN_MEDIUM,
                       className: "framer-93qqv0-container",
                       layoutDependency: h,
                       layoutId: "qdfY4PCfH-container",
-                      children: jsx(We, {
+                      children: jsx(TeamDynamics, {
                         height: "100%",
                         id: "qdfY4PCfH",
                         layoutId: "qdfY4PCfH",
                         style: { height: "100%", width: "100%" },
                         variant: "uLTZzDf3c",
                         width: "100%",
-                        ...ue({ CuHIQOWnA: { variant: "HkR7N8JHH" } }, baseVariant, gestureVariant),
+                        ...mergeVariantProps({ CuHIQOWnA: { variant: "HkR7N8JHH" } }, baseVariant, gestureVariant),
                       }),
                     }),
                   }),
@@ -2253,14 +2224,14 @@ var jt = TWEEN_MEDIUM,
                       className: "framer-ptft8n-container",
                       layoutDependency: h,
                       layoutId: "imXFxFHKL-container",
-                      children: jsx(Ee, {
+                      children: jsx(Decisiveness, {
                         height: "100%",
                         id: "imXFxFHKL",
                         layoutId: "imXFxFHKL",
                         style: { height: "100%", width: "100%" },
                         variant: "Xwn3H48jY",
                         width: "100%",
-                        ...ue({ ggKLLEo3O: { variant: "QCVLxQKOQ" } }, baseVariant, gestureVariant),
+                        ...mergeVariantProps({ ggKLLEo3O: { variant: "QCVLxQKOQ" } }, baseVariant, gestureVariant),
                       }),
                     }),
                   }),
@@ -2301,7 +2272,7 @@ var jt = TWEEN_MEDIUM,
                   href: { hash: ":mRVhqybMB", webPageId: "bzydBB85Y" },
                   openInNewTab: false,
                   smoothScroll: true,
-                  ...ue(
+                  ...mergeVariantProps(
                     {
                       CuHIQOWnA: {
                         href: { hash: ":NYP2seWhD", webPageId: "bzydBB85Y" },
@@ -2478,11 +2449,10 @@ var jt = TWEEN_MEDIUM,
     ".framer-MY1rC.framer-v-sltbvw .framer-wcqno7 { top: calc(50.00000000000002% - 90px / 2); }",
     ".framer-MY1rC.framer-v-8q1l2i .framer-wcqno7 { bottom: -11px; top: unset; }",
   ],
-  Oe = withCSS(Pt, Yt, "framer-MY1rC"),
-  rr = Oe;
-Oe.displayName = "Story Right";
-Oe.defaultProps = { height: 352, width: 1e3 };
-addPropertyControls(Oe, {
+  StoryRight = withCSS(_StoryRight, Yt, "framer-MY1rC");
+StoryRight.displayName = "Story Right";
+StoryRight.defaultProps = { height: 352, width: 1e3 };
+addPropertyControls(StoryRight, {
   variant: {
     options: ["SoQlwVPaX", "CuHIQOWnA", "ggKLLEo3O"],
     optionTitles: ["First Tab", "Variant 2", "Variant 3"],
@@ -2491,7 +2461,7 @@ addPropertyControls(Oe, {
   },
   U4TM70Ust: { title: "Tap", type: ControlType.EventHandler },
 });
-loadFonts(Oe, [{ explicitInter: true, fonts: [] }, ...Rt, ...Xt, ...Ot, ...kt, ...Ut], {
+loadFonts(StoryRight, [{ explicitInter: true, fonts: [] }, ...Rt, ...Xt, ...Ot, ...kt, ...Ut], {
   supportsExplicitInterCodegen: true,
 });
 var Bt = ["NFc0G3jDM", "NH6OUC_9N", "Bx08xEGah"],
@@ -2501,11 +2471,8 @@ var Bt = ["NFc0G3jDM", "NH6OUC_9N", "Bx08xEGah"],
     NFc0G3jDM: "framer-v-r8ywzq",
     NH6OUC_9N: "framer-v-3v0an8",
   };
-var Dr = mergeVariantProps;
 var Et = SPRING_CAPTION,
   Kt = (t, a) => `translateX(-50%) ${a}`,
-  Wt = TransitionProvider,
-  Qt = AnimatedFragment,
   Zt = { "Variant 1": "NFc0G3jDM", Inactive: "Bx08xEGah", Raised: "NH6OUC_9N" },
   Jt = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -2520,7 +2487,7 @@ var Et = SPRING_CAPTION,
     };
   },
   Gt = (t, a) => a.join("-") + t.layoutDependency,
-  $t = forwardRef(function (props, forwardedRef) {
+  _TunnelVision = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       {
         style,
@@ -2561,10 +2528,10 @@ var Et = SPRING_CAPTION,
       deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
       id: layoutId ?? autoId,
-      children: jsx(Qt, {
+      children: jsx(AnimatedFragment, {
         animate: variants,
         initial: false,
-        children: jsx(Wt, {
+        children: jsx(TransitionProvider, {
           value: Et,
           children: jsx(motion.div, {
             ...restProps,
@@ -2594,7 +2561,7 @@ var Et = SPRING_CAPTION,
                 borderTopRightRadius: 10,
               },
             },
-            ...Dr(
+            ...mergeVariantProps(
               {
                 Bx08xEGah: { "data-framer-name": "Inactive" },
                 NH6OUC_9N: { "data-framer-name": "Raised" },
@@ -2642,7 +2609,7 @@ var Et = SPRING_CAPTION,
               },
               verticalAlignment: "top",
               withExternalLayout: true,
-              ...Dr(
+              ...mergeVariantProps(
                 {
                   Bx08xEGah: { "data-highlight": undefined, onTap: undefined },
                   NH6OUC_9N: {
@@ -2685,11 +2652,10 @@ var Et = SPRING_CAPTION,
     ".framer-Z1wid.framer-v-3v0an8.framer-r8ywzq { overflow: hidden; will-change: var(--framer-will-change-override, transform); }",
     ".framer-Z1wid.framer-v-3v0an8 .framer-1i486jk, .framer-Z1wid.framer-v-s81sxb .framer-1i486jk { cursor: unset; }",
   ],
-  ke = withCSS($t, en, "framer-Z1wid"),
-  ar = ke;
-ke.displayName = "Tunnel vision";
-ke.defaultProps = { height: 72, width: 380 };
-addPropertyControls(ke, {
+  TunnelVision = withCSS(_TunnelVision, en, "framer-Z1wid");
+TunnelVision.displayName = "Tunnel vision";
+TunnelVision.defaultProps = { height: 72, width: 380 };
+addPropertyControls(TunnelVision, {
   variant: {
     options: ["NFc0G3jDM", "NH6OUC_9N", "Bx08xEGah"],
     optionTitles: ["Variant 1", "Raised", "Inactive"],
@@ -2699,7 +2665,7 @@ addPropertyControls(ke, {
   UGmfn7WC9: { title: "Tap", type: ControlType.EventHandler },
 });
 loadFonts(
-  ke,
+  TunnelVision,
   [
     {
       explicitInter: true,
@@ -2723,11 +2689,8 @@ var rn = ["zsZ4Z5z6N", "j8drpudA2", "gO1Oy0ksh"],
     j8drpudA2: "framer-v-1elz6w7",
     zsZ4Z5z6N: "framer-v-1g1moqd",
   };
-var Pr = mergeVariantProps;
 var nn = SPRING_CAPTION,
   on = (t, a) => `translateY(-50%) ${a}`,
-  sn = TransitionProvider,
-  fn = AnimatedFragment,
   ln = { inactive: "gO1Oy0ksh", Main: "zsZ4Z5z6N", Raised: "j8drpudA2" },
   mn = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -2742,7 +2705,7 @@ var nn = SPRING_CAPTION,
     };
   },
   dn = (t, a) => a.join("-") + t.layoutDependency,
-  cn = forwardRef(function (props, forwardedRef) {
+  _Urgency = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       {
         style,
@@ -2781,10 +2744,10 @@ var nn = SPRING_CAPTION,
       deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
       id: layoutId ?? autoId,
-      children: jsx(fn, {
+      children: jsx(AnimatedFragment, {
         animate: variants,
         initial: false,
-        children: jsx(sn, {
+        children: jsx(TransitionProvider, {
           value: nn,
           children: jsxs(motion.div, {
             ...restProps,
@@ -2814,7 +2777,7 @@ var nn = SPRING_CAPTION,
                 borderTopRightRadius: 10,
               },
             },
-            ...Pr(
+            ...mergeVariantProps(
               {
                 gO1Oy0ksh: { "data-framer-name": "inactive" },
                 j8drpudA2: { "data-framer-name": "Raised" },
@@ -2867,7 +2830,7 @@ var nn = SPRING_CAPTION,
                 },
                 verticalAlignment: "top",
                 withExternalLayout: true,
-                ...Pr(
+                ...mergeVariantProps(
                   {
                     j8drpudA2: {
                       children: jsx(ReactFragment, {
@@ -2909,11 +2872,10 @@ var nn = SPRING_CAPTION,
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-0umfc .framer-zcizhz { gap: 0px; } .framer-0umfc .framer-zcizhz > * { margin: 0px; margin-bottom: calc(10px / 2); margin-top: calc(10px / 2); } .framer-0umfc .framer-zcizhz > :first-child { margin-top: 0px; } .framer-0umfc .framer-zcizhz > :last-child { margin-bottom: 0px; } }",
     ".framer-0umfc.framer-v-1elz6w7.framer-1g1moqd { width: 410px; }",
   ],
-  Ue = withCSS(cn, pn, "framer-0umfc"),
-  tr = Ue;
-Ue.displayName = "Urgency";
-Ue.defaultProps = { height: 72, width: 380 };
-addPropertyControls(Ue, {
+  Urgency = withCSS(_Urgency, pn, "framer-0umfc");
+Urgency.displayName = "Urgency";
+Urgency.defaultProps = { height: 72, width: 380 };
+addPropertyControls(Urgency, {
   variant: {
     options: ["zsZ4Z5z6N", "j8drpudA2", "gO1Oy0ksh"],
     optionTitles: ["Main", "Raised", "inactive"],
@@ -2923,7 +2885,7 @@ addPropertyControls(Ue, {
   mBC2PxMBg: { title: "Tap", type: ControlType.EventHandler },
 });
 loadFonts(
-  Ue,
+  Urgency,
   [
     {
       explicitInter: true,
@@ -2947,11 +2909,8 @@ var hn = ["S3kYznUP4", "xZIBSRPrK", "aJO1FcIHC"],
     S3kYznUP4: "framer-v-11b0mpr",
     xZIBSRPrK: "framer-v-327s0c",
   };
-var Yr = mergeVariantProps;
 var xn = SPRING_CAPTION,
   yn = (t, a) => `translateY(-50%) ${a}`,
-  vn = TransitionProvider,
-  bn = AnimatedFragment,
   wn = { Inactive: "aJO1FcIHC", Main: "S3kYznUP4", Raised: "xZIBSRPrK" },
   Cn = ({ height: t, id: a, tap: n, width: i, ...o }) => {
     var f, s;
@@ -2966,7 +2925,7 @@ var xn = SPRING_CAPTION,
     };
   },
   qn = (t, a) => a.join("-") + t.layoutDependency,
-  Rn = forwardRef(function (props, forwardedRef) {
+  _Coordination = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       {
         style,
@@ -3005,10 +2964,10 @@ var xn = SPRING_CAPTION,
       deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
       id: layoutId ?? autoId,
-      children: jsx(bn, {
+      children: jsx(AnimatedFragment, {
         animate: variants,
         initial: false,
-        children: jsx(vn, {
+        children: jsx(TransitionProvider, {
           value: xn,
           children: jsxs(motion.div, {
             ...restProps,
@@ -3038,7 +2997,7 @@ var xn = SPRING_CAPTION,
                 borderTopRightRadius: 10,
               },
             },
-            ...Yr(
+            ...mergeVariantProps(
               {
                 aJO1FcIHC: { "data-framer-name": "Inactive" },
                 xZIBSRPrK: { "data-framer-name": "Raised" },
@@ -3095,7 +3054,7 @@ var xn = SPRING_CAPTION,
                 },
                 verticalAlignment: "top",
                 withExternalLayout: true,
-                ...Yr(
+                ...mergeVariantProps(
                   {
                     xZIBSRPrK: {
                       children: jsx(ReactFragment, {
@@ -3138,11 +3097,10 @@ var xn = SPRING_CAPTION,
     "@supports (background: -webkit-named-image(i)) and (not (font-palette:dark)) { .framer-DCwjj .framer-jjhh2s, .framer-DCwjj .framer-1bvamph { gap: 0px; } .framer-DCwjj .framer-jjhh2s > * { margin: 0px; margin-bottom: calc(10px / 2); margin-top: calc(10px / 2); } .framer-DCwjj .framer-jjhh2s > :first-child { margin-top: 0px; } .framer-DCwjj .framer-jjhh2s > :last-child { margin-bottom: 0px; } .framer-DCwjj .framer-1bvamph > * { margin: 0px; margin-left: calc(10px / 2); margin-right: calc(10px / 2); } .framer-DCwjj .framer-1bvamph > :first-child { margin-left: 0px; } .framer-DCwjj .framer-1bvamph > :last-child { margin-right: 0px; } }",
     ".framer-DCwjj.framer-v-327s0c.framer-11b0mpr { overflow: hidden; will-change: var(--framer-will-change-override, transform); }",
   ],
-  Ie = withCSS(Rn, Xn, "framer-DCwjj"),
-  nr = Ie;
-Ie.displayName = "Coordination";
-Ie.defaultProps = { height: 72, width: 380 };
-addPropertyControls(Ie, {
+  Coordination = withCSS(_Coordination, Xn, "framer-DCwjj");
+Coordination.displayName = "Coordination";
+Coordination.defaultProps = { height: 72, width: 380 };
+addPropertyControls(Coordination, {
   variant: {
     options: ["S3kYznUP4", "xZIBSRPrK", "aJO1FcIHC"],
     optionTitles: ["Main", "Raised", "Inactive"],
@@ -3152,7 +3110,7 @@ addPropertyControls(Ie, {
   kJZ82E8Mx: { title: "Tap", type: ControlType.EventHandler },
 });
 loadFonts(
-  Ie,
+  Coordination,
   [
     {
       explicitInter: true,
@@ -3172,10 +3130,10 @@ loadFonts(
 var ir = withFXWrapper(motion.div),
   or = scheduleAppearAnimation(withFXWrapper(motion.a)),
   On = getFonts(G),
-  kn = getFonts(tr),
-  Un = getFonts(nr),
-  In = getFonts(ar),
-  _n = getFonts(le),
+  kn = getFonts(Urgency),
+  Un = getFonts(Coordination),
+  In = getFonts(TunnelVision),
+  _n = getFonts(Trigger),
   Nn = ["Q1DJ9ntwf", "qvmKCdJXN", "hxzAUWcy0"],
   jn = "framer-sRCsS",
   zn = {
@@ -3183,7 +3141,6 @@ var ir = withFXWrapper(motion.div),
     Q1DJ9ntwf: "framer-v-khfq23",
     qvmKCdJXN: "framer-v-1m0rm34",
   };
-var oe = mergeVariantProps;
 var Vn = TWEEN_MEDIUM,
   Ln = TWEEN_LONG,
   Br = {
@@ -3271,8 +3228,6 @@ var Vn = TWEEN_MEDIUM,
     transition: Ar,
     y: -4,
   },
-  Tn = TransitionProvider,
-  Dn = AnimatedFragment,
   Pn = {
     "First tab": "Q1DJ9ntwf",
     "SECOND TAB": "qvmKCdJXN",
@@ -3291,7 +3246,7 @@ var Vn = TWEEN_MEDIUM,
   },
   Bn = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  An = forwardRef(function (props, forwardedRef) {
+  _StoryLeft2 = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       { style, className, layoutId, variant, ...restProps } = Yn(props),
       {
@@ -3334,10 +3289,10 @@ var Vn = TWEEN_MEDIUM,
       deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
       id: layoutId ?? autoId,
-      children: jsx(Dn, {
+      children: jsx(AnimatedFragment, {
         animate: variants,
         initial: false,
-        children: jsx(Tn, {
+        children: jsx(TransitionProvider, {
           value: Vn,
           children: jsxs(motion.div, {
             ...restProps,
@@ -3349,7 +3304,7 @@ var Vn = TWEEN_MEDIUM,
             layoutId: "Q1DJ9ntwf",
             ref: forwardedRef ?? localRef,
             style: { ...style },
-            ...oe(
+            ...mergeVariantProps(
               {
                 hxzAUWcy0: { "data-framer-name": "Third Tab" },
                 qvmKCdJXN: { "data-framer-name": "SECOND TAB" },
@@ -3522,7 +3477,7 @@ var Vn = TWEEN_MEDIUM,
                 href: { hash: ":WjO84y3BZ", webPageId: "bzydBB85Y" },
                 openInNewTab: false,
                 smoothScroll: true,
-                ...oe(
+                ...mergeVariantProps(
                   {
                     hxzAUWcy0: {
                       href: { hash: ":tftSCv8zZ", webPageId: "bzydBB85Y" },
@@ -3552,7 +3507,7 @@ var Vn = TWEEN_MEDIUM,
                     borderTopRightRadius: 20,
                   },
                   whileHover: Sn,
-                  ...oe(
+                  ...mergeVariantProps(
                     {
                       hxzAUWcy0: {
                         background: {
@@ -3720,7 +3675,7 @@ var Vn = TWEEN_MEDIUM,
                             topRightRadius: 20,
                             volume: 25,
                             width: "100%",
-                            ...oe({ hxzAUWcy0: { startTime: 0 } }, baseVariant, gestureVariant),
+                            ...mergeVariantProps({ hxzAUWcy0: { startTime: 0 } }, baseVariant, gestureVariant),
                           }),
                         }),
                       }),
@@ -3729,7 +3684,7 @@ var Vn = TWEEN_MEDIUM,
                 }),
               }),
               jsx(B, {
-                ...oe(
+                ...mergeVariantProps(
                   {
                     hxzAUWcy0: {
                       href: { webPageId: "sfcH2behU" },
@@ -3752,14 +3707,14 @@ var Vn = TWEEN_MEDIUM,
                         layoutDependency: m,
                         layoutId: "Kjarh8b0F-container",
                         whileHover: mr,
-                        children: jsx(tr, {
+                        children: jsx(Urgency, {
                           height: "100%",
                           id: "Kjarh8b0F",
                           layoutId: "Kjarh8b0F",
                           style: { height: "100%", width: "100%" },
                           variant: "zsZ4Z5z6N",
                           width: "100%",
-                          ...oe(
+                          ...mergeVariantProps(
                             {
                               hxzAUWcy0: {
                                 mBC2PxMBg: undefined,
@@ -3783,15 +3738,15 @@ var Vn = TWEEN_MEDIUM,
                         layoutDependency: m,
                         layoutId: "Qw2n1EueW-container",
                         whileHover: mr,
-                        ...oe({ qvmKCdJXN: { whileHover: undefined } }, baseVariant, gestureVariant),
-                        children: jsx(nr, {
+                        ...mergeVariantProps({ qvmKCdJXN: { whileHover: undefined } }, baseVariant, gestureVariant),
+                        children: jsx(Coordination, {
                           height: "100%",
                           id: "Qw2n1EueW",
                           layoutId: "Qw2n1EueW",
                           style: { height: "100%", width: "100%" },
                           variant: "aJO1FcIHC",
                           width: "100%",
-                          ...oe({ qvmKCdJXN: { variant: "S3kYznUP4" } }, baseVariant, gestureVariant),
+                          ...mergeVariantProps({ qvmKCdJXN: { variant: "S3kYznUP4" } }, baseVariant, gestureVariant),
                         }),
                       }),
                     }),
@@ -3802,15 +3757,15 @@ var Vn = TWEEN_MEDIUM,
                         layoutDependency: m,
                         layoutId: "BPtfXhKGl-container",
                         whileHover: mr,
-                        ...oe({ hxzAUWcy0: { whileHover: undefined } }, baseVariant, gestureVariant),
-                        children: jsx(ar, {
+                        ...mergeVariantProps({ hxzAUWcy0: { whileHover: undefined } }, baseVariant, gestureVariant),
+                        children: jsx(TunnelVision, {
                           height: "100%",
                           id: "BPtfXhKGl",
                           layoutId: "BPtfXhKGl",
                           style: { height: "100%", width: "100%" },
                           variant: "Bx08xEGah",
                           width: "100%",
-                          ...oe({ hxzAUWcy0: { variant: "NFc0G3jDM" } }, baseVariant, gestureVariant),
+                          ...mergeVariantProps({ hxzAUWcy0: { variant: "NFc0G3jDM" } }, baseVariant, gestureVariant),
                         }),
                       }),
                     }),
@@ -3846,7 +3801,7 @@ var Vn = TWEEN_MEDIUM,
                         layoutDependency: m,
                         layoutId: "siYOUFHkt-container",
                         style: { opacity: 0 },
-                        children: jsx(le, {
+                        children: jsx(Trigger, {
                           height: "100%",
                           id: "siYOUFHkt",
                           layoutId: "siYOUFHkt",
@@ -3862,7 +3817,7 @@ var Vn = TWEEN_MEDIUM,
                         layoutDependency: m,
                         layoutId: "CC4a7R4Fp-container",
                         style: { opacity: 0 },
-                        children: jsx(le, {
+                        children: jsx(Trigger, {
                           height: "100%",
                           hover: M,
                           id: "CC4a7R4Fp",
@@ -3870,7 +3825,7 @@ var Vn = TWEEN_MEDIUM,
                           style: { height: "100%", width: "100%" },
                           variant: "rgX5PDpQJ",
                           width: "100%",
-                          ...oe(
+                          ...mergeVariantProps(
                             {
                               hxzAUWcy0: { hover: A },
                               qvmKCdJXN: { hover: A },
@@ -3887,7 +3842,7 @@ var Vn = TWEEN_MEDIUM,
                         layoutDependency: m,
                         layoutId: "VaOijB5sh-container",
                         style: { opacity: 0 },
-                        children: jsx(le, {
+                        children: jsx(Trigger, {
                           height: "100%",
                           hover: Y,
                           id: "VaOijB5sh",
@@ -3895,7 +3850,7 @@ var Vn = TWEEN_MEDIUM,
                           style: { height: "100%", width: "100%" },
                           variant: "xeZKtnsQM",
                           width: "100%",
-                          ...oe({ hxzAUWcy0: { hover: M } }, baseVariant, gestureVariant),
+                          ...mergeVariantProps({ hxzAUWcy0: { hover: M } }, baseVariant, gestureVariant),
                         }),
                       }),
                     }),
@@ -3938,11 +3893,10 @@ var Vn = TWEEN_MEDIUM,
     ".framer-sRCsS.framer-v-jxbueo .framer-h0n0bm { text-decoration: none; }",
     ".framer-sRCsS.framer-v-jxbueo .framer-gr8coz { bottom: unset; height: 90px; left: calc(51.05263157894739% - 411px / 2); order: 3; right: unset; top: calc(85.93750000000003% - 90px / 2); width: 411px; }",
   ],
-  _e = withCSS(An, Hn, "framer-sRCsS"),
-  dr = _e;
-_e.displayName = "Story Left2";
-_e.defaultProps = { height: 352, width: 1e3 };
-addPropertyControls(_e, {
+  StoryLeft2 = withCSS(_StoryLeft2, Hn, "framer-sRCsS");
+StoryLeft2.displayName = "Story Left2";
+StoryLeft2.defaultProps = { height: 352, width: 1e3 };
+addPropertyControls(StoryLeft2, {
   variant: {
     options: ["Q1DJ9ntwf", "qvmKCdJXN", "hxzAUWcy0"],
     optionTitles: ["First tab", "SECOND TAB", "Third Tab"],
@@ -3950,22 +3904,21 @@ addPropertyControls(_e, {
     type: ControlType.Enum,
   },
 });
-loadFonts(_e, [{ explicitInter: true, fonts: [] }, ...On, ...kn, ...Un, ...In, ..._n], {
+loadFonts(StoryLeft2, [{ explicitInter: true, fonts: [] }, ...On, ...kn, ...Un, ...In, ..._n], {
   supportsExplicitInterCodegen: true,
 });
-var cr = Be; // Reuse first "Neoflix anim" component (was an exact duplicate)
 var li = getFonts(MapMobile2Component),
   ge = withScrollSnapChild(motion.section),
   me = Ir(motion.section),
   mi = getFonts(G),
-  di = getFonts(Be),
-  ci = getFonts(Ae),
+  di = getFonts(NeoflixAnim),
+  ci = getFonts(RecordReflectRefineCopy),
   pi = withScrollSnapContainer(motion.main),
-  hi = getFonts(cr),
-  ui = getFonts(He),
+  hi = getFonts(NeoflixAnim),
+  ui = getFonts(RecordReflectRefine),
   Fe = scheduleAppearAnimation(motion.div),
-  gi = getFonts(dr),
-  xi = getFonts(rr),
+  gi = getFonts(StoryLeft2),
+  xi = getFonts(StoryRight),
   yi = getFonts(MapComponent),
   vi = withScrollSnapContainerAlt(motion.main),
   bi = {
@@ -4075,7 +4028,7 @@ var li = getFonts(MapMobile2Component),
           : "WQLkyLRf1",
     };
   },
-  Ii = forwardRef(function (props, forwardedRef) {
+  _Home = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       { style, className, layoutId, variant, ...restProps } = Ui(props);
     (useEffect(() => {
@@ -4966,7 +4919,7 @@ var li = getFonts(MapMobile2Component),
                               children: jsx(cssSSRMinifiedHelper, {
                                 className: "framer-u2hhht-container",
                                 whileHover: Wr,
-                                children: jsx(Be, {
+                                children: jsx(NeoflixAnim, {
                                   height: "100%",
                                   id: "qzyMp3yoL",
                                   layoutId: "qzyMp3yoL",
@@ -4991,7 +4944,7 @@ var li = getFonts(MapMobile2Component),
                                     height: 223,
                                     children: jsx(cssSSRMinifiedHelper, {
                                       className: "framer-s7m1wf-container",
-                                      children: jsx(Ae, {
+                                      children: jsx(RecordReflectRefineCopy, {
                                         height: "100%",
                                         id: "RhYHZi1K3",
                                         layoutId: "RhYHZi1K3",
@@ -5058,7 +5011,7 @@ var li = getFonts(MapMobile2Component),
                                 className: "framer-1bdw7m-container",
                                 transformTemplate: pr,
                                 whileHover: Wr,
-                                children: jsx(cr, {
+                                children: jsx(NeoflixAnim, {
                                   height: "100%",
                                   id: "tW6wrwedt",
                                   layoutId: "tW6wrwedt",
@@ -5095,7 +5048,7 @@ var li = getFonts(MapMobile2Component),
                                       children: jsx(cssSSRMinifiedHelper, {
                                         className: "framer-1eeo48e-container",
                                         transformTemplate: pr,
-                                        children: jsx(He, {
+                                        children: jsx(RecordReflectRefine, {
                                           height: "100%",
                                           id: "NP_oewk8B",
                                           layoutId: "NP_oewk8B",
@@ -5213,7 +5166,7 @@ var li = getFonts(MapMobile2Component),
                                       children: jsx(cssSSRMinifiedHelper, {
                                         className: "framer-1k0ssbx-container",
                                         transformTemplate: Jr,
-                                        children: jsx(dr, {
+                                        children: jsx(StoryLeft2, {
                                           height: "100%",
                                           id: "oxXlQ801e",
                                           layoutId: "oxXlQ801e",
@@ -5340,7 +5293,7 @@ var li = getFonts(MapMobile2Component),
                                         children: jsx(cssSSRMinifiedHelper, {
                                           className: "framer-qjopz5-container",
                                           transformTemplate: Jr,
-                                          children: jsx(rr, {
+                                          children: jsx(StoryRight, {
                                             height: "100%",
                                             id: "vc1jCsqkh",
                                             layoutId: "vc1jCsqkh",
@@ -5515,12 +5468,11 @@ var li = getFonts(MapMobile2Component),
     ...linkPresetStyles,
     '.framer-qO1UX[data-border="true"]::after, .framer-qO1UX [data-border="true"]::after { content: ""; border-width: var(--border-top-width, 0) var(--border-right-width, 0) var(--border-bottom-width, 0) var(--border-left-width, 0); border-color: var(--border-color, none); border-style: var(--border-style, none); width: 100%; height: 100%; position: absolute; box-sizing: border-box; left: 0; top: 0; border-radius: inherit; pointer-events: none; }',
   ],
-  De = withCSS(Ii, _i, "framer-qO1UX"),
-  Cs = De;
-De.displayName = "Home";
-De.defaultProps = { height: 860, width: 1200 };
+  Home = withCSS(_Home, _i, "framer-qO1UX");
+Home.displayName = "Home";
+Home.defaultProps = { height: 860, width: 1200 };
 loadFonts(
-  De,
+  Home,
   [
     {
       explicitInter: true,
@@ -5636,4 +5588,4 @@ var qs = {
     __FramerMetadata__: { type: "variable" },
   },
 };
-export { qs as __FramerMetadata__, Cs as default };
+export { qs as __FramerMetadata__, Home as default };

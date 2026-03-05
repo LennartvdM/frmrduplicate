@@ -109,10 +109,7 @@ var Ye = getFonts(c),
     sJR17n1rz: "framer-v-1evn86j",
     tcTKLfIBw: "framer-v-424790",
   };
-var Pe = mergeVariantProps;
 var Xe = TWEEN_QUICK,
-  Ge = TransitionProvider,
-  Je = AnimatedFragment,
   Qe = {
     Cost: "tcTKLfIBw",
     Dance: "DkxmDygok",
@@ -134,7 +131,7 @@ var Xe = TWEEN_QUICK,
   },
   er = (f, n) =>
     f.layoutDependency ? n.join("-") + f.layoutDependency : n.join("-"),
-  rr = forwardRef(function (props, forwardedRef) {
+  _Backdrop = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       { style, className, layoutId, variant, ...restProps } = $e(props),
       {
@@ -163,10 +160,10 @@ var Xe = TWEEN_QUICK,
       deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
       id: layoutId ?? autoId,
-      children: jsx(Je, {
+      children: jsx(AnimatedFragment, {
         animate: variants,
         initial: false,
-        children: jsx(Ge, {
+        children: jsx(TransitionProvider, {
           value: Xe,
           children: jsxs(motion.div, {
             ...restProps,
@@ -177,7 +174,7 @@ var Xe = TWEEN_QUICK,
             layoutId: "Rre_u8WuV",
             ref: forwardedRef ?? localRef,
             style: { ...style },
-            ...Pe(
+            ...mergeVariantProps(
               {
                 DkxmDygok: { "data-framer-name": "Dance" },
                 eMNO9x2r7: { "data-framer-name": "Skills" },
@@ -361,7 +358,7 @@ var Xe = TWEEN_QUICK,
                         layoutId: "DRu3_2xH9",
                         srcFile:
                           "./assets/nwkgjaocyelpifxmzrvxbowwius.webm",
-                        ...Pe(
+                        ...mergeVariantProps(
                           {
                             DkxmDygok: { srcFile: undefined },
                             gRcraNE8T: {
@@ -414,11 +411,10 @@ var Xe = TWEEN_QUICK,
     ".framer-v0tbV .framer-1xyvsbf { bottom: 0px; flex: none; left: 0px; overflow: hidden; position: absolute; right: 0px; top: 0px; }",
     ".framer-v0tbV .framer-pq83k9 { bottom: 0px; flex: none; left: 0px; mix-blend-mode: screen; overflow: visible; position: absolute; right: 0px; top: 0px; }",
   ],
-  q = withCSS(rr, ar, "framer-v0tbV"),
-  te = q;
-q.displayName = "Backdrop";
-q.defaultProps = { height: 600, width: 800 };
-addPropertyControls(q, {
+  Backdrop = withCSS(_Backdrop, ar, "framer-v0tbV");
+Backdrop.displayName = "Backdrop";
+Backdrop.defaultProps = { height: 600, width: 800 };
+addPropertyControls(Backdrop, {
   variant: {
     options: [
       "Rre_u8WuV",
@@ -433,7 +429,7 @@ addPropertyControls(q, {
     type: ControlType.Enum,
   },
 });
-loadFonts(q, [{ explicitInter: true, fonts: [] }, ...Ye, ...Ze], {
+loadFonts(Backdrop, [{ explicitInter: true, fonts: [] }, ...Ye, ...Ze], {
   supportsExplicitInterCodegen: true,
 });
 fontLoader.loadFonts([]);
@@ -443,8 +439,8 @@ var Ae = [{ explicitInter: true, fonts: [] }],
   ],
   Be = "framer-1BPWo";
 var ir = getFonts(SmoothScrollComponent),
-  sr = getFonts(te),
-  nr = $(te),
+  sr = getFonts(Backdrop),
+  nr = $(Backdrop),
   or = getFonts(c),
   lr = getFonts(NavItemComponent),
   N = $(NavItemComponent);
@@ -512,7 +508,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
           : "vtnUon983",
     };
   },
-  kr = forwardRef(function (props, forwardedRef) {
+  _Layer22 = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       { style, className, layoutId, variant, ...restProps } = xr(props);
     (useEffect(() => {
@@ -2362,12 +2358,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     '.framer-CacIk[data-hide-scrollbars="true"]::-webkit-scrollbar, .framer-CacIk [data-hide-scrollbars="true"]::-webkit-scrollbar { width: 0px; height: 0px; }',
     '.framer-CacIk[data-hide-scrollbars="true"]::-webkit-scrollbar-thumb, .framer-CacIk [data-hide-scrollbars="true"]::-webkit-scrollbar-thumb { background: transparent; }',
   ],
-  Z = withCSS(kr, br, "framer-CacIk"),
-  Or = Z;
-Z.displayName = "Layer2 2";
-Z.defaultProps = { height: 8880, width: 1200 };
+  Layer22 = withCSS(_Layer22, br, "framer-CacIk");
+Layer22.displayName = "Layer2 2";
+Layer22.defaultProps = { height: 8880, width: 1200 };
 loadFonts(
-  Z,
+  Layer22,
   [
     {
       explicitInter: true,
@@ -2534,4 +2529,4 @@ var Yr = {
     __FramerMetadata__: { type: "variable" },
   },
 };
-export { Yr as __FramerMetadata__, Or as default };
+export { Yr as __FramerMetadata__, Layer22 as default };

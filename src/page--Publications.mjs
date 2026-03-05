@@ -116,7 +116,7 @@ var Zr = TWEEN_APPEAR,
   re = ({ height: m, id: f, width: s, ...l }) => ({ ...l }),
   ee = (m, f) =>
     m.layoutDependency ? f.join("-") + m.layoutDependency : f.join("-"),
-  ae = forwardRef(function (props, forwardedRef) {
+  _Backdrop2 = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       { style, className, layoutId, variant, ...restProps } = re(props),
       {
@@ -243,11 +243,10 @@ var Zr = TWEEN_APPEAR,
     ".framer-zeXf1 .framer-15s3poq, .framer-zeXf1 .framer-1k92q7k-container, .framer-zeXf1 .framer-ksez6a-container { bottom: 0px; flex: none; left: 0px; position: absolute; right: 0px; top: 0px; }",
     ".framer-zeXf1 .framer-1m9pxy0 { bottom: 0px; flex: none; left: 0px; mix-blend-mode: screen; overflow: visible; position: absolute; right: 0px; top: 0px; }",
   ],
-  j = withCSS(ae, te, "framer-zeXf1"),
-  X = j;
-j.displayName = "Backdrop2";
-j.defaultProps = { height: 800, width: 1200 };
-loadFonts(j, [{ explicitInter: true, fonts: [] }, ...Lr, ...Mr], {
+  Backdrop2 = withCSS(_Backdrop2, te, "framer-zeXf1");
+Backdrop2.displayName = "Backdrop2";
+Backdrop2.defaultProps = { height: 800, width: 1200 };
+loadFonts(Backdrop2, [{ explicitInter: true, fonts: [] }, ...Lr, ...Mr], {
   supportsExplicitInterCodegen: true,
 });
 fontLoader.loadFonts([
@@ -261,7 +260,7 @@ var jr = [
   ],
   qr = "framer-URl6O";
 var ne = getFonts(SmoothScrollComponent),
-  fe = getFonts(X),
+  fe = getFonts(Backdrop2),
   oe = getFonts(NavItemComponent),
   J = withScrollAnimation(NavItemComponent);
 var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
@@ -313,7 +312,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
           : "QhSlAYPb_",
     };
   },
-  ge = forwardRef(function (props, forwardedRef) {
+  _ScrollSection = forwardRef(function (props, forwardedRef) {
     let { activeLocale, setLocale } = useLocale(),
       { style, className, layoutId, variant, ...restProps } = he(props);
     (useEffect(() => {
@@ -392,7 +391,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                   children: jsx(cssSSRMinifiedHelper, {
                     className: "framer-f5p7wh-container",
                     layoutScroll: true,
-                    children: jsx(X, {
+                    children: jsx(Backdrop2, {
                       height: "100%",
                       id: "bysoL_VhR",
                       layoutId: "bysoL_VhR",
@@ -2276,12 +2275,11 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     '.framer-9Y9Hr[data-hide-scrollbars="true"]::-webkit-scrollbar, .framer-9Y9Hr [data-hide-scrollbars="true"]::-webkit-scrollbar { width: 0px; height: 0px; }',
     '.framer-9Y9Hr[data-hide-scrollbars="true"]::-webkit-scrollbar-thumb, .framer-9Y9Hr [data-hide-scrollbars="true"]::-webkit-scrollbar-thumb { background: transparent; }',
   ],
-  q = withCSS(ge, ue, "framer-9Y9Hr"),
-  Pe = q;
-q.displayName = "Scroll Section";
-q.defaultProps = { height: 7273, width: 1200 };
+  ScrollSection = withCSS(_ScrollSection, ue, "framer-9Y9Hr");
+ScrollSection.displayName = "Scroll Section";
+ScrollSection.defaultProps = { height: 7273, width: 1200 };
 loadFonts(
-  q,
+  ScrollSection,
   [
     ...interHashedFontDefs,
     ...ne,
@@ -2317,4 +2315,4 @@ var De = {
     __FramerMetadata__: { type: "variable" },
   },
 };
-export { De as __FramerMetadata__, Pe as default };
+export { De as __FramerMetadata__, ScrollSection as default };

@@ -80,7 +80,7 @@ import { $ as a,
   loadFonts,
   getFonts,
   normalizeFontConfig } from "./chunk--react-and-framer-runtime.mjs";
-import { mergeVariantProps, TransitionProvider, AnimatedFragment, BASE_VIDEO_PROPS, VIDEO_PROPS_FLAT, VIDEO_PROPS_ROUNDED, CSS_ASPECT_RATIO_SUPPORT } from "./chunk--page-helpers.mjs";
+import { mergeVariantProps, TransitionProvider, AnimatedFragment, BASE_VIDEO_PROPS, VIDEO_PROPS_FLAT, VIDEO_PROPS_ROUNDED, CSS_ASPECT_RATIO_SUPPORT, SPRING_STANDARD, TWEEN_QUICK, TWEEN_APPEAR, EASE_STANDARD } from "./chunk--page-helpers.mjs";
 import { a as Y } from "./metadata--neoflix.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
@@ -90,8 +90,8 @@ var TrailingBreak = () => jsx("p", {
   style: { "--framer-text-alignment": "left" },
   children: jsx("br", { className: "trailing-break" }),
 });
-var Ye = getFonts(c),
-  Ze = getFonts(NoiseOverlayComponent),
+var c_fonts = getFonts(c),
+  NoiseOverlayComponent_fonts = getFonts(NoiseOverlayComponent),
   We = [
     "Rre_u8WuV",
     "DkxmDygok",
@@ -100,8 +100,8 @@ var Ye = getFonts(c),
     "sJR17n1rz",
     "gRcraNE8T",
   ],
-  He = "framer-v0tbV",
-  Ke = {
+  Backdrop_prefix = "framer-v0tbV",
+  Backdrop_variantClassNames = {
     DkxmDygok: "framer-v-92htoe",
     eMNO9x2r7: "framer-v-1d3z733",
     gRcraNE8T: "framer-v-2ke98f",
@@ -109,11 +109,7 @@ var Ye = getFonts(c),
     sJR17n1rz: "framer-v-1evn86j",
     tcTKLfIBw: "framer-v-424790",
   };
-var Pe = mergeVariantProps;
-var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
-  Ge = TransitionProvider,
-  Je = AnimatedFragment,
-  Qe = {
+var Backdrop_variantNames = {
     Cost: "tcTKLfIBw",
     Dance: "DkxmDygok",
     Perspective: "gRcraNE8T",
@@ -121,63 +117,63 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
     Team: "sJR17n1rz",
     Time: "Rre_u8WuV",
   },
-  $e = ({ height: f, id: n, width: u, ...d }) => {
+  resolveBackdropProps = ({ height: f, id: n, width: u, ...d }) => {
     var g, y;
     return {
       ...d,
       variant:
-        (y = (g = Qe[d.variant]) !== null && g !== undefined ? g : d.variant) !==
+        (y = (g = Backdrop_variantNames[d.variant]) !== null && g !== undefined ? g : d.variant) !==
           null && y !== undefined
           ? y
           : "Rre_u8WuV",
     };
   },
-  er = (f, n) =>
+  Backdrop_layoutKey = (f, n) =>
     f.layoutDependency ? n.join("-") + f.layoutDependency : n.join("-"),
-  rr = forwardRef(function (f, n) {
-    let { activeLocale: u, setLocale: d } = useLocale(),
-      { style: g, className: y, layoutId: v, variant: W, ...H } = $e(f),
+  _Backdrop = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
+      { style, className, layoutId, variant, ...restProps } = resolveBackdropProps(props),
       {
-        baseVariant: h,
-        classNames: ie,
-        gestureHandlers: se,
-        gestureVariant: E,
-        setGestureState: R,
-        setVariant: ne,
-        variants: _,
+        baseVariant,
+        classNames,
+        gestureHandlers,
+        gestureVariant,
+        setGestureState,
+        setVariant,
+        variants,
       } = useVariantState({
         cycleOrder: We,
         defaultVariant: "Rre_u8WuV",
-        variant: W,
-        variantClassNames: Ke,
+        variant: variant,
+        variantClassNames: Backdrop_variantClassNames,
       }),
-      l = er(f, _),
-      j = useRef(null),
-      S = () => h !== "sJR17n1rz",
-      U = () => h === "sJR17n1rz",
-      K = () => h === "eMNO9x2r7",
-      F = () => !["eMNO9x2r7", "sJR17n1rz", "gRcraNE8T"].includes(h),
-      X = () => !["sJR17n1rz", "gRcraNE8T"].includes(h),
-      z = useId(),
-      G = [],
-      A = useDeviceSize();
+      l = Backdrop_layoutKey(props, variants),
+      localRef = useRef(null),
+      S = () => baseVariant !== "sJR17n1rz",
+      U = () => baseVariant === "sJR17n1rz",
+      K = () => baseVariant === "eMNO9x2r7",
+      F = () => !["eMNO9x2r7", "sJR17n1rz", "gRcraNE8T"].includes(baseVariant),
+      X = () => !["sJR17n1rz", "gRcraNE8T"].includes(baseVariant),
+      autoId = useId(),
+      additionalClassNames = [],
+      deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
-      id: v ?? z,
-      children: jsx(Je, {
-        animate: _,
+      id: layoutId ?? autoId,
+      children: jsx(AnimatedFragment, {
+        animate: variants,
         initial: false,
-        children: jsx(Ge, {
-          value: Xe,
+        children: jsx(TransitionProvider, {
+          value: TWEEN_QUICK,
           children: jsxs(motion.div, {
-            ...H,
-            ...se,
-            className: cx(He, ...G, "framer-1ewt70r", y, ie),
+            ...restProps,
+            ...gestureHandlers,
+            className: cx(Backdrop_prefix, ...additionalClassNames, "framer-1ewt70r", className, classNames),
             "data-framer-name": "Time",
             layoutDependency: l,
             layoutId: "Rre_u8WuV",
-            ref: n ?? j,
-            style: { ...g },
-            ...Pe(
+            ref: forwardedRef ?? localRef,
+            style: { ...style },
+            ...mergeVariantProps(
               {
                 DkxmDygok: { "data-framer-name": "Dance" },
                 eMNO9x2r7: { "data-framer-name": "Skills" },
@@ -185,8 +181,8 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                 sJR17n1rz: { "data-framer-name": "Team" },
                 tcTKLfIBw: { "data-framer-name": "Cost" },
               },
-              h,
-              E,
+              baseVariant,
+              gestureVariant,
             ),
             children: [
               S() &&
@@ -361,7 +357,7 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         layoutId: "DRu3_2xH9",
                         srcFile:
                           "./assets/nwkgjaocyelpifxmzrvxbowwius.webm",
-                        ...Pe(
+                        ...mergeVariantProps(
                           {
                             DkxmDygok: { srcFile: undefined },
                             gRcraNE8T: {
@@ -369,8 +365,8 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                                 "./assets/79ajxjoljjurdtgiqvvugw34pai.webm",
                             },
                           },
-                          h,
-                          E,
+                          baseVariant,
+                          gestureVariant,
                         ),
                       }),
                     }),
@@ -405,7 +401,7 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
       }),
     });
   }),
-  ar = [
+  Backdrop_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-v0tbV.framer-12qjzrj, .framer-v0tbV .framer-12qjzrj { display: block; }",
     ".framer-v0tbV.framer-1ewt70r { height: 600px; overflow: hidden; position: relative; width: 800px; }",
@@ -414,11 +410,10 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
     ".framer-v0tbV .framer-1xyvsbf { bottom: 0px; flex: none; left: 0px; overflow: hidden; position: absolute; right: 0px; top: 0px; }",
     ".framer-v0tbV .framer-pq83k9 { bottom: 0px; flex: none; left: 0px; mix-blend-mode: screen; overflow: visible; position: absolute; right: 0px; top: 0px; }",
   ],
-  q = withCSS(rr, ar, "framer-v0tbV"),
-  te = q;
-q.displayName = "Backdrop";
-q.defaultProps = { height: 600, width: 800 };
-addPropertyControls(q, {
+  Backdrop = withCSS(_Backdrop, Backdrop_css, "framer-v0tbV");
+Backdrop.displayName = "Backdrop";
+Backdrop.defaultProps = { height: 600, width: 800 };
+addPropertyControls(Backdrop, {
   variant: {
     options: [
       "Rre_u8WuV",
@@ -433,7 +428,7 @@ addPropertyControls(q, {
     type: ControlType.Enum,
   },
 });
-loadFonts(q, [{ explicitInter: true, fonts: [] }, ...Ye, ...Ze], {
+loadFonts(Backdrop, [{ explicitInter: true, fonts: [] }, ...c_fonts, ...NoiseOverlayComponent_fonts], {
   supportsExplicitInterCodegen: true,
 });
 fontLoader.loadFonts([]);
@@ -442,18 +437,17 @@ var Ae = [{ explicitInter: true, fonts: [] }],
     ".framer-1BPWo .framer-styles-preset-1wicq5s:not(.rich-text-wrapper), .framer-1BPWo .framer-styles-preset-1wicq5s.rich-text-wrapper a { --framer-link-current-text-color: var(--token-46c9bfd9-1bda-49fb-a06e-e385b05c9b2f, #383437); --framer-link-current-text-decoration: none; --framer-link-hover-text-color: var(--token-4eefdbfc-188c-4e73-9cde-c40c46f943d5, #529c9c); --framer-link-hover-text-decoration: underline; --framer-link-text-color: var(--token-13b5b450-71c4-4161-9a24-7b5eae77301e, #00333b); --framer-link-text-decoration: none; }",
   ],
   Be = "framer-1BPWo";
-var ir = getFonts(SmoothScrollComponent),
-  sr = getFonts(te),
-  nr = $(te),
-  or = getFonts(c),
-  lr = getFonts(NavItemComponent),
-  N = $(NavItemComponent);
-var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
-  cr = () => typeof document < "u",
-  Le = "framer-CacIk",
-  fr = { AlOztWgAm: "framer-v-p363ye", vtnUon983: "framer-v-18oda3j" },
-  dr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
-  hr = {
+var SmoothScrollComponent_fonts = getFonts(SmoothScrollComponent),
+  Backdrop_fonts = getFonts(Backdrop),
+  Backdrop_variantProps = $(Backdrop),
+  c_fonts2 = getFonts(c),
+  NavItemComponent_fonts = getFonts(NavItemComponent),
+  NavItemComponent_variantProps = $(NavItemComponent);
+var breakpointQueries = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
+  isBrowser = () => typeof document < "u",
+  Layer22_prefix = "framer-CacIk",
+  Layer22_variantClassNames = { AlOztWgAm: "framer-v-p363ye", vtnUon983: "framer-v-18oda3j" },
+  Layer22_animate = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -462,11 +456,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     skewX: 0,
     skewY: 0,
     transformPerspective: 1200,
-    transition: dr,
+    transition: TWEEN_APPEAR,
     x: 0,
     y: 0,
   },
-  pr = {
+  Layer22_initial = {
     opacity: 0.001,
     rotate: 0,
     rotateX: 0,
@@ -478,8 +472,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     x: 0,
     y: 0,
   },
-  De = { damping: 30, delay: 0, mass: 1, stiffness: 400, type: "spring" /* physics-based spring animation */ },
-  ur = {
+  Layer22_hover = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -487,9 +480,9 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     scale: 1.1,
     skewX: 0,
     skewY: 0,
-    transition: De,
+    transition: SPRING_STANDARD,
   },
-  gr = {
+  Layer22_hover2 = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -497,26 +490,26 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     scale: 1.05,
     skewX: 0,
     skewY: 0,
-    transition: De,
+    transition: SPRING_STANDARD,
   },
   Mr = Y(),
-  yr = { Desktop: "vtnUon983", Phone: "AlOztWgAm" },
-  xr = ({ height: f, id: n, width: u, ...d }) => {
+  Layer22_variantNames = { Desktop: "vtnUon983", Phone: "AlOztWgAm" },
+  resolveLayer22Props = ({ height: f, id: n, width: u, ...d }) => {
     var g, y;
     return {
       ...d,
       variant:
-        (y = (g = yr[d.variant]) !== null && g !== undefined ? g : d.variant) !==
+        (y = (g = Layer22_variantNames[d.variant]) !== null && g !== undefined ? g : d.variant) !==
           null && y !== undefined
           ? y
           : "vtnUon983",
     };
   },
-  kr = forwardRef(function (f, n) {
-    let { activeLocale: u, setLocale: d } = useLocale(),
-      { style: g, className: y, layoutId: v, variant: W, ...H } = xr(f);
+  _Layer22 = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
+      { style, className, layoutId, variant, ...restProps } = resolveLayer22Props(props);
     (useEffect(() => {
-      let i = Y(undefined, u);
+      let i = Y(undefined, activeLocale);
       if (i.robots) {
         let x = document.querySelector('meta[name="robots"]');
         x
@@ -526,9 +519,9 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
             x.setAttribute("content", i.robots),
             document.head.appendChild(x));
       }
-    }, [undefined, u]),
+    }, [undefined, activeLocale]),
       useInsertionEffect(() => {
-        let i = Y(undefined, u);
+        let i = Y(undefined, activeLocale);
         if (((document.title = i.title || ""), i.viewport)) {
           var x;
           (x = document.querySelector('meta[name="viewport"]')) === null ||
@@ -547,38 +540,38 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
           le &&
             document.body.classList.remove(`${i.bodyClassName}-framer-CacIk`);
         };
-      }, [undefined, u]));
-    let [h, ie] = useVariantState(W, mr, false),
+      }, [undefined, activeLocale]));
+    let [h, ie] = useVariantState(variant, breakpointQueries, false),
       se = undefined,
-      E = useRef(null),
-      R = () => (cr() ? h !== "AlOztWgAm" : true),
+      localRef = useRef(null),
+      R = () => (isBrowser() ? h !== "AlOztWgAm" : true),
       ne = resolveLinks("WjO84y3BZ"),
-      _ = useRef(null),
+      localRef2 = useRef(null),
       l = resolveLinks("dbtg_NZW8"),
-      j = useRef(null),
+      localRef3 = useRef(null),
       S = resolveLinks("tftSCv8zZ"),
-      U = useRef(null),
+      localRef4 = useRef(null),
       K = resolveLinks("mRVhqybMB"),
-      F = useRef(null),
+      localRef5 = useRef(null),
       X = resolveLinks("NYP2seWhD"),
-      z = useRef(null),
+      localRef6 = useRef(null),
       G = resolveLinks("DXqsCYt4L"),
-      A = useRef(null),
+      localRef7 = useRef(null),
       vr = useRoute(),
-      Me = useId(),
+      autoId = useId(),
       oe = [interExtraBoldCSSScope, interMediumCSSScope, Be, cssClassScope];
     return (
       registerCursors({}),
       jsx(CursorContext.Provider, {
-        value: { primaryVariantId: "vtnUon983", variantClassNames: fr },
+        value: { primaryVariantId: "vtnUon983", variantClassNames: Layer22_variantClassNames },
         children: jsxs(LayoutGroup, {
-          id: v ?? Me,
+          id: layoutId ?? autoId,
           children: [
             jsxs(motion.div, {
-              ...H,
-              className: cx(Le, ...oe, "framer-18oda3j", y),
-              ref: n ?? E,
-              style: { ...g },
+              ...restProps,
+              className: cx(Layer22_prefix, ...oe, "framer-18oda3j", className),
+              ref: forwardedRef ?? localRef,
+              style: { ...style },
               children: [
                 jsx(DeviceSizeContainer, {
                   children: jsx(cssSSRMinifiedHelper, {
@@ -595,14 +588,14 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                 jsx(DeviceSizeContainer, {
                   width: "100vw",
                   children: jsx(cssSSRMinifiedHelper, {
-                    animate: hr,
+                    animate: Layer22_animate,
                     className: "framer-12f3lu4-container",
                     "data-framer-appear-id": "12f3lu4",
-                    initial: pr,
+                    initial: Layer22_initial,
                     layoutScroll: true,
                     optimized: true,
                     style: { transformPerspective: 1200 },
-                    children: jsx(nr, {
+                    children: jsx(Backdrop_variantProps, {
                       __framer__animateOnce: false,
                       __framer__threshold: 0.5,
                       __framer__variantAppearEffectEnabled: true,
@@ -648,7 +641,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: ne,
                           name: "Section-Time",
-                          ref: _,
+                          ref: localRef2,
                           children: jsx("div", {
                             className: "framer-s6m53n",
                             children: jsx("div", {
@@ -896,7 +889,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: l,
                           name: "Section-Dance",
-                          ref: j,
+                          ref: localRef3,
                           children: jsx("div", {
                             className: "framer-1rxj0w1",
                             children: jsx("div", {
@@ -1099,7 +1092,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: S,
                           name: "Section-Cost",
-                          ref: U,
+                          ref: localRef4,
                           children: jsx("div", {
                             className: "framer-qbgm69",
                             children: jsx("div", {
@@ -1304,7 +1297,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: K,
                           name: "Section-Skills",
-                          ref: F,
+                          ref: localRef5,
                           children: jsx("div", {
                             className: "framer-g98yis",
                             children: jsx("div", {
@@ -1512,7 +1505,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: X,
                           name: "Section-Team",
-                          ref: z,
+                          ref: localRef6,
                           children: jsx("div", {
                             className: "framer-1n46uon",
                             children: jsx("div", {
@@ -1677,7 +1670,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: G,
                           name: "Section-Perspectives",
-                          ref: A,
+                          ref: localRef7,
                           children: jsx("div", {
                             className: "framer-1xunj3i",
                             children: jsx("div", {
@@ -1893,7 +1886,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                             "framer-il55l2 hidden-p363ye framer-p7mxce",
                           "data-framer-name": "Logo",
                           name: "Logo",
-                          whileHover: ur,
+                          whileHover: Layer22_hover,
                           children: jsx(SVGComponent, {
                             className: "framer-13rf3nq",
                             "data-framer-name": "Neoflix_Logo_SVG",
@@ -1978,7 +1971,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           href: { webPageId: "x05wlhCdy" },
                           children: jsx(motion.a, {
                             className: "framer-whs8ci framer-p7mxce",
-                            whileHover: gr,
+                            whileHover: Layer22_hover2,
                             children: jsx(RichTextComponent, {
                               __fromCanvasComponent: true,
                               children: jsx(ReactFragment, {
@@ -2057,11 +2050,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                               "framer-144xu0w-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: jsx(N, {
+                                            children: jsx(NavItemComponent_variantProps, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: _, target: "f7_6jHMU5" },
-                                                { ref: j, target: "Rwa3hKEk5" },
+                                                { ref: localRef2, target: "f7_6jHMU5" },
+                                                { ref: localRef3, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
@@ -2098,11 +2091,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                               "framer-13oq9sc-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: jsx(N, {
+                                            children: jsx(NavItemComponent_variantProps, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: j, target: "f7_6jHMU5" },
-                                                { ref: U, target: "Rwa3hKEk5" },
+                                                { ref: localRef3, target: "f7_6jHMU5" },
+                                                { ref: localRef4, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
@@ -2139,11 +2132,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                               "framer-1lxqg2f-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: jsx(N, {
+                                            children: jsx(NavItemComponent_variantProps, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: U, target: "f7_6jHMU5" },
-                                                { ref: F, target: "Rwa3hKEk5" },
+                                                { ref: localRef4, target: "f7_6jHMU5" },
+                                                { ref: localRef5, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
@@ -2181,11 +2174,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                               "framer-1oawkpd-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: jsx(N, {
+                                            children: jsx(NavItemComponent_variantProps, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: F, target: "f7_6jHMU5" },
-                                                { ref: z, target: "Rwa3hKEk5" },
+                                                { ref: localRef5, target: "f7_6jHMU5" },
+                                                { ref: localRef6, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
@@ -2222,11 +2215,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                               "framer-1aw20d8-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: jsx(N, {
+                                            children: jsx(NavItemComponent_variantProps, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: z, target: "f7_6jHMU5" },
-                                                { ref: A, target: "Rwa3hKEk5" },
+                                                { ref: localRef6, target: "f7_6jHMU5" },
+                                                { ref: localRef7, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
@@ -2264,10 +2257,10 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                               "framer-yle7l6-container",
                                             "data-framer-name": "Item",
                                             name: "Item",
-                                            children: jsx(N, {
+                                            children: jsx(NavItemComponent_variantProps, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: A, target: "f7_6jHMU5" },
+                                                { ref: localRef7, target: "f7_6jHMU5" },
                                               ],
                                               __framer__threshold: 0,
                                               __framer__variantAppearEffectEnabled:
@@ -2309,13 +2302,13 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                   }),
               ],
             }),
-            jsx("div", { className: cx(Le, ...oe), id: "overlay" }),
+            jsx("div", { className: cx(Layer22_prefix, ...oe), id: "overlay" }),
           ],
         }),
       })
     );
   }),
-  br = [
+  Layer22_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-CacIk.framer-p7mxce, .framer-CacIk .framer-p7mxce { display: block; }",
     ".framer-CacIk.framer-18oda3j { align-content: center; align-items: center; display: flex; flex-direction: column; flex-wrap: nowrap; gap: 0px; height: min-content; justify-content: flex-start; overflow: visible; padding: 0px; position: relative; width: 1200px; }",
@@ -2362,12 +2355,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     '.framer-CacIk[data-hide-scrollbars="true"]::-webkit-scrollbar, .framer-CacIk [data-hide-scrollbars="true"]::-webkit-scrollbar { width: 0px; height: 0px; }',
     '.framer-CacIk[data-hide-scrollbars="true"]::-webkit-scrollbar-thumb, .framer-CacIk [data-hide-scrollbars="true"]::-webkit-scrollbar-thumb { background: transparent; }',
   ],
-  Z = withCSS(kr, br, "framer-CacIk"),
-  Or = Z;
-Z.displayName = "Layer2 2";
-Z.defaultProps = { height: 8880, width: 1200 };
+  Layer22 = withCSS(_Layer22, Layer22_css, "framer-CacIk");
+Layer22.displayName = "Layer2 2";
+Layer22.defaultProps = { height: 8880, width: 1200 };
 loadFonts(
-  Z,
+  Layer22,
   [
     {
       explicitInter: true,
@@ -2501,10 +2493,10 @@ loadFonts(
         },
       ],
     },
-    ...ir,
-    ...sr,
-    ...or,
-    ...lr,
+    ...SmoothScrollComponent_fonts,
+    ...Backdrop_fonts,
+    ...c_fonts2,
+    ...NavItemComponent_fonts,
     ...normalizeFontConfig(interExtraBoldFontDefs),
     ...normalizeFontConfig(interMediumFontDefs),
     ...normalizeFontConfig(Ae),
@@ -2534,4 +2526,4 @@ var Yr = {
     __FramerMetadata__: { type: "variable" },
   },
 };
-export { Yr as __FramerMetadata__, Or as default };
+export { Yr as __FramerMetadata__, Layer22 as default };

@@ -65,7 +65,7 @@ import { $ as o,
   normalizeFontConfig } from "./chunk--react-and-framer-runtime.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
-import { mergeVariantProps, TransitionProvider, AnimatedFragment, CSS_ASPECT_RATIO_SUPPORT, SPRING_STANDARD } from "./chunk--page-helpers.mjs";
+import { mergeVariantProps, TransitionProvider, AnimatedFragment, CSS_ASPECT_RATIO_SUPPORT, SPRING_STANDARD, SPRING_CAPTION, TWEEN_APPEAR, EASE_STANDARD } from "./chunk--page-helpers.mjs";
 import { interNamedFontDefs as _r, interHashedFontDefs } from "./chunk--font-data.mjs";
 var ICON_BG = {
   alt: "", fit: "fit", loading: "lazy",
@@ -73,14 +73,13 @@ var ICON_BG = {
   positionX: "center", positionY: "center",
   src: "./images/jnafhdwhe1hq6wcabqba0y1km.svg",
 };
-var Lr = getFonts(W),
-  Mr = getFonts(NoiseOverlayComponent),
-  Tr = withFXWrapper(motion.div),
+var W_fonts = getFonts(W),
+  NoiseOverlayComponent_fonts = getFonts(NoiseOverlayComponent),
+  FXDiv = withFXWrapper(motion.div),
   Wr = ["htUh18eRJ"],
-  Gr = "framer-zeXf1",
+  Backdrop2_prefix = "framer-zeXf1",
   Or = { htUh18eRJ: "framer-v-2yaxv0" };
-var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
-  Xr = {
+var Backdrop2_presenceAnimate = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -89,11 +88,11 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
     skewX: 0,
     skewY: 0,
     transformPerspective: 1200,
-    transition: Zr,
+    transition: TWEEN_APPEAR,
     x: 0,
     y: 0,
   },
-  Jr = {
+  Backdrop2_presenceInitial = {
     opacity: 0.001,
     rotate: 0,
     rotateX: 0,
@@ -105,7 +104,6 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
     x: 0,
     y: 0,
   },
-  Qr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
   Kr = ({ value: m, children: f }) => {
     let s = useContext(MotionContext),
       l = m ?? s.transition,
@@ -113,53 +111,53 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
     return jsx(MotionContext.Provider, { value: d, children: f });
   },
   $r = motion(ReactFragment),
-  re = ({ height: m, id: f, width: s, ...l }) => ({ ...l }),
-  ee = (m, f) =>
+  resolveBackdrop2Props = ({ height: m, id: f, width: s, ...l }) => ({ ...l }),
+  Backdrop2_layoutKey = (m, f) =>
     m.layoutDependency ? f.join("-") + m.layoutDependency : f.join("-"),
-  ae = forwardRef(function (m, f) {
-    let { activeLocale: s, setLocale: l } = useLocale(),
-      { style: d, className: g, layoutId: u, variant: P, ...D } = re(m),
+  _Backdrop2 = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
+      { style, className, layoutId, variant, ...restProps } = resolveBackdrop2Props(props),
       {
-        baseVariant: K,
-        classNames: $,
-        gestureHandlers: rr,
-        gestureVariant: er,
-        setGestureState: Y,
-        setVariant: Dr,
-        variants: U,
+        baseVariant,
+        classNames,
+        gestureHandlers,
+        gestureVariant,
+        setGestureState,
+        setVariant,
+        variants,
       } = useVariantState({
         cycleOrder: Wr,
         defaultVariant: "htUh18eRJ",
-        variant: P,
+        variant: variant,
         variantClassNames: Or,
       }),
-      p = ee(m, U),
-      k = useRef(null),
-      V = useId(),
-      S = [],
-      ar = useDeviceSize();
+      p = Backdrop2_layoutKey(props, variants),
+      localRef = useRef(null),
+      autoId = useId(),
+      additionalClassNames = [],
+      deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
-      id: u ?? V,
+      id: layoutId ?? autoId,
       children: jsx($r, {
-        animate: U,
+        animate: variants,
         initial: false,
         children: jsx(Kr, {
-          value: Qr,
-          children: jsxs(Tr, {
-            ...D,
-            ...rr,
-            __framer__presenceAnimate: setAppearAnimationValues("animate", "2yaxv0", Xr, undefined),
-            __framer__presenceInitial: setAppearAnimationValues("initial", "2yaxv0", Jr, undefined),
+          value: SPRING_CAPTION,
+          children: jsxs(FXDiv, {
+            ...restProps,
+            ...gestureHandlers,
+            __framer__presenceAnimate: setAppearAnimationValues("animate", "2yaxv0", Backdrop2_presenceAnimate, undefined),
+            __framer__presenceInitial: setAppearAnimationValues("initial", "2yaxv0", Backdrop2_presenceInitial, undefined),
             __perspectiveFX: false,
             __smartComponentFX: true,
             __targetOpacity: 1,
-            className: cx(Gr, ...S, "framer-2yaxv0", g, $),
+            className: cx(Backdrop2_prefix, ...additionalClassNames, "framer-2yaxv0", className, classNames),
             "data-framer-appear-id": "2yaxv0",
             "data-framer-name": "Variant 1",
             layoutDependency: p,
             layoutId: "htUh18eRJ",
-            ref: f ?? k,
-            style: { ...d },
+            ref: forwardedRef ?? localRef,
+            style: { ...style },
             children: [
               jsx(motion.div, {
                 background: {
@@ -236,18 +234,17 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
       }),
     });
   }),
-  te = [
+  Backdrop2_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-zeXf1.framer-1hmkm8a, .framer-zeXf1 .framer-1hmkm8a { display: block; }",
     ".framer-zeXf1.framer-2yaxv0 { height: 800px; overflow: hidden; pointer-events: none; position: relative; width: 1200px; }",
     ".framer-zeXf1 .framer-15s3poq, .framer-zeXf1 .framer-1k92q7k-container, .framer-zeXf1 .framer-ksez6a-container { bottom: 0px; flex: none; left: 0px; position: absolute; right: 0px; top: 0px; }",
     ".framer-zeXf1 .framer-1m9pxy0 { bottom: 0px; flex: none; left: 0px; mix-blend-mode: screen; overflow: visible; position: absolute; right: 0px; top: 0px; }",
   ],
-  j = withCSS(ae, te, "framer-zeXf1"),
-  X = j;
-j.displayName = "Backdrop2";
-j.defaultProps = { height: 800, width: 1200 };
-loadFonts(j, [{ explicitInter: true, fonts: [] }, ...Lr, ...Mr], {
+  Backdrop2 = withCSS(_Backdrop2, Backdrop2_css, "framer-zeXf1");
+Backdrop2.displayName = "Backdrop2";
+Backdrop2.defaultProps = { height: 800, width: 1200 };
+loadFonts(Backdrop2, [{ explicitInter: true, fonts: [] }, ...W_fonts, ...NoiseOverlayComponent_fonts], {
   supportsExplicitInterCodegen: true,
 });
 fontLoader.loadFonts([
@@ -260,16 +257,15 @@ var jr = [
     '.framer-URl6O .framer-styles-preset-1411uq:not(.rich-text-wrapper), .framer-URl6O .framer-styles-preset-1411uq.rich-text-wrapper p { --framer-font-family: "Inter", "Inter Placeholder", sans-serif; --framer-font-family-bold: "Inter", "Inter Placeholder", sans-serif; --framer-font-family-bold-italic: "Inter", "Inter Placeholder", sans-serif; --framer-font-family-italic: "Inter", "Inter Placeholder", sans-serif; --framer-font-size: 14px; --framer-font-style: normal; --framer-font-style-bold: normal; --framer-font-style-bold-italic: italic; --framer-font-style-italic: italic; --framer-font-weight: 500; --framer-font-weight-bold: 700; --framer-font-weight-bold-italic: 700; --framer-font-weight-italic: 400; --framer-letter-spacing: 0em; --framer-line-height: 1.5em; --framer-paragraph-spacing: 20px; --framer-text-alignment: start; --framer-text-color: #666666; --framer-text-decoration: none; --framer-text-stroke-color: initial; --framer-text-stroke-width: initial; --framer-text-transform: none; }',
   ],
   qr = "framer-URl6O";
-var ne = getFonts(SmoothScrollComponent),
-  fe = getFonts(X),
-  oe = getFonts(NavItemComponent),
+var SmoothScrollComponent_fonts = getFonts(SmoothScrollComponent),
+  Backdrop2_fonts = getFonts(Backdrop2),
+  NavItemComponent_fonts = getFonts(NavItemComponent),
   J = withScrollAnimation(NavItemComponent);
-var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
-  se = () => typeof document < "u",
-  Pr = "framer-9Y9Hr",
-  le = { LKrog5PlS: "framer-v-1byrpbb", QhSlAYPb_: "framer-v-1t32e7q" },
-  Q = { damping: 30, delay: 0, mass: 1, stiffness: 400, type: "spring" /* physics-based spring animation */ },
-  ce = {
+var breakpointQueries = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
+  isBrowser = () => typeof document < "u",
+  ScrollSection_prefix = "framer-9Y9Hr",
+  ScrollSection_variantClassNames = { LKrog5PlS: "framer-v-1byrpbb", QhSlAYPb_: "framer-v-1t32e7q" },
+  ScrollSection_hover = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -277,9 +273,9 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     scale: 1.1,
     skewX: 0,
     skewY: 0,
-    transition: Q,
+    transition: SPRING_STANDARD,
   },
-  de = {
+  ScrollSection_hover2 = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -287,9 +283,9 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     scale: 1.05,
     skewX: 0,
     skewY: 0,
-    transition: Q,
+    transition: SPRING_STANDARD,
   },
-  H = {
+  ScrollSection_hover3 = {
     opacity: 1,
     rotate: 0,
     rotateX: 0,
@@ -297,27 +293,27 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     scale: 1.01,
     skewX: 0,
     skewY: 0,
-    transition: Q,
+    transition: SPRING_STANDARD,
     y: -4,
   },
   qe = _(),
-  pe = { Desktop: "QhSlAYPb_", Phone: "LKrog5PlS" },
-  he = ({ height: m, id: f, width: s, ...l }) => {
+  ScrollSection_variantNames = { Desktop: "QhSlAYPb_", Phone: "LKrog5PlS" },
+  resolveScrollSectionProps = ({ height: m, id: f, width: s, ...l }) => {
     var d, g;
     return {
       ...l,
       variant:
-        (g = (d = pe[l.variant]) !== null && d !== undefined ? d : l.variant) !==
+        (g = (d = ScrollSection_variantNames[l.variant]) !== null && d !== undefined ? d : l.variant) !==
           null && g !== undefined
           ? g
           : "QhSlAYPb_",
     };
   },
-  ge = forwardRef(function (m, f) {
-    let { activeLocale: s, setLocale: l } = useLocale(),
-      { style: d, className: g, layoutId: u, variant: P, ...D } = he(m);
+  _ScrollSection = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
+      { style, className, layoutId, variant, ...restProps } = resolveScrollSectionProps(props);
     (useEffect(() => {
-      let n = _(undefined, s);
+      let n = _(undefined, activeLocale);
       if (n.robots) {
         let c = document.querySelector('meta[name="robots"]');
         c
@@ -327,9 +323,9 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
             c.setAttribute("content", n.robots),
             document.head.appendChild(c));
       }
-    }, [undefined, s]),
+    }, [undefined, activeLocale]),
       useInsertionEffect(() => {
-        let n = _(undefined, s);
+        let n = _(undefined, activeLocale);
         if (((document.title = n.title || ""), n.viewport)) {
           var c;
           (c = document.querySelector('meta[name="viewport"]')) === null ||
@@ -348,32 +344,32 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
           ir &&
             document.body.classList.remove(`${n.bodyClassName}-framer-9Y9Hr`);
         };
-      }, [undefined, s]));
-    let [K, $] = useVariantState(P, me, false),
+      }, [undefined, activeLocale]));
+    let [K, $] = useVariantState(variant, breakpointQueries, false),
       rr = undefined,
-      er = useRef(null),
-      Y = () => (se() ? K !== "LKrog5PlS" : true),
+      localRef = useRef(null),
+      Y = () => (isBrowser() ? K !== "LKrog5PlS" : true),
       Dr = useRoute(),
-      U = useRef(null),
-      p = useRef(null),
-      k = useRef(null),
+      localRef2 = useRef(null),
+      localRef3 = useRef(null),
+      localRef4 = useRef(null),
       V = resolveLinks("DSPosq1GU"),
       S = resolveLinks("zQbFj9_vB"),
       ar = resolveLinks("Y8dEgTIYh"),
-      Vr = useId(),
+      autoId = useId(),
       tr = [cssClassScope, interExtraBoldCSSScope, interMediumCSSScope, qr, Hr];
     return (
       registerCursors({}),
       jsx(CursorContext.Provider, {
-        value: { primaryVariantId: "QhSlAYPb_", variantClassNames: le },
+        value: { primaryVariantId: "QhSlAYPb_", variantClassNames: ScrollSection_variantClassNames },
         children: jsxs(LayoutGroup, {
-          id: u ?? Vr,
+          id: layoutId ?? autoId,
           children: [
             jsxs(motion.div, {
-              ...D,
-              className: cx(Pr, ...tr, "framer-1t32e7q", g),
-              ref: f ?? er,
-              style: { ...d },
+              ...restProps,
+              className: cx(ScrollSection_prefix, ...tr, "framer-1t32e7q", className),
+              ref: forwardedRef ?? localRef,
+              style: { ...style },
               children: [
                 jsx(DeviceSizeContainer, {
                   children: jsx(cssSSRMinifiedHelper, {
@@ -392,7 +388,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                   children: jsx(cssSSRMinifiedHelper, {
                     className: "framer-f5p7wh-container",
                     layoutScroll: true,
-                    children: jsx(X, {
+                    children: jsx(Backdrop2, {
                       height: "100%",
                       id: "bysoL_VhR",
                       layoutId: "bysoL_VhR",
@@ -416,7 +412,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                             "framer-itv9bu hidden-1byrpbb framer-1gbufye",
                           "data-framer-name": "Logo",
                           name: "Logo",
-                          whileHover: ce,
+                          whileHover: ScrollSection_hover,
                           children: jsx(SVGComponent, {
                             className: "framer-12ryuvk",
                             "data-framer-name": "Neoflix_Logo_SVG",
@@ -501,7 +497,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                           href: { webPageId: "x05wlhCdy" },
                           children: jsx(motion.ReactFragment, {
                             className: "framer-1tigvyz framer-1gbufye",
-                            whileHover: de,
+                            whileHover: ScrollSection_hover2,
                             children: jsx(RichTextComponent, {
                               __fromCanvasComponent: true,
                               children: jsx(ReactFragment, {
@@ -583,8 +579,8 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(J, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: U, target: "f7_6jHMU5" },
-                                                { ref: p, target: "Rwa3hKEk5" },
+                                                { ref: localRef2, target: "f7_6jHMU5" },
+                                                { ref: localRef3, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
@@ -624,8 +620,8 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(J, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: p, target: "f7_6jHMU5" },
-                                                { ref: k, target: "Rwa3hKEk5" },
+                                                { ref: localRef3, target: "f7_6jHMU5" },
+                                                { ref: localRef4, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
@@ -666,7 +662,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(J, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: k, target: "f7_6jHMU5" },
+                                                { ref: localRef4, target: "f7_6jHMU5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
@@ -739,7 +735,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: V,
                           name: "Narrative Review",
-                          ref: U,
+                          ref: localRef2,
                           children: jsx("div", {
                             className: "framer-1izvqlh",
                             children: jsx("div", {
@@ -800,7 +796,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-1n6fn8e framer-1gbufye",
-                                              whileHover: H,
+                                              whileHover: ScrollSection_hover3,
                                               children: jsx("div", {
                                                 className: "framer-1p4s167",
                                                 children: jsxs("div", {
@@ -1135,7 +1131,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-phk48i framer-1gbufye",
-                                              whileHover: H,
+                                              whileHover: ScrollSection_hover3,
                                               children: jsx("div", {
                                                 className: "framer-ogdws",
                                                 children: jsxs("div", {
@@ -1208,7 +1204,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: S,
                           name: "Provider's Perspective",
-                          ref: p,
+                          ref: localRef3,
                           children: jsx("div", {
                             className: "framer-1sqmt7e",
                             children: jsx("div", {
@@ -1267,7 +1263,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-1kkp7lb framer-1gbufye",
-                                              whileHover: H,
+                                              whileHover: ScrollSection_hover3,
                                               children: jsx("div", {
                                                 className: "framer-lomv20",
                                                 children: jsxs("div", {
@@ -1561,7 +1557,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-xz94rp framer-1gbufye",
-                                              whileHover: H,
+                                              whileHover: ScrollSection_hover3,
                                               children: jsx("div", {
                                                 className: "framer-1wt5vp3",
                                                 children: jsxs("div", {
@@ -1634,7 +1630,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: ar,
                           name: "Section-Narrative review",
-                          ref: k,
+                          ref: localRef4,
                           children: jsx("div", {
                             className: "framer-4crxib",
                             children: jsx("div", {
@@ -1693,7 +1689,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-1cwcgh1 framer-1gbufye",
-                                              whileHover: H,
+                                              whileHover: ScrollSection_hover3,
                                               children: jsx("div", {
                                                 className: "framer-sxlgbs",
                                                 children: jsxs("div", {
@@ -2140,7 +2136,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(motion.ReactFragment, {
                                               className:
                                                 "framer-13n7zzq framer-1gbufye",
-                                              whileHover: H,
+                                              whileHover: ScrollSection_hover3,
                                               children: jsx("div", {
                                                 className: "framer-b6mfoc",
                                                 children: jsxs("div", {
@@ -2213,13 +2209,13 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                 }),
               ],
             }),
-            jsx("div", { className: cx(Pr, ...tr), id: "overlay" }),
+            jsx("div", { className: cx(ScrollSection_prefix, ...tr), id: "overlay" }),
           ],
         }),
       })
     );
   }),
-  ue = [
+  ScrollSection_css = [
     "@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }",
     ".framer-9Y9Hr.framer-1gbufye, .framer-9Y9Hr .framer-1gbufye { display: block; }",
     ".framer-9Y9Hr.framer-1t32e7q { align-content: center; align-items: center; display: flex; flex-direction: column; flex-wrap: nowrap; gap: 0px; height: min-content; justify-content: flex-start; overflow: hidden; padding: 0px; position: relative; width: 1200px; }",
@@ -2276,17 +2272,16 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
     '.framer-9Y9Hr[data-hide-scrollbars="true"]::-webkit-scrollbar, .framer-9Y9Hr [data-hide-scrollbars="true"]::-webkit-scrollbar { width: 0px; height: 0px; }',
     '.framer-9Y9Hr[data-hide-scrollbars="true"]::-webkit-scrollbar-thumb, .framer-9Y9Hr [data-hide-scrollbars="true"]::-webkit-scrollbar-thumb { background: transparent; }',
   ],
-  q = withCSS(ge, ue, "framer-9Y9Hr"),
-  Pe = q;
-q.displayName = "Scroll Section";
-q.defaultProps = { height: 7273, width: 1200 };
+  ScrollSection = withCSS(_ScrollSection, ScrollSection_css, "framer-9Y9Hr");
+ScrollSection.displayName = "Scroll Section";
+ScrollSection.defaultProps = { height: 7273, width: 1200 };
 loadFonts(
-  q,
+  ScrollSection,
   [
     ...interHashedFontDefs,
-    ...ne,
-    ...fe,
-    ...oe,
+    ...SmoothScrollComponent_fonts,
+    ...Backdrop2_fonts,
+    ...NavItemComponent_fonts,
     ...normalizeFontConfig(fontConfig),
     ...normalizeFontConfig(interExtraBoldFontDefs),
     ...normalizeFontConfig(interMediumFontDefs),
@@ -2317,4 +2312,4 @@ var De = {
     __FramerMetadata__: { type: "variable" },
   },
 };
-export { De as __FramerMetadata__, Pe as default };
+export { De as __FramerMetadata__, ScrollSection as default };

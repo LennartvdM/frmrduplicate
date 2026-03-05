@@ -26,7 +26,6 @@ import { ReactFragment as W } from "./chunk--video-component-controls.mjs";
 import { fontConfig,
   linkPresetStyles,
   cssClassScope } from "./chunk--framer-components.mjs";
-import "./chunk--empty-stub-2.mjs";
 import { $ as o,
   useRoute,
   useLocale,

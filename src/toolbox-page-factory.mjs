@@ -16,7 +16,6 @@
 import { getDocsUrl } from "./docs-links.mjs";
 import { a as EmbedComponent, b as NavComponent } from "./chunk--embed-component.mjs";
 import "./chunk--framer-components.mjs";
-import "./chunk--empty-stub-2.mjs";
 import {
   useLocale,
   cx,

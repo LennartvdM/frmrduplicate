@@ -71,234 +71,147 @@ var u = {
     },
     x05wlhCdy: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox"))),
       path: "/Toolbox",
     },
     IDh2dRb_U: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox-Planning_Your_Initiative.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox-Planning_Your_Initiative"))),
       path: "/Toolbox-Planning_Your_Initiative",
     },
     cASgO3jWQ: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox-Reflect.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox-Reflect"))),
       path: "/Toolbox-Reflect",
     },
     pcYRXVdRv: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox-Safe_Simple_Small.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox-Safe_Simple_Small"))),
       path: "/Toolbox-Safe_Simple_Small",
     },
     HtIN1t6ER: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Learning_From_Variety.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Learning_From_Variety"))),
       path: "/Toolbox_Learning_From_Variety",
     },
     KgHIqfucs: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Pioneer_Team.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Pioneer_Team"))),
       path: "/Toolbox_Pioneer_Team",
     },
     S5cL1K0Pb: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Education_And_Training.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Education_And_Training"))),
       path: "/Toolbox_Education_And_Training",
     },
     zI2CbZmPJ: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Metadata_and_Archiving.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Metadata_and_Archiving"))),
       path: "/Toolbox_Metadata_and_Archiving",
     },
     uQs2bgVcT: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Recordings_for_research.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Recordings_for_research"))),
       path: "/Toolbox_Recordings_for_research",
     },
     fN3izV_im: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Revolutionize_Reflection_in_medical_care__join_the_network.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Revolutionize_Reflection_in_medical_care:_join_the_network"))),
       path: "/Toolbox_Revolutionize_Reflection_in_medical_care:_join_the_network",
     },
     IiCllyrxA: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Tasks_of_the_chair.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Tasks_of_the_chair"))),
       path: "/Toolbox_Tasks_of_the_chair",
     },
     sEYnG8vfd: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_A_Safe_Learning_Environment.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_A_Safe_Learning_Environment"))),
       path: "/Toolbox_A_Safe_Learning_Environment",
     },
     MrFemP8j0: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Different_Approach.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Different_Approach"))),
       path: "/Toolbox_Different_Approach",
     },
     EY4hH_Y7j: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_How_it_works.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_How_it_works"))),
       path: "/Toolbox_How_it_works",
     },
     X8n9MxBBr: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Unburdening_the_process.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Unburdening_the_process"))),
       path: "/Toolbox_Unburdening_the_process",
     },
     N3WZmbqwm: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Learning_from_success_stories.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Learning_from_success_stories"))),
       path: "/Toolbox_Learning_from_success_stories",
     },
     ut1mnZVW1: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Questions_to_ask_during_previewing.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Questions_to_ask_during_previewing"))),
       path: "/Toolbox_Questions_to_ask_during_previewing",
     },
     t97unZiTK: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Preparation_and_Consent.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Preparation_and_Consent"))),
       path: "/Toolbox_Preparation_and_Consent",
     },
     rC8gH4Mco: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Tool_for_implementing_new_practices.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Tool_for_implementing_new_practices"))),
       path: "/Toolbox_Tool_for_implementing_new_practices",
     },
     nzfaDOFRY: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Let's_Neoflix.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Let's_Neoflix"))),
       path: "/Toolbox_Let's_Neoflix",
     },
     mRVtT24DH: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Input_for_research.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Input_for_research"))),
       path: "/Toolbox_Input_for_research",
     },
     ymL2yz5Md: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Share_your_experience.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Share_your_experience"))),
       path: "/Toolbox_Share_your_experience",
     },
     NM8YGpOE1: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_After_the_Intervention.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_After_the_Intervention"))),
       path: "/Toolbox_After_the_Intervention",
     },
     H5snp07v4: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--Toolbox_Case_selection.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/Toolbox_Case_selection"))),
       path: "/Toolbox_Case_selection",
     },
     KeW3JpTIh: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--toolbox_case_leiden.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/toolbox_case_leiden"))),
       path: "/toolbox_case_leiden",
     },
     lwdo_bYrZ: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--toolbox_case_philadelphia.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/toolbox_case_philadelphia"))),
       path: "/toolbox_case_philadelphia",
     },
     unjEzXKKB: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--toolbox_case_vienna.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/toolbox_case_vienna"))),
       path: "/toolbox_case_vienna",
     },
     xRLjTQZCl: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--toolbox_case_australia.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/toolbox_case_australia"))),
       path: "/toolbox_case_australia",
     },
     f7Ah01sPh: {
       elements: {},
-      page: lazyLoadPage(
-        () =>
-          import("./page--toolbox_case_succcessstories.mjs"),
-      ),
+      page: lazyLoadPage(() => import("./toolbox-pages.mjs").then(m => m.getModule("/toolbox_case_succcessstories"))),
       path: "/toolbox_case_succcessstories",
     },
   },

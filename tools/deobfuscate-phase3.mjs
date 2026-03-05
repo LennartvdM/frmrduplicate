@@ -16,7 +16,7 @@ import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 
 import { join, basename } from "path";
 import * as acorn from "acorn";
 
-const DEOB_DIR = "sites/2onvjkqnrbkhdnszrykaoo/deobfuscated";
+const DEOB_DIR = "sites/neoflix/deobfuscated";
 const CSS_DIR  = join(DEOB_DIR, "css");
 
 // ════════════════════════════════════════════════════════════════════

@@ -13,7 +13,7 @@ import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 
 import { execSync } from "child_process";
 import { join, basename } from "path";
 
-const SITE_DIR = "sites/2onvjkqnrbkhdnszrykaoo";
+const SITE_DIR = "sites/neoflix";
 const OUT_DIR = join(SITE_DIR, "deobfuscated");
 
 // ── Route mapping extracted from script_main ──

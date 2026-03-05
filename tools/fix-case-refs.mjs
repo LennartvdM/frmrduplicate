@@ -5,7 +5,7 @@
  * src/href attributes, but the files on disk were lowercased. This script:
  *
  *   1. Lowercases the sites directory path in HTML files
- *      (2onVJKQnRbkHDnsZRykAoO → 2onvjkqnrbkhdnszrykaoo)
+ *      (2onVJKQnRbkHDnsZRykAoO → neoflix)
  *   2. Lowercases .mjs filenames in HTML references
  *   3. Lowercases import() paths inside .mjs files
  *   4. Fixes the worldmap SVG image path in HTML files
@@ -15,7 +15,7 @@
 import { readFileSync, writeFileSync, readdirSync } from "fs";
 import { join } from "path";
 
-const SITE_DIR = "sites/2onvjkqnrbkhdnszrykaoo";
+const SITE_DIR = "sites/neoflix";
 
 let totalFixes = 0;
 
@@ -43,16 +43,16 @@ for (const file of HTML_FILES) {
   const original = html;
   let fixes = 0;
 
-  // Fix directory name: 2onVJKQnRbkHDnsZRykAoO → 2onvjkqnrbkhdnszrykaoo
+  // Fix directory name: 2onVJKQnRbkHDnsZRykAoO → neoflix
   html = html.replace(/2onVJKQnRbkHDnsZRykAoO/g, () => {
     fixes++;
-    return "2onvjkqnrbkhdnszrykaoo";
+    return "neoflix";
   });
 
   // Fix .mjs filenames in src/href attributes (lowercase the filename part)
-  // Matches patterns like: sites/2onvjkqnrbkhdnszrykaoo/SomeMixedCase.HASH.mjs
+  // Matches patterns like: sites/neoflix/SomeMixedCase.HASH.mjs
   html = html.replace(
-    /(sites\/2onvjkqnrbkhdnszrykaoo\/)([A-Za-z0-9_-]+\.[A-Za-z0-9_]+\.mjs)/g,
+    /(sites\/neoflix\/)([A-Za-z0-9_-]+\.[A-Za-z0-9_]+\.mjs)/g,
     (match, prefix, filename) => {
       const lower = filename.toLowerCase();
       if (lower !== filename) {
@@ -65,7 +65,7 @@ for (const file of HTML_FILES) {
 
   // Also fix chunk references (chunk-HASH.mjs pattern)
   html = html.replace(
-    /(sites\/2onvjkqnrbkhdnszrykaoo\/)(chunk-[A-Za-z0-9]+\.mjs)/g,
+    /(sites\/neoflix\/)(chunk-[A-Za-z0-9]+\.mjs)/g,
     (match, prefix, filename) => {
       const lower = filename.toLowerCase();
       if (lower !== filename) {
@@ -78,7 +78,7 @@ for (const file of HTML_FILES) {
 
   // Fix script_main reference
   html = html.replace(
-    /(sites\/2onvjkqnrbkhdnszrykaoo\/)(script_main\.[A-Za-z0-9]+\.mjs)/g,
+    /(sites\/neoflix\/)(script_main\.[A-Za-z0-9]+\.mjs)/g,
     (match, prefix, filename) => {
       const lower = filename.toLowerCase();
       if (lower !== filename) {

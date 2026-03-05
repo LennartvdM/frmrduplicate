@@ -9,7 +9,7 @@
 import { readFileSync, writeFileSync, readdirSync } from "fs";
 import { join, basename } from "path";
 
-const OUT_DIR = "sites/2onvjkqnrbkhdnszrykaoo/deobfuscated";
+const OUT_DIR = "sites/neoflix/deobfuscated";
 
 // ════════════════════════════════════════════════════════════════════
 // EXPORT MAPS: chunk export alias → actual name

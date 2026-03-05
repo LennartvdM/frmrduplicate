@@ -17,7 +17,7 @@
 import { readFileSync, writeFileSync, readdirSync } from "fs";
 import { join } from "path";
 
-const DEOB_DIR = "sites/2onvjkqnrbkhdnszrykaoo/deobfuscated";
+const DEOB_DIR = "sites/neoflix/deobfuscated";
 
 // ── framerstatic.com → local font mapping ──
 const FRAMERSTATIC_MAP = {
@@ -173,7 +173,7 @@ for (const file of files) {
 
 // Also process the original .mjs files in the site directory
 console.log("\nRewriting URLs in original site files...\n");
-const siteDir = "sites/2onvjkqnrbkhdnszrykaoo";
+const siteDir = "sites/neoflix";
 const siteFiles = readdirSync(siteDir).filter(f => f.endsWith(".mjs"));
 for (const file of siteFiles) {
   rewriteFile(join(siteDir, file));

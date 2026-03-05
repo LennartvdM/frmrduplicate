@@ -80,7 +80,7 @@ import { $ as a,
   loadFonts,
   getFonts,
   normalizeFontConfig } from "./chunk--react-and-framer-runtime.mjs";
-import { mergeVariantProps, TransitionProvider, AnimatedFragment, BASE_VIDEO_PROPS, VIDEO_PROPS_FLAT, VIDEO_PROPS_ROUNDED, CSS_ASPECT_RATIO_SUPPORT } from "./chunk--page-helpers.mjs";
+import { mergeVariantProps, TransitionProvider, AnimatedFragment, BASE_VIDEO_PROPS, VIDEO_PROPS_FLAT, VIDEO_PROPS_ROUNDED, CSS_ASPECT_RATIO_SUPPORT, SPRING_STANDARD, TWEEN_QUICK, TWEEN_APPEAR, EASE_STANDARD } from "./chunk--page-helpers.mjs";
 import { a as Y } from "./metadata--neoflix.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
@@ -110,7 +110,7 @@ var Ye = getFonts(c),
     tcTKLfIBw: "framer-v-424790",
   };
 var Pe = mergeVariantProps;
-var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
+var Xe = TWEEN_QUICK,
   Ge = TransitionProvider,
   Je = AnimatedFragment,
   Qe = {
@@ -134,49 +134,49 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
   },
   er = (f, n) =>
     f.layoutDependency ? n.join("-") + f.layoutDependency : n.join("-"),
-  rr = forwardRef(function (f, n) {
-    let { activeLocale: u, setLocale: d } = useLocale(),
-      { style: g, className: y, layoutId: v, variant: W, ...H } = $e(f),
+  rr = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
+      { style, className, layoutId, variant, ...restProps } = $e(props),
       {
-        baseVariant: h,
-        classNames: ie,
-        gestureHandlers: se,
-        gestureVariant: E,
-        setGestureState: R,
-        setVariant: ne,
-        variants: _,
+        baseVariant,
+        classNames,
+        gestureHandlers,
+        gestureVariant,
+        setGestureState,
+        setVariant,
+        variants,
       } = useVariantState({
         cycleOrder: We,
         defaultVariant: "Rre_u8WuV",
-        variant: W,
+        variant: variant,
         variantClassNames: Ke,
       }),
-      l = er(f, _),
-      j = useRef(null),
-      S = () => h !== "sJR17n1rz",
-      U = () => h === "sJR17n1rz",
-      K = () => h === "eMNO9x2r7",
-      F = () => !["eMNO9x2r7", "sJR17n1rz", "gRcraNE8T"].includes(h),
-      X = () => !["sJR17n1rz", "gRcraNE8T"].includes(h),
-      z = useId(),
-      G = [],
-      A = useDeviceSize();
+      l = er(props, variants),
+      localRef = useRef(null),
+      S = () => baseVariant !== "sJR17n1rz",
+      U = () => baseVariant === "sJR17n1rz",
+      K = () => baseVariant === "eMNO9x2r7",
+      F = () => !["eMNO9x2r7", "sJR17n1rz", "gRcraNE8T"].includes(baseVariant),
+      X = () => !["sJR17n1rz", "gRcraNE8T"].includes(baseVariant),
+      autoId = useId(),
+      additionalClassNames = [],
+      deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
-      id: v ?? z,
+      id: layoutId ?? autoId,
       children: jsx(Je, {
-        animate: _,
+        animate: variants,
         initial: false,
         children: jsx(Ge, {
           value: Xe,
           children: jsxs(motion.div, {
-            ...H,
-            ...se,
-            className: cx(He, ...G, "framer-1ewt70r", y, ie),
+            ...restProps,
+            ...gestureHandlers,
+            className: cx(He, ...additionalClassNames, "framer-1ewt70r", className, classNames),
             "data-framer-name": "Time",
             layoutDependency: l,
             layoutId: "Rre_u8WuV",
-            ref: n ?? j,
-            style: { ...g },
+            ref: forwardedRef ?? localRef,
+            style: { ...style },
             ...Pe(
               {
                 DkxmDygok: { "data-framer-name": "Dance" },
@@ -185,8 +185,8 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                 sJR17n1rz: { "data-framer-name": "Team" },
                 tcTKLfIBw: { "data-framer-name": "Cost" },
               },
-              h,
-              E,
+              baseVariant,
+              gestureVariant,
             ),
             children: [
               S() &&
@@ -369,8 +369,8 @@ var Xe = { delay: 0, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                                 "./assets/79ajxjoljjurdtgiqvvugw34pai.webm",
                             },
                           },
-                          h,
-                          E,
+                          baseVariant,
+                          gestureVariant,
                         ),
                       }),
                     }),
@@ -452,7 +452,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
   cr = () => typeof document < "u",
   Le = "framer-CacIk",
   fr = { AlOztWgAm: "framer-v-p363ye", vtnUon983: "framer-v-18oda3j" },
-  dr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
+  dr = TWEEN_APPEAR,
   hr = {
     opacity: 1,
     rotate: 0,
@@ -478,7 +478,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
     x: 0,
     y: 0,
   },
-  De = { damping: 30, delay: 0, mass: 1, stiffness: 400, type: "spring" /* physics-based spring animation */ },
+  De = SPRING_STANDARD,
   ur = {
     opacity: 1,
     rotate: 0,
@@ -512,11 +512,11 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
           : "vtnUon983",
     };
   },
-  kr = forwardRef(function (f, n) {
-    let { activeLocale: u, setLocale: d } = useLocale(),
-      { style: g, className: y, layoutId: v, variant: W, ...H } = xr(f);
+  kr = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
+      { style, className, layoutId, variant, ...restProps } = xr(props);
     (useEffect(() => {
-      let i = Y(undefined, u);
+      let i = Y(undefined, activeLocale);
       if (i.robots) {
         let x = document.querySelector('meta[name="robots"]');
         x
@@ -526,9 +526,9 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
             x.setAttribute("content", i.robots),
             document.head.appendChild(x));
       }
-    }, [undefined, u]),
+    }, [undefined, activeLocale]),
       useInsertionEffect(() => {
-        let i = Y(undefined, u);
+        let i = Y(undefined, activeLocale);
         if (((document.title = i.title || ""), i.viewport)) {
           var x;
           (x = document.querySelector('meta[name="viewport"]')) === null ||
@@ -547,38 +547,38 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
           le &&
             document.body.classList.remove(`${i.bodyClassName}-framer-CacIk`);
         };
-      }, [undefined, u]));
-    let [h, ie] = useVariantState(W, mr, false),
+      }, [undefined, activeLocale]));
+    let [h, ie] = useVariantState(variant, mr, false),
       se = undefined,
-      E = useRef(null),
+      localRef = useRef(null),
       R = () => (cr() ? h !== "AlOztWgAm" : true),
       ne = resolveLinks("WjO84y3BZ"),
-      _ = useRef(null),
+      localRef2 = useRef(null),
       l = resolveLinks("dbtg_NZW8"),
-      j = useRef(null),
+      localRef3 = useRef(null),
       S = resolveLinks("tftSCv8zZ"),
-      U = useRef(null),
+      localRef4 = useRef(null),
       K = resolveLinks("mRVhqybMB"),
-      F = useRef(null),
+      localRef5 = useRef(null),
       X = resolveLinks("NYP2seWhD"),
-      z = useRef(null),
+      localRef6 = useRef(null),
       G = resolveLinks("DXqsCYt4L"),
-      A = useRef(null),
+      localRef7 = useRef(null),
       vr = useRoute(),
-      Me = useId(),
+      autoId = useId(),
       oe = [interExtraBoldCSSScope, interMediumCSSScope, Be, cssClassScope];
     return (
       registerCursors({}),
       jsx(CursorContext.Provider, {
         value: { primaryVariantId: "vtnUon983", variantClassNames: fr },
         children: jsxs(LayoutGroup, {
-          id: v ?? Me,
+          id: layoutId ?? autoId,
           children: [
             jsxs(motion.div, {
-              ...H,
-              className: cx(Le, ...oe, "framer-18oda3j", y),
-              ref: n ?? E,
-              style: { ...g },
+              ...restProps,
+              className: cx(Le, ...oe, "framer-18oda3j", className),
+              ref: forwardedRef ?? localRef,
+              style: { ...style },
               children: [
                 jsx(DeviceSizeContainer, {
                   children: jsx(cssSSRMinifiedHelper, {
@@ -648,7 +648,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: ne,
                           name: "Section-Time",
-                          ref: _,
+                          ref: localRef2,
                           children: jsx("div", {
                             className: "framer-s6m53n",
                             children: jsx("div", {
@@ -896,7 +896,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: l,
                           name: "Section-Dance",
-                          ref: j,
+                          ref: localRef3,
                           children: jsx("div", {
                             className: "framer-1rxj0w1",
                             children: jsx("div", {
@@ -1099,7 +1099,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: S,
                           name: "Section-Cost",
-                          ref: U,
+                          ref: localRef4,
                           children: jsx("div", {
                             className: "framer-qbgm69",
                             children: jsx("div", {
@@ -1304,7 +1304,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: K,
                           name: "Section-Skills",
-                          ref: F,
+                          ref: localRef5,
                           children: jsx("div", {
                             className: "framer-g98yis",
                             children: jsx("div", {
@@ -1512,7 +1512,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: X,
                           name: "Section-Team",
-                          ref: z,
+                          ref: localRef6,
                           children: jsx("div", {
                             className: "framer-1n46uon",
                             children: jsx("div", {
@@ -1677,7 +1677,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: G,
                           name: "Section-Perspectives",
-                          ref: A,
+                          ref: localRef7,
                           children: jsx("div", {
                             className: "framer-1xunj3i",
                             children: jsx("div", {
@@ -2060,8 +2060,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             children: jsx(N, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: _, target: "f7_6jHMU5" },
-                                                { ref: j, target: "Rwa3hKEk5" },
+                                                { ref: localRef2, target: "f7_6jHMU5" },
+                                                { ref: localRef3, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
@@ -2101,8 +2101,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             children: jsx(N, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: j, target: "f7_6jHMU5" },
-                                                { ref: U, target: "Rwa3hKEk5" },
+                                                { ref: localRef3, target: "f7_6jHMU5" },
+                                                { ref: localRef4, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
@@ -2142,8 +2142,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             children: jsx(N, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: U, target: "f7_6jHMU5" },
-                                                { ref: F, target: "Rwa3hKEk5" },
+                                                { ref: localRef4, target: "f7_6jHMU5" },
+                                                { ref: localRef5, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
@@ -2184,8 +2184,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             children: jsx(N, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: F, target: "f7_6jHMU5" },
-                                                { ref: z, target: "Rwa3hKEk5" },
+                                                { ref: localRef5, target: "f7_6jHMU5" },
+                                                { ref: localRef6, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
@@ -2225,8 +2225,8 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             children: jsx(N, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: z, target: "f7_6jHMU5" },
-                                                { ref: A, target: "Rwa3hKEk5" },
+                                                { ref: localRef6, target: "f7_6jHMU5" },
+                                                { ref: localRef7, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
@@ -2267,7 +2267,7 @@ var mr = { AlOztWgAm: "(max-width: 1199px)", vtnUon983: "(min-width: 1200px)" },
                                             children: jsx(N, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: A, target: "f7_6jHMU5" },
+                                                { ref: localRef7, target: "f7_6jHMU5" },
                                               ],
                                               __framer__threshold: 0,
                                               __framer__variantAppearEffectEnabled:

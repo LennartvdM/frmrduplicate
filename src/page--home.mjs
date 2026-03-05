@@ -51,7 +51,7 @@ import { $ as B,
   normalizeFontConfig } from "./chunk--react-and-framer-runtime.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
-import { mergeVariantProps, TransitionProvider, AnimatedFragment } from "./chunk--page-helpers.mjs";
+import { mergeVariantProps, TransitionProvider, AnimatedFragment, SPRING_STANDARD, SPRING_HEAVY, SPRING_CAPTION, EASE_STANDARD, EASE_LINEAR, TWEEN_INSTANT, TWEEN_MEDIUM, TWEEN_LONG, TWEEN_CYCLE, TWEEN_SLOW, CYCLE_INTERVAL_MS } from "./chunk--page-helpers.mjs";
 
 /* ============================================================================
  * STRUCTURAL NAVIGATION — page--home.mjs component index
@@ -119,8 +119,8 @@ var ea = withFXWrapper(motion.div),
   ta = "framer-Kv8wc",
   na = { h9tfYk7K5: "framer-v-1kdysgy", I5QaL6oi8: "framer-v-yyb023" };
 var ia = mergeVariantProps;
-var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* physics-based spring animation */ },
-  _r = { damping: 30, delay: 0, mass: 1, stiffness: 400, type: "spring" /* physics-based spring animation */ },
+var oa = SPRING_HEAVY,
+  _r = SPRING_STANDARD,
   sa = {
     opacity: 0,
     rotate: 0,
@@ -171,57 +171,57 @@ var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
     };
   },
   ha = (t, a) => a.join("-") + t.layoutDependency,
-  ua = forwardRef(function (t, a) {
-    let { activeLocale: n, setLocale: i } = useLocale(),
-      { style: o, className: f, layoutId: s, variant: U, ...C } = pa(t),
+  ua = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
+      { style, className, layoutId, variant, ...restProps } = pa(props),
       {
-        baseVariant: l,
-        classNames: p,
-        gestureVariant: L,
-        setGestureState: y,
-        setVariant: d,
-        variants: R,
+        baseVariant,
+        classNames,
+        gestureVariant,
+        setGestureState,
+        setVariant,
+        variants,
       } = useComponentVariantState({
         cycleOrder: aa,
         defaultVariant: "I5QaL6oi8",
         enabledGestures: ra,
-        variant: U,
+        variant: variant,
         variantClassNames: na,
       }),
-      v = ha(t, R),
-      { activeVariantCallback: x, delay: u } = useVariantAnimationCallbacks(l),
-      m = x(async (...Y) => {
-        await u(() => d("h9tfYk7K5"), 400);
+      v = ha(props, variants),
+      { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
+      m = activeVariantCallback(async (...Y) => {
+        await delay(() => setVariant("h9tfYk7K5"), 400);
       }),
-      h = x(async (...Y) => {
-        (y({ isPressed: false }), d("I5QaL6oi8"));
+      h = activeVariantCallback(async (...Y) => {
+        (setGestureState({ isPressed: false }), setVariant("I5QaL6oi8"));
       });
-    useOnVariantChange(l, { default: m });
-    let b = useRef(null),
-      V = useId(),
-      M = [],
-      A = useDeviceSize();
+    useOnVariantChange(baseVariant, { default: m });
+    let localRef = useRef(null),
+      autoId = useId(),
+      additionalClassNames = [],
+      deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
-      id: s ?? V,
+      id: layoutId ?? autoId,
       children: jsx(da, {
-        animate: R,
+        animate: variants,
         initial: false,
         children: jsx(ma, {
           value: oa,
           children: jsxs(ea, {
-            ...C,
-            className: cx(ta, ...M, "framer-yyb023", f, p),
+            ...restProps,
+            className: cx(ta, ...additionalClassNames, "framer-yyb023", className, classNames),
             "data-framer-name": "Variant 1",
             "data-highlight": true,
             layoutDependency: v,
             layoutId: "I5QaL6oi8",
-            onHoverEnd: () => y({ isHovered: false }),
-            onHoverStart: () => y({ isHovered: true }),
-            onTap: () => y({ isPressed: false }),
-            onTapCancel: () => y({ isPressed: false }),
-            onTapStart: () => y({ isPressed: true }),
-            ref: a ?? b,
-            style: { ...o },
+            onHoverEnd: () => setGestureState({ isHovered: false }),
+            onHoverStart: () => setGestureState({ isHovered: true }),
+            onTap: () => setGestureState({ isPressed: false }),
+            onTapCancel: () => setGestureState({ isPressed: false }),
+            onTapStart: () => setGestureState({ isPressed: true }),
+            ref: forwardedRef ?? localRef,
+            style: { ...style },
             ...ia(
               {
                 "h9tfYk7K5-hover": {
@@ -246,8 +246,8 @@ var oa = { damping: 24, delay: 0, mass: 9, stiffness: 500, type: "spring" /* phy
                 },
                 h9tfYk7K5: { "data-framer-name": "Variant 2", onTap: h },
               },
-              l,
-              L,
+              baseVariant,
+              gestureVariant,
             ),
             children: [
               jsx(SVGComponent, {
@@ -329,7 +329,7 @@ var xa = ["jPAyFUDCD", "KVq4FzV2g", "ak_u9yeBh"],
     KVq4FzV2g: "framer-v-1xs1f2",
   };
 var Nr = mergeVariantProps;
-var jr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
+var jr = TWEEN_INSTANT,
   zr = TransitionProvider,
   ba = AnimatedFragment,
   wa = {
@@ -349,72 +349,72 @@ var jr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
     };
   },
   qa = (t, a) => a.join("-") + t.layoutDependency,
-  Ra = forwardRef(function (t, a) {
-    let { activeLocale: n, setLocale: i } = useLocale(),
-      { style: o, className: f, layoutId: s, variant: U, ...C } = Ca(t),
+  Ra = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
+      { style, className, layoutId, variant, ...restProps } = Ca(props),
       {
-        baseVariant: l,
-        classNames: p,
-        gestureVariant: L,
-        setGestureState: y,
-        setVariant: d,
-        variants: R,
+        baseVariant,
+        classNames,
+        gestureVariant,
+        setGestureState,
+        setVariant,
+        variants,
       } = useComponentVariantState({
         cycleOrder: xa,
         defaultVariant: "jPAyFUDCD",
-        variant: U,
+        variant: variant,
         variantClassNames: va,
       }),
-      v = qa(t, R),
-      { activeVariantCallback: x, delay: u } = useVariantAnimationCallbacks(l),
-      m = x(async (...J) => {
-        await u(() => d("KVq4FzV2g"), 1800);
+      v = qa(props, variants),
+      { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
+      m = activeVariantCallback(async (...J) => {
+        await delay(() => setVariant("KVq4FzV2g"), 1800);
       }),
-      h = x(async (...J) => {
-        await u(() => d("ak_u9yeBh"), 1800);
+      h = activeVariantCallback(async (...J) => {
+        await delay(() => setVariant("ak_u9yeBh"), 1800);
       }),
-      b = x(async (...J) => {
-        await u(() => d("jPAyFUDCD"), 1800);
+      b = activeVariantCallback(async (...J) => {
+        await delay(() => setVariant("jPAyFUDCD"), 1800);
       }),
-      V = x(async (...J) => {
-        d("ak_u9yeBh");
+      V = activeVariantCallback(async (...J) => {
+        setVariant("ak_u9yeBh");
       }),
-      M = x(async (...J) => {
-        d("jPAyFUDCD");
+      M = activeVariantCallback(async (...J) => {
+        setVariant("jPAyFUDCD");
       });
-    useOnVariantChange(l, { ak_u9yeBh: b, default: m, KVq4FzV2g: h });
-    let A = useRef(null),
-      Y = useId(),
-      $ = [],
-      Q = useDeviceSize();
+    useOnVariantChange(baseVariant, { ak_u9yeBh: b, default: m, KVq4FzV2g: h });
+    let localRef = useRef(null),
+      autoId = useId(),
+      additionalClassNames = [],
+      deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
-      id: s ?? Y,
+      id: layoutId ?? autoId,
       children: jsx(ba, {
-        animate: R,
+        animate: variants,
         initial: false,
         children: jsx(zr, {
           value: jr,
           children: jsx(motion.div, {
-            ...C,
-            className: cx(ya, ...$, "framer-1mo43e9", f, p),
+            ...restProps,
+            className: cx(ya, ...additionalClassNames, "framer-1mo43e9", className, classNames),
             "data-framer-name": "Variant 1",
             "data-highlight": true,
             layoutDependency: v,
             layoutId: "jPAyFUDCD",
-            onHoverEnd: () => y({ isHovered: false }),
-            onHoverStart: () => y({ isHovered: true }),
-            onTap: () => y({ isPressed: false }),
-            onTapCancel: () => y({ isPressed: false }),
-            onTapStart: () => y({ isPressed: true }),
-            ref: a ?? A,
-            style: { ...o },
+            onHoverEnd: () => setGestureState({ isHovered: false }),
+            onHoverStart: () => setGestureState({ isHovered: true }),
+            onTap: () => setGestureState({ isPressed: false }),
+            onTapCancel: () => setGestureState({ isPressed: false }),
+            onTapStart: () => setGestureState({ isPressed: true }),
+            ref: forwardedRef ?? localRef,
+            style: { ...style },
             ...Nr(
               {
                 ak_u9yeBh: { "data-framer-name": "Variant 3" },
                 KVq4FzV2g: { "data-framer-name": "Variant 2" },
               },
-              l,
-              L,
+              baseVariant,
+              gestureVariant,
             ),
             children: jsx(zr, {
               value: jr,
@@ -576,8 +576,8 @@ var jr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                       onTap: V,
                     },
                   },
-                  l,
-                  L,
+                  baseVariant,
+                  gestureVariant,
                 ),
               }),
             }),
@@ -641,7 +641,7 @@ var Oa = ["Aa5IjJyQQ", "Ds7IWPpXk", "wtxEodMdN"],
     wtxEodMdN: "framer-v-10ybi4f",
   };
 var Vr = mergeVariantProps;
-var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
+var Lr = TWEEN_INSTANT,
   Mr = TransitionProvider,
   Ia = AnimatedFragment,
   _a = {
@@ -662,71 +662,71 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
   },
   ja = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  za = forwardRef(function (t, a) {
-    let { activeLocale: n, setLocale: i } = useLocale(),
-      { style: o, className: f, layoutId: s, variant: U, ...C } = Na(t),
+  za = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
+      { style, className, layoutId, variant, ...restProps } = Na(props),
       {
-        baseVariant: l,
-        classNames: p,
-        clearLoadingGesture: L,
-        gestureHandlers: y,
-        gestureVariant: d,
-        isLoading: R,
-        setGestureState: v,
-        setVariant: x,
-        variants: u,
+        baseVariant,
+        classNames,
+        clearLoadingGesture,
+        gestureHandlers,
+        gestureVariant,
+        isLoading,
+        setGestureState,
+        setVariant,
+        variants,
       } = useComponentVariantState({
         cycleOrder: Oa,
         defaultVariant: "Aa5IjJyQQ",
-        variant: U,
+        variant: variant,
         variantClassNames: Ua,
       }),
-      m = ja(t, u),
-      { activeVariantCallback: h, delay: b } = useVariantAnimationCallbacks(l),
-      V = h(async (...de) => {
-        await b(() => x("Ds7IWPpXk"), 1800);
+      m = ja(props, variants),
+      { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
+      V = activeVariantCallback(async (...de) => {
+        await delay(() => setVariant("Ds7IWPpXk"), 1800);
       }),
-      M = h(async (...de) => {
-        await b(() => x("wtxEodMdN"), 1800);
+      M = activeVariantCallback(async (...de) => {
+        await delay(() => setVariant("wtxEodMdN"), 1800);
       }),
-      A = h(async (...de) => {
-        await b(() => x("Aa5IjJyQQ"), 1800);
+      A = activeVariantCallback(async (...de) => {
+        await delay(() => setVariant("Aa5IjJyQQ"), 1800);
       }),
-      Y = h(async (...de) => {
-        x("wtxEodMdN");
+      Y = activeVariantCallback(async (...de) => {
+        setVariant("wtxEodMdN");
       }),
-      $ = h(async (...de) => {
-        x("Aa5IjJyQQ");
+      $ = activeVariantCallback(async (...de) => {
+        setVariant("Aa5IjJyQQ");
       });
-    useOnVariantChange(l, { default: V, Ds7IWPpXk: M, wtxEodMdN: A });
-    let Q = useRef(null),
-      J = useId(),
-      ce = [],
-      je = useDeviceSize();
+    useOnVariantChange(baseVariant, { default: V, Ds7IWPpXk: M, wtxEodMdN: A });
+    let localRef = useRef(null),
+      autoId = useId(),
+      additionalClassNames = [],
+      deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
-      id: s ?? J,
+      id: layoutId ?? autoId,
       children: jsx(Ia, {
-        animate: u,
+        animate: variants,
         initial: false,
         children: jsx(Mr, {
           value: Lr,
           children: jsx(motion.div, {
-            ...C,
-            ...y,
-            className: cx(ka, ...ce, "framer-2fjn4z", f, p),
+            ...restProps,
+            ...gestureHandlers,
+            className: cx(ka, ...additionalClassNames, "framer-2fjn4z", className, classNames),
             "data-framer-name": "Variant 1",
             "data-highlight": true,
             layoutDependency: m,
             layoutId: "Aa5IjJyQQ",
-            ref: a ?? Q,
-            style: { ...o },
+            ref: forwardedRef ?? localRef,
+            style: { ...style },
             ...Vr(
               {
                 Ds7IWPpXk: { "data-framer-name": "Variant 2" },
                 wtxEodMdN: { "data-framer-name": "Variant 3" },
               },
-              l,
-              d,
+              baseVariant,
+              gestureVariant,
             ),
             children: jsx(Mr, {
               value: Lr,
@@ -963,8 +963,8 @@ var Lr = { duration: 0, type: "tween" /* CSS-like easing animation */ },
                       onTap: $,
                     },
                   },
-                  l,
-                  d,
+                  baseVariant,
+                  gestureVariant,
                 ),
               }),
             }),
@@ -1060,17 +1060,17 @@ var Sa = {
       hover: U,
       ...C
     },
-    l,
+    forwardedRef,
   ) {
     let L = Sa[s] || s,
       {
-        baseVariant: y,
-        classNames: d,
-        gestureVariant: R,
-        setGestureState: v,
-        setVariant: x,
-        transition: u,
-        variants: m,
+        baseVariant,
+        classNames,
+        gestureVariant,
+        setGestureState,
+        setVariant,
+        transition,
+        variants,
       } = useComponentVariantState({
         cycleOrder: La,
         defaultVariant: "xKACItaHS",
@@ -1078,23 +1078,23 @@ var Sa = {
         variant: L,
         variantClassNames: Ma,
       }),
-      h = m.join("-") + C.layoutDependency,
-      { activeVariantCallback: b, delay: V } = useVariantAnimationCallbacks(y),
-      M = b(async (...Y) => {
+      h = variants.join("-") + C.layoutDependency,
+      { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
+      M = activeVariantCallback(async (...Y) => {
         if (U && (await U(...Y)) === false) return false;
       }),
-      A = useId();
+      autoId = useId();
     return jsx(LayoutGroup, {
-      id: f ?? A,
+      id: f ?? autoId,
       children: jsx(motion.div, {
         initial: L,
-        animate: m,
-        onHoverStart: () => v({ isHovered: true }),
-        onHoverEnd: () => v({ isHovered: false }),
-        onTapStart: () => v({ isPressed: true }),
-        onTap: () => v({ isPressed: false }),
-        onTapCancel: () => v({ isPressed: false }),
-        className: cx("framer-7RIWM", d),
+        animate: variants,
+        onHoverStart: () => setGestureState({ isHovered: true }),
+        onHoverEnd: () => setGestureState({ isHovered: false }),
+        onTapStart: () => setGestureState({ isPressed: true }),
+        onTap: () => setGestureState({ isPressed: false }),
+        onTapCancel: () => setGestureState({ isPressed: false }),
+        className: cx("framer-7RIWM", classNames),
         style: { display: "contents" },
         children: jsx(motion.div, {
           ...C,
@@ -1104,7 +1104,7 @@ var Sa = {
           layoutDependency: h,
           layoutId: "xKACItaHS",
           onMouseEnter: M,
-          ref: l,
+          ref: forwardedRef,
           style: {
             backgroundColor: "rgb(51, 170, 255)",
             borderBottomLeftRadius: 16,
@@ -1113,7 +1113,7 @@ var Sa = {
             borderTopRightRadius: 16,
             ...a,
           },
-          transition: u,
+          transition: transition,
           variants: {
             rgX5PDpQJ: { backgroundColor: "rgb(153, 204, 102)" },
             xeZKtnsQM: { backgroundColor: "rgb(119, 85, 204)" },
@@ -1123,8 +1123,8 @@ var Sa = {
               rgX5PDpQJ: { "data-framer-name": "Variant 2" },
               xeZKtnsQM: { "data-framer-name": "Variant 3" },
             },
-            y,
-            R,
+            baseVariant,
+            gestureVariant,
           ),
         }),
       }),
@@ -1159,7 +1159,7 @@ var Ya = ["QCVLxQKOQ", "XVQi0W0KO", "Xwn3H48jY"],
     Xwn3H48jY: "framer-v-548aw2",
   };
 var Fr = mergeVariantProps;
-var Ha = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
+var Ha = SPRING_CAPTION,
   Ea = (t, a) => `translateX(-50%) ${a}`,
   Ka = TransitionProvider,
   Wa = AnimatedFragment,
@@ -1178,66 +1178,66 @@ var Ha = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
   },
   Ja = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  Ga = forwardRef(function (t, a) {
-    let { activeLocale: n, setLocale: i } = useLocale(),
+  Ga = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
       {
-        style: o,
-        className: f,
-        layoutId: s,
-        variant: U,
-        NXCj7csO1: C,
-        ...l
-      } = Za(t),
+        style,
+        className,
+        layoutId,
+        variant,
+        NXCj7csO1,
+        ...restProps
+      } = Za(props),
       {
-        baseVariant: p,
-        classNames: L,
-        gestureHandlers: y,
-        gestureVariant: d,
-        setGestureState: R,
-        setVariant: v,
-        variants: x,
+        baseVariant,
+        classNames,
+        gestureHandlers,
+        gestureVariant,
+        setGestureState,
+        setVariant,
+        variants,
       } = useComponentVariantState({
         cycleOrder: Ya,
         defaultVariant: "QCVLxQKOQ",
-        variant: U,
+        variant: variant,
         variantClassNames: Aa,
       }),
-      u = Ja(t, x),
-      { activeVariantCallback: m, delay: h } = useVariantAnimationCallbacks(p),
-      b = m(async (...Q) => {
-        if ((R({ isPressed: false }), C && (await C(...Q)) === false)) return false;
+      u = Ja(props, variants),
+      { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
+      b = activeVariantCallback(async (...Q) => {
+        if ((setGestureState({ isPressed: false }), NXCj7csO1 && (await NXCj7csO1(...Q)) === false)) return false;
       }),
-      V = m(async (...Q) => {
-        v("XVQi0W0KO");
+      V = activeVariantCallback(async (...Q) => {
+        setVariant("XVQi0W0KO");
       });
-    useOnVariantChange(p, { default: V, Xwn3H48jY: undefined });
-    let M = useRef(null),
-      A = useId(),
-      Y = [],
-      $ = useDeviceSize();
+    useOnVariantChange(baseVariant, { default: V, Xwn3H48jY: undefined });
+    let localRef = useRef(null),
+      autoId = useId(),
+      additionalClassNames = [],
+      deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
-      id: s ?? A,
+      id: layoutId ?? autoId,
       children: jsx(Wa, {
-        animate: x,
+        animate: variants,
         initial: false,
         children: jsx(Ka, {
           value: Ha,
           children: jsx(motion.div, {
-            ...l,
-            ...y,
-            className: cx(Ba, ...Y, "framer-14h8w6j", f, L),
+            ...restProps,
+            ...gestureHandlers,
+            className: cx(Ba, ...additionalClassNames, "framer-14h8w6j", className, classNames),
             "data-framer-name": "Main",
             "data-highlight": true,
             layoutDependency: u,
             layoutId: "QCVLxQKOQ",
             onTap: b,
-            ref: a ?? M,
+            ref: forwardedRef ?? localRef,
             style: {
               borderBottomLeftRadius: 0,
               borderBottomRightRadius: 0,
               borderTopLeftRadius: 0,
               borderTopRightRadius: 0,
-              ...o,
+              ...style,
             },
             variants: {
               XVQi0W0KO: {
@@ -1252,8 +1252,8 @@ var Ha = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                 XVQi0W0KO: { "data-framer-name": "Active" },
                 Xwn3H48jY: { "data-framer-name": "Inactive" },
               },
-              p,
-              d,
+              baseVariant,
+              gestureVariant,
             ),
             children: jsx(RichTextComponent, {
               __fromCanvasComponent: true,
@@ -1313,8 +1313,8 @@ var Ha = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                     }),
                   },
                 },
-                p,
-                d,
+                baseVariant,
+                gestureVariant,
               ),
             }),
           }),
@@ -1368,7 +1368,7 @@ var et = ["A73BIfYrH", "yFu0ego46", "Bq4Oqy1P7"],
     yFu0ego46: "framer-v-tr7mnx",
   };
 var Sr = mergeVariantProps;
-var tt = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
+var tt = SPRING_CAPTION,
   nt = (t, a) => `translateX(-50%) ${a}`,
   it = TransitionProvider,
   ot = AnimatedFragment,
@@ -1387,69 +1387,69 @@ var tt = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
   },
   lt = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  mt = forwardRef(function (t, a) {
-    let { activeLocale: n, setLocale: i } = useLocale(),
+  mt = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
       {
-        style: o,
-        className: f,
-        layoutId: s,
-        variant: U,
-        HEb3Jrr9H: C,
-        ...l
-      } = ft(t),
+        style,
+        className,
+        layoutId,
+        variant,
+        HEb3Jrr9H,
+        ...restProps
+      } = ft(props),
       {
-        baseVariant: p,
-        classNames: L,
-        gestureHandlers: y,
-        gestureVariant: d,
-        setGestureState: R,
-        setVariant: v,
-        variants: x,
+        baseVariant,
+        classNames,
+        gestureHandlers,
+        gestureVariant,
+        setGestureState,
+        setVariant,
+        variants,
       } = useComponentVariantState({
         cycleOrder: et,
         defaultVariant: "A73BIfYrH",
-        variant: U,
+        variant: variant,
         variantClassNames: at,
       }),
-      u = lt(t, x),
-      { activeVariantCallback: m, delay: h } = useVariantAnimationCallbacks(p),
-      b = m(async (...J) => {
-        if ((R({ isPressed: false }), C && (await C(...J)) === false)) return false;
+      u = lt(props, variants),
+      { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
+      b = activeVariantCallback(async (...J) => {
+        if ((setGestureState({ isPressed: false }), HEb3Jrr9H && (await HEb3Jrr9H(...J)) === false)) return false;
       }),
-      V = m(async (...J) => {
-        v("yFu0ego46");
+      V = activeVariantCallback(async (...J) => {
+        setVariant("yFu0ego46");
       }),
-      M = m(async (...J) => {
-        v("yFu0ego46");
+      M = activeVariantCallback(async (...J) => {
+        setVariant("yFu0ego46");
       });
-    useOnVariantChange(p, { Bq4Oqy1P7: undefined, default: V });
-    let A = useRef(null),
-      Y = useId(),
-      $ = [],
-      Q = useDeviceSize();
+    useOnVariantChange(baseVariant, { Bq4Oqy1P7: undefined, default: V });
+    let localRef = useRef(null),
+      autoId = useId(),
+      additionalClassNames = [],
+      deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
-      id: s ?? Y,
+      id: layoutId ?? autoId,
       children: jsx(ot, {
-        animate: x,
+        animate: variants,
         initial: false,
         children: jsx(it, {
           value: tt,
           children: jsx(motion.div, {
-            ...l,
-            ...y,
-            className: cx(rt, ...$, "framer-1f4gy1p", f, L),
+            ...restProps,
+            ...gestureHandlers,
+            className: cx(rt, ...additionalClassNames, "framer-1f4gy1p", className, classNames),
             "data-framer-name": "Main",
             "data-highlight": true,
             layoutDependency: u,
             layoutId: "A73BIfYrH",
             onTap: b,
-            ref: a ?? A,
+            ref: forwardedRef ?? localRef,
             style: {
               borderBottomLeftRadius: 0,
               borderBottomRightRadius: 0,
               borderTopLeftRadius: 0,
               borderTopRightRadius: 0,
-              ...o,
+              ...style,
             },
             variants: {
               yFu0ego46: {
@@ -1464,8 +1464,8 @@ var tt = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                 Bq4Oqy1P7: { "data-framer-name": "Inactive" },
                 yFu0ego46: { "data-framer-name": "Active" },
               },
-              p,
-              d,
+              baseVariant,
+              gestureVariant,
             ),
             children: jsx(motion.div, {
               className: "framer-1aqnoq4",
@@ -1533,8 +1533,8 @@ var tt = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                       }),
                     },
                   },
-                  p,
-                  d,
+                  baseVariant,
+                  gestureVariant,
                 ),
               }),
             }),
@@ -1591,7 +1591,7 @@ var ct = ["HkR7N8JHH", "qFD4z7zh2", "uLTZzDf3c"],
     uLTZzDf3c: "framer-v-1ws1zva",
   };
 var Tr = mergeVariantProps;
-var ut = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
+var ut = SPRING_CAPTION,
   gt = (t, a) => `translate(-50%, -50%) ${a}`,
   xt = TransitionProvider,
   yt = AnimatedFragment,
@@ -1610,66 +1610,66 @@ var ut = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
   },
   wt = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  Ct = forwardRef(function (t, a) {
-    let { activeLocale: n, setLocale: i } = useLocale(),
+  Ct = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
       {
-        style: o,
-        className: f,
-        layoutId: s,
-        variant: U,
-        E2jYS2CvR: C,
-        ...l
-      } = bt(t),
+        style,
+        className,
+        layoutId,
+        variant,
+        E2jYS2CvR,
+        ...restProps
+      } = bt(props),
       {
-        baseVariant: p,
-        classNames: L,
-        gestureHandlers: y,
-        gestureVariant: d,
-        setGestureState: R,
-        setVariant: v,
-        variants: x,
+        baseVariant,
+        classNames,
+        gestureHandlers,
+        gestureVariant,
+        setGestureState,
+        setVariant,
+        variants,
       } = useComponentVariantState({
         cycleOrder: ct,
         defaultVariant: "HkR7N8JHH",
-        variant: U,
+        variant: variant,
         variantClassNames: ht,
       }),
-      u = wt(t, x),
-      { activeVariantCallback: m, delay: h } = useVariantAnimationCallbacks(p),
-      b = m(async (...Q) => {
-        if ((R({ isPressed: false }), C && (await C(...Q)) === false)) return false;
+      u = wt(props, variants),
+      { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
+      b = activeVariantCallback(async (...Q) => {
+        if ((setGestureState({ isPressed: false }), E2jYS2CvR && (await E2jYS2CvR(...Q)) === false)) return false;
       }),
-      V = m(async (...Q) => {
-        v("qFD4z7zh2");
+      V = activeVariantCallback(async (...Q) => {
+        setVariant("qFD4z7zh2");
       });
-    useOnVariantChange(p, { default: V, uLTZzDf3c: undefined });
-    let M = useRef(null),
-      A = useId(),
-      Y = [],
-      $ = useDeviceSize();
+    useOnVariantChange(baseVariant, { default: V, uLTZzDf3c: undefined });
+    let localRef = useRef(null),
+      autoId = useId(),
+      additionalClassNames = [],
+      deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
-      id: s ?? A,
+      id: layoutId ?? autoId,
       children: jsx(yt, {
-        animate: x,
+        animate: variants,
         initial: false,
         children: jsx(xt, {
           value: ut,
           children: jsx(motion.div, {
-            ...l,
-            ...y,
-            className: cx(pt, ...Y, "framer-6uc7fk", f, L),
+            ...restProps,
+            ...gestureHandlers,
+            className: cx(pt, ...additionalClassNames, "framer-6uc7fk", className, classNames),
             "data-framer-name": "Main",
             "data-highlight": true,
             layoutDependency: u,
             layoutId: "HkR7N8JHH",
             onTap: b,
-            ref: a ?? M,
+            ref: forwardedRef ?? localRef,
             style: {
               borderBottomLeftRadius: 0,
               borderBottomRightRadius: 0,
               borderTopLeftRadius: 0,
               borderTopRightRadius: 0,
-              ...o,
+              ...style,
             },
             variants: {
               qFD4z7zh2: {
@@ -1684,8 +1684,8 @@ var ut = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                 qFD4z7zh2: { "data-framer-name": "Active" },
                 uLTZzDf3c: { "data-framer-name": "Inactive" },
               },
-              p,
-              d,
+              baseVariant,
+              gestureVariant,
             ),
             children: jsx(RichTextComponent, {
               __fromCanvasComponent: true,
@@ -1747,8 +1747,8 @@ var ut = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                     }),
                   },
                 },
-                p,
-                d,
+                baseVariant,
+                gestureVariant,
               ),
             }),
           }),
@@ -1809,8 +1809,8 @@ var Qe = withFXWrapper(motion.div),
     SoQlwVPaX: "framer-v-1gwjjt4",
   };
 var ue = mergeVariantProps;
-var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
-  zt = { delay: 0, duration: 2, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
+var jt = TWEEN_MEDIUM,
+  zt = TWEEN_LONG,
   Je = {
     opacity: 1,
     rotate: 0,
@@ -1846,7 +1846,7 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
     x: -410,
     y: 0,
   },
-  Le = { delay: 0, duration: 6.6, ease: [0, 0, 1, 1], type: "tween" /* CSS-like easing animation */ },
+  Le = TWEEN_CYCLE,
   er = {
     opacity: 1,
     rotate: 0,
@@ -1860,7 +1860,7 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
     x: -410,
     y: 0,
   },
-  Vt = { damping: 30, delay: 0, mass: 1, stiffness: 400, type: "spring" /* physics-based spring animation */ },
+  Vt = SPRING_STANDARD,
   Lt = {
     opacity: 1,
     rotate: 0,
@@ -1893,82 +1893,82 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
   },
   Dt = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  Pt = forwardRef(function (t, a) {
-    let { activeLocale: n, setLocale: i } = useLocale(),
+  Pt = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
       {
-        style: o,
-        className: f,
-        layoutId: s,
-        variant: U,
-        U4TM70Ust: C,
-        ...l
-      } = Tt(t),
+        style,
+        className,
+        layoutId,
+        variant,
+        U4TM70Ust,
+        ...restProps
+      } = Tt(props),
       {
-        baseVariant: p,
-        classNames: L,
-        clearLoadingGesture: y,
-        gestureHandlers: d,
-        gestureVariant: R,
-        isLoading: v,
-        setGestureState: x,
-        setVariant: u,
-        variants: m,
+        baseVariant,
+        classNames,
+        clearLoadingGesture,
+        gestureHandlers,
+        gestureVariant,
+        isLoading,
+        setGestureState,
+        setVariant,
+        variants,
       } = useComponentVariantState({
         cycleOrder: It,
         defaultVariant: "SoQlwVPaX",
-        variant: U,
+        variant: variant,
         variantClassNames: Nt,
       }),
-      h = Dt(t, m),
-      { activeVariantCallback: b, delay: V } = useVariantAnimationCallbacks(p),
-      M = b(async (...ye) => {
-        await V(() => u(CycleSymbol), 6600);
+      h = Dt(props, variants),
+      { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
+      M = activeVariantCallback(async (...ye) => {
+        await delay(() => setVariant(CycleSymbol), 6600);
       }),
-      A = b(async (...ye) => {
-        if (C && (await C(...ye)) === false) return false;
-        u("SoQlwVPaX");
+      A = activeVariantCallback(async (...ye) => {
+        if (U4TM70Ust && (await U4TM70Ust(...ye)) === false) return false;
+        setVariant("SoQlwVPaX");
       }),
-      Y = b(async (...ye) => {
-        u("SoQlwVPaX");
+      Y = activeVariantCallback(async (...ye) => {
+        setVariant("SoQlwVPaX");
       }),
-      $ = b(async (...ye) => {
-        u("CuHIQOWnA");
+      $ = activeVariantCallback(async (...ye) => {
+        setVariant("CuHIQOWnA");
       }),
-      Q = b(async (...ye) => {
-        u("ggKLLEo3O");
+      Q = activeVariantCallback(async (...ye) => {
+        setVariant("ggKLLEo3O");
       });
-    useOnVariantChange(p, { default: M });
-    let J = useRef(null),
-      ce = () => !["CuHIQOWnA", "ggKLLEo3O"].includes(p),
-      je = () => p === "CuHIQOWnA",
-      de = () => p === "ggKLLEo3O",
-      ur = useId(),
-      xe = [],
-      Ni = useDeviceSize();
+    useOnVariantChange(baseVariant, { default: M });
+    let localRef = useRef(null),
+      ce = () => !["CuHIQOWnA", "ggKLLEo3O"].includes(baseVariant),
+      je = () => baseVariant === "CuHIQOWnA",
+      de = () => baseVariant === "ggKLLEo3O",
+      autoId = useId(),
+      additionalClassNames = [],
+      deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
-      id: s ?? ur,
+      id: layoutId ?? autoId,
       children: jsx(Ft, {
-        animate: m,
+        animate: variants,
         initial: false,
         children: jsx(Mt, {
           value: jt,
           children: jsxs(motion.div, {
-            ...l,
-            ...d,
-            className: cx(_t, ...xe, "framer-1gwjjt4", f, L),
+            ...restProps,
+            ...gestureHandlers,
+            className: cx(_t, ...additionalClassNames, "framer-1gwjjt4", className, classNames),
             "data-framer-name": "First Tab",
             "data-highlight": true,
             layoutDependency: h,
             layoutId: "SoQlwVPaX",
-            ref: a ?? J,
-            style: { ...o },
+            ref: forwardedRef ?? localRef,
+            style: { ...style },
             ...ue(
               {
                 CuHIQOWnA: { "data-framer-name": "Variant 2" },
                 ggKLLEo3O: { "data-framer-name": "Variant 3" },
               },
-              p,
-              R,
+              baseVariant,
+              gestureVariant,
             ),
             children: [
               ce() &&
@@ -2157,8 +2157,8 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                               CuHIQOWnA: { hover: A },
                               ggKLLEo3O: { hover: Y },
                             },
-                            p,
-                            R,
+                            baseVariant,
+                            gestureVariant,
                           ),
                         }),
                       }),
@@ -2224,8 +2224,8 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                             CuHIQOWnA: { variant: "Bq4Oqy1P7" },
                             ggKLLEo3O: { variant: "Bq4Oqy1P7" },
                           },
-                          p,
-                          R,
+                          baseVariant,
+                          gestureVariant,
                         ),
                       }),
                     }),
@@ -2243,7 +2243,7 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         style: { height: "100%", width: "100%" },
                         variant: "uLTZzDf3c",
                         width: "100%",
-                        ...ue({ CuHIQOWnA: { variant: "HkR7N8JHH" } }, p, R),
+                        ...ue({ CuHIQOWnA: { variant: "HkR7N8JHH" } }, baseVariant, gestureVariant),
                       }),
                     }),
                   }),
@@ -2260,7 +2260,7 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         style: { height: "100%", width: "100%" },
                         variant: "Xwn3H48jY",
                         width: "100%",
-                        ...ue({ ggKLLEo3O: { variant: "QCVLxQKOQ" } }, p, R),
+                        ...ue({ ggKLLEo3O: { variant: "QCVLxQKOQ" } }, baseVariant, gestureVariant),
                       }),
                     }),
                   }),
@@ -2310,8 +2310,8 @@ var jt = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         href: { hash: ":DXqsCYt4L", webPageId: "bzydBB85Y" },
                       },
                     },
-                    p,
-                    R,
+                    baseVariant,
+                    gestureVariant,
                   ),
                   children: jsxs(motion.a, {
                     className: "framer-763a3a framer-3s0w40",
@@ -2502,7 +2502,7 @@ var Bt = ["NFc0G3jDM", "NH6OUC_9N", "Bx08xEGah"],
     NH6OUC_9N: "framer-v-3v0an8",
   };
 var Dr = mergeVariantProps;
-var Et = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
+var Et = SPRING_CAPTION,
   Kt = (t, a) => `translateX(-50%) ${a}`,
   Wt = TransitionProvider,
   Qt = AnimatedFragment,
@@ -2520,71 +2520,71 @@ var Et = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     };
   },
   Gt = (t, a) => a.join("-") + t.layoutDependency,
-  $t = forwardRef(function (t, a) {
-    let { activeLocale: n, setLocale: i } = useLocale(),
+  $t = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
       {
-        style: o,
-        className: f,
-        layoutId: s,
-        variant: U,
-        UGmfn7WC9: C,
-        ...l
-      } = Jt(t),
+        style,
+        className,
+        layoutId,
+        variant,
+        UGmfn7WC9,
+        ...restProps
+      } = Jt(props),
       {
-        baseVariant: p,
-        classNames: L,
-        gestureVariant: y,
-        setGestureState: d,
-        setVariant: R,
-        variants: v,
+        baseVariant,
+        classNames,
+        gestureVariant,
+        setGestureState,
+        setVariant,
+        variants,
       } = useComponentVariantState({
         cycleOrder: Bt,
         defaultVariant: "NFc0G3jDM",
-        variant: U,
+        variant: variant,
         variantClassNames: Ht,
       }),
-      x = Gt(t, v),
-      { activeVariantCallback: u, delay: m } = useVariantAnimationCallbacks(p),
-      h = u(async (...Q) => {
-        if ((d({ isPressed: false }), C && (await C(...Q)) === false)) return false;
+      x = Gt(props, variants),
+      { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
+      h = activeVariantCallback(async (...Q) => {
+        if ((setGestureState({ isPressed: false }), UGmfn7WC9 && (await UGmfn7WC9(...Q)) === false)) return false;
       }),
-      b = u(async (...Q) => {
-        R("NH6OUC_9N");
+      b = activeVariantCallback(async (...Q) => {
+        setVariant("NH6OUC_9N");
       }),
-      V = u(async (...Q) => {
-        R("NH6OUC_9N");
+      V = activeVariantCallback(async (...Q) => {
+        setVariant("NH6OUC_9N");
       });
-    useOnVariantChange(p, { Bx08xEGah: undefined, default: b });
-    let M = useRef(null),
-      A = useId(),
-      Y = [],
-      $ = useDeviceSize();
+    useOnVariantChange(baseVariant, { Bx08xEGah: undefined, default: b });
+    let localRef = useRef(null),
+      autoId = useId(),
+      additionalClassNames = [],
+      deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
-      id: s ?? A,
+      id: layoutId ?? autoId,
       children: jsx(Qt, {
-        animate: v,
+        animate: variants,
         initial: false,
         children: jsx(Wt, {
           value: Et,
           children: jsx(motion.div, {
-            ...l,
-            className: cx(At, ...Y, "framer-r8ywzq", f, L),
+            ...restProps,
+            className: cx(At, ...additionalClassNames, "framer-r8ywzq", className, classNames),
             "data-framer-name": "Variant 1",
             "data-highlight": true,
             layoutDependency: x,
             layoutId: "NFc0G3jDM",
-            onHoverEnd: () => d({ isHovered: false }),
-            onHoverStart: () => d({ isHovered: true }),
+            onHoverEnd: () => setGestureState({ isHovered: false }),
+            onHoverStart: () => setGestureState({ isHovered: true }),
             onTap: h,
-            onTapCancel: () => d({ isPressed: false }),
-            onTapStart: () => d({ isPressed: true }),
-            ref: a ?? M,
+            onTapCancel: () => setGestureState({ isPressed: false }),
+            onTapStart: () => setGestureState({ isPressed: true }),
+            ref: forwardedRef ?? localRef,
             style: {
               borderBottomLeftRadius: 0,
               borderBottomRightRadius: 0,
               borderTopLeftRadius: 0,
               borderTopRightRadius: 0,
-              ...o,
+              ...style,
             },
             variants: {
               NH6OUC_9N: {
@@ -2599,8 +2599,8 @@ var Et = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                 Bx08xEGah: { "data-framer-name": "Inactive" },
                 NH6OUC_9N: { "data-framer-name": "Raised" },
               },
-              p,
-              y,
+              baseVariant,
+              gestureVariant,
             ),
             children: jsx(RichTextComponent, {
               __fromCanvasComponent: true,
@@ -2668,8 +2668,8 @@ var Et = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                     onTap: undefined,
                   },
                 },
-                p,
-                y,
+                baseVariant,
+                gestureVariant,
               ),
             }),
           }),
@@ -2724,7 +2724,7 @@ var rn = ["zsZ4Z5z6N", "j8drpudA2", "gO1Oy0ksh"],
     zsZ4Z5z6N: "framer-v-1g1moqd",
   };
 var Pr = mergeVariantProps;
-var nn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
+var nn = SPRING_CAPTION,
   on = (t, a) => `translateY(-50%) ${a}`,
   sn = TransitionProvider,
   fn = AnimatedFragment,
@@ -2742,69 +2742,69 @@ var nn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     };
   },
   dn = (t, a) => a.join("-") + t.layoutDependency,
-  cn = forwardRef(function (t, a) {
-    let { activeLocale: n, setLocale: i } = useLocale(),
+  cn = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
       {
-        style: o,
-        className: f,
-        layoutId: s,
-        variant: U,
-        mBC2PxMBg: C,
-        ...l
-      } = mn(t),
+        style,
+        className,
+        layoutId,
+        variant,
+        mBC2PxMBg,
+        ...restProps
+      } = mn(props),
       {
-        baseVariant: p,
-        classNames: L,
-        gestureVariant: y,
-        setGestureState: d,
-        setVariant: R,
-        variants: v,
+        baseVariant,
+        classNames,
+        gestureVariant,
+        setGestureState,
+        setVariant,
+        variants,
       } = useComponentVariantState({
         cycleOrder: rn,
         defaultVariant: "zsZ4Z5z6N",
-        variant: U,
+        variant: variant,
         variantClassNames: tn,
       }),
-      x = dn(t, v),
-      { activeVariantCallback: u, delay: m } = useVariantAnimationCallbacks(p),
-      h = u(async (...Q) => {
-        if ((d({ isPressed: false }), C && (await C(...Q)) === false)) return false;
+      x = dn(props, variants),
+      { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
+      h = activeVariantCallback(async (...Q) => {
+        if ((setGestureState({ isPressed: false }), mBC2PxMBg && (await mBC2PxMBg(...Q)) === false)) return false;
       }),
-      b = u(async (...Q) => {
-        R("j8drpudA2");
+      b = activeVariantCallback(async (...Q) => {
+        setVariant("j8drpudA2");
       });
-    useOnVariantChange(p, { default: b, gO1Oy0ksh: undefined });
-    let V = useRef(null),
-      M = () => p !== "j8drpudA2",
-      A = useId(),
-      Y = [],
-      $ = useDeviceSize();
+    useOnVariantChange(baseVariant, { default: b, gO1Oy0ksh: undefined });
+    let localRef = useRef(null),
+      M = () => baseVariant !== "j8drpudA2",
+      autoId = useId(),
+      additionalClassNames = [],
+      deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
-      id: s ?? A,
+      id: layoutId ?? autoId,
       children: jsx(fn, {
-        animate: v,
+        animate: variants,
         initial: false,
         children: jsx(sn, {
           value: nn,
           children: jsxs(motion.div, {
-            ...l,
-            className: cx(an, ...Y, "framer-1g1moqd", f, L),
+            ...restProps,
+            className: cx(an, ...additionalClassNames, "framer-1g1moqd", className, classNames),
             "data-framer-name": "Main",
             "data-highlight": true,
             layoutDependency: x,
             layoutId: "zsZ4Z5z6N",
-            onHoverEnd: () => d({ isHovered: false }),
-            onHoverStart: () => d({ isHovered: true }),
+            onHoverEnd: () => setGestureState({ isHovered: false }),
+            onHoverStart: () => setGestureState({ isHovered: true }),
             onTap: h,
-            onTapCancel: () => d({ isPressed: false }),
-            onTapStart: () => d({ isPressed: true }),
-            ref: a ?? V,
+            onTapCancel: () => setGestureState({ isPressed: false }),
+            onTapStart: () => setGestureState({ isPressed: true }),
+            ref: forwardedRef ?? localRef,
             style: {
               borderBottomLeftRadius: 0,
               borderBottomRightRadius: 0,
               borderTopLeftRadius: 0,
               borderTopRightRadius: 0,
-              ...o,
+              ...style,
             },
             variants: {
               j8drpudA2: {
@@ -2819,8 +2819,8 @@ var nn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                 gO1Oy0ksh: { "data-framer-name": "inactive" },
                 j8drpudA2: { "data-framer-name": "Raised" },
               },
-              p,
-              y,
+              baseVariant,
+              gestureVariant,
             ),
             children: [
               M() &&
@@ -2890,8 +2890,8 @@ var nn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                       }),
                     },
                   },
-                  p,
-                  y,
+                  baseVariant,
+                  gestureVariant,
                 ),
               }),
             ],
@@ -2948,7 +2948,7 @@ var hn = ["S3kYznUP4", "xZIBSRPrK", "aJO1FcIHC"],
     xZIBSRPrK: "framer-v-327s0c",
   };
 var Yr = mergeVariantProps;
-var xn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
+var xn = SPRING_CAPTION,
   yn = (t, a) => `translateY(-50%) ${a}`,
   vn = TransitionProvider,
   bn = AnimatedFragment,
@@ -2966,69 +2966,69 @@ var xn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
     };
   },
   qn = (t, a) => a.join("-") + t.layoutDependency,
-  Rn = forwardRef(function (t, a) {
-    let { activeLocale: n, setLocale: i } = useLocale(),
+  Rn = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
       {
-        style: o,
-        className: f,
-        layoutId: s,
-        variant: U,
-        kJZ82E8Mx: C,
-        ...l
-      } = Cn(t),
+        style,
+        className,
+        layoutId,
+        variant,
+        kJZ82E8Mx,
+        ...restProps
+      } = Cn(props),
       {
-        baseVariant: p,
-        classNames: L,
-        gestureVariant: y,
-        setGestureState: d,
-        setVariant: R,
-        variants: v,
+        baseVariant,
+        classNames,
+        gestureVariant,
+        setGestureState,
+        setVariant,
+        variants,
       } = useComponentVariantState({
         cycleOrder: hn,
         defaultVariant: "S3kYznUP4",
-        variant: U,
+        variant: variant,
         variantClassNames: gn,
       }),
-      x = qn(t, v),
-      { activeVariantCallback: u, delay: m } = useVariantAnimationCallbacks(p),
-      h = u(async (...Q) => {
-        if ((d({ isPressed: false }), C && (await C(...Q)) === false)) return false;
+      x = qn(props, variants),
+      { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
+      h = activeVariantCallback(async (...Q) => {
+        if ((setGestureState({ isPressed: false }), kJZ82E8Mx && (await kJZ82E8Mx(...Q)) === false)) return false;
       }),
-      b = u(async (...Q) => {
-        R("xZIBSRPrK");
+      b = activeVariantCallback(async (...Q) => {
+        setVariant("xZIBSRPrK");
       });
-    useOnVariantChange(p, { aJO1FcIHC: undefined, default: b });
-    let V = useRef(null),
-      M = () => p !== "xZIBSRPrK",
-      A = useId(),
-      Y = [],
-      $ = useDeviceSize();
+    useOnVariantChange(baseVariant, { aJO1FcIHC: undefined, default: b });
+    let localRef = useRef(null),
+      M = () => baseVariant !== "xZIBSRPrK",
+      autoId = useId(),
+      additionalClassNames = [],
+      deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
-      id: s ?? A,
+      id: layoutId ?? autoId,
       children: jsx(bn, {
-        animate: v,
+        animate: variants,
         initial: false,
         children: jsx(vn, {
           value: xn,
           children: jsxs(motion.div, {
-            ...l,
-            className: cx(un, ...Y, "framer-11b0mpr", f, L),
+            ...restProps,
+            className: cx(un, ...additionalClassNames, "framer-11b0mpr", className, classNames),
             "data-framer-name": "Main",
             "data-highlight": true,
             layoutDependency: x,
             layoutId: "S3kYznUP4",
-            onHoverEnd: () => d({ isHovered: false }),
-            onHoverStart: () => d({ isHovered: true }),
+            onHoverEnd: () => setGestureState({ isHovered: false }),
+            onHoverStart: () => setGestureState({ isHovered: true }),
             onTap: h,
-            onTapCancel: () => d({ isPressed: false }),
-            onTapStart: () => d({ isPressed: true }),
-            ref: a ?? V,
+            onTapCancel: () => setGestureState({ isPressed: false }),
+            onTapStart: () => setGestureState({ isPressed: true }),
+            ref: forwardedRef ?? localRef,
             style: {
               borderBottomLeftRadius: 0,
               borderBottomRightRadius: 0,
               borderTopLeftRadius: 0,
               borderTopRightRadius: 0,
-              ...o,
+              ...style,
             },
             variants: {
               xZIBSRPrK: {
@@ -3043,8 +3043,8 @@ var xn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                 aJO1FcIHC: { "data-framer-name": "Inactive" },
                 xZIBSRPrK: { "data-framer-name": "Raised" },
               },
-              p,
-              y,
+              baseVariant,
+              gestureVariant,
             ),
             children: [
               M() &&
@@ -3118,8 +3118,8 @@ var xn = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* phy
                       }),
                     },
                   },
-                  p,
-                  y,
+                  baseVariant,
+                  gestureVariant,
                 ),
               }),
             ],
@@ -3184,8 +3184,8 @@ var ir = withFXWrapper(motion.div),
     qvmKCdJXN: "framer-v-1m0rm34",
   };
 var oe = mergeVariantProps;
-var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
-  Ln = { delay: 0, duration: 2, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
+var Vn = TWEEN_MEDIUM,
+  Ln = TWEEN_LONG,
   Br = {
     opacity: 1,
     rotate: 0,
@@ -3221,7 +3221,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
     x: -410,
     y: 0,
   },
-  Me = { delay: 0, duration: 6.6, ease: [0, 0, 1, 1], type: "tween" /* CSS-like easing animation */ },
+  Me = TWEEN_CYCLE,
   lr = {
     opacity: 1,
     rotate: 0,
@@ -3235,7 +3235,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
     x: -410,
     y: 0,
   },
-  Mn = { delay: 0, duration: 1.5, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
+  Mn = TWEEN_SLOW,
   Fn = {
     opacity: 1,
     rotate: 0,
@@ -3248,7 +3248,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
     x: 0,
     y: 0,
   },
-  Ar = { damping: 30, delay: 0, mass: 1, stiffness: 400, type: "spring" /* physics-based spring animation */ },
+  Ar = SPRING_STANDARD,
   Sn = {
     opacity: 1,
     rotate: 0,
@@ -3291,71 +3291,71 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
   },
   Bn = (t, a) =>
     t.layoutDependency ? a.join("-") + t.layoutDependency : a.join("-"),
-  An = forwardRef(function (t, a) {
-    let { activeLocale: n, setLocale: i } = useLocale(),
-      { style: o, className: f, layoutId: s, variant: U, ...C } = Yn(t),
+  An = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
+      { style, className, layoutId, variant, ...restProps } = Yn(props),
       {
-        baseVariant: l,
-        classNames: p,
-        clearLoadingGesture: L,
-        gestureHandlers: y,
-        gestureVariant: d,
-        isLoading: R,
-        setGestureState: v,
-        setVariant: x,
-        variants: u,
+        baseVariant,
+        classNames,
+        clearLoadingGesture,
+        gestureHandlers,
+        gestureVariant,
+        isLoading,
+        setGestureState,
+        setVariant,
+        variants,
       } = useComponentVariantState({
         cycleOrder: Nn,
         defaultVariant: "Q1DJ9ntwf",
-        variant: U,
+        variant: variant,
         variantClassNames: zn,
       }),
-      m = Bn(t, u),
-      { activeVariantCallback: h, delay: b } = useVariantAnimationCallbacks(l),
-      V = h(async (...xe) => {
-        await b(() => x(CycleSymbol), 6600);
+      m = Bn(props, variants),
+      { activeVariantCallback, delay } = useVariantAnimationCallbacks(baseVariant),
+      V = activeVariantCallback(async (...xe) => {
+        await delay(() => setVariant(CycleSymbol), 6600);
       }),
-      M = h(async (...xe) => {
-        await b(() => x("qvmKCdJXN"), 60);
+      M = activeVariantCallback(async (...xe) => {
+        await delay(() => setVariant("qvmKCdJXN"), 60);
       }),
-      A = h(async (...xe) => {
-        await b(() => x("Q1DJ9ntwf"), 60);
+      A = activeVariantCallback(async (...xe) => {
+        await delay(() => setVariant("Q1DJ9ntwf"), 60);
       }),
-      Y = h(async (...xe) => {
-        await b(() => x("hxzAUWcy0"), 60);
+      Y = activeVariantCallback(async (...xe) => {
+        await delay(() => setVariant("hxzAUWcy0"), 60);
       });
-    useOnVariantChange(l, { default: V });
-    let $ = useRef(null),
-      Q = () => !["qvmKCdJXN", "hxzAUWcy0"].includes(l),
-      J = () => l === "qvmKCdJXN",
-      ce = () => l === "hxzAUWcy0",
-      je = useId(),
-      de = [],
-      ur = useDeviceSize();
+    useOnVariantChange(baseVariant, { default: V });
+    let localRef = useRef(null),
+      Q = () => !["qvmKCdJXN", "hxzAUWcy0"].includes(baseVariant),
+      J = () => baseVariant === "qvmKCdJXN",
+      ce = () => baseVariant === "hxzAUWcy0",
+      autoId = useId(),
+      additionalClassNames = [],
+      deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
-      id: s ?? je,
+      id: layoutId ?? autoId,
       children: jsx(Dn, {
-        animate: u,
+        animate: variants,
         initial: false,
         children: jsx(Tn, {
           value: Vn,
           children: jsxs(motion.div, {
-            ...C,
-            ...y,
-            className: cx(jn, ...de, "framer-khfq23", f, p),
+            ...restProps,
+            ...gestureHandlers,
+            className: cx(jn, ...additionalClassNames, "framer-khfq23", className, classNames),
             "data-framer-name": "First tab",
             "data-highlight": true,
             layoutDependency: m,
             layoutId: "Q1DJ9ntwf",
-            ref: a ?? $,
-            style: { ...o },
+            ref: forwardedRef ?? localRef,
+            style: { ...style },
             ...oe(
               {
                 hxzAUWcy0: { "data-framer-name": "Third Tab" },
                 qvmKCdJXN: { "data-framer-name": "SECOND TAB" },
               },
-              l,
-              d,
+              baseVariant,
+              gestureVariant,
             ),
             children: [
               Q() &&
@@ -3531,8 +3531,8 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       href: { hash: ":dbtg_NZW8", webPageId: "bzydBB85Y" },
                     },
                   },
-                  l,
-                  d,
+                  baseVariant,
+                  gestureVariant,
                 ),
                 children: jsxs(motion.a, {
                   background: {
@@ -3564,8 +3564,8 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         },
                       },
                     },
-                    l,
-                    d,
+                    baseVariant,
+                    gestureVariant,
                   ),
                   children: [
                     jsx(motion.div, {
@@ -3720,7 +3720,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                             topRightRadius: 20,
                             volume: 25,
                             width: "100%",
-                            ...oe({ hxzAUWcy0: { startTime: 0 } }, l, d),
+                            ...oe({ hxzAUWcy0: { startTime: 0 } }, baseVariant, gestureVariant),
                           }),
                         }),
                       }),
@@ -3736,8 +3736,8 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                       openInNewTab: false,
                     },
                   },
-                  l,
-                  d,
+                  baseVariant,
+                  gestureVariant,
                 ),
                 children: jsxs(motion.a, {
                   className: "framer-h0n0bm framer-rf24a0",
@@ -3770,8 +3770,8 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                                 variant: "gO1Oy0ksh",
                               },
                             },
-                            l,
-                            d,
+                            baseVariant,
+                            gestureVariant,
                           ),
                         }),
                       }),
@@ -3783,7 +3783,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         layoutDependency: m,
                         layoutId: "Qw2n1EueW-container",
                         whileHover: mr,
-                        ...oe({ qvmKCdJXN: { whileHover: undefined } }, l, d),
+                        ...oe({ qvmKCdJXN: { whileHover: undefined } }, baseVariant, gestureVariant),
                         children: jsx(nr, {
                           height: "100%",
                           id: "Qw2n1EueW",
@@ -3791,7 +3791,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                           style: { height: "100%", width: "100%" },
                           variant: "aJO1FcIHC",
                           width: "100%",
-                          ...oe({ qvmKCdJXN: { variant: "S3kYznUP4" } }, l, d),
+                          ...oe({ qvmKCdJXN: { variant: "S3kYznUP4" } }, baseVariant, gestureVariant),
                         }),
                       }),
                     }),
@@ -3802,7 +3802,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                         layoutDependency: m,
                         layoutId: "BPtfXhKGl-container",
                         whileHover: mr,
-                        ...oe({ hxzAUWcy0: { whileHover: undefined } }, l, d),
+                        ...oe({ hxzAUWcy0: { whileHover: undefined } }, baseVariant, gestureVariant),
                         children: jsx(ar, {
                           height: "100%",
                           id: "BPtfXhKGl",
@@ -3810,7 +3810,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                           style: { height: "100%", width: "100%" },
                           variant: "Bx08xEGah",
                           width: "100%",
-                          ...oe({ hxzAUWcy0: { variant: "NFc0G3jDM" } }, l, d),
+                          ...oe({ hxzAUWcy0: { variant: "NFc0G3jDM" } }, baseVariant, gestureVariant),
                         }),
                       }),
                     }),
@@ -3875,8 +3875,8 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                               hxzAUWcy0: { hover: A },
                               qvmKCdJXN: { hover: A },
                             },
-                            l,
-                            d,
+                            baseVariant,
+                            gestureVariant,
                           ),
                         }),
                       }),
@@ -3895,7 +3895,7 @@ var Vn = { delay: 0, duration: 0.6, ease: [0.44, 0, 0.56, 1], type: "tween" /* C
                           style: { height: "100%", width: "100%" },
                           variant: "xeZKtnsQM",
                           width: "100%",
-                          ...oe({ hxzAUWcy0: { hover: M } }, l, d),
+                          ...oe({ hxzAUWcy0: { hover: M } }, baseVariant, gestureVariant),
                         }),
                       }),
                     }),
@@ -3980,7 +3980,7 @@ var li = getFonts(MapMobile2Component),
     ueHalD28r: "framer-v-1uu5wld",
     WQLkyLRf1: "framer-v-72rtr7",
   },
-  Te = { damping: 30, delay: 0, mass: 1, stiffness: 400, type: "spring" /* physics-based spring animation */ },
+  Te = SPRING_STANDARD,
   Ci = {
     opacity: 1,
     rotate: 0,
@@ -4075,11 +4075,11 @@ var li = getFonts(MapMobile2Component),
           : "WQLkyLRf1",
     };
   },
-  Ii = forwardRef(function (t, a) {
-    let { activeLocale: n, setLocale: i } = useLocale(),
-      { style: o, className: f, layoutId: s, variant: U, ...C } = Ui(t);
+  Ii = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
+      { style, className, layoutId, variant, ...restProps } = Ui(props);
     (useEffect(() => {
-      let u = Ve(undefined, n);
+      let u = Ve(undefined, activeLocale);
       if (u.robots) {
         let m = document.querySelector('meta[name="robots"]');
         m
@@ -4089,9 +4089,9 @@ var li = getFonts(MapMobile2Component),
             m.setAttribute("content", u.robots),
             document.head.appendChild(m));
       }
-    }, [undefined, n]),
+    }, [undefined, activeLocale]),
       useInsertionEffect(() => {
-        let u = Ve(undefined, n);
+        let u = Ve(undefined, activeLocale);
         if (((document.title = u.title || ""), u.viewport)) {
           var m;
           (m = document.querySelector('meta[name="viewport"]')) === null ||
@@ -4110,26 +4110,26 @@ var li = getFonts(MapMobile2Component),
           h &&
             document.body.classList.remove(`${u.bodyClassName}-framer-qO1UX`);
         };
-      }, [undefined, n]));
-    let [l, p] = useVariantState(U, bi, false),
+      }, [undefined, activeLocale]));
+    let [l, p] = useVariantState(variant, bi, false),
       L = undefined,
-      y = useRef(null),
+      localRef = useRef(null),
       d = () => (Er() ? l !== "CXFUsfZRE" : true),
       R = () => !Er() || l === "CXFUsfZRE",
-      v = useId(),
+      autoId = useId(),
       x = [cssClassScope];
     return (
       registerCursors({}),
       jsx(CursorContext.Provider, {
         value: { primaryVariantId: "WQLkyLRf1", variantClassNames: wi },
         children: jsxs(LayoutGroup, {
-          id: s ?? v,
+          id: layoutId ?? autoId,
           children: [
             jsxs(motion.div, {
-              ...C,
-              className: cx(Kr, ...x, "framer-72rtr7", f),
-              ref: a ?? y,
-              style: { ...o },
+              ...restProps,
+              className: cx(Kr, ...x, "framer-72rtr7", className),
+              ref: forwardedRef ?? localRef,
+              style: { ...style },
               children: [
                 jsxs("nav", {
                   className: "framer-13yn9ib",

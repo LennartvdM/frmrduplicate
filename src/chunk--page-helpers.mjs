@@ -162,6 +162,50 @@ export const SPRING_CAPTION = {
 };
 
 /**
+ * Standard easing curves.
+ * [0.44, 0, 0.56, 1] is used 20+ times across all pages — Framer's default "snappy" ease-in-out.
+ * [0, 0, 1, 1] is linear — used for progress-bar-like animations (tab cycle underlines).
+ */
+export const EASE_STANDARD = [0.44, 0, 0.56, 1];
+export const EASE_LINEAR = [0, 0, 1, 1];
+
+/**
+ * Tween (CSS-like) animation configs.
+ * Named by their visual purpose rather than raw duration.
+ */
+
+/** Instant snap — no visible transition (variant switches, layout resets) */
+export const TWEEN_INSTANT = { duration: 0, type: "tween" };
+
+/** 0.4s snappy — default UI transition (neoflix sections, nav state changes) */
+export const TWEEN_QUICK = { delay: 0, duration: 0.4, ease: EASE_STANDARD, type: "tween" };
+
+/** 0.4s with 0.3s delay — appear/entrance animations (backdrop fade-in, publications) */
+export const TWEEN_APPEAR = { delay: 0.3, duration: 0.4, ease: EASE_STANDARD, type: "tween" };
+
+/** 0.6s — medium transitions (story panel content swaps) */
+export const TWEEN_MEDIUM = { delay: 0, duration: 0.6, ease: EASE_STANDARD, type: "tween" };
+
+/** 1.5s — slow transitions (story panel text reveals) */
+export const TWEEN_SLOW = { delay: 0, duration: 1.5, ease: EASE_STANDARD, type: "tween" };
+
+/** 2s — long transitions (story panel background color shifts) */
+export const TWEEN_LONG = { delay: 0, duration: 2, ease: EASE_STANDARD, type: "tween" };
+
+/** 6.6s linear — tab cycle progress bar (Story Right / Story Left2 underline animation) */
+export const TWEEN_CYCLE = { delay: 0, duration: 6.6, ease: EASE_LINEAR, type: "tween" };
+
+/**
+ * Timing constants (milliseconds).
+ */
+
+/** Auto-advance interval for Story Right / Story Left2 tab carousels */
+export const CYCLE_INTERVAL_MS = 6600;
+
+/** Delay between caption cycling states on the home page */
+export const CAPTION_CYCLE_DELAY_MS = 1800;
+
+/**
  * Trailing break paragraph — used as spacer between text blocks.
  * Appears 17x in neoflix, similar counts in other pages.
  */

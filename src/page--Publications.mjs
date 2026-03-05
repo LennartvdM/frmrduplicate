@@ -65,7 +65,7 @@ import { $ as o,
   normalizeFontConfig } from "./chunk--react-and-framer-runtime.mjs";
 import "./chunk--site-metadata.mjs";
 import "./chunk--browser-polyfills.mjs";
-import { mergeVariantProps, TransitionProvider, AnimatedFragment, CSS_ASPECT_RATIO_SUPPORT, SPRING_STANDARD } from "./chunk--page-helpers.mjs";
+import { mergeVariantProps, TransitionProvider, AnimatedFragment, CSS_ASPECT_RATIO_SUPPORT, SPRING_STANDARD, SPRING_CAPTION, TWEEN_APPEAR, EASE_STANDARD } from "./chunk--page-helpers.mjs";
 import { interNamedFontDefs as _r, interHashedFontDefs } from "./chunk--font-data.mjs";
 var ICON_BG = {
   alt: "", fit: "fit", loading: "lazy",
@@ -79,7 +79,7 @@ var Lr = getFonts(W),
   Wr = ["htUh18eRJ"],
   Gr = "framer-zeXf1",
   Or = { htUh18eRJ: "framer-v-2yaxv0" };
-var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /* CSS-like easing animation */ },
+var Zr = TWEEN_APPEAR,
   Xr = {
     opacity: 1,
     rotate: 0,
@@ -105,7 +105,7 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
     x: 0,
     y: 0,
   },
-  Qr = { damping: 60, delay: 0, mass: 1, stiffness: 500, type: "spring" /* physics-based spring animation */ },
+  Qr = SPRING_CAPTION,
   Kr = ({ value: m, children: f }) => {
     let s = useContext(MotionContext),
       l = m ?? s.transition,
@@ -116,50 +116,50 @@ var Zr = { delay: 0.3, duration: 0.4, ease: [0.44, 0, 0.56, 1], type: "tween" /*
   re = ({ height: m, id: f, width: s, ...l }) => ({ ...l }),
   ee = (m, f) =>
     m.layoutDependency ? f.join("-") + m.layoutDependency : f.join("-"),
-  ae = forwardRef(function (m, f) {
-    let { activeLocale: s, setLocale: l } = useLocale(),
-      { style: d, className: g, layoutId: u, variant: P, ...D } = re(m),
+  ae = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
+      { style, className, layoutId, variant, ...restProps } = re(props),
       {
-        baseVariant: K,
-        classNames: $,
-        gestureHandlers: rr,
-        gestureVariant: er,
-        setGestureState: Y,
-        setVariant: Dr,
-        variants: U,
+        baseVariant,
+        classNames,
+        gestureHandlers,
+        gestureVariant,
+        setGestureState,
+        setVariant,
+        variants,
       } = useVariantState({
         cycleOrder: Wr,
         defaultVariant: "htUh18eRJ",
-        variant: P,
+        variant: variant,
         variantClassNames: Or,
       }),
-      p = ee(m, U),
-      k = useRef(null),
-      V = useId(),
-      S = [],
-      ar = useDeviceSize();
+      p = ee(props, variants),
+      localRef = useRef(null),
+      autoId = useId(),
+      additionalClassNames = [],
+      deviceSize = useDeviceSize();
     return jsx(LayoutGroup, {
-      id: u ?? V,
+      id: layoutId ?? autoId,
       children: jsx($r, {
-        animate: U,
+        animate: variants,
         initial: false,
         children: jsx(Kr, {
           value: Qr,
           children: jsxs(Tr, {
-            ...D,
-            ...rr,
+            ...restProps,
+            ...gestureHandlers,
             __framer__presenceAnimate: setAppearAnimationValues("animate", "2yaxv0", Xr, undefined),
             __framer__presenceInitial: setAppearAnimationValues("initial", "2yaxv0", Jr, undefined),
             __perspectiveFX: false,
             __smartComponentFX: true,
             __targetOpacity: 1,
-            className: cx(Gr, ...S, "framer-2yaxv0", g, $),
+            className: cx(Gr, ...additionalClassNames, "framer-2yaxv0", className, classNames),
             "data-framer-appear-id": "2yaxv0",
             "data-framer-name": "Variant 1",
             layoutDependency: p,
             layoutId: "htUh18eRJ",
-            ref: f ?? k,
-            style: { ...d },
+            ref: forwardedRef ?? localRef,
+            style: { ...style },
             children: [
               jsx(motion.div, {
                 background: {
@@ -268,7 +268,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
   se = () => typeof document < "u",
   Pr = "framer-9Y9Hr",
   le = { LKrog5PlS: "framer-v-1byrpbb", QhSlAYPb_: "framer-v-1t32e7q" },
-  Q = { damping: 30, delay: 0, mass: 1, stiffness: 400, type: "spring" /* physics-based spring animation */ },
+  Q = SPRING_STANDARD,
   ce = {
     opacity: 1,
     rotate: 0,
@@ -313,11 +313,11 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
           : "QhSlAYPb_",
     };
   },
-  ge = forwardRef(function (m, f) {
-    let { activeLocale: s, setLocale: l } = useLocale(),
-      { style: d, className: g, layoutId: u, variant: P, ...D } = he(m);
+  ge = forwardRef(function (props, forwardedRef) {
+    let { activeLocale, setLocale } = useLocale(),
+      { style, className, layoutId, variant, ...restProps } = he(props);
     (useEffect(() => {
-      let n = _(undefined, s);
+      let n = _(undefined, activeLocale);
       if (n.robots) {
         let c = document.querySelector('meta[name="robots"]');
         c
@@ -327,9 +327,9 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
             c.setAttribute("content", n.robots),
             document.head.appendChild(c));
       }
-    }, [undefined, s]),
+    }, [undefined, activeLocale]),
       useInsertionEffect(() => {
-        let n = _(undefined, s);
+        let n = _(undefined, activeLocale);
         if (((document.title = n.title || ""), n.viewport)) {
           var c;
           (c = document.querySelector('meta[name="viewport"]')) === null ||
@@ -348,32 +348,32 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
           ir &&
             document.body.classList.remove(`${n.bodyClassName}-framer-9Y9Hr`);
         };
-      }, [undefined, s]));
-    let [K, $] = useVariantState(P, me, false),
+      }, [undefined, activeLocale]));
+    let [K, $] = useVariantState(variant, me, false),
       rr = undefined,
-      er = useRef(null),
+      localRef = useRef(null),
       Y = () => (se() ? K !== "LKrog5PlS" : true),
       Dr = useRoute(),
-      U = useRef(null),
-      p = useRef(null),
-      k = useRef(null),
+      localRef2 = useRef(null),
+      localRef3 = useRef(null),
+      localRef4 = useRef(null),
       V = resolveLinks("DSPosq1GU"),
       S = resolveLinks("zQbFj9_vB"),
       ar = resolveLinks("Y8dEgTIYh"),
-      Vr = useId(),
+      autoId = useId(),
       tr = [cssClassScope, interExtraBoldCSSScope, interMediumCSSScope, qr, Hr];
     return (
       registerCursors({}),
       jsx(CursorContext.Provider, {
         value: { primaryVariantId: "QhSlAYPb_", variantClassNames: le },
         children: jsxs(LayoutGroup, {
-          id: u ?? Vr,
+          id: layoutId ?? autoId,
           children: [
             jsxs(motion.div, {
-              ...D,
-              className: cx(Pr, ...tr, "framer-1t32e7q", g),
-              ref: f ?? er,
-              style: { ...d },
+              ...restProps,
+              className: cx(Pr, ...tr, "framer-1t32e7q", className),
+              ref: forwardedRef ?? localRef,
+              style: { ...style },
               children: [
                 jsx(DeviceSizeContainer, {
                   children: jsx(cssSSRMinifiedHelper, {
@@ -583,8 +583,8 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(J, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: U, target: "f7_6jHMU5" },
-                                                { ref: p, target: "Rwa3hKEk5" },
+                                                { ref: localRef2, target: "f7_6jHMU5" },
+                                                { ref: localRef3, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
@@ -624,8 +624,8 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(J, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: p, target: "f7_6jHMU5" },
-                                                { ref: k, target: "Rwa3hKEk5" },
+                                                { ref: localRef3, target: "f7_6jHMU5" },
+                                                { ref: localRef4, target: "Rwa3hKEk5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
@@ -666,7 +666,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                                             children: jsx(J, {
                                               __framer__animateOnce: false,
                                               __framer__targets: [
-                                                { ref: k, target: "f7_6jHMU5" },
+                                                { ref: localRef4, target: "f7_6jHMU5" },
                                               ],
                                               __framer__threshold: 0.5,
                                               __framer__variantAppearEffectEnabled:
@@ -739,7 +739,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: V,
                           name: "Narrative Review",
-                          ref: U,
+                          ref: localRef2,
                           children: jsx("div", {
                             className: "framer-1izvqlh",
                             children: jsx("div", {
@@ -1208,7 +1208,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: S,
                           name: "Provider's Perspective",
-                          ref: p,
+                          ref: localRef3,
                           children: jsx("div", {
                             className: "framer-1sqmt7e",
                             children: jsx("div", {
@@ -1634,7 +1634,7 @@ var me = { LKrog5PlS: "(max-width: 1199px)", QhSlAYPb_: "(min-width: 1200px)" },
                           "data-hide-scrollbars": true,
                           id: ar,
                           name: "Section-Narrative review",
-                          ref: k,
+                          ref: localRef4,
                           children: jsx("div", {
                             className: "framer-4crxib",
                             children: jsx("div", {

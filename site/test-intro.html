@@ -28,7 +28,6 @@
     #debug-panel .log-entry { padding: 1px 0; border-bottom: 1px solid #1a1a1a; }
     #debug-panel .log-entry.warn { color: #ffa500; }
     #debug-panel .log-entry.error { color: #ff4444; }
-    #debug-panel .tag { color: #888; margin-right: 6px; }
     #debug-panel .time { color: #666; margin-right: 6px; font-size: 11px; }
 
     #controls {
@@ -75,7 +74,13 @@
   <div id="root"></div>
   <div id="debug-panel"></div>
 
-  <!-- Load React + ReactDOM + framer-motion from ESM CDN -->
+  <!--
+    Strategy: Load React + framer-motion from ESM CDN, then fetch our JSX
+    component source files, transpile them in-browser via Babel standalone,
+    and execute them. This avoids needing a build step.
+  -->
+  <script src="https://unpkg.com/@babel/standalone@7.24.0/babel.min.js"></script>
+
   <script type="importmap">
   {
     "imports": {
@@ -90,7 +95,7 @@
 
   <script type="module">
     // -----------------------------------------------------------------------
-    // 1. Intercept console.log to mirror into on-page debug panel
+    // 1. Debug panel — intercept console to mirror on-page
     // -----------------------------------------------------------------------
     const debugPanel = document.getElementById("debug-panel");
     const startTime = Date.now();
@@ -98,10 +103,7 @@
     function addLogEntry(level, args) {
       const entry = document.createElement("div");
       entry.className = `log-entry ${level}`;
-
       const elapsed = ((Date.now() - startTime) / 1000).toFixed(3);
-      const timeSpan = `<span class="time">${elapsed}s</span>`;
-
       const text = args.map(a => {
         if (typeof a === "object") {
           try { return JSON.stringify(a, null, 0); }
@@ -109,69 +111,138 @@
         }
         return String(a);
       }).join(" ");
-
-      entry.innerHTML = `${timeSpan}${text}`;
+      entry.innerHTML = `<span class="time">${elapsed}s</span>${escapeHtml(text)}`;
       debugPanel.appendChild(entry);
       debugPanel.scrollTop = debugPanel.scrollHeight;
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
     }
 
     const origLog = console.log;
     const origWarn = console.warn;
     const origError = console.error;
-
-    console.log = (...args) => { origLog(...args); addLogEntry("log", args); };
-    console.warn = (...args) => { origWarn(...args); addLogEntry("warn", args); };
-    console.error = (...args) => { origError(...args); addLogEntry("error", args); };
-
+    console.log = (...a) => { origLog(...a); addLogEntry("log", a); };
+    console.warn = (...a) => { origWarn(...a); addLogEntry("warn", a); };
+    console.error = (...a) => { origError(...a); addLogEntry("error", a); };
     window.clearDebugPanel = () => { debugPanel.innerHTML = ""; };
 
     console.log("=== IntroSlide Animation Debug Harness ===");
-    console.log("Open browser DevTools console for full object inspection");
+    console.log("Open browser DevTools for full object inspection.");
 
     // -----------------------------------------------------------------------
-    // 2. Import and render
+    // 2. Fetch JSX source, transpile with Babel, execute as module
     // -----------------------------------------------------------------------
+    import * as React from "react";
     import { createRoot } from "react-dom/client";
-    import { createElement as h } from "react";
+    import * as FramerMotion from "framer-motion";
 
-    // Dynamic import of our components (relative path from site/)
-    let IntroSlide, NeoflixLogo, RecordReflectRefine;
-    try {
-      console.log("importing IntroSlide...");
-      const mod = await import("../src/components/IntroSlide.mjs");
-      IntroSlide = mod.default;
-      console.log("IntroSlide imported OK:", typeof IntroSlide);
-    } catch (e) {
-      console.error("FAILED to import IntroSlide:", e.message);
-      console.error("Stack:", e.stack);
-    }
+    // Make these available globally so transpiled code can reference them
+    window.__React = React;
+    window.__FramerMotion = FramerMotion;
 
-    try {
-      console.log("importing NeoflixLogo...");
-      const mod2 = await import("../src/components/NeoflixLogo.mjs");
-      NeoflixLogo = mod2.default;
-      console.log("NeoflixLogo imported OK:", typeof NeoflixLogo);
-    } catch (e) {
-      console.error("FAILED to import NeoflixLogo:", e.message);
-    }
+    /**
+     * Fetch a .mjs file, transpile JSX, rewrite imports to use globals,
+     * and execute it. Returns the module's exports.
+     */
+    async function loadJSXModule(path, deps = {}) {
+      console.log(`fetching ${path}...`);
+      const resp = await fetch(path);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status} for ${path}`);
+      let source = await resp.text();
 
-    try {
-      console.log("importing RecordReflectRefine...");
-      const mod3 = await import("../src/components/RecordReflectRefine.mjs");
-      RecordReflectRefine = mod3.default;
-      console.log("RecordReflectRefine imported OK:", typeof RecordReflectRefine);
-    } catch (e) {
-      console.error("FAILED to import RecordReflectRefine:", e.message);
+      // Rewrite bare imports to use window globals
+      source = source
+        .replace(/import\s*\{[^}]*\}\s*from\s*["']react["'];?/g,
+          'const { useState, useEffect, useCallback, useMemo, useRef } = window.__React;')
+        .replace(/import\s*\*\s*as\s+React\s+from\s*["']react["'];?/g,
+          'const React = window.__React;')
+        .replace(/import\s*\{[^}]*\}\s*from\s*["']framer-motion["'];?/g,
+          'const { motion, useAnimationControls, AnimatePresence } = window.__FramerMotion;')
+        // Remove local component imports — we'll inject them as deps
+        .replace(/import\s+\w+\s+from\s*["']\.\/\w+\.mjs["'];?/g, '');
+
+      // Transpile JSX → createElement
+      console.log(`transpiling ${path} (${source.length} chars)...`);
+      const transpiled = Babel.transform(source, {
+        presets: ["react"],
+        filename: path,
+      }).code;
+
+      // Execute in a function scope, injecting dependencies
+      const moduleExports = {};
+      const depNames = Object.keys(deps);
+      const depValues = Object.values(deps);
+
+      const wrappedCode = `
+        let __default_export__;
+        const __named_exports__ = {};
+        ${transpiled
+          .replace(/export\s+default\s+function\s+(\w+)/g,
+            'function $1')
+          .replace(/export\s+default\s+/g, '__default_export__ = ')
+          .replace(/export\s+const\s+(\w+)/g, '__named_exports__.$1 = ')
+          .replace(/export\s*\{[^}]*\}/g, '')
+        }
+        // Capture default export — check if a named function was defined
+        ${transpiled.match(/export\s+default\s+function\s+(\w+)/)?.[1]
+          ? `__default_export__ = ${transpiled.match(/export\s+default\s+function\s+(\w+)/)[1]};`
+          : ''}
+        return { default: __default_export__, ...__named_exports__ };
+      `;
+
+      try {
+        const factory = new Function(...depNames, wrappedCode);
+        const result = factory(...depValues);
+        console.log(`${path} loaded OK:`, {
+          default: typeof result.default,
+          namedExports: Object.keys(result).filter(k => k !== 'default'),
+        });
+        return result;
+      } catch (e) {
+        console.error(`EXEC ERROR in ${path}:`, e.message);
+        console.error("First 500 chars of transpiled:", wrappedCode.slice(0, 500));
+        throw e;
+      }
     }
 
     // -----------------------------------------------------------------------
-    // 3. Render loop with variant switching
+    // 3. Load components in dependency order
+    // -----------------------------------------------------------------------
+    let IntroSlide = null;
+
+    try {
+      console.log("--- Loading NeoflixLogo ---");
+      const logoMod = await loadJSXModule("../src/components/NeoflixLogo.mjs");
+      const NeoflixLogo = logoMod.default;
+
+      console.log("--- Loading RecordReflectRefine ---");
+      const rrrMod = await loadJSXModule("../src/components/RecordReflectRefine.mjs");
+      const RecordReflectRefine = rrrMod.default;
+
+      console.log("--- Loading IntroSlide ---");
+      const slideMod = await loadJSXModule("../src/components/IntroSlide.mjs", {
+        NeoflixLogo,
+        RecordReflectRefine,
+      });
+      IntroSlide = slideMod.default;
+
+      console.log("=== All components loaded successfully ===");
+    } catch (e) {
+      console.error("FATAL: Component loading failed:", e.message);
+      console.error(e.stack);
+    }
+
+    // -----------------------------------------------------------------------
+    // 4. Render with variant switching
     // -----------------------------------------------------------------------
     const root = createRoot(document.getElementById("root"));
     let currentVariant = "desktop";
+    const h = React.createElement;
 
     function render() {
-      console.log(`--- rendering IntroSlide with variant="${currentVariant}" ---`);
+      console.log(`--- rendering IntroSlide variant="${currentVariant}" ---`);
 
       if (!IntroSlide) {
         root.render(h("div", {
@@ -185,7 +256,7 @@
           variant: currentVariant,
           fullHeight: true,
           logoProps: { autoPlayDelay: 800 },
-          style: { marginBottom: 280 },  // space for debug panel
+          style: { marginBottom: 280 },
         })
       );
     }

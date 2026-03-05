@@ -10,9 +10,10 @@
 
 | File | Lines | What it does |
 |------|-------|-------------|
-| `src/script_main--router.mjs` | 456 | Route table (34 routes), SPA hydration, page transitions |
+| `src/script_main--router.mjs` | 369 | Route table (34 routes), SPA hydration, page transitions |
 | `src/chunk--shared-components.mjs` | 915 | Lenis smooth scroll, cursor, nav items, noise overlay |
-| `src/toolbox-page-factory.mjs` | 359 | Shared template for all 29 Toolbox pages (header + GitBook iframe + nav) |
+| `src/toolbox-pages.mjs` | 68 | All 29 Toolbox route definitions (consolidated) |
+| `src/toolbox-page-factory.mjs` | 358 | Shared template for all 29 Toolbox pages (header + GitBook iframe + nav) |
 | `src/chunk--embed-component.mjs` | 508 | Iframe embed component + shared Toolbox nav bar |
 | `src/chunk--video-component-controls.mjs` | 328 | Video playback controls (scrubber, fullscreen) |
 | `src/chunk--video-player-component.mjs` | 328 | Video player (fill/contain/cover modes, InView loading) |
@@ -39,9 +40,9 @@
 - `tools/` — build/transform scripts (only needed to re-run deobfuscation)
 - `site/assets/` — binary media files
 
-**Low-value (tiny, repetitive, already maximally collapsed):**
-- `src/metadata--toolbox_*.mjs` (29 files × 11 lines) — identical metadata stubs
-- `src/page--Toolbox*.mjs` (29 files × 10 lines) — thin wrappers calling factory
+**Low-value (reference-only):**
+- `src/metadata--all-toolbox.mjs` — consolidated toolbox metadata (not used at runtime)
+- `src/metadata--*.mjs` (4 files) — page metadata stubs for home/neoflix/publications/worldmap
 
 ## Architecture
 
@@ -104,7 +105,7 @@ frmrduplicate/
 │   ├── page--home.mjs                 ← home page component (5,640 lines)
 │   ├── page--neoflix.mjs              ← neoflix page component (2,538 lines)
 │   ├── page--Publications.mjs         ← publications page component (2,321 lines)
-│   ├── page--Toolbox*.mjs (29 files)  ← thin wrappers → toolbox-page-factory
+│   ├── toolbox-pages.mjs              ← all 29 toolbox routes (consolidated)
 │   ├── toolbox-page-factory.mjs       ← shared toolbox template
 │   ├── chunk--shared-components.mjs   ← scroll, cursor, nav items
 │   ├── chunk--embed-component.mjs     ← iframe embed + toolbox nav
@@ -116,7 +117,8 @@ frmrduplicate/
 │       ├── chunk--react-and-framer-runtime.mjs
 │       └── chunk--framer-motion.mjs
 │   ├── docs-links.mjs                 ← GitBook URL lookup table
-│   ├── metadata--*.mjs                ← page metadata (SEO, breakpoints)
+│   ├── metadata--all-toolbox.mjs      ← consolidated toolbox metadata
+│   ├── metadata--{home,neoflix,publications,worldmapgit}.mjs ← page metadata
 │   └── css/                           ← extracted inline CSS per component
 │
 ├── css/                               ← deduplicated page CSS
@@ -240,7 +242,7 @@ Common utilities extracted from repeated patterns across all pages:
 3. **For specific page work:** The relevant `src/page--*.mjs` file (see component tables above)
 4. **For shared UI:** `src/chunk--shared-components.mjs`, `src/chunk--embed-component.mjs`
 5. **For shared utilities:** `src/chunk--page-helpers.mjs` (common patterns)
-6. **For Toolbox changes:** `src/toolbox-page-factory.mjs` + `src/docs-links.mjs`
+6. **For Toolbox changes:** `src/toolbox-pages.mjs` + `src/toolbox-page-factory.mjs` + `src/docs-links.mjs`
 7. **For CSS:** `css/base.css` (shared) + `css/*.page.css` (per-page)
 8. **Never:** `src/vendor/` (React + Framer runtime, 41K lines)
 

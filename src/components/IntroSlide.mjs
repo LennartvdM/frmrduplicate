@@ -135,8 +135,7 @@ export default function IntroSlide({
           whileHover={{ scale: 1.01, y: -4 }}
         >
           <NeoflixLogo
-            width="100%"
-            height={logoDimensions.height}
+            autoPlayDelay={1000}
             style={{ width: "100%", height: "auto" }}
             {...logoProps}
           />

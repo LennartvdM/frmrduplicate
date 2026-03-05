@@ -26,8 +26,14 @@
  *   - Logo entrance: spring delay 0.9s (damping:30, mass:1, stiffness:400)
  *   - Headline entrance: spring delay 1.0s (same spring)
  */
-import { useMemo } from "react";
+import { useMemo, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+
+// ---------------------------------------------------------------------------
+// Debug logging
+// ---------------------------------------------------------------------------
+const DEBUG = true;
+const log = (...args) => DEBUG && console.log("[IntroSlide]", ...args);
 import NeoflixLogo from "./NeoflixLogo.mjs";
 import RecordReflectRefine from "./RecordReflectRefine.mjs";
 
@@ -79,12 +85,39 @@ export default function IntroSlide({
 }) {
   const isMobile = variant === "mobile";
   const isDesktop = variant === "desktop";
+  const renderCount = useRef(0);
+  renderCount.current++;
+
+  log(`render #${renderCount.current}`, {
+    variant,
+    isMobile,
+    isDesktop,
+    fullHeight,
+    backgroundColor,
+    hasNavbar: !!navbar,
+  });
+
+  useEffect(() => {
+    log("MOUNTED — checking framer-motion availability...");
+    try {
+      // Verify motion is actually the framer-motion export
+      log("motion object keys:", Object.keys(motion).slice(0, 10));
+      log("motion.div exists:", !!motion.div);
+    } catch (e) {
+      log("ERROR checking motion:", e.message);
+    }
+    return () => log("UNMOUNTED");
+  }, []);
 
   // Logo dimensions scale with viewport
   const logoDimensions = useMemo(() => {
-    if (isMobile) return { width: "99.5vw", height: 242 };
-    if (isDesktop) return { width: "60vw", height: 221 };
-    return { width: "99.5vw", height: 242 }; // tablet
+    const dims = isMobile
+      ? { width: "99.5vw", height: 242 }
+      : isDesktop
+        ? { width: "60vw", height: 221 }
+        : { width: "99.5vw", height: 242 }; // tablet
+    log("logoDimensions:", dims);
+    return dims;
   }, [isMobile, isDesktop]);
 
   return (
@@ -133,6 +166,8 @@ export default function IntroSlide({
           animate={{ opacity: 1, scale: 1 }}
           transition={ENTRANCE_LOGO}
           whileHover={{ scale: 1.01, y: -4 }}
+          onAnimationStart={() => log("logo wrapper entrance START", ENTRANCE_LOGO)}
+          onAnimationComplete={() => log("logo wrapper entrance COMPLETE")}
         >
           <NeoflixLogo
             autoPlayDelay={1000}
@@ -156,6 +191,8 @@ export default function IntroSlide({
           initial={{ opacity: 0.001, scale: 1 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={ENTRANCE_HEADLINE}
+          onAnimationStart={() => log("headline wrapper entrance START", ENTRANCE_HEADLINE)}
+          onAnimationComplete={() => log("headline wrapper entrance COMPLETE")}
         >
           <RecordReflectRefine
             variant={isMobile ? "mobile" : "desktop"}

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IntroSlide Animation Debug</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Inter", sans-serif; background: #f5f5f5; }
+
+    /* Console overlay — mirrors browser console output on-page */
+    #debug-panel {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 280px;
+      background: rgba(0,0,0,0.92);
+      color: #0f0;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      overflow-y: auto;
+      padding: 8px 12px;
+      z-index: 9999;
+      border-top: 2px solid #333;
+    }
+    #debug-panel .log-entry { padding: 1px 0; border-bottom: 1px solid #1a1a1a; }
+    #debug-panel .log-entry.warn { color: #ffa500; }
+    #debug-panel .log-entry.error { color: #ff4444; }
+    #debug-panel .tag { color: #888; margin-right: 6px; }
+    #debug-panel .time { color: #666; margin-right: 6px; font-size: 11px; }
+
+    #controls {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 9999;
+      display: flex;
+      gap: 8px;
+    }
+    #controls button {
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: white;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    #controls button:hover { background: #eee; }
+    #controls button.active { background: #48c1c4; color: white; border-color: #48c1c4; }
+
+    #variant-label {
+      position: fixed;
+      top: 14px;
+      left: 12px;
+      z-index: 9999;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div id="variant-label">variant: desktop</div>
+  <div id="controls">
+    <button onclick="setVariant('desktop')" class="active" id="btn-desktop">Desktop</button>
+    <button onclick="setVariant('tablet')" id="btn-tablet">Tablet</button>
+    <button onclick="setVariant('mobile')" id="btn-mobile">Mobile</button>
+    <button onclick="clearDebugPanel()">Clear Log</button>
+  </div>
+
+  <div id="root"></div>
+  <div id="debug-panel"></div>
+
+  <!-- Load React + ReactDOM + framer-motion from ESM CDN -->
+  <script type="importmap">
+  {
+    "imports": {
+      "react": "https://esm.sh/react@18.2.0",
+      "react-dom": "https://esm.sh/react-dom@18.2.0",
+      "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+      "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime",
+      "framer-motion": "https://esm.sh/framer-motion@11.0.3?external=react,react-dom"
+    }
+  }
+  </script>
+
+  <script type="module">
+    // -----------------------------------------------------------------------
+    // 1. Intercept console.log to mirror into on-page debug panel
+    // -----------------------------------------------------------------------
+    const debugPanel = document.getElementById("debug-panel");
+    const startTime = Date.now();
+
+    function addLogEntry(level, args) {
+      const entry = document.createElement("div");
+      entry.className = `log-entry ${level}`;
+
+      const elapsed = ((Date.now() - startTime) / 1000).toFixed(3);
+      const timeSpan = `<span class="time">${elapsed}s</span>`;
+
+      const text = args.map(a => {
+        if (typeof a === "object") {
+          try { return JSON.stringify(a, null, 0); }
+          catch { return String(a); }
+        }
+        return String(a);
+      }).join(" ");
+
+      entry.innerHTML = `${timeSpan}${text}`;
+      debugPanel.appendChild(entry);
+      debugPanel.scrollTop = debugPanel.scrollHeight;
+    }
+
+    const origLog = console.log;
+    const origWarn = console.warn;
+    const origError = console.error;
+
+    console.log = (...args) => { origLog(...args); addLogEntry("log", args); };
+    console.warn = (...args) => { origWarn(...args); addLogEntry("warn", args); };
+    console.error = (...args) => { origError(...args); addLogEntry("error", args); };
+
+    window.clearDebugPanel = () => { debugPanel.innerHTML = ""; };
+
+    console.log("=== IntroSlide Animation Debug Harness ===");
+    console.log("Open browser DevTools console for full object inspection");
+
+    // -----------------------------------------------------------------------
+    // 2. Import and render
+    // -----------------------------------------------------------------------
+    import { createRoot } from "react-dom/client";
+    import { createElement as h } from "react";
+
+    // Dynamic import of our components (relative path from site/)
+    let IntroSlide, NeoflixLogo, RecordReflectRefine;
+    try {
+      console.log("importing IntroSlide...");
+      const mod = await import("../src/components/IntroSlide.mjs");
+      IntroSlide = mod.default;
+      console.log("IntroSlide imported OK:", typeof IntroSlide);
+    } catch (e) {
+      console.error("FAILED to import IntroSlide:", e.message);
+      console.error("Stack:", e.stack);
+    }
+
+    try {
+      console.log("importing NeoflixLogo...");
+      const mod2 = await import("../src/components/NeoflixLogo.mjs");
+      NeoflixLogo = mod2.default;
+      console.log("NeoflixLogo imported OK:", typeof NeoflixLogo);
+    } catch (e) {
+      console.error("FAILED to import NeoflixLogo:", e.message);
+    }
+
+    try {
+      console.log("importing RecordReflectRefine...");
+      const mod3 = await import("../src/components/RecordReflectRefine.mjs");
+      RecordReflectRefine = mod3.default;
+      console.log("RecordReflectRefine imported OK:", typeof RecordReflectRefine);
+    } catch (e) {
+      console.error("FAILED to import RecordReflectRefine:", e.message);
+    }
+
+    // -----------------------------------------------------------------------
+    // 3. Render loop with variant switching
+    // -----------------------------------------------------------------------
+    const root = createRoot(document.getElementById("root"));
+    let currentVariant = "desktop";
+
+    function render() {
+      console.log(`--- rendering IntroSlide with variant="${currentVariant}" ---`);
+
+      if (!IntroSlide) {
+        root.render(h("div", {
+          style: { padding: 40, color: "red", fontSize: 20 }
+        }, "Failed to load IntroSlide — check console errors above"));
+        return;
+      }
+
+      root.render(
+        h(IntroSlide, {
+          variant: currentVariant,
+          fullHeight: true,
+          logoProps: { autoPlayDelay: 800 },
+          style: { marginBottom: 280 },  // space for debug panel
+        })
+      );
+    }
+
+    window.setVariant = (v) => {
+      currentVariant = v;
+      document.getElementById("variant-label").textContent = `variant: ${v}`;
+      document.querySelectorAll("#controls button").forEach(b => b.classList.remove("active"));
+      document.getElementById(`btn-${v}`).classList.add("active");
+      render();
+    };
+
+    render();
+  </script>
+</body>
+</html>

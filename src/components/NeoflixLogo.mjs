@@ -18,8 +18,14 @@
  * Spring config (SPRING_HEAVY): damping: 24, mass: 9, stiffness: 500
  * — slow, weighty overshoot. The signature Neoflix feel.
  */
-import { useState, useEffect, useCallback } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { motion, useAnimationControls } from "framer-motion";
+
+// ---------------------------------------------------------------------------
+// Debug logging — open the browser console to see animation state changes
+// ---------------------------------------------------------------------------
+const DEBUG = true;
+const log = (...args) => DEBUG && console.log("[NeoflixLogo]", ...args);
 
 // ---------------------------------------------------------------------------
 // Spring configs (from chunk--page-helpers.mjs)
@@ -114,18 +120,39 @@ export default function NeoflixLogo({
 }) {
   const [assembled, setAssembled] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const mountTime = useRef(Date.now());
+  const renderCount = useRef(0);
+  renderCount.current++;
+
+  log(`render #${renderCount.current}`, {
+    assembled,
+    hovered,
+    autoPlayDelay,
+    timeSinceMount: `${Date.now() - mountTime.current}ms`,
+  });
 
   // Auto-unfurl after mount
   useEffect(() => {
-    const timer = setTimeout(() => setAssembled(true), autoPlayDelay);
-    return () => clearTimeout(timer);
+    log(`scheduling unfurl in ${autoPlayDelay}ms`);
+    const timer = setTimeout(() => {
+      log(`unfurl timer fired — setting assembled=true (after ${Date.now() - mountTime.current}ms)`);
+      setAssembled(true);
+    }, autoPlayDelay);
+    return () => {
+      log("cleanup: clearing unfurl timer");
+      clearTimeout(timer);
+    };
   }, [autoPlayDelay]);
 
   // Click: explode apart, then reassemble
   const handleClick = useCallback(() => {
+    log("click — exploding (assembled=false)");
     onClick?.();
     setAssembled(false);
-    setTimeout(() => setAssembled(true), autoPlayDelay);
+    setTimeout(() => {
+      log("click reassembly timer fired — setting assembled=true");
+      setAssembled(true);
+    }, autoPlayDelay);
   }, [onClick, autoPlayDelay]);
 
   // Compute target rotations
@@ -141,6 +168,12 @@ export default function NeoflixLogo({
       ? OUTER_RING.hover                         // +5°  (gentle nudge)
       : OUTER_RING.assembled;                    //  0°  (resting)
 
+  log("animation targets →", {
+    innerTarget,
+    outerTarget,
+    state: !assembled ? "SPLAYED" : hovered ? "HOVERED" : "ASSEMBLED",
+  });
+
   return (
     <motion.div
       className={`neoflix-logo ${className}`}
@@ -153,13 +186,15 @@ export default function NeoflixLogo({
         ...style,
       }}
       // Hover detected on the whole container, propagated to rings via state
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
+      onHoverStart={() => { log("hover START"); setHovered(true); }}
+      onHoverEnd={() => { log("hover END"); setHovered(false); }}
       onTap={handleClick}
       // Entrance fade
       initial={{ opacity: 0.001, scale: 1.01 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={SPRING_ENTRANCE}
+      onAnimationStart={() => log("container entrance animation START", { opacity: 0.001, "→": 1 })}
+      onAnimationComplete={() => log("container entrance animation COMPLETE")}
     >
       {/* Inner Ring */}
       <motion.div
@@ -174,6 +209,8 @@ export default function NeoflixLogo({
         }}
         animate={{ rotate: innerTarget }}
         transition={SPRING_HEAVY}
+        onAnimationStart={() => log(`inner ring animation START → rotate: ${innerTarget}°`)}
+        onAnimationComplete={() => log(`inner ring animation COMPLETE at ${innerTarget}°`)}
       >
         <InnerRingSVG />
       </motion.div>
@@ -191,6 +228,8 @@ export default function NeoflixLogo({
         }}
         animate={{ rotate: outerTarget }}
         transition={SPRING_HEAVY}
+        onAnimationStart={() => log(`outer ring animation START → rotate: ${outerTarget}°`)}
+        onAnimationComplete={() => log(`outer ring animation COMPLETE at ${outerTarget}°`)}
       >
         <OuterRingSVG />
       </motion.div>

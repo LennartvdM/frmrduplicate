@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "framer-motion": "^10.12.16",
+    "lucide-react": "^0.536.0",
     "neoflix-intro-card": "file:neoflix-intro-card",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

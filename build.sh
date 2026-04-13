@@ -24,7 +24,7 @@ cd ..
 echo "--- Building frankenstein ---"
 cd frankenstein
 npm ci --prefer-offline 2>/dev/null || npm install
-npx vite build --outDir "../$OUT/frankenstein"
+VITE_BASE=/frankenstein/ npx vite build --outDir "../$OUT/frankenstein"
 cd ..
 
 # 4. Copy frmrduplicate (static site from site/ directory)

@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useMotionValue, animate } from 'framer-motion';
 import useViewTransition from '../hooks/useViewTransition';
+import { assetUrl } from '../utils/assetUrl';
 
 const NAV_LINKS = [
   { label: 'Neoflix', to: '/neoflix' },
@@ -32,7 +33,7 @@ function FaviconLogo({ onClick }) {
     >
       <motion.img
         key={spinKey}
-        src="/favicon.svg"
+        src={assetUrl("/favicon.svg")}
         alt="Home"
         width="32"
         height="32"

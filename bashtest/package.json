@@ -1,0 +1,36 @@
+{
+  "name": "bashtest",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "watch": "vite build --watch",
+    "taskmaster": "npx taskmaster",
+    "taskmaster:dev": "npx taskmaster dev",
+    "taskmaster:build": "npx taskmaster build",
+    "taskmaster:preview": "npx taskmaster preview",
+    "deploy:netlify": "npx netlify deploy --prod",
+    "prebuild": "git rev-parse --short HEAD > src/version.txt"
+  },
+  "dependencies": {
+    "framer-motion": "^10.12.16",
+    "neoflix-intro-card": "file:neoflix-intro-card",
+    "lucide-react": "^0.536.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.30.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.4.1",
+    "autoprefixer": "^10.4.14",
+    "parse-author": "^2.0.0",
+    "postcss": "^8.4.21",
+    "rimraf": "^6.0.1",
+    "svelte": "^5.28.2",
+    "tailwindcss": "^3.3.2",
+    "task-master-ai": "^0.12.1",
+    "terser": "^5.39.0",
+    "vite": "^4.2.0"
+  }
+}

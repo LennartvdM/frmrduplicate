@@ -9,7 +9,7 @@ import IntroSection from '../components/sections/IntroSection';
 // Lazy load heavy sections to reduce initial bundle
 const MedicalSectionV2 = lazy(() => import('../components/sections/MedicalSectionV2'));
 const MedicalSectionV3 = lazy(() => import('../components/sections/MedicalSectionV3'));
-const WorldMapSection = lazy(() => import('../components/sections/worldmap/WorldMapSection'));
+import WorldMapEmbed from '../components/sections/WorldMapEmbed';
 const ContactSection = lazy(() => import('../components/sections/ContactSection'));
 
 const LazySection = ({ component: Component, ...props }) => (
@@ -20,7 +20,7 @@ const LazySection = ({ component: Component, ...props }) => (
 
 const LazyMedicalV2 = (props) => <LazySection component={MedicalSectionV2} {...props} />;
 const LazyMedicalV3 = (props) => <LazySection component={MedicalSectionV3} {...props} />;
-const LazyWorldMap = (props) => <LazySection component={WorldMapSection} {...props} />;
+const LazyWorldMap = () => <WorldMapEmbed />;
 const LazyContact = (props) => <LazySection component={ContactSection} {...props} />;
 
 const sections = [

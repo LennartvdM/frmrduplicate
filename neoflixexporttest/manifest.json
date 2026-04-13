@@ -1,0 +1,181 @@
+{
+  "meta": {
+    "sourceUrl": "https://www.neoflix.care/",
+    "exportedAt": "2026-04-13T18:37:07.838Z",
+    "totalRoutes": 34,
+    "totalAssets": 275,
+    "mode": "serverless-fetch"
+  },
+  "routes": {
+    "/toolbox_case_succcessstories": {
+      "path": "/toolbox_case_succcessstories",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/toolbox_case_australia": {
+      "path": "/toolbox_case_australia",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/toolbox_case_philadelphia": {
+      "path": "/toolbox_case_philadelphia",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/toolbox_case_vienna": {
+      "path": "/toolbox_case_vienna",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Case_selection": {
+      "path": "/Toolbox_Case_selection",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/toolbox_case_leiden": {
+      "path": "/toolbox_case_leiden",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_After_the_Intervention": {
+      "path": "/Toolbox_After_the_Intervention",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Share_your_experience": {
+      "path": "/Toolbox_Share_your_experience",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Input_for_research": {
+      "path": "/Toolbox_Input_for_research",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Let's_Neoflix": {
+      "path": "/Toolbox_Let's_Neoflix",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Tool_for_implementing_new_practices": {
+      "path": "/Toolbox_Tool_for_implementing_new_practices",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Preparation_and_Consent": {
+      "path": "/Toolbox_Preparation_and_Consent",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Questions_to_ask_during_previewing": {
+      "path": "/Toolbox_Questions_to_ask_during_previewing",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Unburdening_the_process": {
+      "path": "/Toolbox_Unburdening_the_process",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Learning_from_success_stories": {
+      "path": "/Toolbox_Learning_from_success_stories",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_How_it_works": {
+      "path": "/Toolbox_How_it_works",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Different_Approach": {
+      "path": "/Toolbox_Different_Approach",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_A_Safe_Learning_Environment": {
+      "path": "/Toolbox_A_Safe_Learning_Environment",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Tasks_of_the_chair": {
+      "path": "/Toolbox_Tasks_of_the_chair",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Revolutionize_Reflection_in_medical_care:_join_the_network": {
+      "path": "/Toolbox_Revolutionize_Reflection_in_medical_care:_join_the_network",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Metadata_and_Archiving": {
+      "path": "/Toolbox_Metadata_and_Archiving",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Recordings_for_research": {
+      "path": "/Toolbox_Recordings_for_research",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Pioneer_Team": {
+      "path": "/Toolbox_Pioneer_Team",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Education_And_Training": {
+      "path": "/Toolbox_Education_And_Training",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox_Learning_From_Variety": {
+      "path": "/Toolbox_Learning_From_Variety",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox-Safe_Simple_Small": {
+      "path": "/Toolbox-Safe_Simple_Small",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox-Reflect": {
+      "path": "/Toolbox-Reflect",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox-Planning_Your_Initiative": {
+      "path": "/Toolbox-Planning_Your_Initiative",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Toolbox": {
+      "path": "/Toolbox",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/Publications": {
+      "path": "/Publications",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/contact": {
+      "path": "/contact",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/neoflix": {
+      "path": "/neoflix",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/worldmapgit": {
+      "path": "/worldmapgit",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    },
+    "/": {
+      "path": "/",
+      "title": "Hospital Video Recording and Medical Training | Neoflix",
+      "source": "search-index"
+    }
+  }
+}

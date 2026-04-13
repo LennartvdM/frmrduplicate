@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
+import NeoflixPage from './pages/NeoflixPage';
 import PublicationsPage from './pages/PublicationsPage';
-import FramerEmbed from './components/FramerEmbed';
 import Toolbox from './pages/Toolbox';
 import ToolboxEmbed from './components/ToolboxEmbed';
 
@@ -18,11 +18,11 @@ function AppShell() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/neoflix" element={<FramerEmbed page="neoflix.html" title="Neoflix" />} />
+        <Route path="/neoflix" element={<NeoflixPage />} />
         <Route path="/publications" element={<PublicationsPage />} />
+        <Route path="/contact" element={<NeoflixPage />} />
         <Route path="/toolbox" element={<Toolbox />} />
         <Route path="/toolbox/:slug" element={<ToolboxEmbed />} />
-        <Route path="/contact" element={<FramerEmbed page="neoflix.html" title="Contact" />} />
       </Routes>
     </div>
   );

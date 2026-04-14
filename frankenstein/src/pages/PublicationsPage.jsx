@@ -8,6 +8,9 @@ import FrmrPageMount from '../components/FrmrPageMount';
 
 export default function PublicationsPage() {
   return (
-    <FrmrPageMount chunkFile="wipgqg_rrnb9vnxe9-sx-yopnjd6w2fz2buc9b-zrv8.mg5izp6c.mjs" />
+    <FrmrPageMount
+      chunkFile="wipgqg_rrnb9vnxe9-sx-yopnjd6w2fz2buc9b-zrv8.mg5izp6c.mjs"
+      cssFile="publications.ssr.css"
+    />
   );
 }

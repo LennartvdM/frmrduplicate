@@ -2,27 +2,25 @@ import React, { useEffect, useRef } from 'react';
 import { assetUrl } from '../utils/assetUrl';
 
 /**
- * Mounts a frmrduplicate page via its internal Framer routeId.
+ * Mounts a frmrduplicate page chunk (neoflix / publications) verbatim.
  *
- * Same "ugly but faithful" pattern as the worldmap: dynamically import
- * the Framer bootstrap and let it render the page using the same
- * getPageRoot machinery the real /frmrduplicate site uses — so the
- * page receives all three context providers (Site / Router /
- * PageTransitions) it expects, and internal hooks like useRoute /
- * useBreakpoint return real values.
+ * Same pattern as slide 4's worldmap: dynamically import the compiled
+ * Framer chunk and render its default export via the bundled React. No
+ * reimplementation — the page is literally the same module the user
+ * saw running on /frmrduplicate, just mounted inside frankenstein.
  *
  * Props:
- *   routeId — the internal Framer route ID for the page to mount.
- *             'bzydBB85Y' → /neoflix
- *             'aLuYbVoBY' → /Publications
- *   cssFile — filename (under /public/frmr-pages/) of the page's SSR
- *             stylesheet. Framer's SSR HTML inlines this ~120 KB block
- *             and it isn't bundled in the .mjs chunks; without it the
- *             flex grid collapses. Loaded as a <link> while mounted
- *             and removed on unmount so the global resets inside don't
- *             bleed into other routes.
+ *   chunkFile — filename of the page chunk under /public/frmr-pages/.
+ *   cssFile   — filename of the page's SSR stylesheet under
+ *               /public/frmr-pages/. This CSS normally lives inline in
+ *               Framer's SSR HTML (~120 KB per page) and is NOT bundled
+ *               into the .mjs chunks, so without it the layout
+ *               collapses (sidebar + content stack on top of each other).
+ *               We load it as a regular <link> while the mount is
+ *               active and remove it on unmount so the global resets
+ *               don't leak to other routes.
  */
-export default function FrmrPageMount({ routeId, cssFile }) {
+export default function FrmrPageMount({ chunkFile, cssFile }) {
   const mountRef = useRef(null);
   const cleanupRef = useRef(null);
 
@@ -32,6 +30,7 @@ export default function FrmrPageMount({ routeId, cssFile }) {
     let styleLink = null;
 
     const bootstrapUrl = assetUrl('/frmr-pages/bootstrap.mjs');
+    const pageUrl = assetUrl(`/frmr-pages/${chunkFile}`);
 
     const ensureCss = () => new Promise((resolve) => {
       if (!cssFile) return resolve();
@@ -43,7 +42,7 @@ export default function FrmrPageMount({ routeId, cssFile }) {
       styleLink.href = cssUrl;
       styleLink.dataset.frmrPage = cssFile;
       styleLink.onload = () => resolve();
-      styleLink.onerror = () => resolve();
+      styleLink.onerror = () => resolve(); // proceed even on failure
       document.head.appendChild(styleLink);
     });
 
@@ -51,7 +50,7 @@ export default function FrmrPageMount({ routeId, cssFile }) {
       .then(() => import(/* @vite-ignore */ bootstrapUrl))
       .then((mod) => {
         if (cancelled || !mountRef.current) return;
-        return mod.mountFrmrPage(mountRef.current, routeId);
+        return mod.mountFrmrPage(mountRef.current, pageUrl);
       })
       .then((cleanup) => {
         if (cancelled && cleanup) cleanup();
@@ -59,7 +58,7 @@ export default function FrmrPageMount({ routeId, cssFile }) {
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
-        console.error('[FrmrPageMount] failed to mount', routeId, err);
+        console.error('[FrmrPageMount] failed to mount', chunkFile, err);
       });
 
     return () => {
@@ -68,11 +67,16 @@ export default function FrmrPageMount({ routeId, cssFile }) {
         cleanupRef.current();
         cleanupRef.current = null;
       }
+      // Remove the stylesheet so the Framer SSR resets don't bleed into
+      // other routes (they target html/body/* globally).
       if (styleLink && styleLink.parentNode) {
         styleLink.parentNode.removeChild(styleLink);
       }
     };
-  }, [routeId, cssFile]);
+  }, [chunkFile, cssFile]);
 
+  // `.frmr-mount` is the hook for the CSS that hides the Framer navbar
+  // shipped inside the chunk (see index.css). Frankenstein's own Navbar
+  // stays visible on these routes.
   return <div ref={mountRef} className="frmr-mount" style={{ minHeight: '100vh', width: '100%' }} />;
 }

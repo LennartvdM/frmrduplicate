@@ -30,12 +30,10 @@ const sections = [
 
 const Home = () => {
   return (
-    <>
-      <ScrollSnap>
-        <SectionManager sections={sections} />
-      </ScrollSnap>
+    <ScrollSnap>
+      <SectionManager sections={sections} />
       <Footer />
-    </>
+    </ScrollSnap>
   );
 };
 

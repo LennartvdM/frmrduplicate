@@ -363,8 +363,9 @@ const ScrollSnap = ({ children }) => {
           // NO scrollPaddingTop - sections start at y=0 consistently
           // Content within sections must account for navbar offset
           // CRITICAL: Disable scroll-snap-type during rotation to prevent oscillation
-          // This is the CSS-level fix that allows smooth rotation handling
-          scrollSnapType: isRotating ? 'none' : 'y mandatory',
+          // Use proximity (not mandatory) so free-scrolling past the last
+          // section can reveal the footer without snapping back.
+          scrollSnapType: isRotating ? 'none' : 'y proximity',
           scrollBehavior: isRotating ? 'auto' : 'smooth',
           // Prevent layout shifts during orientation changes
           willChange: 'scroll-position',

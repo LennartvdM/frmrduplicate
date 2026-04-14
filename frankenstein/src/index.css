@@ -145,3 +145,11 @@ html.is-resizing [data-tablet-layout="true"] {
     animation: none !important;
   }
 }
+
+/* /neoflix and /publications mount frmrduplicate page chunks that ship
+   their own Framer navbar. Frankenstein's own navbar is used instead,
+   so hide the Framer nav (and its spacer) within the mount container. */
+.frmr-mount [data-framer-name="Nav"],
+.frmr-mount [data-framer-name="navfiller"] {
+  display: none !important;
+}

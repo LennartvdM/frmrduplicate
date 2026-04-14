@@ -29,6 +29,9 @@ const sections = [
 ];
 
 const Home = () => {
+  // Footer sits inside ScrollSnap so scrolling past the last section reveals
+  // it. Its scroll-snap-align:end makes it a reachable snap target without
+  // becoming its own full slide.
   return (
     <ScrollSnap>
       <SectionManager sections={sections} />

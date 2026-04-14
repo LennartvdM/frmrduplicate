@@ -363,9 +363,11 @@ const ScrollSnap = ({ children }) => {
           // NO scrollPaddingTop - sections start at y=0 consistently
           // Content within sections must account for navbar offset
           // CRITICAL: Disable scroll-snap-type during rotation to prevent oscillation
-          // Use proximity (not mandatory) so free-scrolling past the last
-          // section can reveal the footer without snapping back.
-          scrollSnapType: isRotating ? 'none' : 'y proximity',
+          // Stays `y mandatory` for crisp snapping between slides 1-4. The
+          // footer has scroll-snap-align: end so it's a reachable snap point
+          // (its bottom aligns to viewport bottom) without becoming its own
+          // full slide — user sees slide 4 tail + footer together.
+          scrollSnapType: isRotating ? 'none' : 'y mandatory',
           scrollBehavior: isRotating ? 'auto' : 'smooth',
           // Prevent layout shifts during orientation changes
           willChange: 'scroll-position',

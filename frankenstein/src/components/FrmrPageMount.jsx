@@ -48,5 +48,8 @@ export default function FrmrPageMount({ chunkFile }) {
     };
   }, [chunkFile]);
 
-  return <div ref={mountRef} style={{ minHeight: '100vh', width: '100%' }} />;
+  // `.frmr-mount` is the hook for the CSS that hides the Framer navbar
+  // shipped inside the chunk (see index.css). Frankenstein's own Navbar
+  // stays visible on these routes.
+  return <div ref={mountRef} className="frmr-mount" style={{ minHeight: '100vh', width: '100%' }} />;
 }

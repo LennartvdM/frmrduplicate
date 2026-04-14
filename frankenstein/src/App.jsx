@@ -13,11 +13,6 @@ function AppShell() {
   const isPublications = location.pathname === '/publications';
   const isToolbox = location.pathname.startsWith('/toolbox');
 
-  // NOTE: /neoflix and /publications mount frmrduplicate page chunks that
-  // ship their own Framer navbar, but frankenstein's Navbar is used on all
-  // routes. The Framer nav is hidden via CSS (`.frmr-mount [data-framer-name=Nav]`
-  // in index.css) rather than stacking two navbars.
-
   return (
     <div className={`min-h-screen ${isNeoflix || isPublications || isToolbox ? '' : 'bg-[#F5F9FC]'}`}>
       <Navbar />

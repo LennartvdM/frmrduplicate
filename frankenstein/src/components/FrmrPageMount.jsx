@@ -8,6 +8,11 @@ import { assetUrl } from '../utils/assetUrl';
  * Framer chunk and render its default export via the bundled React. No
  * reimplementation — the page is literally the same module the user
  * saw running on /frmrduplicate, just mounted inside frankenstein.
+ *
+ * Props:
+ *   chunkFile — filename (not URL) of the page chunk under
+ *               /public/frmr-pages/. Resolved via assetUrl so it works
+ *               under the /frankenstein/ base path on the combined deploy.
  */
 export default function FrmrPageMount({ chunkFile }) {
   const mountRef = useRef(null);

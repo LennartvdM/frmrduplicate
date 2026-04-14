@@ -1,21 +1,13 @@
 /**
- * Neoflix — uses the shared BlogPage layout (same module as /publications).
- * Only the content differs: product sections live in data/neoflixPage.js.
+ * /neoflix — mounts the compiled frmrduplicate neoflix page verbatim.
+ * The chunk brings its own React, navbar, backdrop, sidebar and
+ * content. See public/frmr-pages/ for the raw chunks.
  */
 import React from 'react';
-import { BlogPage } from '../components/shared';
-import {
-  sections,
-  sectionToVideo,
-  deckSources,
-} from '../data/neoflixPage';
+import FrmrPageMount from '../components/FrmrPageMount';
 
 export default function NeoflixPage() {
   return (
-    <BlogPage
-      sections={sections}
-      sectionToVideo={sectionToVideo}
-      deckSources={deckSources}
-    />
+    <FrmrPageMount chunkFile="r-i-lvusp0upuyen_-noede9lquwyi4ivhta2kytius.3x4mi74y.mjs" />
   );
 }

@@ -6,32 +6,19 @@ import { renderMarkdown } from '../../utils/renderMarkdown';
 /**
  * BlogPage — shared layout for /neoflix and /publications.
  *
- * Native React rebuild of frmrduplicate's blog-style page. Content is
- * passed in as props so each route keeps its own `data/*Page.js` sections.
- *
- * Layout:
- *   - Fixed full-bleed video backdrop (0.5x playback, crossfades per
- *     active section) behind everything at z-index 0.
- *   - Centered 2-column grid: sticky sidebar (navy, 15 px radius) on the
- *     left, content column (cream translucent cards, 10 px radius) on
- *     the right. 1540 px max-width overall.
- *   - Scroll-spy drives the sidebar active state + the backdrop video.
- *
- * Visual tokens taken from frmrduplicate's neoflix.page.css:
- *   #f5f9fc   page background
- *   #1c3664   sidebar background
- *   #72c2c2   sidebar active accent (teal)
- *   #383437   heading text
- *   #111111   body text
- *   rgba(245,249,252,0.8)  content-card background
+ * Native React rebuild of frmrduplicate's blog-style page. Content stays
+ * in each page's `data/*Page.js` file (unchanged markdown strings); this
+ * component auto-detects publications-style metadata (bold link +
+ * italic citation + `---`) and renders those as structured cards while
+ * falling through to plain markdown for everything else.
  */
 export default function BlogPage({ sections, sectionToVideo, deckSources }) {
   const sectionIds = sections.map((s) => s.id);
   const active = useScrollSpy(sectionIds, 120);
+  const [hovered, setHovered] = useState(null);
   const backdropRef = useRef(null);
   const [loadedSources, setLoadedSources] = useState(() => new Set());
 
-  // Ambient 0.5x playback on every <video> in the backdrop.
   useEffect(() => {
     if (!backdropRef.current) return;
     backdropRef.current.querySelectorAll('video').forEach((v) => {
@@ -42,7 +29,6 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
     });
   }, [loadedSources]);
 
-  // Lock the html/body background while this page is mounted.
   useEffect(() => {
     const html = document.documentElement;
     const body = document.body;
@@ -56,11 +42,9 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
     };
   }, []);
 
-  // Which backdrop video matches the current active section.
   const targetVideo = sectionToVideo?.[active];
   const targetIndex = deckSources?.indexOf(targetVideo) ?? -1;
 
-  // Soften content opacity briefly during video crossfade.
   const [bgTransitioning, setBgTransitioning] = useState(false);
   const prevTargetIndex = useRef(targetIndex);
   useLayoutEffect(() => {
@@ -147,57 +131,67 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
             top: 112,
             backgroundColor: '#1c3664',
             borderRadius: 15,
-            padding: '28px 20px',
+            padding: '24px 18px',
             color: '#f5f9fc',
             fontFamily: 'Inter, sans-serif',
           }}
         >
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
-            {sections.map((s, idx) => {
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column' }}>
+            {sections.map((s) => {
               const isActive = s.id === active;
+              const isHovered = hovered === s.id;
+              const markerWidth = isActive ? 26 : isHovered ? 14 : 4;
+              const markerColor = isActive
+                ? '#ffffff'
+                : isHovered
+                ? 'rgba(255, 255, 255, 0.8)'
+                : 'rgba(255, 255, 255, 0.4)';
+              const textColor = isActive
+                ? '#ffffff'
+                : isHovered
+                ? 'rgba(255, 255, 255, 0.9)'
+                : 'rgba(255, 255, 255, 0.55)';
               return (
                 <li key={s.id}>
-                  <button
+                  <motion.button
                     type="button"
                     onClick={() => handleSidebarClick(s.id)}
+                    onMouseEnter={() => setHovered(s.id)}
+                    onMouseLeave={() => setHovered((h) => (h === s.id ? null : h))}
+                    animate={{ color: textColor }}
+                    transition={{ color: { duration: 0.32, ease: [0.4, 0, 0.2, 1] } }}
                     style={{
                       width: '100%',
                       textAlign: 'left',
-                      padding: '10px 12px',
-                      borderRadius: 10,
+                      padding: '10px 6px',
                       border: 'none',
-                      background: isActive ? 'rgba(114, 194, 194, 0.18)' : 'transparent',
-                      color: isActive ? '#72c2c2' : 'rgba(245, 249, 252, 0.72)',
-                      fontWeight: isActive ? 600 : 500,
-                      fontSize: 13,
+                      background: 'transparent',
+                      fontSize: 15,
                       lineHeight: 1.4,
+                      fontWeight: isActive ? 700 : isHovered ? 600 : 500,
                       cursor: 'pointer',
-                      transition: 'background 0.2s, color 0.2s',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 10,
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isActive) e.currentTarget.style.color = '#f5f9fc';
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isActive) e.currentTarget.style.color = 'rgba(245, 249, 252, 0.72)';
+                      gap: 14,
+                      transition: 'font-weight 0.25s ease',
                     }}
                   >
-                    <span
+                    <motion.span
                       aria-hidden="true"
+                      animate={{ width: markerWidth, backgroundColor: markerColor }}
+                      transition={{
+                        width: { type: 'spring', stiffness: 320, damping: 26 },
+                        backgroundColor: { duration: 0.3 },
+                      }}
                       style={{
                         display: 'inline-block',
-                        width: 18,
                         height: 2,
-                        borderRadius: 2,
-                        background: isActive ? '#72c2c2' : 'rgba(245, 249, 252, 0.35)',
+                        borderRadius: 1,
                         flexShrink: 0,
-                        transition: 'background 0.2s',
                       }}
                     />
-                    <span>{idx === 0 ? s.title : `${idx}. ${s.title}`}</span>
-                  </button>
+                    <span>{s.title}</span>
+                  </motion.button>
                 </li>
               );
             })}
@@ -207,7 +201,8 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
         {/* Content column */}
         <article style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
           {sections.map((section) => {
-            const html = renderMarkdown(section.content || '');
+            const parsed = parseSectionContent(section.content || '');
+            const { numberPart, titlePart } = splitHeading(section.title);
             return (
               <section
                 key={section.id}
@@ -226,18 +221,37 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
                 <h2
                   style={{
                     fontFamily: 'Inter, sans-serif',
-                    fontWeight: 800,
-                    fontSize: 40,
-                    lineHeight: 1.15,
-                    letterSpacing: '-1.5px',
-                    color: '#383437',
                     margin: 0,
-                    marginBottom: 24,
+                    marginBottom: 28,
+                    display: 'flex',
+                    alignItems: 'baseline',
+                    gap: 18,
+                    flexWrap: 'wrap',
+                    color: '#383437',
+                    letterSpacing: '-1.5px',
+                    lineHeight: 1.1,
                   }}
                 >
-                  {section.title}
+                  {numberPart && (
+                    <span
+                      style={{
+                        fontWeight: 300,
+                        fontSize: 44,
+                        color: 'rgba(56, 52, 55, 0.55)',
+                        fontVariantNumeric: 'tabular-nums',
+                      }}
+                    >
+                      {numberPart}
+                    </span>
+                  )}
+                  <span style={{ fontWeight: 800, fontSize: 40 }}>
+                    {titlePart}
+                  </span>
                 </h2>
-                {html && (
+
+                {parsed.titleCard && <TitleCard card={parsed.titleCard} />}
+                {parsed.citation && <CitationCard text={parsed.citation} />}
+                {parsed.bodyHtml && (
                   <div
                     className="blog-body"
                     style={{
@@ -247,8 +261,9 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
                       lineHeight: 1.75,
                       color: '#111',
                       maxWidth: 600,
+                      marginTop: parsed.titleCard || parsed.citation ? 8 : 0,
                     }}
-                    dangerouslySetInnerHTML={{ __html: html }}
+                    dangerouslySetInnerHTML={{ __html: parsed.bodyHtml }}
                   />
                 )}
               </section>
@@ -257,7 +272,6 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
         </article>
       </div>
 
-      {/* Mobile: stack sidebar above content */}
       <style>{`
         @media (max-width: 900px) {
           .blog-grid {
@@ -273,15 +287,195 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
         }
         .blog-body p { margin: 0 0 1em 0; }
         .blog-body p:last-child { margin-bottom: 0; }
-        .blog-body a { color: #529c9c; text-decoration: underline; text-underline-offset: 2px; }
+        .blog-body a { color: #529c9c; text-decoration: underline; text-underline-offset: 2px; transition: color 0.2s; }
         .blog-body a:hover { color: #72c2c2; }
         .blog-body strong { font-weight: 700; color: #383437; }
         .blog-body em { font-style: italic; }
-        .blog-body h3 { font-weight: 700; color: #383437; font-size: 22px; margin: 28px 0 12px; }
+        .blog-body h2 {
+          font-weight: 700; color: #383437; font-size: 24px;
+          letter-spacing: -0.5px; line-height: 1.3;
+          margin: 32px 0 14px;
+        }
+        .blog-body h3 {
+          font-weight: 700; color: #383437; font-size: 20px;
+          line-height: 1.35; margin: 28px 0 12px;
+        }
         .blog-body ul, .blog-body ol { padding-left: 1.4em; margin: 0 0 1em; }
-        .blog-body li { margin-bottom: 6px; }
-        .blog-body hr { border: 0; border-top: 1px solid rgba(0,0,0,0.1); margin: 28px 0; }
+        .blog-body ul li { margin-bottom: 8px; }
+        .blog-body ol li { margin-bottom: 8px; }
+        .blog-body ul li::marker { color: #72c2c2; }
+        .blog-body hr {
+          border: 0; border-top: 1px solid rgba(0,0,0,0.1);
+          margin: 24px 0;
+        }
       `}</style>
     </div>
   );
+}
+
+/* ── Title card ─────────────────────────────────────────────────────── */
+function TitleCard({ card }) {
+  return (
+    <a
+      href={card.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{
+        display: 'block',
+        backgroundColor: '#1c3664',
+        borderRadius: 14,
+        padding: '22px 26px',
+        color: '#ffffff',
+        textDecoration: 'none',
+        position: 'relative',
+        overflow: 'hidden',
+        marginBottom: 18,
+        maxWidth: 600,
+        boxShadow: '0 1px 2px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.04)',
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = 'translateY(-1px)';
+        e.currentTarget.style.boxShadow =
+          '0 4px 12px rgba(28, 54, 100, 0.25), inset 0 0 0 1px rgba(255,255,255,0.08)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'translateY(0)';
+        e.currentTarget.style.boxShadow =
+          '0 1px 2px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.04)';
+      }}
+    >
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          right: -36,
+          top: -36,
+          width: 140,
+          height: 140,
+          borderRadius: '50%',
+          border: '1px solid rgba(114, 194, 194, 0.18)',
+          pointerEvents: 'none',
+        }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          right: -8,
+          bottom: -8,
+          width: 70,
+          height: 70,
+          borderRadius: '50%',
+          border: '1px solid rgba(114, 194, 194, 0.12)',
+          pointerEvents: 'none',
+        }}
+      />
+      <span
+        style={{
+          position: 'relative',
+          fontFamily: 'Inter, sans-serif',
+          fontWeight: 600,
+          fontSize: 15,
+          lineHeight: 1.5,
+          letterSpacing: '-0.1px',
+          display: 'inline-block',
+          paddingRight: 18,
+        }}
+      >
+        {card.title}
+        <ExternalArrow />
+      </span>
+    </a>
+  );
+}
+
+function ExternalArrow() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{
+        verticalAlign: '-1px',
+        marginLeft: 8,
+        opacity: 0.75,
+      }}
+      aria-hidden="true"
+    >
+      <path
+        d="M7 17L17 7M17 7H9M17 7V15"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/* ── Citation card ──────────────────────────────────────────────────── */
+function CitationCard({ text }) {
+  return (
+    <div
+      style={{
+        position: 'relative',
+        background: 'rgba(245, 249, 252, 0.7)',
+        borderRadius: 8,
+        padding: '14px 18px 14px 22px',
+        marginBottom: 18,
+        maxWidth: 600,
+        borderLeft: '3px solid #72c2c2',
+        fontFamily: 'Inter, sans-serif',
+        fontWeight: 500,
+        fontStyle: 'italic',
+        fontSize: 14,
+        lineHeight: 1.55,
+        color: '#555',
+      }}
+    >
+      {text}
+    </div>
+  );
+}
+
+/* ── Heading split ──────────────────────────────────────────────────── */
+function splitHeading(title) {
+  if (!title) return { numberPart: '', titlePart: '' };
+  const m = title.match(/^(\d+\.)\s+(.+)$/);
+  if (m) return { numberPart: m[1], titlePart: m[2] };
+  return { numberPart: '', titlePart: title };
+}
+
+/* ── Content parsing ────────────────────────────────────────────────── */
+// Pattern at the top of a publications section:
+//   **[Title](URL)**
+//
+//   *Citation line*
+//
+//   ---
+//
+//   Body markdown...
+//
+// If the pattern matches, pull the title + citation out as structured
+// cards and render the body as markdown. Otherwise everything is body.
+function parseSectionContent(content) {
+  const match = content.match(
+    /^\s*\*\*\[([^\]]+)\]\(([^)]+)\)\*\*\s*\n+\*([^*][^\n]*?)\*\s*\n+---\s*\n+([\s\S]*)$/
+  );
+  if (match) {
+    const [, title, href, citation, body] = match;
+    return {
+      titleCard: { title: title.trim().replace(/\.$/, ''), href },
+      citation: citation.trim(),
+      bodyHtml: renderMarkdown(body),
+    };
+  }
+  return {
+    titleCard: null,
+    citation: null,
+    bodyHtml: renderMarkdown(content),
+  };
 }

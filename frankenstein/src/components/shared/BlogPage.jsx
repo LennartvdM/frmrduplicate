@@ -28,6 +28,7 @@ import { renderMarkdown } from '../../utils/renderMarkdown';
 export default function BlogPage({ sections, sectionToVideo, deckSources }) {
   const sectionIds = sections.map((s) => s.id);
   const active = useScrollSpy(sectionIds, 120);
+  const [hovered, setHovered] = useState(null);
   const backdropRef = useRef(null);
   const [loadedSources, setLoadedSources] = useState(() => new Set());
 
@@ -147,57 +148,90 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
             top: 112,
             backgroundColor: '#1c3664',
             borderRadius: 15,
-            padding: '28px 20px',
+            padding: '20px 14px',
             color: '#f5f9fc',
             fontFamily: 'Inter, sans-serif',
           }}
         >
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column' }}>
             {sections.map((s, idx) => {
               const isActive = s.id === active;
+              const isHovered = hovered === s.id;
               return (
-                <li key={s.id}>
-                  <button
+                <li key={s.id} style={{ position: 'relative' }}>
+                  {/* Shared-layout highlighter pill — slides between items
+                      via Framer Motion's layoutId mechanism. */}
+                  {isActive && (
+                    <motion.span
+                      layoutId="sidebar-active-pill"
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        borderRadius: 10,
+                        background: 'rgba(114, 194, 194, 0.18)',
+                        border: '1px solid rgba(114, 194, 194, 0.35)',
+                        pointerEvents: 'none',
+                      }}
+                      transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                    />
+                  )}
+                  <motion.button
                     type="button"
                     onClick={() => handleSidebarClick(s.id)}
+                    onMouseEnter={() => setHovered(s.id)}
+                    onMouseLeave={() => setHovered((h) => (h === s.id ? null : h))}
+                    animate={{
+                      color: isActive
+                        ? '#72c2c2'
+                        : isHovered
+                        ? '#f5f9fc'
+                        : 'rgba(245, 249, 252, 0.7)',
+                      x: isActive ? 4 : isHovered ? 2 : 0,
+                    }}
+                    transition={{
+                      color: { duration: 0.28, ease: [0.4, 0, 0.2, 1] },
+                      x: { type: 'spring', stiffness: 420, damping: 32 },
+                    }}
                     style={{
+                      position: 'relative',
                       width: '100%',
                       textAlign: 'left',
-                      padding: '10px 12px',
+                      padding: '11px 14px',
                       borderRadius: 10,
                       border: 'none',
-                      background: isActive ? 'rgba(114, 194, 194, 0.18)' : 'transparent',
-                      color: isActive ? '#72c2c2' : 'rgba(245, 249, 252, 0.72)',
-                      fontWeight: isActive ? 600 : 500,
+                      background: 'transparent',
                       fontSize: 13,
                       lineHeight: 1.4,
+                      fontWeight: isActive ? 600 : 500,
                       cursor: 'pointer',
-                      transition: 'background 0.2s, color 0.2s',
                       display: 'flex',
                       alignItems: 'center',
                       gap: 10,
                     }}
-                    onMouseEnter={(e) => {
-                      if (!isActive) e.currentTarget.style.color = '#f5f9fc';
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isActive) e.currentTarget.style.color = 'rgba(245, 249, 252, 0.72)';
-                    }}
                   >
-                    <span
+                    <motion.span
                       aria-hidden="true"
+                      animate={{
+                        width: isActive ? 22 : 10,
+                        background: isActive
+                          ? '#72c2c2'
+                          : isHovered
+                          ? 'rgba(245, 249, 252, 0.65)'
+                          : 'rgba(245, 249, 252, 0.35)',
+                      }}
+                      transition={{
+                        width: { type: 'spring', stiffness: 420, damping: 30 },
+                        background: { duration: 0.25 },
+                      }}
                       style={{
                         display: 'inline-block',
-                        width: 18,
                         height: 2,
                         borderRadius: 2,
-                        background: isActive ? '#72c2c2' : 'rgba(245, 249, 252, 0.35)',
                         flexShrink: 0,
-                        transition: 'background 0.2s',
                       }}
                     />
                     <span>{idx === 0 ? s.title : `${idx}. ${s.title}`}</span>
-                  </button>
+                  </motion.button>
                 </li>
               );
             })}
@@ -273,14 +307,27 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
         }
         .blog-body p { margin: 0 0 1em 0; }
         .blog-body p:last-child { margin-bottom: 0; }
-        .blog-body a { color: #529c9c; text-decoration: underline; text-underline-offset: 2px; }
+        .blog-body a { color: #529c9c; text-decoration: underline; text-underline-offset: 2px; transition: color 0.2s; }
         .blog-body a:hover { color: #72c2c2; }
         .blog-body strong { font-weight: 700; color: #383437; }
         .blog-body em { font-style: italic; }
-        .blog-body h3 { font-weight: 700; color: #383437; font-size: 22px; margin: 28px 0 12px; }
+        .blog-body h2 {
+          font-weight: 700; color: #383437; font-size: 24px;
+          letter-spacing: -0.5px; line-height: 1.3;
+          margin: 32px 0 14px;
+        }
+        .blog-body h3 {
+          font-weight: 700; color: #383437; font-size: 20px;
+          line-height: 1.35; margin: 28px 0 12px;
+        }
         .blog-body ul, .blog-body ol { padding-left: 1.4em; margin: 0 0 1em; }
-        .blog-body li { margin-bottom: 6px; }
-        .blog-body hr { border: 0; border-top: 1px solid rgba(0,0,0,0.1); margin: 28px 0; }
+        .blog-body ul li { margin-bottom: 8px; }
+        .blog-body ol li { margin-bottom: 8px; }
+        .blog-body ul li::marker { color: #72c2c2; }
+        .blog-body hr {
+          border: 0; border-top: 1px solid rgba(0,0,0,0.1);
+          margin: 24px 0;
+        }
       `}</style>
     </div>
   );

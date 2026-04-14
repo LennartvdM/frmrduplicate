@@ -1,37 +1,124 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
+/**
+ * Site-wide footer modeled on neoflixexporttest's richer design:
+ * teal → dark-blue gradient, nav columns, signature + funding line,
+ * back-to-top button. Rebuilt as native React + Tailwind (structure
+ * copied from the Framer export, not the bundled runtime).
+ */
 export default function Footer() {
-  return (
-    <footer className="w-full border-t border-[#e7dfd7] bg-[#1c3424] text-white/70">
-      <div className="max-w-5xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm"
-        style={{ fontFamily: '"Inter", sans-serif' }}
-      >
-        <p className="text-white/70">
-          Learn more about Neoflix through our{' '}
-          <a href="/publications" className="text-[#48c1c4] underline underline-offset-2 hover:text-[#6dd4d4] transition-colors">
-            Publications
-          </a>
-        </p>
+  const scrollTop = () => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
-        <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 text-white/50">
-          <span>
-            Developed by{' '}
+  const linkClass =
+    'text-[13px] leading-5 text-white/70 hover:text-white underline-offset-2 hover:underline transition-colors';
+  const headingClass = 'text-sm font-medium text-white mb-3';
+
+  return (
+    <footer
+      className="w-full"
+      style={{
+        background:
+          'linear-gradient(180deg, rgb(114, 194, 194) 0%, rgb(21, 37, 54) 100%)',
+        fontFamily: '"Inter", sans-serif',
+      }}
+    >
+      <div className="max-w-6xl mx-auto px-6 pt-14 pb-8">
+        {/* Top: brand + nav columns */}
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
+          <div>
+            <div
+              className="text-white font-bold"
+              style={{ fontSize: 22, letterSpacing: '-0.05em' }}
+            >
+              Neoflix
+            </div>
+            <p className="text-[13px] leading-5 text-white/60 mt-2 max-w-xs">
+              Revolutionizing reflection in medical care.
+            </p>
+          </div>
+
+          <div className="flex gap-14">
+            <div>
+              <div className={headingClass}>Products</div>
+              <ul className="space-y-2">
+                <li><Link to="/" className={linkClass}>Home</Link></li>
+                <li><Link to="/neoflix" className={linkClass}>Neoflix</Link></li>
+              </ul>
+            </div>
+            <div>
+              <div className={headingClass}>Resources</div>
+              <ul className="space-y-2">
+                <li><Link to="/publications" className={linkClass}>Publications</Link></li>
+                <li><Link to="/toolbox" className={linkClass}>Toolbox</Link></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div
+          className="mt-10 pt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+          style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}
+        >
+          <p className="text-[13px] leading-5 text-white/70">© 2024 Neoflix</p>
+
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 text-[13px] leading-5 text-white/70">
             <a
               href="mailto:lennartvandermolen@gmail.com"
-              className="text-white/70 font-semibold hover:text-white transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white underline-offset-2 hover:underline transition-colors"
             >
-              Lennart vd Molen
+              Developed by <strong>Lennart vd Molen</strong>
             </a>
-          </span>
-          <span>
-            Supported by the{' '}
-            <span className="text-white/70 font-semibold">KNAW Van Walree Fund</span>
-          </span>
-        </div>
-      </div>
+            <a
+              href="https://www.knaw.nl/fondsen-en-prijzen/knaw-van-walree-fonds"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white underline-offset-2 hover:underline transition-colors"
+            >
+              <span style={{ fontWeight: 400 }}>Supported by the </span>
+              <span style={{ fontWeight: 900 }}>KNAW Van Walree Fund</span>
+            </a>
+          </div>
 
-      <div className="text-center text-white/40 text-xs pb-4">
-        &copy; 2024 Neoflix
+          <button
+            type="button"
+            onClick={scrollTop}
+            aria-label="Back to top"
+            className="self-start md:self-auto flex items-center justify-center transition-colors hover:bg-black/80"
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: 32,
+              backgroundColor: 'rgba(0, 0, 0, 0.6)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: 'white',
+            }}
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 19V5M5 12l7-7 7 7"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </footer>
   );

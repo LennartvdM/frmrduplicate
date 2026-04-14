@@ -148,7 +148,7 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
             top: 112,
             backgroundColor: '#1c3664',
             borderRadius: 15,
-            padding: '20px 14px',
+            padding: '24px 18px',
             color: '#f5f9fc',
             fontFamily: 'Inter, sans-serif',
           }}
@@ -157,76 +157,57 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
             {sections.map((s, idx) => {
               const isActive = s.id === active;
               const isHovered = hovered === s.id;
+              // Three states — marker grows from dot → mid-dash → long-dash.
+              const markerWidth = isActive ? 26 : isHovered ? 14 : 4;
+              const markerColor = isActive
+                ? '#ffffff'
+                : isHovered
+                ? 'rgba(255, 255, 255, 0.8)'
+                : 'rgba(255, 255, 255, 0.4)';
+              const textColor = isActive
+                ? '#ffffff'
+                : isHovered
+                ? 'rgba(255, 255, 255, 0.9)'
+                : 'rgba(255, 255, 255, 0.55)';
               return (
-                <li key={s.id} style={{ position: 'relative' }}>
-                  {/* Shared-layout highlighter pill — slides between items
-                      via Framer Motion's layoutId mechanism. */}
-                  {isActive && (
-                    <motion.span
-                      layoutId="sidebar-active-pill"
-                      style={{
-                        position: 'absolute',
-                        inset: 0,
-                        borderRadius: 10,
-                        background: 'rgba(114, 194, 194, 0.18)',
-                        border: '1px solid rgba(114, 194, 194, 0.35)',
-                        pointerEvents: 'none',
-                      }}
-                      transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-                    />
-                  )}
+                <li key={s.id}>
                   <motion.button
                     type="button"
                     onClick={() => handleSidebarClick(s.id)}
                     onMouseEnter={() => setHovered(s.id)}
                     onMouseLeave={() => setHovered((h) => (h === s.id ? null : h))}
-                    animate={{
-                      color: isActive
-                        ? '#72c2c2'
-                        : isHovered
-                        ? '#f5f9fc'
-                        : 'rgba(245, 249, 252, 0.7)',
-                      x: isActive ? 4 : isHovered ? 2 : 0,
-                    }}
-                    transition={{
-                      color: { duration: 0.28, ease: [0.4, 0, 0.2, 1] },
-                      x: { type: 'spring', stiffness: 420, damping: 32 },
-                    }}
+                    animate={{ color: textColor }}
+                    transition={{ color: { duration: 0.32, ease: [0.4, 0, 0.2, 1] } }}
                     style={{
-                      position: 'relative',
                       width: '100%',
                       textAlign: 'left',
-                      padding: '11px 14px',
-                      borderRadius: 10,
+                      padding: '10px 6px',
                       border: 'none',
                       background: 'transparent',
-                      fontSize: 13,
+                      fontSize: 15,
                       lineHeight: 1.4,
-                      fontWeight: isActive ? 600 : 500,
+                      fontWeight: isActive ? 700 : isHovered ? 600 : 500,
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 10,
+                      gap: 14,
+                      transition: 'font-weight 0.25s ease',
                     }}
                   >
+                    {/* Marker: 4 px dot → 14 px mid-dash → 26 px long-dash.
+                        Spring physics means mid-transition states are visible
+                        while multiple items animate through scroll. */}
                     <motion.span
                       aria-hidden="true"
-                      animate={{
-                        width: isActive ? 22 : 10,
-                        background: isActive
-                          ? '#72c2c2'
-                          : isHovered
-                          ? 'rgba(245, 249, 252, 0.65)'
-                          : 'rgba(245, 249, 252, 0.35)',
-                      }}
+                      animate={{ width: markerWidth, backgroundColor: markerColor }}
                       transition={{
-                        width: { type: 'spring', stiffness: 420, damping: 30 },
-                        background: { duration: 0.25 },
+                        width: { type: 'spring', stiffness: 320, damping: 26 },
+                        backgroundColor: { duration: 0.3 },
                       }}
                       style={{
                         display: 'inline-block',
                         height: 2,
-                        borderRadius: 2,
+                        borderRadius: 1,
                         flexShrink: 0,
                       }}
                     />

@@ -1,20 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useSpring, useTransform, animate } from 'framer-motion';
+import { motion, useSpring, useMotionValue, useTransform, animate } from 'framer-motion';
 import { assetUrl } from '../../../utils/assetUrl';
 
 /**
- * Verbatim port of frmrduplicate's MapComponent.
+ * Port of frmrduplicate's MapComponent (chunk--framer-motion.mjs Ye+fa).
  *
- * Mirrors chunk--framer-motion.mjs:
- *   - Ye      (lines 1964-2065) → inner map viewport, exposed here as <Ye>
- *   - fa      (lines 2663-...)  → MapComponent wrapper (variant cycle)
- *   - Yr, ea  (lines 2553-2581) → variant order + class names
- *   - lines 2586-2850            → cycle callbacks + per-variant (x, y, zoom)
+ * Semantic translation note: Framer SDK's useSpring does NOT auto-track its
+ * source argument — you drive it via `.set(value)` and the spring animates
+ * toward that value. npm framer-motion's useSpring DOES auto-track the
+ * argument. So the source's pattern:
  *
- * Only the runtime imports were swapped: `useSpring`, `useTransform`,
- * `motion`, and `animate` come from npm `framer-motion` instead of the
- * Framer SDK bundle. All algorithmic behavior (spring config, two-phase
- * zoom tween, viewBox math, dwell timings, coordinates) is preserved.
+ *     R = useSpring(n, F);  useEffect(() => R.set(n), [n]);
+ *
+ * becomes simply `useSpring(n, F)` here — the spring auto-animates on prop
+ * change with identical physics. Redundant `.set()` calls on an auto-tracking
+ * spring would snap-cancel the in-progress animation, which is what was
+ * causing the spring behavior to feel off.
+ *
+ * For zoom, the source overrides the spring with a two-phase tween
+ * (`D.set(c, {duration})` / `D.set(l, {duration})`). In npm framer-motion
+ * that overload doesn't exist; we use a plain useMotionValue + `animate()`
+ * so the two-phase tween is the sole driver and nothing competes with it.
  */
 
 // ─── Ye: inner map viewport (lines 1964-2065 in source) ────────────────────
@@ -31,13 +37,13 @@ function Ye({
   const o = 1440;
   const L = 700;
   const F = { damping: 15, stiffness: 30, mass: 1 };
+  // x/y: useSpring auto-tracks the prop; animating in on change is implicit.
   const R = useSpring(n, F);
   const p = useSpring(i, F);
-  const D = useSpring(l, F);
+  // zoom: plain motion value controlled exclusively by the two-phase tween.
+  const D = useMotionValue(l);
 
   useEffect(() => {
-    R.set(n);
-    p.set(i);
     let a1 = null;
     let a2 = null;
     let cancelled = false;
@@ -53,7 +59,7 @@ function Ye({
       if (a1) a1.stop();
       if (a2) a2.stop();
     };
-  }, [n, i, l, h, c, R, p, D]);
+  }, [l, h, c, D]);
 
   useEffect(() => {
     const w = () => {

@@ -8,6 +8,9 @@ import FrmrPageMount from '../components/FrmrPageMount';
 
 export default function NeoflixPage() {
   return (
-    <FrmrPageMount chunkFile="r-i-lvusp0upuyen_-noede9lquwyi4ivhta2kytius.3x4mi74y.mjs" />
+    <FrmrPageMount
+      chunkFile="r-i-lvusp0upuyen_-noede9lquwyi4ivhta2kytius.3x4mi74y.mjs"
+      cssFile="neoflix.ssr.css"
+    />
   );
 }

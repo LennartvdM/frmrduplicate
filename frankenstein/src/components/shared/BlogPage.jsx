@@ -131,68 +131,90 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
             top: 112,
             backgroundColor: '#0e1c31',
             borderRadius: 15,
-            padding: '28px 20px',
+            padding: '64px 22px',
             color: '#f5f9fc',
             fontFamily: 'Inter, sans-serif',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            minHeight: 'min(640px, calc(100vh - 160px))',
           }}
         >
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
-            {sections.map((s) => {
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {sections.map((s, idx) => {
               const isActive = s.id === active;
               const isHovered = hovered === s.id;
               const markerWidth = isActive ? 26 : isHovered ? 14 : 4;
               const markerColor = isActive
                 ? '#ffffff'
                 : isHovered
-                ? 'rgba(255, 255, 255, 0.8)'
-                : 'rgba(255, 255, 255, 0.4)';
+                ? '#c4ccd6'
+                : '#666f7c';
               const textColor = isActive
                 ? '#ffffff'
                 : isHovered
-                ? 'rgba(255, 255, 255, 0.9)'
-                : 'rgba(255, 255, 255, 0.55)';
+                ? '#c4ccd6'
+                : '#666f7c';
+              // First item with no number (e.g. "Preface") is an intro —
+              // give it a thin divider below so it's visually separated
+              // from the numbered index that follows.
+              const { numberPart: myNumber } = splitHeading(s.title);
+              const isIntro = idx === 0 && !myNumber && sections.length > 1;
               return (
-                <li key={s.id}>
-                  <motion.button
-                    type="button"
-                    onClick={() => handleSidebarClick(s.id)}
-                    onMouseEnter={() => setHovered(s.id)}
-                    onMouseLeave={() => setHovered((h) => (h === s.id ? null : h))}
-                    animate={{ color: textColor }}
-                    transition={{ color: { duration: 0.32, ease: [0.4, 0, 0.2, 1] } }}
-                    style={{
-                      width: '100%',
-                      textAlign: 'left',
-                      padding: '13px 6px',
-                      border: 'none',
-                      background: 'transparent',
-                      fontSize: 15,
-                      lineHeight: 1.45,
-                      fontWeight: isActive ? 700 : isHovered ? 600 : 500,
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 14,
-                      transition: 'font-weight 0.25s ease',
-                    }}
-                  >
-                    <motion.span
-                      aria-hidden="true"
-                      animate={{ width: markerWidth, backgroundColor: markerColor }}
-                      transition={{
-                        width: { type: 'spring', stiffness: 320, damping: 26 },
-                        backgroundColor: { duration: 0.3 },
-                      }}
+                <React.Fragment key={s.id}>
+                  <li>
+                    <motion.button
+                      type="button"
+                      onClick={() => handleSidebarClick(s.id)}
+                      onMouseEnter={() => setHovered(s.id)}
+                      onMouseLeave={() => setHovered((h) => (h === s.id ? null : h))}
+                      animate={{ color: textColor }}
+                      transition={{ color: { duration: 0.32, ease: [0.4, 0, 0.2, 1] } }}
                       style={{
-                        display: 'inline-block',
-                        height: 2,
-                        borderRadius: 1,
-                        flexShrink: 0,
+                        width: '100%',
+                        textAlign: 'left',
+                        padding: '13px 6px',
+                        border: 'none',
+                        background: 'transparent',
+                        fontSize: 15,
+                        lineHeight: 1.45,
+                        fontWeight: isActive ? 700 : isHovered ? 600 : 500,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 14,
+                        transition: 'font-weight 0.25s ease',
                       }}
-                    />
-                    <span>{s.title}</span>
-                  </motion.button>
-                </li>
+                    >
+                      <motion.span
+                        aria-hidden="true"
+                        animate={{ width: markerWidth, backgroundColor: markerColor }}
+                        transition={{
+                          width: { type: 'spring', stiffness: 320, damping: 26 },
+                          backgroundColor: { duration: 0.3 },
+                        }}
+                        style={{
+                          display: 'inline-block',
+                          height: 2,
+                          borderRadius: 1,
+                          flexShrink: 0,
+                        }}
+                      />
+                      <span>{s.title}</span>
+                    </motion.button>
+                  </li>
+                  {isIntro && (
+                    <li aria-hidden="true" style={{ listStyle: 'none', padding: '10px 0' }}>
+                      <div
+                        style={{
+                          height: 1,
+                          background: 'rgba(255, 255, 255, 0.1)',
+                          margin: '0 8px',
+                        }}
+                      />
+                    </li>
+                  )}
+                </React.Fragment>
               );
             })}
           </ul>

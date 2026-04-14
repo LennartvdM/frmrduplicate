@@ -129,77 +129,99 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
           style={{
             position: 'sticky',
             top: 112,
-            backgroundColor: '#1c3664',
+            backgroundColor: '#0e1c31',
             borderRadius: 15,
-            padding: '24px 18px',
+            padding: '64px 22px',
             color: '#f5f9fc',
             fontFamily: 'Inter, sans-serif',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            minHeight: 'min(640px, calc(100vh - 160px))',
           }}
         >
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column' }}>
-            {sections.map((s) => {
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {sections.map((s, idx) => {
               const isActive = s.id === active;
               const isHovered = hovered === s.id;
               const markerWidth = isActive ? 26 : isHovered ? 14 : 4;
               const markerColor = isActive
                 ? '#ffffff'
                 : isHovered
-                ? 'rgba(255, 255, 255, 0.8)'
-                : 'rgba(255, 255, 255, 0.4)';
+                ? '#c4ccd6'
+                : '#666f7c';
               const textColor = isActive
                 ? '#ffffff'
                 : isHovered
-                ? 'rgba(255, 255, 255, 0.9)'
-                : 'rgba(255, 255, 255, 0.55)';
+                ? '#c4ccd6'
+                : '#666f7c';
+              // First item with no number (e.g. "Preface") is an intro —
+              // give it a thin divider below so it's visually separated
+              // from the numbered index that follows.
+              const { numberPart: myNumber } = splitHeading(s.title);
+              const isIntro = idx === 0 && !myNumber && sections.length > 1;
               return (
-                <li key={s.id}>
-                  <motion.button
-                    type="button"
-                    onClick={() => handleSidebarClick(s.id)}
-                    onMouseEnter={() => setHovered(s.id)}
-                    onMouseLeave={() => setHovered((h) => (h === s.id ? null : h))}
-                    animate={{ color: textColor }}
-                    transition={{ color: { duration: 0.32, ease: [0.4, 0, 0.2, 1] } }}
-                    style={{
-                      width: '100%',
-                      textAlign: 'left',
-                      padding: '10px 6px',
-                      border: 'none',
-                      background: 'transparent',
-                      fontSize: 15,
-                      lineHeight: 1.4,
-                      fontWeight: isActive ? 700 : isHovered ? 600 : 500,
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 14,
-                      transition: 'font-weight 0.25s ease',
-                    }}
-                  >
-                    <motion.span
-                      aria-hidden="true"
-                      animate={{ width: markerWidth, backgroundColor: markerColor }}
-                      transition={{
-                        width: { type: 'spring', stiffness: 320, damping: 26 },
-                        backgroundColor: { duration: 0.3 },
-                      }}
+                <React.Fragment key={s.id}>
+                  <li>
+                    <motion.button
+                      type="button"
+                      onClick={() => handleSidebarClick(s.id)}
+                      onMouseEnter={() => setHovered(s.id)}
+                      onMouseLeave={() => setHovered((h) => (h === s.id ? null : h))}
+                      animate={{ color: textColor }}
+                      transition={{ color: { duration: 0.32, ease: [0.4, 0, 0.2, 1] } }}
                       style={{
-                        display: 'inline-block',
-                        height: 2,
-                        borderRadius: 1,
-                        flexShrink: 0,
+                        width: '100%',
+                        textAlign: 'left',
+                        padding: '13px 6px',
+                        border: 'none',
+                        background: 'transparent',
+                        fontSize: 15,
+                        lineHeight: 1.45,
+                        fontWeight: isActive ? 700 : isHovered ? 600 : 500,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 14,
+                        transition: 'font-weight 0.25s ease',
                       }}
-                    />
-                    <span>{s.title}</span>
-                  </motion.button>
-                </li>
+                    >
+                      <motion.span
+                        aria-hidden="true"
+                        animate={{ width: markerWidth, backgroundColor: markerColor }}
+                        transition={{
+                          width: { type: 'spring', stiffness: 320, damping: 26 },
+                          backgroundColor: { duration: 0.3 },
+                        }}
+                        style={{
+                          display: 'inline-block',
+                          height: 2,
+                          borderRadius: 1,
+                          flexShrink: 0,
+                        }}
+                      />
+                      <span>{s.title}</span>
+                    </motion.button>
+                  </li>
+                  {isIntro && (
+                    <li aria-hidden="true" style={{ listStyle: 'none', padding: '10px 0' }}>
+                      <div
+                        style={{
+                          height: 1,
+                          background: 'rgba(255, 255, 255, 0.1)',
+                          margin: '0 8px',
+                        }}
+                      />
+                    </li>
+                  )}
+                </React.Fragment>
               );
             })}
           </ul>
         </aside>
 
         {/* Content column */}
-        <article style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+        <article style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
           {sections.map((section) => {
             const parsed = parseSectionContent(section.content || '');
             const { numberPart, titlePart } = splitHeading(section.title);
@@ -208,16 +230,30 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
                 key={section.id}
                 id={section.id}
                 style={{
-                  backgroundColor: 'rgba(245, 249, 252, 0.82)',
-                  backdropFilter: 'blur(2px)',
-                  WebkitBackdropFilter: 'blur(2px)',
+                  position: 'relative',
                   borderRadius: 10,
-                  padding: '80px 56px',
+                  padding: '96px 56px',
                   scrollMarginTop: 96,
-                  opacity: bgTransitioning ? 0.7 : 1,
+                  opacity: bgTransitioning ? 0.75 : 1,
                   transition: 'opacity 0.25s ease',
+                  isolation: 'isolate',
                 }}
               >
+                {/* Screen-blended backdrop — F5F9FC at 90%, blends with the
+                    video deck below to a soft washed cream. Separate layer
+                    so it doesn't affect text rendering on top. */}
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'rgba(245, 249, 252, 0.9)',
+                    mixBlendMode: 'screen',
+                    borderRadius: 10,
+                    pointerEvents: 'none',
+                    zIndex: -1,
+                  }}
+                />
                 <h2
                   style={{
                     fontFamily: 'Inter, sans-serif',
@@ -258,10 +294,10 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
                       fontFamily: 'Inter, sans-serif',
                       fontWeight: 500,
                       fontSize: 16,
-                      lineHeight: 1.75,
-                      color: '#111',
+                      lineHeight: 1.9,
+                      color: '#383437',
                       maxWidth: 600,
-                      marginTop: parsed.titleCard || parsed.citation ? 8 : 0,
+                      marginTop: parsed.titleCard || parsed.citation ? 12 : 0,
                     }}
                     dangerouslySetInnerHTML={{ __html: parsed.bodyHtml }}
                   />
@@ -285,7 +321,7 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
             padding: 40px 24px !important;
           }
         }
-        .blog-body p { margin: 0 0 1em 0; }
+        .blog-body p { margin: 0 0 1.35em 0; }
         .blog-body p:last-child { margin-bottom: 0; }
         .blog-body a { color: #529c9c; text-decoration: underline; text-underline-offset: 2px; transition: color 0.2s; }
         .blog-body a:hover { color: #72c2c2; }
@@ -293,20 +329,20 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
         .blog-body em { font-style: italic; }
         .blog-body h2 {
           font-weight: 700; color: #383437; font-size: 24px;
-          letter-spacing: -0.5px; line-height: 1.3;
-          margin: 32px 0 14px;
+          letter-spacing: -0.5px; line-height: 1.35;
+          margin: 44px 0 18px;
         }
         .blog-body h3 {
           font-weight: 700; color: #383437; font-size: 20px;
-          line-height: 1.35; margin: 28px 0 12px;
+          line-height: 1.4; margin: 36px 0 16px;
         }
-        .blog-body ul, .blog-body ol { padding-left: 1.4em; margin: 0 0 1em; }
-        .blog-body ul li { margin-bottom: 8px; }
-        .blog-body ol li { margin-bottom: 8px; }
+        .blog-body ul, .blog-body ol { padding-left: 1.4em; margin: 0 0 1.35em; }
+        .blog-body ul li { margin-bottom: 12px; }
+        .blog-body ol li { margin-bottom: 12px; }
         .blog-body ul li::marker { color: #72c2c2; }
         .blog-body hr {
-          border: 0; border-top: 1px solid rgba(0,0,0,0.1);
-          margin: 24px 0;
+          border: 0; border-top: 1px solid rgba(56, 52, 55, 0.12);
+          margin: 32px 0;
         }
       `}</style>
     </div>
@@ -432,8 +468,8 @@ function CitationCard({ text }) {
         fontWeight: 500,
         fontStyle: 'italic',
         fontSize: 14,
-        lineHeight: 1.55,
-        color: '#555',
+        lineHeight: 1.7,
+        color: 'rgba(56, 52, 55, 0.75)',
       }}
     >
       {text}

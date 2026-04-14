@@ -25,6 +25,11 @@ export default function Footer() {
         background:
           'linear-gradient(180deg, rgb(114, 194, 194) 0%, rgb(21, 37, 54) 100%)',
         fontFamily: '"Inter", sans-serif',
+        // Snap point: footer's bottom aligns to viewport bottom. Combined
+        // with mandatory snap on the scroll container, scrolling past slide 4
+        // snaps to this position, which shows the tail of slide 4 above the
+        // footer instead of giving the footer its own full slide.
+        scrollSnapAlign: 'end',
       }}
     >
       <div className="max-w-6xl mx-auto px-6 pt-14 pb-8">

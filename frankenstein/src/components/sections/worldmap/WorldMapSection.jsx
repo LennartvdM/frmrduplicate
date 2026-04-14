@@ -143,13 +143,16 @@ export default function WorldMapSection({ inView }) {
         />
       </motion.svg>
 
-      {/* City label — only visible when unzoomed */}
+      {/* City label — dead-center of the screen, visible through the
+          whole two-pronged cycle (unzoomed → zoomed) for this city.
+          Only fades on transition to a new city. */}
       <motion.div
         key={city.id}
         initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: isZoomed ? 0 : 1, y: isZoomed ? -4 : 0 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
         transition={{ duration: 0.6, ease: [0.44, 0, 0.56, 1] }}
-        className="absolute left-1/2 top-[18%] -translate-x-1/2 pointer-events-none"
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
       >
         <div
           className="px-6 py-3 rounded-xl"

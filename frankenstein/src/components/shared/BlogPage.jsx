@@ -129,14 +129,14 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
           style={{
             position: 'sticky',
             top: 112,
-            backgroundColor: '#0e1c31',
+            backgroundColor: '#1c3664',
             borderRadius: 15,
-            padding: '28px 20px',
+            padding: '24px 18px',
             color: '#f5f9fc',
             fontFamily: 'Inter, sans-serif',
           }}
         >
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column' }}>
             {sections.map((s) => {
               const isActive = s.id === active;
               const isHovered = hovered === s.id;
@@ -163,11 +163,11 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
                     style={{
                       width: '100%',
                       textAlign: 'left',
-                      padding: '13px 6px',
+                      padding: '10px 6px',
                       border: 'none',
                       background: 'transparent',
                       fontSize: 15,
-                      lineHeight: 1.45,
+                      lineHeight: 1.4,
                       fontWeight: isActive ? 700 : isHovered ? 600 : 500,
                       cursor: 'pointer',
                       display: 'flex',
@@ -199,7 +199,7 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
         </aside>
 
         {/* Content column */}
-        <article style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
+        <article style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
           {sections.map((section) => {
             const parsed = parseSectionContent(section.content || '');
             const { numberPart, titlePart } = splitHeading(section.title);
@@ -208,30 +208,16 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
                 key={section.id}
                 id={section.id}
                 style={{
-                  position: 'relative',
+                  backgroundColor: 'rgba(245, 249, 252, 0.82)',
+                  backdropFilter: 'blur(2px)',
+                  WebkitBackdropFilter: 'blur(2px)',
                   borderRadius: 10,
-                  padding: '96px 56px',
+                  padding: '80px 56px',
                   scrollMarginTop: 96,
-                  opacity: bgTransitioning ? 0.75 : 1,
+                  opacity: bgTransitioning ? 0.7 : 1,
                   transition: 'opacity 0.25s ease',
-                  isolation: 'isolate',
                 }}
               >
-                {/* Screen-blended backdrop — F5F9FC at 90%, blends with the
-                    video deck below to a soft washed cream. Separate layer
-                    so it doesn't affect text rendering on top. */}
-                <div
-                  aria-hidden="true"
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'rgba(245, 249, 252, 0.9)',
-                    mixBlendMode: 'screen',
-                    borderRadius: 10,
-                    pointerEvents: 'none',
-                    zIndex: -1,
-                  }}
-                />
                 <h2
                   style={{
                     fontFamily: 'Inter, sans-serif',
@@ -272,10 +258,10 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
                       fontFamily: 'Inter, sans-serif',
                       fontWeight: 500,
                       fontSize: 16,
-                      lineHeight: 1.9,
-                      color: '#383437',
+                      lineHeight: 1.75,
+                      color: '#111',
                       maxWidth: 600,
-                      marginTop: parsed.titleCard || parsed.citation ? 12 : 0,
+                      marginTop: parsed.titleCard || parsed.citation ? 8 : 0,
                     }}
                     dangerouslySetInnerHTML={{ __html: parsed.bodyHtml }}
                   />
@@ -299,7 +285,7 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
             padding: 40px 24px !important;
           }
         }
-        .blog-body p { margin: 0 0 1.35em 0; }
+        .blog-body p { margin: 0 0 1em 0; }
         .blog-body p:last-child { margin-bottom: 0; }
         .blog-body a { color: #529c9c; text-decoration: underline; text-underline-offset: 2px; transition: color 0.2s; }
         .blog-body a:hover { color: #72c2c2; }
@@ -307,20 +293,20 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
         .blog-body em { font-style: italic; }
         .blog-body h2 {
           font-weight: 700; color: #383437; font-size: 24px;
-          letter-spacing: -0.5px; line-height: 1.35;
-          margin: 44px 0 18px;
+          letter-spacing: -0.5px; line-height: 1.3;
+          margin: 32px 0 14px;
         }
         .blog-body h3 {
           font-weight: 700; color: #383437; font-size: 20px;
-          line-height: 1.4; margin: 36px 0 16px;
+          line-height: 1.35; margin: 28px 0 12px;
         }
-        .blog-body ul, .blog-body ol { padding-left: 1.4em; margin: 0 0 1.35em; }
-        .blog-body ul li { margin-bottom: 12px; }
-        .blog-body ol li { margin-bottom: 12px; }
+        .blog-body ul, .blog-body ol { padding-left: 1.4em; margin: 0 0 1em; }
+        .blog-body ul li { margin-bottom: 8px; }
+        .blog-body ol li { margin-bottom: 8px; }
         .blog-body ul li::marker { color: #72c2c2; }
         .blog-body hr {
-          border: 0; border-top: 1px solid rgba(56, 52, 55, 0.12);
-          margin: 32px 0;
+          border: 0; border-top: 1px solid rgba(0,0,0,0.1);
+          margin: 24px 0;
         }
       `}</style>
     </div>
@@ -446,8 +432,8 @@ function CitationCard({ text }) {
         fontWeight: 500,
         fontStyle: 'italic',
         fontSize: 14,
-        lineHeight: 1.7,
-        color: 'rgba(56, 52, 55, 0.75)',
+        lineHeight: 1.55,
+        color: '#555',
       }}
     >
       {text}

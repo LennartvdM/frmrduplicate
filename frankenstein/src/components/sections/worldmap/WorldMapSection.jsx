@@ -1,65 +1,54 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { motion, useSpring, useTransform, useMotionValue } from 'framer-motion';
+import { motion, useSpring, useMotionValue, useTransform, animate } from 'framer-motion';
 import { assetUrl } from '../../../utils/assetUrl';
 
 /**
  * Native React port of frmrduplicate's auto-cycling world map.
+ * Faithful to chunk--framer-motion.mjs (MapComponent / Ye).
  *
- * Animation: cycles through 4 cities (Leiden → Philadelphia → Vienna → Melbourne).
- * For each city: unzoomed view for 3s → zoomed view for 5s → advance to next.
- * Pan/zoom is driven by dynamic SVG viewBox with lightweight spring physics.
+ * Behavior:
+ *   - 8 variants: 4 cities × (unzoomed, zoomed) = 8 states, played in order.
+ *   - Dwell 3s on unzoomed, 5s on zoomed, then advance.
+ *   - On each variant change: x/y spring toward target (damping:15, stiffness:30, mass:1);
+ *     zoom tweens in two phases: current → peakZoom(15) → target, each phase taking
+ *     transitionDuration/2 seconds. This creates the "pull out over the world, push
+ *     back in on the next city" camera feel.
+ *   - ViewBox computed so aspect ratio matches the container exactly.
  */
 
 const MAP_WIDTH = 1440;
 const MAP_HEIGHT = 700;
-
+const PEAK_ZOOM = 15;
 const SPRING = { damping: 15, stiffness: 30, mass: 1 };
 
-const CITIES = [
-  {
-    id: 'leiden',
-    name: 'LUMC Leiden',
-    x: 696,
-    y: 164,
-    unzoomedZoom: 5,
-    zoomedZoom: 20,
-  },
-  {
-    id: 'philadelphia',
-    name: 'NICU Philadelphia',
-    x: 377,
-    y: 235,
-    unzoomedZoom: 6,
-    zoomedZoom: 20,
-  },
-  {
-    id: 'vienna',
-    name: 'NICU Vienna',
-    x: 742,
-    y: 190,
-    unzoomedZoom: 7,
-    zoomedZoom: 20,
-  },
-  {
-    id: 'melbourne',
-    name: 'NICU Melbourne',
-    x: 1257,
-    y: 573,
-    unzoomedZoom: 4,
-    zoomedZoom: 20,
-  },
+// Exact values from chunk--framer-motion.mjs:2820-2850.
+// Property name in the source is "ControlType" — a deobfuscation artifact
+// where Framer's ControlType enum key stood in for the y prop; values ARE y.
+const VARIANTS = [
+  { id: 'JxNX4Rz95', city: 'leiden',       label: 'LUMC Leiden',        x: 696,  y: 164, zoom: 5,  dwellMs: 3000, transitionDuration: 6.4 },
+  { id: 'xKuwJW1Uo', city: 'leiden',       label: 'LUMC Leiden',        x: 696,  y: 164, zoom: 20, dwellMs: 5000, transitionDuration: 6.4 },
+  { id: 'EvvqCP6nV', city: 'philadelphia', label: 'NICU Philadelphia',  x: 377,  y: 235, zoom: 6,  dwellMs: 3000, transitionDuration: 6.4 },
+  { id: 'SU3ycjUmU', city: 'philadelphia', label: 'NICU Philadelphia',  x: 377,  y: 235, zoom: 20, dwellMs: 5000, transitionDuration: 6.4 },
+  { id: 'jnA617SP9', city: 'vienna',       label: 'NICU Vienna',        x: 742,  y: 190, zoom: 7,  dwellMs: 3000, transitionDuration: 6.4 },
+  { id: 'V7QOBUaOQ', city: 'vienna',       label: 'NICU Vienna',        x: 742,  y: 190, zoom: 20, dwellMs: 5000, transitionDuration: 6.4 },
+  { id: 'MVG35Wb9S', city: 'melbourne',    label: 'NICU Melbourne',     x: 1257, y: 573, zoom: 4,  dwellMs: 3000, transitionDuration: 6.3 },
+  { id: 'bcMqa8ndK', city: 'melbourne',    label: 'NICU Melbourne',     x: 1259, y: 573, zoom: 20, dwellMs: 5000, transitionDuration: 6.4 },
 ];
 
-const UNZOOMED_DWELL_MS = 3000;
-const ZOOMED_DWELL_MS = 5000;
+const CITY_ORDER = ['leiden', 'philadelphia', 'vienna', 'melbourne'];
+const LEGEND_LABELS = {
+  leiden: 'Leiden',
+  philadelphia: 'Philadelphia',
+  vienna: 'Vienna',
+  melbourne: 'Melbourne',
+};
 
 export default function WorldMapSection({ inView }) {
-  const [cityIndex, setCityIndex] = useState(0);
-  const [isZoomed, setIsZoomed] = useState(false);
+  const [idx, setIdx] = useState(0);
   const containerRef = useRef(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
-  // Track container dimensions so viewBox scales correctly
+  // Track container dimensions so viewBox aspect matches exactly.
   useLayoutEffect(() => {
     if (!containerRef.current) return;
     const el = containerRef.current;
@@ -73,52 +62,56 @@ export default function WorldMapSection({ inView }) {
     return () => ro.disconnect();
   }, []);
 
-  // Auto-cycle: pause while section is off-screen
+  const v0 = VARIANTS[0];
+  const xSpring = useSpring(v0.x, SPRING);
+  const ySpring = useSpring(v0.y, SPRING);
+  const zoomMV = useMotionValue(v0.zoom);
+
+  // Drive animations on variant change: spring x/y, two-phase tween zoom.
+  useEffect(() => {
+    const v = VARIANTS[idx];
+    xSpring.set(v.x);
+    ySpring.set(v.y);
+    const phaseDur = v.transitionDuration / 2;
+    const a1 = animate(zoomMV, PEAK_ZOOM, { duration: phaseDur });
+    let a2 = null;
+    a1.then(() => {
+      a2 = animate(zoomMV, v.zoom, { duration: phaseDur });
+    });
+    return () => {
+      a1.stop();
+      if (a2) a2.stop();
+    };
+  }, [idx, xSpring, ySpring, zoomMV]);
+
+  // Auto-advance cycle. Pause when off-screen.
   useEffect(() => {
     if (inView === false) return undefined;
-    const delay = isZoomed ? ZOOMED_DWELL_MS : UNZOOMED_DWELL_MS;
     const timer = setTimeout(() => {
-      if (isZoomed) {
-        setIsZoomed(false);
-        setCityIndex((i) => (i + 1) % CITIES.length);
-      } else {
-        setIsZoomed(true);
-      }
-    }, delay);
+      setIdx((i) => (i + 1) % VARIANTS.length);
+    }, VARIANTS[idx].dwellMs);
     return () => clearTimeout(timer);
-  }, [cityIndex, isZoomed, inView]);
+  }, [idx, inView]);
 
-  const city = CITIES[cityIndex];
-  const targetX = city.x;
-  const targetY = city.y;
-  const targetZoom = isZoomed ? city.zoomedZoom : city.unzoomedZoom;
-
-  const xSpring = useSpring(targetX, SPRING);
-  const ySpring = useSpring(targetY, SPRING);
-  const zoomSpring = useSpring(targetZoom, SPRING);
-
-  useEffect(() => {
-    xSpring.set(targetX);
-    ySpring.set(targetY);
-    zoomSpring.set(targetZoom);
-  }, [targetX, targetY, targetZoom, xSpring, ySpring, zoomSpring]);
-
-  // Compute viewBox dynamically from spring motion values
-  const containerW = containerSize.width || 1;
-  const containerH = containerSize.height || 1;
-  const viewBox = useTransform([xSpring, ySpring, zoomSpring], ([xv, yv, zv]) => {
+  // Compute viewBox dynamically — matches chunk--framer-motion.mjs:2002-2012.
+  const containerW = containerSize.width;
+  const containerH = containerSize.height;
+  const viewBox = useTransform([xSpring, ySpring, zoomMV], ([xv, yv, zv]) => {
     if (!containerW || !containerH) return `0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`;
-    const heightRatio = containerH / MAP_HEIGHT;
-    const vbHeight = MAP_HEIGHT / zv;
-    const vbWidth = containerW / heightRatio / zv;
-    const vbLeft = xv - vbWidth / 2;
-    const vbTop = yv - vbHeight / 2;
-    return `${vbLeft} ${vbTop} ${vbWidth} ${vbHeight}`;
+    const u = containerH / MAP_HEIGHT;
+    const T = MAP_HEIGHT / zv;
+    const X = containerW / u / zv;
+    const Q = xv - X / 2;
+    const K = yv - T / 2;
+    return `${Q} ${K} ${X} ${T}`;
   });
 
-  const handleCityClick = (idx) => {
-    setCityIndex(idx);
-    setIsZoomed(false);
+  const current = VARIANTS[idx];
+  const cityIdx = CITY_ORDER.indexOf(current.city);
+
+  const handleLegendClick = (city) => {
+    const targetIdx = VARIANTS.findIndex((v) => v.city === city);
+    if (targetIdx !== -1) setIdx(targetIdx);
   };
 
   return (
@@ -143,14 +136,11 @@ export default function WorldMapSection({ inView }) {
         />
       </motion.svg>
 
-      {/* City label — dead-center of the screen, visible through the
-          whole two-pronged cycle (unzoomed → zoomed) for this city.
-          Only fades on transition to a new city. */}
+      {/* Pin + label — dead-center, persists through a city's full two-phase cycle */}
       <motion.div
-        key={city.id}
+        key={current.city}
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0 }}
         transition={{ duration: 0.6, ease: [0.44, 0, 0.56, 1] }}
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
       >
@@ -175,13 +165,13 @@ export default function WorldMapSection({ inView }) {
                 margin: 0,
               }}
             >
-              {city.name}
+              {current.label}
             </h2>
           </div>
         </div>
       </motion.div>
 
-      {/* Legend — clickable city pills at bottom */}
+      {/* Legend — clickable city pills at bottom (Leganda in source) */}
       <div className="absolute left-1/2 bottom-10 -translate-x-1/2 z-10">
         <div
           className="flex items-center gap-2 px-3 py-2 rounded-[15px]"
@@ -192,12 +182,12 @@ export default function WorldMapSection({ inView }) {
             WebkitBackdropFilter: 'blur(6px)',
           }}
         >
-          {CITIES.map((c, idx) => {
-            const active = idx === cityIndex;
+          {CITY_ORDER.map((city, i) => {
+            const active = i === cityIdx;
             return (
               <button
-                key={c.id}
-                onClick={() => handleCityClick(idx)}
+                key={city}
+                onClick={() => handleLegendClick(city)}
                 className="px-4 py-2 rounded-[10px] transition-all"
                 style={{
                   fontFamily: 'Inter, sans-serif',
@@ -211,7 +201,7 @@ export default function WorldMapSection({ inView }) {
                   cursor: 'pointer',
                 }}
               >
-                {c.name.replace(/^(NICU |LUMC )/, '')}
+                {LEGEND_LABELS[city]}
               </button>
             );
           })}

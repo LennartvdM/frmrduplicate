@@ -1,16 +1,17 @@
 /**
- * /publications — mounts the compiled frmrduplicate Publications page verbatim.
- * The chunk brings its own React, navbar, backdrop, sidebar and
- * content. See public/frmr-pages/ for the raw chunks.
+ * /publications — native React. Uses the shared BlogPage layout;
+ * content lives in data/publicationsPage.js and is unchanged.
  */
 import React from 'react';
-import FrmrPageMount from '../components/FrmrPageMount';
+import BlogPage from '../components/shared/BlogPage';
+import { sections, sectionToVideo, deckSources } from '../data/publicationsPage';
 
 export default function PublicationsPage() {
   return (
-    <FrmrPageMount
-      chunkFile="wipgqg_rrnb9vnxe9-sx-yopnjd6w2fz2buc9b-zrv8.mg5izp6c.mjs"
-      cssFile="publications.ssr.css"
+    <BlogPage
+      sections={sections}
+      sectionToVideo={sectionToVideo}
+      deckSources={deckSources}
     />
   );
 }

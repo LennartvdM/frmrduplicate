@@ -1,182 +1,287 @@
-/**
- * Shared "blog layout" used by /neoflix and /publications.
- *
- * Visual design ports frmrduplicate's Publications page:
- *   - Dark-teal page background (#00333b)
- *   - Ambient video backdrop deck with 0.5x playback + crossfade
- *   - SidebarLayout with scroll-spy (left sidebar + outcropped section cards)
- *   - Inter 800 / 40px section headings, Inter 500 / 16px body
- *
- * Both pages pass their own `sections` + `sectionToVideo` + `deckSources`.
- * Styling is identical across the two routes — the only difference is
- * content, per the user's direction: "we're only taking the module".
- */
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-
-import SidebarLayout from './SidebarLayout';
+import useScrollSpy from '../../hooks/useScrollSpy';
 import { renderMarkdown } from '../../utils/renderMarkdown';
 
-export const BLOG_PAGE_STYLE = {
-  backgroundColor: '#00333b',
-  sidebarClassName: 'bg-[#1c3664]',
-  sectionStyle: {
-    background: 'rgba(245,249,252,0.8)',
-  },
-};
-
-export default function BlogPage({
-  sections,
-  sectionToVideo,
-  deckSources,
-  autoScrollDelay = 3500,
-  contentMaxWidth = '42rem',
-}) {
-  const [activeSection, setActiveSection] = useState(sections[0]?.id);
+/**
+ * BlogPage — shared layout for /neoflix and /publications.
+ *
+ * Native React rebuild of frmrduplicate's blog-style page. Content is
+ * passed in as props so each route keeps its own `data/*Page.js` sections.
+ *
+ * Layout:
+ *   - Fixed full-bleed video backdrop (0.5x playback, crossfades per
+ *     active section) behind everything at z-index 0.
+ *   - Centered 2-column grid: sticky sidebar (navy, 15 px radius) on the
+ *     left, content column (cream translucent cards, 10 px radius) on
+ *     the right. 1540 px max-width overall.
+ *   - Scroll-spy drives the sidebar active state + the backdrop video.
+ *
+ * Visual tokens taken from frmrduplicate's neoflix.page.css:
+ *   #f5f9fc   page background
+ *   #1c3664   sidebar background
+ *   #72c2c2   sidebar active accent (teal)
+ *   #383437   heading text
+ *   #111111   body text
+ *   rgba(245,249,252,0.8)  content-card background
+ */
+export default function BlogPage({ sections, sectionToVideo, deckSources }) {
+  const sectionIds = sections.map((s) => s.id);
+  const active = useScrollSpy(sectionIds, 120);
   const backdropRef = useRef(null);
-  const [loadedSources, setLoadedSources] = useState(new Set());
+  const [loadedSources, setLoadedSources] = useState(() => new Set());
 
-  // Slow the video backdrop — ambient effect
+  // Ambient 0.5x playback on every <video> in the backdrop.
   useEffect(() => {
     if (!backdropRef.current) return;
-    backdropRef.current.querySelectorAll('video').forEach((vid) => {
+    backdropRef.current.querySelectorAll('video').forEach((v) => {
       try {
-        vid.playbackRate = 0.5;
-        if (vid.paused) vid.play().catch(() => {});
+        v.playbackRate = 0.5;
+        if (v.paused) v.play().catch(() => {});
       } catch {}
     });
   }, [loadedSources]);
 
-  // Lock the html/body background while on this page
+  // Lock the html/body background while this page is mounted.
   useEffect(() => {
     const html = document.documentElement;
     const body = document.body;
-    const prevHtmlBg = html.style.backgroundColor;
-    const prevBodyBg = body.style.backgroundColor;
-    html.style.backgroundColor = BLOG_PAGE_STYLE.backgroundColor;
-    body.style.backgroundColor = BLOG_PAGE_STYLE.backgroundColor;
+    const prevH = html.style.backgroundColor;
+    const prevB = body.style.backgroundColor;
+    html.style.backgroundColor = '#f5f9fc';
+    body.style.backgroundColor = '#f5f9fc';
     return () => {
-      html.style.backgroundColor = prevHtmlBg;
-      body.style.backgroundColor = prevBodyBg;
+      html.style.backgroundColor = prevH;
+      body.style.backgroundColor = prevB;
     };
   }, []);
 
-  // Which video card is on top for the current active section
-  const targetVideo = sectionToVideo?.[activeSection];
+  // Which backdrop video matches the current active section.
+  const targetVideo = sectionToVideo?.[active];
   const targetIndex = deckSources?.indexOf(targetVideo) ?? -1;
 
-  // Soften text opacity briefly during video crossfade
+  // Soften content opacity briefly during video crossfade.
   const [bgTransitioning, setBgTransitioning] = useState(false);
   const prevTargetIndex = useRef(targetIndex);
   useLayoutEffect(() => {
     if (targetIndex !== prevTargetIndex.current) {
       prevTargetIndex.current = targetIndex;
       setBgTransitioning(true);
-      const timer = setTimeout(() => setBgTransitioning(false), 300);
-      return () => clearTimeout(timer);
+      const t = setTimeout(() => setBgTransitioning(false), 300);
+      return () => clearTimeout(t);
     }
   }, [targetIndex]);
 
-  const videoDeck = deckSources && deckSources.length > 0 ? (
-    <div
-      className="fixed inset-0 pointer-events-none"
-      style={{ zIndex: 0, backgroundColor: BLOG_PAGE_STYLE.backgroundColor }}
-    >
-      <motion.div
-        ref={backdropRef}
-        className="absolute inset-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.2, delay: 0.3 }}
-      >
-        {deckSources.map((src, idx) => {
-          const isVisible = idx === targetIndex;
-          return (
-            <motion.video
-              key={src}
-              className="absolute inset-0 w-full h-full object-cover"
-              src={src}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload={isVisible ? 'auto' : 'metadata'}
-              initial={{ opacity: isVisible ? 1 : 0 }}
-              animate={{ opacity: isVisible ? 1 : 0 }}
-              transition={{ duration: 0.6, ease: 'easeInOut' }}
-              style={{ transform: 'scale(1.06)', zIndex: idx }}
-              onLoadedData={(e) => {
-                e.target.playbackRate = 0.5;
-                if (isVisible) e.target.play().catch(() => {});
-                setLoadedSources((prev) => new Set(prev).add(src));
-              }}
-            />
-          );
-        })}
-        <div className="absolute inset-0 bg-slate-900/20" />
-      </motion.div>
-    </div>
-  ) : null;
-
-  const renderSection = (section) => {
-    const displayContent = renderMarkdown(section.rawContent || section.content || '');
-    return (
-      <section
-        key={section.id}
-        id={section.id}
-        className="sb-section-card"
-        style={BLOG_PAGE_STYLE.sectionStyle}
-      >
-        <div
-          style={
-            bgTransitioning
-              ? { opacity: 0.65, transition: 'opacity 0.15s ease-in' }
-              : { opacity: 1, transition: 'opacity 0.12s ease-out' }
-          }
-        >
-          <h2
-            style={{
-              fontFamily: 'Inter, sans-serif',
-              fontWeight: 800,
-              fontSize: '40px',
-              color: '#383437',
-              letterSpacing: '-1.5px',
-              lineHeight: 1.2,
-              marginBottom: '1.5rem',
-            }}
-          >
-            {section.title}
-          </h2>
-          {displayContent && (
-            <div
-              className="publications-content"
-              style={{
-                fontFamily: 'Inter, sans-serif',
-                fontWeight: 500,
-                fontSize: '16px',
-                lineHeight: '2em',
-                color: '#666666',
-                maxWidth: contentMaxWidth,
-                whiteSpace: 'pre-wrap',
-              }}
-              dangerouslySetInnerHTML={{ __html: displayContent }}
-            />
-          )}
-        </div>
-      </section>
-    );
+  const handleSidebarClick = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const navbarOffset = 96;
+    const top = el.getBoundingClientRect().top + window.scrollY - navbarOffset;
+    window.scrollTo({ top, behavior: 'smooth' });
+    history.replaceState(null, '', `#${id}`);
   };
 
-  const sectionsWithContent = sections.map((s) => ({ ...s, rawContent: s.content }));
-
   return (
-    <SidebarLayout
-      sections={sectionsWithContent}
-      backgroundLayer={videoDeck}
-      renderSection={renderSection}
-      onActiveChange={setActiveSection}
-      autoScrollDelay={autoScrollDelay}
-      sidebarClassName={BLOG_PAGE_STYLE.sidebarClassName}
-    />
+    <div style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#f5f9fc' }}>
+      {/* Fixed video backdrop */}
+      {deckSources && deckSources.length > 0 && (
+        <div
+          className="fixed inset-0 pointer-events-none"
+          style={{ zIndex: 0, backgroundColor: '#f5f9fc' }}
+        >
+          <motion.div
+            ref={backdropRef}
+            className="absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.2, delay: 0.3 }}
+          >
+            {deckSources.map((src, idx) => {
+              const isVisible = idx === targetIndex;
+              return (
+                <motion.video
+                  key={src}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  src={src}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload={isVisible ? 'auto' : 'metadata'}
+                  initial={{ opacity: isVisible ? 1 : 0 }}
+                  animate={{ opacity: isVisible ? 1 : 0 }}
+                  transition={{ duration: 0.6, ease: 'easeInOut' }}
+                  style={{ transform: 'scale(1.06)', zIndex: idx }}
+                  onLoadedData={(e) => {
+                    e.target.playbackRate = 0.5;
+                    if (isVisible) e.target.play().catch(() => {});
+                    setLoadedSources((prev) => new Set(prev).add(src));
+                  }}
+                />
+              );
+            })}
+            <div className="absolute inset-0 bg-slate-900/20" />
+          </motion.div>
+        </div>
+      )}
+
+      {/* Foreground layout */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          maxWidth: 1540,
+          margin: '0 auto',
+          padding: '96px 24px 120px',
+          display: 'grid',
+          gridTemplateColumns: 'minmax(220px, 300px) minmax(0, 960px)',
+          columnGap: 40,
+          alignItems: 'start',
+        }}
+        className="blog-grid"
+      >
+        {/* Sticky sidebar */}
+        <aside
+          style={{
+            position: 'sticky',
+            top: 112,
+            backgroundColor: '#1c3664',
+            borderRadius: 15,
+            padding: '28px 20px',
+            color: '#f5f9fc',
+            fontFamily: 'Inter, sans-serif',
+          }}
+        >
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {sections.map((s, idx) => {
+              const isActive = s.id === active;
+              return (
+                <li key={s.id}>
+                  <button
+                    type="button"
+                    onClick={() => handleSidebarClick(s.id)}
+                    style={{
+                      width: '100%',
+                      textAlign: 'left',
+                      padding: '10px 12px',
+                      borderRadius: 10,
+                      border: 'none',
+                      background: isActive ? 'rgba(114, 194, 194, 0.18)' : 'transparent',
+                      color: isActive ? '#72c2c2' : 'rgba(245, 249, 252, 0.72)',
+                      fontWeight: isActive ? 600 : 500,
+                      fontSize: 13,
+                      lineHeight: 1.4,
+                      cursor: 'pointer',
+                      transition: 'background 0.2s, color 0.2s',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 10,
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isActive) e.currentTarget.style.color = '#f5f9fc';
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActive) e.currentTarget.style.color = 'rgba(245, 249, 252, 0.72)';
+                    }}
+                  >
+                    <span
+                      aria-hidden="true"
+                      style={{
+                        display: 'inline-block',
+                        width: 18,
+                        height: 2,
+                        borderRadius: 2,
+                        background: isActive ? '#72c2c2' : 'rgba(245, 249, 252, 0.35)',
+                        flexShrink: 0,
+                        transition: 'background 0.2s',
+                      }}
+                    />
+                    <span>{idx === 0 ? s.title : `${idx}. ${s.title}`}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </aside>
+
+        {/* Content column */}
+        <article style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+          {sections.map((section) => {
+            const html = renderMarkdown(section.content || '');
+            return (
+              <section
+                key={section.id}
+                id={section.id}
+                style={{
+                  backgroundColor: 'rgba(245, 249, 252, 0.82)',
+                  backdropFilter: 'blur(2px)',
+                  WebkitBackdropFilter: 'blur(2px)',
+                  borderRadius: 10,
+                  padding: '80px 56px',
+                  scrollMarginTop: 96,
+                  opacity: bgTransitioning ? 0.7 : 1,
+                  transition: 'opacity 0.25s ease',
+                }}
+              >
+                <h2
+                  style={{
+                    fontFamily: 'Inter, sans-serif',
+                    fontWeight: 800,
+                    fontSize: 40,
+                    lineHeight: 1.15,
+                    letterSpacing: '-1.5px',
+                    color: '#383437',
+                    margin: 0,
+                    marginBottom: 24,
+                  }}
+                >
+                  {section.title}
+                </h2>
+                {html && (
+                  <div
+                    className="blog-body"
+                    style={{
+                      fontFamily: 'Inter, sans-serif',
+                      fontWeight: 500,
+                      fontSize: 16,
+                      lineHeight: 1.75,
+                      color: '#111',
+                      maxWidth: 600,
+                    }}
+                    dangerouslySetInnerHTML={{ __html: html }}
+                  />
+                )}
+              </section>
+            );
+          })}
+        </article>
+      </div>
+
+      {/* Mobile: stack sidebar above content */}
+      <style>{`
+        @media (max-width: 900px) {
+          .blog-grid {
+            grid-template-columns: 1fr !important;
+            padding: 96px 16px 80px !important;
+          }
+          .blog-grid aside {
+            position: static !important;
+          }
+          .blog-grid section {
+            padding: 40px 24px !important;
+          }
+        }
+        .blog-body p { margin: 0 0 1em 0; }
+        .blog-body p:last-child { margin-bottom: 0; }
+        .blog-body a { color: #529c9c; text-decoration: underline; text-underline-offset: 2px; }
+        .blog-body a:hover { color: #72c2c2; }
+        .blog-body strong { font-weight: 700; color: #383437; }
+        .blog-body em { font-style: italic; }
+        .blog-body h3 { font-weight: 700; color: #383437; font-size: 22px; margin: 28px 0 12px; }
+        .blog-body ul, .blog-body ol { padding-left: 1.4em; margin: 0 0 1em; }
+        .blog-body li { margin-bottom: 6px; }
+        .blog-body hr { border: 0; border-top: 1px solid rgba(0,0,0,0.1); margin: 28px 0; }
+      `}</style>
+    </div>
   );
 }

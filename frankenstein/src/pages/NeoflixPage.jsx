@@ -1,16 +1,11 @@
 /**
- * /neoflix — mounts the compiled frmrduplicate neoflix page verbatim.
- * The chunk brings its own React, navbar, backdrop, sidebar and
- * content. See public/frmr-pages/ for the raw chunks.
+ * /neoflix — mounts the compiled frmrduplicate neoflix page verbatim,
+ * wrapped in the same three context providers the real /frmrduplicate
+ * site uses. See public/frmr-pages/bootstrap.mjs for the machinery.
  */
 import React from 'react';
 import FrmrPageMount from '../components/FrmrPageMount';
 
 export default function NeoflixPage() {
-  return (
-    <FrmrPageMount
-      chunkFile="r-i-lvusp0upuyen_-noede9lquwyi4ivhta2kytius.3x4mi74y.mjs"
-      cssFile="neoflix.ssr.css"
-    />
-  );
+  return <FrmrPageMount routeId="bzydBB85Y" cssFile="neoflix.ssr.css" />;
 }

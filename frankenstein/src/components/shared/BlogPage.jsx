@@ -6,24 +6,11 @@ import { renderMarkdown } from '../../utils/renderMarkdown';
 /**
  * BlogPage — shared layout for /neoflix and /publications.
  *
- * Native React rebuild of frmrduplicate's blog-style page. Content is
- * passed in as props so each route keeps its own `data/*Page.js` sections.
- *
- * Layout:
- *   - Fixed full-bleed video backdrop (0.5x playback, crossfades per
- *     active section) behind everything at z-index 0.
- *   - Centered 2-column grid: sticky sidebar (navy, 15 px radius) on the
- *     left, content column (cream translucent cards, 10 px radius) on
- *     the right. 1540 px max-width overall.
- *   - Scroll-spy drives the sidebar active state + the backdrop video.
- *
- * Visual tokens taken from frmrduplicate's neoflix.page.css:
- *   #f5f9fc   page background
- *   #1c3664   sidebar background
- *   #72c2c2   sidebar active accent (teal)
- *   #383437   heading text
- *   #111111   body text
- *   rgba(245,249,252,0.8)  content-card background
+ * Native React rebuild of frmrduplicate's blog-style page. Content stays
+ * in each page's `data/*Page.js` file (unchanged markdown strings); this
+ * component auto-detects publications-style metadata (bold link +
+ * italic citation + `---`) and renders those as structured cards while
+ * falling through to plain markdown for everything else.
  */
 export default function BlogPage({ sections, sectionToVideo, deckSources }) {
   const sectionIds = sections.map((s) => s.id);
@@ -32,7 +19,6 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
   const backdropRef = useRef(null);
   const [loadedSources, setLoadedSources] = useState(() => new Set());
 
-  // Ambient 0.5x playback on every <video> in the backdrop.
   useEffect(() => {
     if (!backdropRef.current) return;
     backdropRef.current.querySelectorAll('video').forEach((v) => {
@@ -43,7 +29,6 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
     });
   }, [loadedSources]);
 
-  // Lock the html/body background while this page is mounted.
   useEffect(() => {
     const html = document.documentElement;
     const body = document.body;
@@ -57,11 +42,9 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
     };
   }, []);
 
-  // Which backdrop video matches the current active section.
   const targetVideo = sectionToVideo?.[active];
   const targetIndex = deckSources?.indexOf(targetVideo) ?? -1;
 
-  // Soften content opacity briefly during video crossfade.
   const [bgTransitioning, setBgTransitioning] = useState(false);
   const prevTargetIndex = useRef(targetIndex);
   useLayoutEffect(() => {
@@ -154,10 +137,9 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
           }}
         >
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column' }}>
-            {sections.map((s, idx) => {
+            {sections.map((s) => {
               const isActive = s.id === active;
               const isHovered = hovered === s.id;
-              // Three states — marker grows from dot → mid-dash → long-dash.
               const markerWidth = isActive ? 26 : isHovered ? 14 : 4;
               const markerColor = isActive
                 ? '#ffffff'
@@ -194,9 +176,6 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
                       transition: 'font-weight 0.25s ease',
                     }}
                   >
-                    {/* Marker: 4 px dot → 14 px mid-dash → 26 px long-dash.
-                        Spring physics means mid-transition states are visible
-                        while multiple items animate through scroll. */}
                     <motion.span
                       aria-hidden="true"
                       animate={{ width: markerWidth, backgroundColor: markerColor }}
@@ -211,7 +190,7 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
                         flexShrink: 0,
                       }}
                     />
-                    <span>{idx === 0 ? s.title : `${idx}. ${s.title}`}</span>
+                    <span>{s.title}</span>
                   </motion.button>
                 </li>
               );
@@ -222,7 +201,8 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
         {/* Content column */}
         <article style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
           {sections.map((section) => {
-            const html = renderMarkdown(section.content || '');
+            const parsed = parseSectionContent(section.content || '');
+            const { numberPart, titlePart } = splitHeading(section.title);
             return (
               <section
                 key={section.id}
@@ -241,18 +221,37 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
                 <h2
                   style={{
                     fontFamily: 'Inter, sans-serif',
-                    fontWeight: 800,
-                    fontSize: 40,
-                    lineHeight: 1.15,
-                    letterSpacing: '-1.5px',
-                    color: '#383437',
                     margin: 0,
-                    marginBottom: 24,
+                    marginBottom: 28,
+                    display: 'flex',
+                    alignItems: 'baseline',
+                    gap: 18,
+                    flexWrap: 'wrap',
+                    color: '#383437',
+                    letterSpacing: '-1.5px',
+                    lineHeight: 1.1,
                   }}
                 >
-                  {section.title}
+                  {numberPart && (
+                    <span
+                      style={{
+                        fontWeight: 300,
+                        fontSize: 44,
+                        color: 'rgba(56, 52, 55, 0.55)',
+                        fontVariantNumeric: 'tabular-nums',
+                      }}
+                    >
+                      {numberPart}
+                    </span>
+                  )}
+                  <span style={{ fontWeight: 800, fontSize: 40 }}>
+                    {titlePart}
+                  </span>
                 </h2>
-                {html && (
+
+                {parsed.titleCard && <TitleCard card={parsed.titleCard} />}
+                {parsed.citation && <CitationCard text={parsed.citation} />}
+                {parsed.bodyHtml && (
                   <div
                     className="blog-body"
                     style={{
@@ -262,8 +261,9 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
                       lineHeight: 1.75,
                       color: '#111',
                       maxWidth: 600,
+                      marginTop: parsed.titleCard || parsed.citation ? 8 : 0,
                     }}
-                    dangerouslySetInnerHTML={{ __html: html }}
+                    dangerouslySetInnerHTML={{ __html: parsed.bodyHtml }}
                   />
                 )}
               </section>
@@ -272,7 +272,6 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
         </article>
       </div>
 
-      {/* Mobile: stack sidebar above content */}
       <style>{`
         @media (max-width: 900px) {
           .blog-grid {
@@ -312,4 +311,171 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
       `}</style>
     </div>
   );
+}
+
+/* ── Title card ─────────────────────────────────────────────────────── */
+function TitleCard({ card }) {
+  return (
+    <a
+      href={card.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{
+        display: 'block',
+        backgroundColor: '#1c3664',
+        borderRadius: 14,
+        padding: '22px 26px',
+        color: '#ffffff',
+        textDecoration: 'none',
+        position: 'relative',
+        overflow: 'hidden',
+        marginBottom: 18,
+        maxWidth: 600,
+        boxShadow: '0 1px 2px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.04)',
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = 'translateY(-1px)';
+        e.currentTarget.style.boxShadow =
+          '0 4px 12px rgba(28, 54, 100, 0.25), inset 0 0 0 1px rgba(255,255,255,0.08)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'translateY(0)';
+        e.currentTarget.style.boxShadow =
+          '0 1px 2px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.04)';
+      }}
+    >
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          right: -36,
+          top: -36,
+          width: 140,
+          height: 140,
+          borderRadius: '50%',
+          border: '1px solid rgba(114, 194, 194, 0.18)',
+          pointerEvents: 'none',
+        }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          right: -8,
+          bottom: -8,
+          width: 70,
+          height: 70,
+          borderRadius: '50%',
+          border: '1px solid rgba(114, 194, 194, 0.12)',
+          pointerEvents: 'none',
+        }}
+      />
+      <span
+        style={{
+          position: 'relative',
+          fontFamily: 'Inter, sans-serif',
+          fontWeight: 600,
+          fontSize: 15,
+          lineHeight: 1.5,
+          letterSpacing: '-0.1px',
+          display: 'inline-block',
+          paddingRight: 18,
+        }}
+      >
+        {card.title}
+        <ExternalArrow />
+      </span>
+    </a>
+  );
+}
+
+function ExternalArrow() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{
+        verticalAlign: '-1px',
+        marginLeft: 8,
+        opacity: 0.75,
+      }}
+      aria-hidden="true"
+    >
+      <path
+        d="M7 17L17 7M17 7H9M17 7V15"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/* ── Citation card ──────────────────────────────────────────────────── */
+function CitationCard({ text }) {
+  return (
+    <div
+      style={{
+        position: 'relative',
+        background: 'rgba(245, 249, 252, 0.7)',
+        borderRadius: 8,
+        padding: '14px 18px 14px 22px',
+        marginBottom: 18,
+        maxWidth: 600,
+        borderLeft: '3px solid #72c2c2',
+        fontFamily: 'Inter, sans-serif',
+        fontWeight: 500,
+        fontStyle: 'italic',
+        fontSize: 14,
+        lineHeight: 1.55,
+        color: '#555',
+      }}
+    >
+      {text}
+    </div>
+  );
+}
+
+/* ── Heading split ──────────────────────────────────────────────────── */
+function splitHeading(title) {
+  if (!title) return { numberPart: '', titlePart: '' };
+  const m = title.match(/^(\d+\.)\s+(.+)$/);
+  if (m) return { numberPart: m[1], titlePart: m[2] };
+  return { numberPart: '', titlePart: title };
+}
+
+/* ── Content parsing ────────────────────────────────────────────────── */
+// Pattern at the top of a publications section:
+//   **[Title](URL)**
+//
+//   *Citation line*
+//
+//   ---
+//
+//   Body markdown...
+//
+// If the pattern matches, pull the title + citation out as structured
+// cards and render the body as markdown. Otherwise everything is body.
+function parseSectionContent(content) {
+  const match = content.match(
+    /^\s*\*\*\[([^\]]+)\]\(([^)]+)\)\*\*\s*\n+\*([^*][^\n]*?)\*\s*\n+---\s*\n+([\s\S]*)$/
+  );
+  if (match) {
+    const [, title, href, citation, body] = match;
+    return {
+      titleCard: { title: title.trim().replace(/\.$/, ''), href },
+      citation: citation.trim(),
+      bodyHtml: renderMarkdown(body),
+    };
+  }
+  return {
+    titleCard: null,
+    citation: null,
+    bodyHtml: renderMarkdown(content),
+  };
 }

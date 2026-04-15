@@ -25,9 +25,10 @@ import { VideoBackdropContext } from '../../context/VideoBackdropContext';
  * Route transitions are handled by the browser's View Transitions API,
  * not this engine. The backdrop's root div carries
  * `view-transition-name: backdrop` so it's captured as an independent
- * group (NOT part of root). CSS in index.css drives it with a
- * deck-fade staircase — old snapshot above new, ticking 1 → 0 —
- * while the foreground root snapshot slides horizontally per
+ * group (NOT part of the catch-all root group). CSS in index.css
+ * drives it with a deck-fade staircase — old snapshot above new,
+ * ticking 1 → 0 — while the foreground (captured as `content` via a
+ * wrapper div in RouteTransition) slides horizontally per
  * `html[data-nav-direction]`. Never a 50% crossfade valley, never a
  * horizontal slide of the backdrop itself.
  *
@@ -38,7 +39,10 @@ import { VideoBackdropContext } from '../../context/VideoBackdropContext';
  * means "don't create a separate named transition group". An element
  * with `none` is still captured as part of root, so the backdrop
  * sliding WITH root was the observed bug. Giving it a real name
- * (`backdrop`) is what actually makes it an independent group.)
+ * (`backdrop`) is what actually makes it an independent group. For
+ * symmetry, the front content was later pulled out of `root` too —
+ * see RouteTransition.jsx — because Framer Motion's chunk injects
+ * styles that contest `::view-transition-*(root)`.)
  *
  * Three scroll-aware contexts resolve the current target per-page:
  *   1. Home:  four cells stacked on y, translated by scrollProgress.
@@ -191,11 +195,11 @@ export default function BackdropEngine({ children }) {
  *
  * Route transitions are delegated entirely to the browser's View
  * Transitions API. The root div's `view-transition-name: backdrop`
- * captures this subtree as its own group (independent of root), and
- * index.css runs the deck-fade keyframes on the old snapshot while
- * root slides horizontally. We render only the *current* page here —
- * the browser's snapshot pair supplies the cross-page transition
- * imagery.
+ * captures this subtree as its own group (independent of `content`),
+ * and index.css runs the deck-fade keyframes on the old snapshot while
+ * the `content` group slides horizontally. We render only the *current*
+ * page here — the browser's snapshot pair supplies the cross-page
+ * transition imagery.
  */
 function BackdropRenderer({ state }) {
   const location = useLocation();
@@ -212,6 +216,8 @@ function BackdropRenderer({ state }) {
         // leave the backdrop inside the root capture and make it slide
         // along with the foreground. A real name gives it its own
         // old/new snapshots that index.css animates with a deck-fade.
+        // The front content wears its own name (`content`) via
+        // RouteTransition, so the two layers never share a group.
         viewTransitionName: 'backdrop',
       }}
       aria-hidden="true"

@@ -1,5 +1,4 @@
 import React from 'react';
-import TabletBlurBackground from './TabletBlurBackground';
 import TabletMedicalCarousel from './TabletMedicalCarousel';
 import TabletTravellingBar from './TabletTravellingBar';
 import AutoFitHeading from '../../AutoFitHeading';
@@ -54,12 +53,18 @@ export default function MedicalTabletLayout({
       ref={sectionRef}
       className="w-full h-screen relative overflow-hidden"
       style={{
-        background: '#1c3424',
+        // Transparent so the site-wide SharedVideoBackdrop shows through —
+        // it already fills with #1c3424 camo behind its video deck, and
+        // publishes the matching blur video when a medical section is
+        // active, so this section just reveals that layer.
+        background: 'transparent',
         // Smooth transition when NOT rotating
         transition: isRotating ? 'none' : 'all 0.3s ease-out',
       }}
     >
-      <TabletBlurBackground blurVideos={blurVideos} current={currentVideo} fadeDuration={1.2} sectionActive={sectionState === 'entering' || sectionState === 'active'} />
+      {/* TabletBlurBackground removed — MedicalSection.jsx publishes the
+          current blur-video URL to the single site-wide SharedVideoBackdrop
+          at AppShell level. One deck for everything. */}
 
       {/* Foreground content wrapper - CSS Grid for smooth orientation adaptation */}
       <div style={{

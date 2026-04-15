@@ -31,16 +31,16 @@ export default function SectionManager({ sections }) {
   return (
     <>
       {sections.map((section, idx) => {
-        // Always render all sections so the manual navigation buttons can jump reliably
-        // Set dark background for medical sections to prevent white flash
-        const isMedicalSection = section.name === 'two' || section.name === 'three' || section.name === 'four';
-        const background = isMedicalSection ? '#1c3424' : undefined;
-        
+        // Medical + worldmap sections were given a solid #1c3424 bg to
+        // prevent a white flash during loading. Now the site-wide
+        // SharedVideoBackdrop at AppShell level already fills with
+        // #1c3424 behind its video deck and covers the whole viewport,
+        // so sections can be transparent — that lets the backdrop's
+        // videos show through on the medical sections.
         return (
           <ScrollSection
             key={section.name}
             name={section.name}
-            background={background}
           >
             {({ inView, ref }) => {
               sectionRefs.current[idx] = ref;

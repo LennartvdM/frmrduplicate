@@ -1,11 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import RouteTransition from './components/RouteTransition';
 import SharedVideoBackdrop from './components/SharedVideoBackdrop';
 import { VideoBackdropContext } from './context/VideoBackdropContext';
-import { isVideoBackdropRoute } from './config/videoBackdropRoutes';
+import { UNIVERSAL_SECTION_TO_VIDEO } from './config/videoBackdropRoutes';
 import Home from './pages/Home';
 import NeoflixPage from './pages/NeoflixPage';
 import PublicationsPage from './pages/PublicationsPage';
@@ -18,27 +17,37 @@ function AppShell() {
   const isPublications = location.pathname === '/publications';
   const isContact = location.pathname === '/contact';
   const isToolbox = location.pathname.startsWith('/toolbox');
-  const hasVideoBackdrop = isVideoBackdropRoute(location.pathname);
 
-  // BlogPage pushes its active section id here; SharedVideoBackdrop
-  // reads it to pick the current target card in the deck.
+  // One shared video backdrop for the whole site. Pages push either:
+  //   setActiveSection(id)   — used by BlogPage (resolves through
+  //                             UNIVERSAL_SECTION_TO_VIDEO)
+  //   setActiveVideoUrl(url) — used by Home's medical sections, which
+  //                             already track a video URL via their
+  //                             carousel state
+  // Resolved target URL drives the deck-of-cards crossfade inside
+  // SharedVideoBackdrop. When both are null, the video layer fades
+  // out and only the #1c3424 camo fill shows.
   const [activeSection, setActiveSection] = useState(null);
-  const ctx = useMemo(() => ({ setActiveSection }), []);
+  const [activeVideoUrl, setActiveVideoUrl] = useState(null);
+  const ctx = useMemo(
+    () => ({ setActiveSection, setActiveVideoUrl }),
+    []
+  );
+
+  const targetVideoUrl = activeVideoUrl
+    || (activeSection ? UNIVERSAL_SECTION_TO_VIDEO[activeSection] : null)
+    || null;
 
   return (
     <div className={`min-h-screen ${isNeoflix || isPublications || isContact || isToolbox ? '' : 'bg-[#F5F9FC]'}`}>
       <Navbar />
 
-      {/* Persistent video backdrop — mounted once for the whole
-          /neoflix, /publications, /contact family. Stays put as the
-          foreground slides horizontally between them; fades out
-          entirely (via AnimatePresence) when routing to a non-video
-          page, and fades back in when returning. */}
-      <AnimatePresence>
-        {hasVideoBackdrop && (
-          <SharedVideoBackdrop key="shared-video" activeSection={activeSection} />
-        )}
-      </AnimatePresence>
+      {/* One persistent backdrop for the whole site. No AnimatePresence
+          conditional mount — it stays alive across every route, just
+          fading its video layer in/out as pages do or don't publish a
+          target URL. That's what eliminates the "two decks sliding
+          side-by-side" problem at route transitions. */}
+      <SharedVideoBackdrop targetVideoUrl={targetVideoUrl} />
 
       <VideoBackdropContext.Provider value={ctx}>
         <RouteTransition>

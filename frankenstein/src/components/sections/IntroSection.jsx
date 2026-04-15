@@ -1,21 +1,17 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import { IntroSlide } from 'neoflix-intro-card';
 import { useTabletLayout } from '../../hooks/useTabletLayout';
 import HeroScrollCue from '../HeroScrollCue';
-import { VideoBackdropContext } from '../../context/VideoBackdropContext';
 
 const IntroSection = ({ inView }) => {
   const { isTablet, isTouchDevice, width } = useTabletLayout();
 
-  // Clear the shared video backdrop's target when the intro is the
-  // section in view. Medical sections only publish while active (they
-  // don't blank on deactivation, to avoid sibling clobber), so intro
-  // owning the "no video here" signal is how the camo comes back when
-  // the user scrolls up from a medical section.
-  const { setActiveVideoUrl } = useContext(VideoBackdropContext);
-  useEffect(() => {
-    if (inView) setActiveVideoUrl(null);
-  }, [inView, setActiveVideoUrl]);
+  // No backdrop publish needed. Under BackdropEngine, Home's 4-cell
+  // y-stack is laid out by position — Intro is cell 0 (camo) by
+  // construction. The engine translates the stack by
+  // scrollContainer.scrollTop / viewportHeight, so the camo cell
+  // already shows when the user is parked on (or scrolling toward)
+  // the intro slide. Nothing for this component to signal.
 
   let variant = 'desktop';
   if (isTouchDevice && width < 600) {

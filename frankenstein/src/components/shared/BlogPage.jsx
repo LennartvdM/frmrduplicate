@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import useScrollSpy from '../../hooks/useScrollSpy';
 import { renderMarkdown } from '../../utils/renderMarkdown';
 import { VideoBackdropContext } from '../../context/VideoBackdropContext';
+import { UNIVERSAL_SECTION_TO_VIDEO } from '../../config/videoBackdropRoutes';
 
 /**
  * BlogPage — shared layout for /neoflix and /publications.
@@ -24,14 +25,16 @@ export default function BlogPage({ sections, scrollTo }) {
   const active = useScrollSpy(sectionIds, 120);
   const [hovered, setHovered] = useState(null);
 
-  // Publish the active section up to the shared video backdrop.
-  // Clear on unmount so a subsequent non-video route doesn't inherit
-  // the last video — the shared backdrop will fade its video layer out.
-  const { setActiveSection } = useContext(VideoBackdropContext);
+  // Publish the resolved video URL for the active section up to the
+  // BackdropEngine. Clear on unmount so a subsequent non-video route
+  // doesn't inherit the last video — the engine's BlogBackdrop will
+  // fade out when no URL is published.
+  const { setBlogTopUrl } = useContext(VideoBackdropContext);
   useEffect(() => {
-    if (active) setActiveSection(active);
-  }, [active, setActiveSection]);
-  useEffect(() => () => setActiveSection(null), [setActiveSection]);
+    const url = active ? UNIVERSAL_SECTION_TO_VIDEO[active] || null : null;
+    setBlogTopUrl(url);
+  }, [active, setBlogTopUrl]);
+  useEffect(() => () => setBlogTopUrl(null), [setBlogTopUrl]);
 
   // If the route asked for a specific section (e.g. /contact → "contact"),
   // jump to it once the page has mounted. Waits a frame so layout has

@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { assetUrl } from '../../../utils/assetUrl';
-import { VideoBackdropContext } from '../../../context/VideoBackdropContext';
 
 /**
  * Slide 4 mounts the ORIGINAL frmrduplicate MapComponent verbatim.
@@ -18,13 +17,10 @@ export default function WorldMapSection({ inView }) {
   const mountRef = useRef(null);
   const cleanupRef = useRef(null);
 
-  // World map has its own SVG-based background, so we clear the shared
-  // video backdrop's target when this section is in view. Prevents the
-  // previous medical section's blur video from lingering behind the map.
-  const { setActiveVideoUrl } = useContext(VideoBackdropContext);
-  useEffect(() => {
-    if (inView) setActiveVideoUrl(null);
-  }, [inView, setActiveVideoUrl]);
+  // No backdrop publish needed. Under BackdropEngine, Home's 4-cell
+  // y-stack already renders the WorldMap slot as a camo cell; the
+  // engine knows from scrollProgress when the user is parked here
+  // and keeps video cells offscreen/idle accordingly.
 
   useEffect(() => {
     if (!mountRef.current) return undefined;

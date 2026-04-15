@@ -4,14 +4,22 @@ import { useLayoutEffect, useState } from 'react';
  * Scroll-spy hook that tracks which section is currently in view
  * @param {string[]} ids - Array of section IDs to track
  * @param {number} offset - Pixel offset from top of viewport (default: 100)
+ * @param {object|null} scrollerRef - Optional ref whose .current is the
+ *   scrollable container. Falls back to window when null/undefined — used
+ *   by legacy consumers (SidebarLayout) that still scroll the document.
+ *   Pages inside the fixed RouteTransition wrapper must pass a ref to
+ *   their own internal scroll container, because `window` never scrolls
+ *   in the new layout.
  * @returns {string} - ID of the currently active section
  */
-export default function useScrollSpy(ids, offset = 100) {
+export default function useScrollSpy(ids, offset = 100, scrollerRef = null) {
   const [active, setActive] = useState(ids[0]);
 
   useLayoutEffect(() => {
     const els = ids.map((id) => document.getElementById(id)).filter(Boolean);
     if (!els.length) return;
+
+    const scroller = scrollerRef?.current || window;
 
     let ticking = false;
 
@@ -35,15 +43,15 @@ export default function useScrollSpy(ids, offset = 100) {
       }
     };
 
-    window.addEventListener('scroll', onScroll, { passive: true });
+    scroller.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', calc);
     calc();
 
     return () => {
-      window.removeEventListener('scroll', onScroll);
+      scroller.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', calc);
     };
-  }, [ids, offset]);
+  }, [ids, offset, scrollerRef]);
 
   // Listen for programmatic nav-activate events
   useLayoutEffect(() => {

@@ -218,7 +218,11 @@ export default function Navbar() {
       <div className="flex items-center h-full pl-6 pr-4">
         <FaviconLogo onClick={() => {
           if (location.pathname === '/') {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // ScrollSnap owns the Home scroll container (window never
+            // scrolls with the fixed RouteTransition layout). Dispatch
+            // the event ScrollSnap already listens for instead of
+            // addressing window.
+            window.dispatchEvent(new Event('scrollsnap:go-to-top'));
           } else {
             transitionNavigate('/');
           }

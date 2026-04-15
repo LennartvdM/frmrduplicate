@@ -1,13 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import useViewTransition from '../hooks/useViewTransition';
 
 /**
  * Site-wide footer modeled on neoflixexporttest's richer design:
  * teal → dark-blue gradient, nav columns, signature + funding line,
  * back-to-top button. Rebuilt as native React + Tailwind (structure
  * copied from the Framer export, not the bundled runtime).
+ *
+ * Navigation goes through useViewTransition so the direction-aware
+ * slide (html[data-nav-direction] + View Transitions) fires on Footer
+ * clicks the same way it does on Navbar clicks. Using plain <Link>
+ * here would skip the direction logic and cause the content to teleport
+ * while only the backdrop animates — breaking the spatial mapping
+ * between navbar slot order and slide direction.
  */
 export default function Footer() {
+  const transitionNavigate = useViewTransition();
+  const handleNav = (to) => (e) => {
+    e.preventDefault();
+    transitionNavigate(to);
+  };
+
   const scrollTop = () => {
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -51,15 +64,15 @@ export default function Footer() {
             <div>
               <div className={headingClass}>Products</div>
               <ul className="space-y-2">
-                <li><Link to="/" className={linkClass}>Home</Link></li>
-                <li><Link to="/neoflix" className={linkClass}>Neoflix</Link></li>
+                <li><a href="/" onClick={handleNav('/')} className={linkClass}>Home</a></li>
+                <li><a href="/neoflix" onClick={handleNav('/neoflix')} className={linkClass}>Neoflix</a></li>
               </ul>
             </div>
             <div>
               <div className={headingClass}>Resources</div>
               <ul className="space-y-2">
-                <li><Link to="/publications" className={linkClass}>Publications</Link></li>
-                <li><Link to="/toolbox" className={linkClass}>Toolbox</Link></li>
+                <li><a href="/publications" onClick={handleNav('/publications')} className={linkClass}>Publications</a></li>
+                <li><a href="/toolbox" onClick={handleNav('/toolbox')} className={linkClass}>Toolbox</a></li>
               </ul>
             </div>
           </div>

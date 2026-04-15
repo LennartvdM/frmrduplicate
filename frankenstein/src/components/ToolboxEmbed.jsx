@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getPageBySlug } from '../data/toolboxPages';
+import useViewTransition from '../hooks/useViewTransition';
 
 const LOAD_TIMEOUT_MS = 20000;
 
@@ -10,6 +11,7 @@ export default function ToolboxEmbed() {
   const [loading, setLoading] = useState(true);
   const [timedOut, setTimedOut] = useState(false);
   const timerRef = useRef(null);
+  const transitionNavigate = useViewTransition();
 
   // Timeout: if iframe hasn't loaded after LOAD_TIMEOUT_MS, show fallback
   useEffect(() => {
@@ -29,12 +31,16 @@ export default function ToolboxEmbed() {
           <p className="text-slate-500 mb-6">
             The toolbox page &ldquo;{slug}&rdquo; could not be found.
           </p>
-          <Link
-            to="/neoflix"
+          <a
+            href="/neoflix"
+            onClick={(e) => {
+              e.preventDefault();
+              transitionNavigate('/neoflix');
+            }}
             className="px-4 py-2 bg-teal-600 hover:bg-teal-500 rounded-lg text-white transition-colors"
           >
             Back to Neoflix
-          </Link>
+          </a>
         </div>
       </div>
     );

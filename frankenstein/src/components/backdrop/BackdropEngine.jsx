@@ -264,7 +264,10 @@ function BackdropRenderer({ state }) {
     } else {
       const fromIdx = getNavIndexForPath(prevPath);
       const toIdx = getNavIndexForPath(nextPath);
-      const direction = toIdx - fromIdx >= 0 ? 'right' : 'left';
+      // Same convention as useViewTransition: > 0 → right, < 0 → left.
+      // Same-index cross-page pairs (e.g. /toolbox/a → /toolbox/b) map
+      // to the same pageId and never reach this code.
+      const direction = toIdx - fromIdx > 0 ? 'right' : 'left';
       initial = { kind: 'slide', fromPage, toPage, direction, progress: 0 };
     }
 

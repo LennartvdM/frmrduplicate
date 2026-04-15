@@ -30,7 +30,19 @@ export default function useViewTransition() {
 
   return (to, opts) => {
     const targetPath = typeof to === 'string' ? to.split('#')[0] || '/' : to?.pathname || '/';
-    const fromIndex = getNavIndexForPath(typeof window !== 'undefined' ? window.location.pathname : '/');
+    const currentPath =
+      typeof window !== 'undefined' ? window.location.pathname : '/';
+
+    // Same-page nav (e.g. /neoflix#collab clicked from /neoflix): just
+    // navigate, no transition. Otherwise callers that aren't the
+    // Navbar (Footer, markdown internal links) would flash a snapshot
+    // for zero visible payoff.
+    if (targetPath === currentPath) {
+      navigate(to, opts);
+      return;
+    }
+
+    const fromIndex = getNavIndexForPath(currentPath);
     const toIndex = getNavIndexForPath(targetPath);
     const direction = toIndex - fromIndex;
 

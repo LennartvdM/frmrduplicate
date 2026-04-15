@@ -109,29 +109,41 @@ body::-webkit-scrollbar { display: none; }
     mix-blend-mode: normal;
   }
 
-  /* Moving right in the navbar → old slides off to the left,
-     new slides in from the right. */
+  /* Timing: slide-out 0.35s → pause 0.1s → slide-in 0.35s (total 0.8s).
+     The NEW pane holds offscreen at translateX(±100%) for 0.45s thanks
+     to `animation-delay: 0.45s` combined with `fill-mode: both`
+     (shorthand `animation` here sets fill to `both`, so the "from"
+     keyframe is applied during the delay). That empty-frame in the
+     middle is what the user asked for: a breath between slide-out end
+     and slide-in start, without a leading delay (which registers as lag
+     on click). Backdrop fades during the slide-out so the new deck is
+     already visible by the time the new front slide arrives. */
   html[data-nav-direction="right"]::view-transition-old(content) {
-    animation: 0.45s cubic-bezier(0.4, 0, 0.2, 1) both slide-out-to-left;
+    animation: 0.35s cubic-bezier(0.4, 0, 0.2, 1) both slide-out-to-left;
   }
   html[data-nav-direction="right"]::view-transition-new(content) {
-    animation: 0.45s cubic-bezier(0.4, 0, 0.2, 1) both slide-in-from-right;
+    animation: 0.35s cubic-bezier(0.4, 0, 0.2, 1) 0.45s both slide-in-from-right;
   }
 
   /* Moving left → mirror. */
   html[data-nav-direction="left"]::view-transition-old(content) {
-    animation: 0.45s cubic-bezier(0.4, 0, 0.2, 1) both slide-out-to-right;
+    animation: 0.35s cubic-bezier(0.4, 0, 0.2, 1) both slide-out-to-right;
   }
   html[data-nav-direction="left"]::view-transition-new(content) {
-    animation: 0.45s cubic-bezier(0.4, 0, 0.2, 1) both slide-in-from-left;
+    animation: 0.35s cubic-bezier(0.4, 0, 0.2, 1) 0.45s both slide-in-from-left;
   }
 
   /* Backdrop: independent group. Deck-fade staircase — old sits above
      new at opacity 1 → 0, new beneath stays at opacity 1. No
-     horizontal motion ever. Duration matches the content slide so both
-     finish together. */
+     horizontal motion ever. Intentionally runs longer than the spatial
+     slides (0.8s vs the 0.35s slide-out) — fade has much higher
+     perceptual tolerance than spatial motion, so a long slow
+     cross-fade reads as a smooth environment change rather than a
+     hard cut. Total matches the overall transition timeline
+     (slide-out 0.35s + pause 0.1s + slide-in 0.35s = 0.8s), so
+     the fade is still finished by the time the new content settles. */
   ::view-transition-old(backdrop) {
-    animation: 0.45s cubic-bezier(0.4, 0, 0.2, 1) both backdrop-fade-out;
+    animation: 0.8s cubic-bezier(0.4, 0, 0.2, 1) both backdrop-fade-out;
     mix-blend-mode: normal;
   }
   ::view-transition-new(backdrop) {

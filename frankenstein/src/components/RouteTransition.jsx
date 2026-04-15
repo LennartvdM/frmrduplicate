@@ -36,8 +36,28 @@ import { useLocation } from 'react-router-dom';
 export default function RouteTransition({ children }) {
   const location = useLocation();
   const rendered = typeof children === 'function' ? children(location) : children;
+  // Fixed viewport container. Pinning the `content` group to a viewport-
+  // stable rect is what makes the horizontal slide stay purely horizontal:
+  // the UA's default `::view-transition-group(content)` animation
+  // interpolates the OLD rect to the NEW rect, and any rect mismatch
+  // (e.g. /neoflix at scrollTop=0 vs /contact scrolled to the contact
+  // section) showed up as diagonal motion. With this wrapper fixed at
+  // inset:0, OLD.rect === NEW.rect always, so the group animation is a
+  // no-op and only our CSS translateX keyframes run.
+  //
+  // Consequence: every page scrolls its own content internally
+  // (ScrollSnap already does; BlogPage gained an internal scroll ref).
+  // Navbar sits above (z:40); backdrop below (z:0).
   return (
-    <div style={{ viewTransitionName: 'content' }}>
+    <div
+      style={{
+        viewTransitionName: 'content',
+        position: 'fixed',
+        inset: 0,
+        overflow: 'hidden',
+        zIndex: 10,
+      }}
+    >
       {rendered}
     </div>
   );

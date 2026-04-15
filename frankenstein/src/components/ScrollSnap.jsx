@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useViewport } from '../hooks/useViewport';
 import HeroScrollCue from './HeroScrollCue';
 import { useBackdropPublisher } from '../backdrop/useBackdrop';
@@ -292,31 +292,36 @@ const ScrollSnap = ({ children }) => {
     return () => container.removeEventListener('scroll', onScroll, { passive: true });
   }, [children, refreshSections, updateDotNavPosition]);
 
-  useEffect(() => {
-    const restoreSection = () => {
-      const savedId = sessionStorage.getItem('scrollsnap:return-section');
-      if (!savedId) return;
+  // Restore the saved section synchronously during commit. Using
+  // useLayoutEffect (not useEffect + setTimeout) is intentional: this
+  // runs inside the view-transition's DOM-commit phase, BEFORE the NEW
+  // snapshot is captured. If we scrolled asynchronously after paint,
+  // the NEW snapshot would freeze the container at scrollTop=0 and the
+  // visible jump to the saved section would animate underneath the
+  // horizontal slide (the "V2 is also visible" bug).
+  //
+  // refreshSections() populates sectionsRef/currentIndexRef before we
+  // read them — children render into the container above, so their DOM
+  // is already present when this effect fires.
+  useLayoutEffect(() => {
+    const savedId = sessionStorage.getItem('scrollsnap:return-section');
+    if (!savedId) return;
 
-      const target = document.getElementById(savedId);
-      const container = containerRef.current;
-      if (target && container) {
-        // Sections now start at y=0, no navbar offset needed
-        const destination = target.offsetTop;
-        container.scrollTo({ top: destination, behavior: 'auto' });
-        const idx = sectionsRef.current.findIndex((section) => section?.id === savedId);
-        if (idx >= 0) {
-          setCurrentIndex(idx);
-          currentIndexRef.current = idx;
-        }
+    const container = containerRef.current;
+    const target = document.getElementById(savedId);
+    if (container && target) {
+      refreshSections();
+      const destination = target.offsetTop;
+      container.scrollTo({ top: destination, behavior: 'auto' });
+      const idx = sectionsRef.current.findIndex((section) => section?.id === savedId);
+      if (idx >= 0) {
+        setCurrentIndex(idx);
+        currentIndexRef.current = idx;
       }
+    }
 
-      sessionStorage.removeItem('scrollsnap:return-section');
-    };
-
-    // Delay restoration to ensure layout has stabilized
-    const id = window.setTimeout(restoreSection, 0);
-    return () => window.clearTimeout(id);
-  }, []);
+    sessionStorage.removeItem('scrollsnap:return-section');
+  }, [refreshSections]);
 
   // Initial viewport height setup only - resize is handled by unified rotation handler
   useEffect(() => {

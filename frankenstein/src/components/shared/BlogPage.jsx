@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import useScrollSpy from '../../hooks/useScrollSpy';
 import { renderMarkdown } from '../../utils/renderMarkdown';
@@ -22,10 +22,18 @@ import { BLOG_DECK, blogIdxForSection } from '../../backdrop/decks';
  * backdrop's BlogBackdrop fades the cell out.
  */
 export default function BlogPage({ sections, scrollTo }) {
-  // Synchronously place window.scrollY at the right spot on mount and
-  // whenever the route's `scrollTo` changes. Runs inside the
-  // view-transition commit (via useLayoutEffect) so the NEW snapshot is
-  // captured with the page already at the target — no post-transition
+  // Internal scroll container. BlogPage renders inside RouteTransition,
+  // which is `position: fixed; inset: 0`. That fixed wrapper must stay
+  // scroll-independent (its `getBoundingClientRect()` must be the same
+  // on OLD and NEW captures or the UA `::view-transition-group(content)`
+  // animation interpolates the rect delta — the diagonal we're avoiding).
+  // So the page scrolls on this inner element instead of `window`.
+  const scrollRef = useRef(null);
+
+  // Synchronously place the internal scroll container at the right spot
+  // on mount and whenever the route's `scrollTo` changes. Runs inside
+  // the view-transition commit (via useLayoutEffect) so the NEW snapshot
+  // is captured with the page already at the target — no post-transition
   // vertical animation layered on top of the horizontal slide, and no
   // retained scroll from the previous page bleeding through.
   //
@@ -48,6 +56,8 @@ export default function BlogPage({ sections, scrollTo }) {
   // the hash via history.replaceState as the user scrolls, and we don't
   // want that to yank the viewport back to the anchor.
   useLayoutEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
     const hashId = typeof window !== 'undefined' ? window.location.hash.slice(1) : '';
     const targetId = scrollTo || hashId;
     let top = 0;
@@ -55,14 +65,16 @@ export default function BlogPage({ sections, scrollTo }) {
       const el = document.getElementById(targetId);
       if (el) {
         const navbarOffset = 96;
-        top = el.getBoundingClientRect().top + window.scrollY - navbarOffset;
+        const containerTop = container.getBoundingClientRect().top;
+        const elTop = el.getBoundingClientRect().top;
+        top = elTop - containerTop + container.scrollTop - navbarOffset;
       }
     }
-    window.scrollTo({ top, behavior: 'instant' });
+    container.scrollTo({ top, behavior: 'instant' });
   }, [scrollTo]);
 
   const sectionIds = sections.map((s) => s.id);
-  const active = useScrollSpy(sectionIds, 120);
+  const active = useScrollSpy(sectionIds, 120, scrollRef);
   const [hovered, setHovered] = useState(null);
 
   const activeIdx = blogIdxForSection(active);
@@ -85,16 +97,27 @@ export default function BlogPage({ sections, scrollTo }) {
   }, []);
 
   const handleSidebarClick = (id) => {
+    const container = scrollRef.current;
     const el = document.getElementById(id);
-    if (!el) return;
+    if (!container || !el) return;
     const navbarOffset = 96;
-    const top = el.getBoundingClientRect().top + window.scrollY - navbarOffset;
-    window.scrollTo({ top, behavior: 'smooth' });
+    const containerTop = container.getBoundingClientRect().top;
+    const elTop = el.getBoundingClientRect().top;
+    const top = elTop - containerTop + container.scrollTop - navbarOffset;
+    container.scrollTo({ top, behavior: 'smooth' });
     history.replaceState(null, '', `#${id}`);
   };
 
   return (
-    <div style={{ position: 'relative', minHeight: '100vh' }}>
+    <div
+      ref={scrollRef}
+      style={{
+        position: 'absolute',
+        inset: 0,
+        overflowY: 'auto',
+        overflowX: 'hidden',
+      }}
+    >
       <div
         style={{
           position: 'relative',

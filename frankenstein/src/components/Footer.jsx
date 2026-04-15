@@ -21,9 +21,13 @@ export default function Footer() {
     transitionNavigate(to);
   };
 
+  // Footer only mounts inside ScrollSnap (Home). The page scrolls on
+  // ScrollSnap's internal container, not `window`, so dispatch the event
+  // ScrollSnap listens for. Addressing `window` here became a no-op once
+  // the fixed RouteTransition layout landed (window never scrolls).
   const scrollTop = () => {
     if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.dispatchEvent(new Event('scrollsnap:go-to-top'));
     }
   };
 

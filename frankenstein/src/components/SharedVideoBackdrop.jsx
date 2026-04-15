@@ -52,15 +52,13 @@ export default function SharedVideoBackdrop({ activeSection }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+      // Fast enter/exit (0.15s) so at the video ↔ non-video boundary
+      // the backdrop doesn't coexist with the foreground slide long
+      // enough to produce a moving-edge "horizontal shift" perception
+      // between the cream Home bg and the video camo.
+      transition={{ duration: 0.15, ease: 'easeOut' }}
     >
-      <motion.div
-        ref={backdropRef}
-        className="absolute inset-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.1 }}
-      >
+      <div ref={backdropRef} className="absolute inset-0">
         {UNIVERSAL_DECK_SOURCES.map((src, idx) => {
           const isTarget = idx === targetIndex;
           const isVisible = idx >= targetIndex;
@@ -91,7 +89,7 @@ export default function SharedVideoBackdrop({ activeSection }) {
           );
         })}
         <div className="absolute inset-0 bg-slate-900/20" />
-      </motion.div>
+      </div>
     </motion.div>
   );
 }

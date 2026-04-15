@@ -9,11 +9,6 @@ const NAV_LINKS = [
   { label: 'Publications', to: '/publications' },
   { label: 'Contact', to: '/contact' },
   { label: 'Toolbox', to: '/toolbox' },
-  // TEMP: test button for leftward motion. V2 lives inside Home (index 0),
-  // so clicking this from Neoflix/Publications/Contact/Toolbox forces a
-  // negative delta → html[data-nav-direction="left"] → old slides right,
-  // new slides in from left. Remove once bidirectional slide is verified.
-  { label: 'V2 test', to: '/#two', section: 'two' },
 ];
 
 const BLOB_HEIGHT_FULL = 32;

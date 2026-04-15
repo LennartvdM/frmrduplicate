@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import useScrollSpy from '../../hooks/useScrollSpy';
 import { renderMarkdown } from '../../utils/renderMarkdown';
-import { VideoBackdropContext } from '../../context/VideoBackdropContext';
-import { UNIVERSAL_SECTION_TO_VIDEO } from '../../config/videoBackdropRoutes';
+import { useBackdropTarget } from '../../backdrop/useBackdrop';
+import { BLOG_DECK, blogIdxForSection } from '../../backdrop/decks';
 
 /**
  * BlogPage — shared layout for /neoflix and /publications.
@@ -14,27 +14,23 @@ import { UNIVERSAL_SECTION_TO_VIDEO } from '../../config/videoBackdropRoutes';
  * italic citation + `---`) and renders those as structured cards while
  * falling through to plain markdown for everything else.
  *
- * The video backdrop is NOT rendered here — it lives at AppShell level
- * in <SharedVideoBackdrop> so it can persist across transitions between
- * video-backdrop routes and only the foreground slides horizontally.
- * This component just publishes its active section id upward so the
- * shared backdrop knows which card to bring on top.
+ * The backdrop isn't rendered here — it lives at BackdropProvider level
+ * so it persists across transitions between the two blog routes and
+ * only the foreground slides horizontally. This component publishes a
+ * single target ('blog') whose topIdx tracks the active scroll-spy
+ * section. When no section is resolved the target is null and the
+ * backdrop's BlogBackdrop fades the cell out.
  */
 export default function BlogPage({ sections, scrollTo }) {
   const sectionIds = sections.map((s) => s.id);
   const active = useScrollSpy(sectionIds, 120);
   const [hovered, setHovered] = useState(null);
 
-  // Publish the resolved video URL for the active section up to the
-  // BackdropEngine. Clear on unmount so a subsequent non-video route
-  // doesn't inherit the last video — the engine's BlogBackdrop will
-  // fade out when no URL is published.
-  const { setBlogTopUrl } = useContext(VideoBackdropContext);
-  useEffect(() => {
-    const url = active ? UNIVERSAL_SECTION_TO_VIDEO[active] || null : null;
-    setBlogTopUrl(url);
-  }, [active, setBlogTopUrl]);
-  useEffect(() => () => setBlogTopUrl(null), [setBlogTopUrl]);
+  const activeIdx = blogIdxForSection(active);
+  useBackdropTarget(
+    'blog',
+    activeIdx >= 0 ? { kind: 'video', deck: BLOG_DECK, topIdx: activeIdx } : null
+  );
 
   // If the route asked for a specific section (e.g. /contact → "contact"),
   // jump to it once the page has mounted. Waits a frame so layout has

@@ -117,62 +117,11 @@ export default function MedicalDesktopLayout({
       }}
     >
       <style>{VIDEO_CONTROLS_HIDDEN_CSS}</style>
-      {/* Always-visible base blur video */}
-      <div
-        className="absolute inset-0 flex items-center justify-center opacity-100 z-0"
-        style={BLUR_VIDEO_BASE_STYLE}
-      >
-        <div style={VIDEO_INNER_CONTAINER_STYLE}>
-          <VideoManager
-            src={blurVideos[BASE_INDEX].video}
-            isPlaying={isActive || shouldAnimate}
-            className="w-full h-full object-cover"
-            controls={false}
-            preload="metadata"
-            tabIndex="-1"
-            aria-hidden="true"
-            draggable="false"
-            disablePictureInPicture
-            disableRemotePlayback
-            controlsList="nodownload nofullscreen noremoteplayback"
-            onContextMenu={(e) => e.preventDefault()}
-          />
-          <div style={VIDEO_OVERLAY_STYLE} />
-        </div>
-      </div>
-      {/* Other blur videos fade in/out on top */}
-      {blurVideos.map((video, index) => (
-        index !== BASE_INDEX && (
-          <div
-            key={video.id}
-            className={`absolute inset-0 flex items-center justify-center transition-opacity duration-700 ease z-10 ${
-              index === currentVideo ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{
-              ...BLUR_VIDEO_BASE_STYLE,
-              transition: shouldTransition ? 'opacity 700ms ease' : 'none'
-            }}
-          >
-            <div style={VIDEO_INNER_CONTAINER_STYLE}>
-              <VideoManager
-                src={video.video}
-                isPlaying={(isActive || shouldAnimate) && (index === 0 ? currentVideo === 0 : currentVideo <= 1)}
-                className="w-full h-full object-cover"
-                controls={false}
-                preload="metadata"
-                tabIndex="-1"
-                aria-hidden="true"
-                draggable="false"
-                disablePictureInPicture
-                disableRemotePlayback
-                controlsList="nodownload nofullscreen noremoteplayback"
-                onContextMenu={(e) => e.preventDefault()}
-              />
-              <div style={VIDEO_OVERLAY_STYLE} />
-            </div>
-          </div>
-        )
-      ))}
+      {/* Full-bleed blur-video deck was removed — MedicalSection.jsx now
+          publishes the current blur-video URL to VideoBackdropContext
+          so the single site-wide SharedVideoBackdrop at AppShell level
+          renders it. One deck for the whole site means no more two
+          decks sliding side-by-side during route transitions. */}
       {/* Header on tablet: render above the carousel */}
       {isTabletLayout && (
         <div

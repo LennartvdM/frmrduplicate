@@ -1,52 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  UNIVERSAL_DECK_SOURCES,
-  UNIVERSAL_SECTION_TO_VIDEO,
-} from '../config/videoBackdropRoutes';
+import { UNIVERSAL_DECK_SOURCES } from '../config/videoBackdropRoutes';
 
 /**
- * Full-bleed video backdrop that persists across transitions between
- * any two video-backdrop routes (/neoflix, /publications, /contact).
+ * Full-bleed video backdrop — one single deck for the whole site.
  *
- * Same deck-of-cards pattern we use inside BlogPage — card visible iff
- * `idx >= targetIndex`, last card glued to the table as a camo fallback —
- * but lifted to AppShell so the foreground can slide horizontally
- * without dragging the backdrop along. When the route changes, only the
- * target video changes; the deck itself stays mounted and crossfades.
+ * Always mounted at AppShell level; never unmounts on route change.
+ * Every page that wants a video in its backdrop publishes the video's
+ * URL via VideoBackdropContext. The deck-of-cards rule
+ * (`visible iff idx >= targetIndex`, last card glued) crossfades
+ * between targets; when no page publishes a URL the video layer fades
+ * to 0 and only the #1c3424 camo fill is visible.
  *
- * When routing to a non-video page the whole component unmounts via
- * AppShell's <AnimatePresence>, fading out alongside the horizontal
- * foreground slide.
+ * Previously Home's medical sections and the blog routes each rendered
+ * their own blur-video deck — during a route transition the viewport
+ * would show both decks sliding side-by-side. Unifying here means
+ * every video on the site flows through this single persistent layer,
+ * so transitions are one continuous backdrop regardless of the route
+ * pair involved.
  */
-export default function SharedVideoBackdrop({ activeSection }) {
+export default function SharedVideoBackdrop({ targetVideoUrl }) {
   const backdropRef = useRef(null);
   const [loadedSources, setLoadedSources] = useState(() => new Set());
   const [deckLoaded, setDeckLoaded] = useState(false);
-
-  // Hide videos for 0.5 s after mount. Rationale:
-  //
-  // On a video ↔ non-video transition (e.g. /neoflix ↔ Home), the
-  // viewport splits vertically for the duration of the slide: on one
-  // side Home's medical sections paint a solid #1c3424 camo bg, on the
-  // other the SharedVideoBackdrop is rendering actual videos. A solid
-  // colour next to a blurry video looks like "two different video
-  // backdrops side-by-side" even though one is just a fill.
-  //
-  // This delay makes the backdrop show only its #1c3424 container fill
-  // during the slide — matching the #1c3424 Home paints — so both sides
-  // of the viewport read as the same solid camo. Once the slide has
-  // settled (500 ms ≈ slide's 450 ms + a tick) the videos fade in on
-  // top of the already-visible camo.
-  //
-  // For /neoflix ↔ /publications ↔ /contact the component stays mounted
-  // (same key in AnimatePresence, no remount), so this hook never
-  // re-fires and the deck-of-cards crossfade keeps working unchanged.
-  const [videosReady, setVideosReady] = useState(false);
-  useEffect(() => {
-    const t = setTimeout(() => setVideosReady(true), 500);
-    return () => clearTimeout(t);
-  }, []);
 
   useEffect(() => {
     const t = setTimeout(() => setDeckLoaded(true), 500);
@@ -63,29 +39,24 @@ export default function SharedVideoBackdrop({ activeSection }) {
     });
   }, [loadedSources]);
 
-  const targetVideo = activeSection
-    ? UNIVERSAL_SECTION_TO_VIDEO[activeSection]
-    : undefined;
-  const rawTargetIndex = UNIVERSAL_DECK_SOURCES.indexOf(targetVideo);
-  const targetIndex = rawTargetIndex >= 0 ? rawTargetIndex : 0;
+  const rawTargetIndex = targetVideoUrl
+    ? UNIVERSAL_DECK_SOURCES.indexOf(targetVideoUrl)
+    : -1;
+  const hasTarget = rawTargetIndex >= 0;
+  const targetIndex = hasTarget ? rawTargetIndex : 0;
 
   return (
-    <motion.div
+    <div
       className="fixed inset-0 pointer-events-none"
-      style={{ zIndex: 0, backgroundColor: '#1c3424' }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.35, ease: 'easeOut' }}
+      style={{ zIndex: -1, backgroundColor: '#1c3424' }}
     >
-      {/* Inner layer holds only the <video> elements — opacity controlled
-          by `videosReady` so during the foreground slide (video ↔ non-
-          video), only the #1c3424 camo fill on the parent is visible,
-          matching what Home's medical sections paint on their half. */}
+      {/* Video layer — fades in when a page publishes a target, fades
+          out when nothing is publishing (intro slide, toolbox). Only
+          the #1c3424 camo fill on the parent shows when inactive. */}
       <motion.div
         ref={backdropRef}
         className="absolute inset-0"
-        animate={{ opacity: videosReady ? 1 : 0 }}
+        animate={{ opacity: hasTarget ? 1 : 0 }}
         transition={{ duration: 0.35, ease: 'easeOut' }}
       >
         {UNIVERSAL_DECK_SOURCES.map((src, idx) => {
@@ -119,6 +90,6 @@ export default function SharedVideoBackdrop({ activeSection }) {
         })}
         <div className="absolute inset-0 bg-slate-900/20" />
       </motion.div>
-    </motion.div>
+    </div>
   );
 }

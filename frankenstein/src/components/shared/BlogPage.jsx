@@ -25,10 +25,13 @@ export default function BlogPage({ sections, scrollTo }) {
   const [hovered, setHovered] = useState(null);
 
   // Publish the active section up to the shared video backdrop.
+  // Clear on unmount so a subsequent non-video route doesn't inherit
+  // the last video — the shared backdrop will fade its video layer out.
   const { setActiveSection } = useContext(VideoBackdropContext);
   useEffect(() => {
     if (active) setActiveSection(active);
   }, [active, setActiveSection]);
+  useEffect(() => () => setActiveSection(null), [setActiveSection]);
 
   // If the route asked for a specific section (e.g. /contact → "contact"),
   // jump to it once the page has mounted. Waits a frame so layout has

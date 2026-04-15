@@ -24,10 +24,20 @@ import { VideoBackdropContext } from '../../context/VideoBackdropContext';
  * engine decides motion from page identity + scroll position + a small
  * imperative API; the content module never tries to coordinate with it.
  *
- * Two motion primitives:
- *   - Deck fade (rule 0, implemented inside BackdropCell).
- *   - Slide — vertical on Home (scroll-snap y) or horizontal on route
- *     change (both sides non-video, or one video + one non-video).
+ * Two motion primitives, picked per-transition:
+ *   - Deck fade — the video → video answer. Within one cell, rule 0
+ *     (staircase opacity) drives it. Across pages (e.g. Home parked
+ *     on V2 → /neoflix), we apply the same staircase at the PAGE
+ *     level: the outgoing page sits above the incoming page and ticks
+ *     from opacity 1 → 0, revealing the to-page's video beneath at
+ *     full opacity the whole time. Never a 50% crossfade valley.
+ *   - Slide — horizontal on route change when either side is non-video,
+ *     or vertical on Home's scroll-snap y-stack (scroll-driven).
+ *
+ * The rule: video only ever fades into other video. If either side of
+ * a transition is non-video, it's a slide. The one scroll-snap
+ * exception (V2 ↔ V3 on Home) slides vertically because both cells
+ * live in the same Home y-stack and translate with scrollProgress.
  *
  * Three scroll-aware contexts resolve the current target per-page:
  *   1. Home:  four cells stacked on y, translated by scrollProgress.
@@ -37,15 +47,6 @@ import { VideoBackdropContext } from '../../context/VideoBackdropContext';
  *   2. Blog:  one cell backed by UNIVERSAL_DECK_SOURCES; top URL set by
  *             the blog page's scroll-spy via setBlogTopUrl.
  *   3. Other: single camo cell (toolbox, etc.).
- *
- * Route transitions:
- *   - video↔video (neoflix↔publications↔/contact): just a blog-top
- *     change; BackdropCell deck-fades through its staircase opacity
- *     rule. No slide.
- *   - any other pair: horizontal slide of the whole page composition.
- *     Direction matches the navbar-index delta (same source the
- *     content-side View-Transitions read from data-nav-direction), so
- *     backdrop and content move together.
  *
  * Mounted once in AppShell and never unmounts. Opts out of the root
  * View-Transition snapshot so its internal motion runs live while the
@@ -69,10 +70,6 @@ function pageIdForPath(pathname) {
   return PAGE_HOME;
 }
 
-function pageIsVideo(page) {
-  return page === PAGE_NEOFLIX || page === PAGE_PUBLICATIONS;
-}
-
 // Home cell layout — must match Home.jsx's sections array order.
 const HOME_CELLS = [
   { kind: 'camo',  variant: null }, // 0 Intro
@@ -82,6 +79,36 @@ const HOME_CELLS = [
 ];
 
 const ROUTE_SLIDE_MS = 450; // matches the .45s CSS keyframes in index.css
+const ROUTE_FADE_MS = 600;  // matches BackdropCell's default fadeDuration
+
+/**
+ * Is `page` currently showing video, given the engine's current state?
+ * Home is video iff its current scroll-parked cell is a video cell.
+ * Blog pages are video iff a blogTopUrl is published.
+ */
+function pageIsCurrentlyVideo(page, state) {
+  if (page === PAGE_NEOFLIX || page === PAGE_PUBLICATIONS) {
+    return state.blogTopUrl !== null && state.blogTopUrl !== undefined;
+  }
+  if (page === PAGE_HOME) {
+    const idx = Math.round(state.homeScrollProgress);
+    const safe = Math.max(0, Math.min(HOME_CELLS.length - 1, idx));
+    return HOME_CELLS[safe]?.kind === 'video';
+  }
+  return false;
+}
+
+/**
+ * For the DESTINATION page of a route transition, state.homeScrollProgress
+ * is stale if we're returning to Home (home unmounted while we were
+ * elsewhere, so it still holds the last value from the previous visit).
+ * Home always remounts at the top (Intro, camo), so the incoming Home
+ * is non-video by definition. Blog pages keep blogTopUrl across mounts.
+ */
+function toPageIsVideo(page, state) {
+  if (page === PAGE_HOME) return false;
+  return pageIsCurrentlyVideo(page, state);
+}
 
 const initialState = {
   homeScrollProgress: 0,
@@ -196,14 +223,23 @@ function BackdropRenderer({ state }) {
   const location = useLocation();
   const currentPage = pageIdForPath(location.pathname);
 
-  // Route-slide tracking. When pathname changes, detect whether the
-  // old↔new pair should slide (one side non-video) or just deck-fade
-  // (both video) and run a 450ms animation on the page compositions.
-  const [slide, setSlide] = useState(null);
-  // slide: { fromPage, toPage, direction: 'left'|'right', progress: 0..1 }
+  // Route transition tracking. When pathname changes, we pick one of
+  // two kinds based on whether each side is currently showing video:
+  //   - 'fade'  — video ↔ video. Page-level deck-fade (outgoing sits
+  //               above incoming at opacity 1→0, no horizontal motion).
+  //   - 'slide' — any other pair. Horizontal slide, direction from
+  //               navbar-index delta.
+  // rAF-driven progress (0..1) so we never CSS-transition out of sync
+  // with the content-side slide animation.
+  const [transition, setTransition] = useState(null);
+  // transition: { kind, fromPage, toPage, direction?, progress }
   const prevPathRef = useRef(location.pathname);
-  const slideRafRef = useRef(null);
-  const slideStartRef = useRef(0);
+  const rafRef = useRef(null);
+  const startRef = useRef(0);
+  // Ref mirror of `state` so the pathname effect reads fresh values
+  // without re-running every scroll tick.
+  const stateRef = useRef(state);
+  stateRef.current = state;
 
   useEffect(() => {
     const prevPath = prevPathRef.current;
@@ -215,54 +251,96 @@ function BackdropRenderer({ state }) {
     prevPathRef.current = nextPath;
     if (fromPage === toPage) return undefined;
 
-    // Both sides video → no slide, deck-fade only. BackdropCell
-    // handles that naturally when blogTopUrl changes underneath.
-    if (pageIsVideo(fromPage) && pageIsVideo(toPage)) return undefined;
+    const snapshot = stateRef.current;
+    const fromIsVideo = pageIsCurrentlyVideo(fromPage, snapshot);
+    const toIsVideo = toPageIsVideo(toPage, snapshot);
 
-    const fromIdx = getNavIndexForPath(prevPath);
-    const toIdx = getNavIndexForPath(nextPath);
-    const direction = toIdx - fromIdx >= 0 ? 'right' : 'left';
+    const isFade = fromIsVideo && toIsVideo;
+    const duration = isFade ? ROUTE_FADE_MS : ROUTE_SLIDE_MS;
 
-    slideStartRef.current = performance.now();
-    setSlide({ fromPage, toPage, direction, progress: 0 });
+    let initial;
+    if (isFade) {
+      initial = { kind: 'fade', fromPage, toPage, progress: 0 };
+    } else {
+      const fromIdx = getNavIndexForPath(prevPath);
+      const toIdx = getNavIndexForPath(nextPath);
+      // Same convention as useViewTransition: > 0 → right, < 0 → left.
+      // Same-index cross-page pairs (e.g. /toolbox/a → /toolbox/b) map
+      // to the same pageId and never reach this code.
+      const direction = toIdx - fromIdx > 0 ? 'right' : 'left';
+      initial = { kind: 'slide', fromPage, toPage, direction, progress: 0 };
+    }
+
+    startRef.current = performance.now();
+    setTransition(initial);
 
     const tick = (now) => {
-      const t = (now - slideStartRef.current) / ROUTE_SLIDE_MS;
+      const t = (now - startRef.current) / duration;
       if (t >= 1) {
-        setSlide(null);
-        slideRafRef.current = null;
+        setTransition(null);
+        rafRef.current = null;
         return;
       }
-      setSlide((prev) => (prev ? { ...prev, progress: t } : prev));
-      slideRafRef.current = requestAnimationFrame(tick);
+      setTransition((prev) => (prev ? { ...prev, progress: t } : prev));
+      rafRef.current = requestAnimationFrame(tick);
     };
-    slideRafRef.current = requestAnimationFrame(tick);
+    rafRef.current = requestAnimationFrame(tick);
 
     return () => {
-      if (slideRafRef.current) {
-        cancelAnimationFrame(slideRafRef.current);
-        slideRafRef.current = null;
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
       }
     };
   }, [location.pathname]);
 
-  // Which pages are currently on screen. During a route slide, both
-  // fromPage and toPage render side-by-side; otherwise just current.
+  // Which pages are currently on screen. During a transition, both
+  // fromPage and toPage render together; otherwise just current.
   const visiblePages = useMemo(() => {
-    if (slide) return [slide.fromPage, slide.toPage];
+    if (transition) return [transition.fromPage, transition.toPage];
     return [currentPage];
-  }, [slide, currentPage]);
+  }, [transition, currentPage]);
 
-  const getPageTransform = (page) => {
-    if (!slide) return 'translateX(0%)';
-    const { fromPage, toPage, direction, progress } = slide;
-    // Moving right: outgoing → -100%, incoming starts at +100%.
-    // Moving left:  outgoing → +100%, incoming starts at -100%.
+  const getPageStyle = (page) => {
+    if (!transition) {
+      return { transform: 'translateX(0%)', opacity: 1, zIndex: 0 };
+    }
+    if (transition.kind === 'fade') {
+      // Page-level deck-fade staircase: from-page sits above at opacity
+      // 1 → 0, revealing to-page (already opaque from mount) beneath.
+      // Never a 50% valley because the layer below is never partial.
+      const { fromPage, toPage, progress } = transition;
+      if (page === fromPage) {
+        return {
+          transform: 'translateX(0%)',
+          opacity: 1 - progress,
+          zIndex: 1,
+        };
+      }
+      if (page === toPage) {
+        return { transform: 'translateX(0%)', opacity: 1, zIndex: 0 };
+      }
+      return { transform: 'translateX(0%)', opacity: 1, zIndex: 0 };
+    }
+    // kind === 'slide'
+    const { fromPage, toPage, direction, progress } = transition;
     const outTo = direction === 'right' ? -100 : 100;
     const inFrom = direction === 'right' ? 100 : -100;
-    if (page === fromPage) return `translateX(${outTo * progress}%)`;
-    if (page === toPage) return `translateX(${inFrom * (1 - progress)}%)`;
-    return 'translateX(0%)';
+    if (page === fromPage) {
+      return {
+        transform: `translateX(${outTo * progress}%)`,
+        opacity: 1,
+        zIndex: 0,
+      };
+    }
+    if (page === toPage) {
+      return {
+        transform: `translateX(${inFrom * (1 - progress)}%)`,
+        opacity: 1,
+        zIndex: 0,
+      };
+    }
+    return { transform: 'translateX(0%)', opacity: 1, zIndex: 0 };
   };
 
   return (
@@ -278,25 +356,28 @@ function BackdropRenderer({ state }) {
       }}
       aria-hidden="true"
     >
-      {visiblePages.map((page) => (
-        <div
-          key={page}
-          className="absolute inset-0"
-          style={{
-            transform: getPageTransform(page),
-            // rAF-driven progress; no CSS transition so we can't drift
-            // out of sync with the 450ms keyframe animation on content.
-            willChange: slide ? 'transform' : 'auto',
-          }}
-        >
-          <PageBackdrop
-            page={page}
-            state={state}
-            isActivePage={!slide && page === currentPage}
-            isTransitioning={!!slide}
-          />
-        </div>
-      ))}
+      {visiblePages.map((page) => {
+        const style = getPageStyle(page);
+        return (
+          <div
+            key={page}
+            className="absolute inset-0"
+            style={{
+              ...style,
+              // rAF-driven progress; no CSS transition so we can't drift
+              // out of sync with the content-side transition.
+              willChange: transition ? 'transform, opacity' : 'auto',
+            }}
+          >
+            <PageBackdrop
+              page={page}
+              state={state}
+              isActivePage={!transition && page === currentPage}
+              isTransitioning={!!transition}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }

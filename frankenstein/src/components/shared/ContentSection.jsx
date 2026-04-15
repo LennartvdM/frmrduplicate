@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import useViewTransition from '../../hooks/useViewTransition';
 import { renderMarkdown } from '../../utils/renderMarkdown';
 
 /**
@@ -21,7 +21,7 @@ export default function ContentSection({
   style = {},
   contentOpacity,
 }) {
-  const navigate = useNavigate();
+  const transitionNavigate = useViewTransition();
   const { id, title, content, rawContent } = section;
 
   // Support both pre-transformed content and raw content
@@ -29,14 +29,16 @@ export default function ContentSection({
     ? renderMarkdown(rawContent)
     : content || '';
 
-  // Intercept clicks on internal links for SPA navigation
+  // Intercept clicks on internal links for SPA navigation. Route
+  // through useViewTransition so the slide direction matches the
+  // navbar-index delta — same machinery as the Navbar clicks.
   const handleContentClick = useCallback((e) => {
     const link = e.target.closest('a[data-internal]');
     if (link) {
       e.preventDefault();
-      navigate(link.getAttribute('href'));
+      transitionNavigate(link.getAttribute('href'));
     }
-  }, [navigate]);
+  }, [transitionNavigate]);
 
   return (
     <motion.section

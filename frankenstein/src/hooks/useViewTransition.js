@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { flushSync } from 'react-dom';
 import { getNavIndexForPath } from './useNavIndex';
 
@@ -33,11 +33,20 @@ let currentDirectionOwner = null;
 
 export default function useViewTransition() {
   const navigate = useNavigate();
+  // React Router's useLocation() returns the pathname with the Router's
+  // basename already stripped. Must not use window.location.pathname —
+  // the production build is deployed under /frankenstein/ (see build.sh),
+  // so window.location.pathname looks like `/frankenstein/neoflix` and
+  // never matches NAV_ORDER entries (`/neoflix`, `/publications`, ...).
+  // That falls through to the 0 fallback in getNavIndexForPath, which
+  // made fromIndex permanently 0 and every delta non-negative —
+  // data-nav-direction was always 'right' (or 'none' when returning to
+  // home), so the left-direction CSS rules had no way to ever match.
+  const location = useLocation();
 
   return (to, opts) => {
     const targetPath = typeof to === 'string' ? to.split('#')[0] || '/' : to?.pathname || '/';
-    const currentPath =
-      typeof window !== 'undefined' ? window.location.pathname : '/';
+    const currentPath = location.pathname || '/';
 
     // Same-page nav (e.g. /neoflix#collab clicked from /neoflix): just
     // navigate, no transition. Otherwise callers that aren't the

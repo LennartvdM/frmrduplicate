@@ -24,6 +24,30 @@ export default function SharedVideoBackdrop({ activeSection }) {
   const [loadedSources, setLoadedSources] = useState(() => new Set());
   const [deckLoaded, setDeckLoaded] = useState(false);
 
+  // Hide videos for 0.5 s after mount. Rationale:
+  //
+  // On a video ↔ non-video transition (e.g. /neoflix ↔ Home), the
+  // viewport splits vertically for the duration of the slide: on one
+  // side Home's medical sections paint a solid #1c3424 camo bg, on the
+  // other the SharedVideoBackdrop is rendering actual videos. A solid
+  // colour next to a blurry video looks like "two different video
+  // backdrops side-by-side" even though one is just a fill.
+  //
+  // This delay makes the backdrop show only its #1c3424 container fill
+  // during the slide — matching the #1c3424 Home paints — so both sides
+  // of the viewport read as the same solid camo. Once the slide has
+  // settled (500 ms ≈ slide's 450 ms + a tick) the videos fade in on
+  // top of the already-visible camo.
+  //
+  // For /neoflix ↔ /publications ↔ /contact the component stays mounted
+  // (same key in AnimatePresence, no remount), so this hook never
+  // re-fires and the deck-of-cards crossfade keeps working unchanged.
+  const [videosReady, setVideosReady] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setVideosReady(true), 500);
+    return () => clearTimeout(t);
+  }, []);
+
   useEffect(() => {
     const t = setTimeout(() => setDeckLoaded(true), 500);
     return () => clearTimeout(t);
@@ -52,14 +76,17 @@ export default function SharedVideoBackdrop({ activeSection }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+      transition={{ duration: 0.35, ease: 'easeOut' }}
     >
+      {/* Inner layer holds only the <video> elements — opacity controlled
+          by `videosReady` so during the foreground slide (video ↔ non-
+          video), only the #1c3424 camo fill on the parent is visible,
+          matching what Home's medical sections paint on their half. */}
       <motion.div
         ref={backdropRef}
         className="absolute inset-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.1 }}
+        animate={{ opacity: videosReady ? 1 : 0 }}
+        transition={{ duration: 0.35, ease: 'easeOut' }}
       >
         {UNIVERSAL_DECK_SOURCES.map((src, idx) => {
           const isTarget = idx === targetIndex;

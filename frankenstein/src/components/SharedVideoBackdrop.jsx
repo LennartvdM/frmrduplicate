@@ -48,7 +48,11 @@ export default function SharedVideoBackdrop({ targetVideoUrl }) {
   return (
     <div
       className="fixed inset-0 pointer-events-none"
-      style={{ zIndex: -1, backgroundColor: '#1c3424' }}
+      // zIndex: 0 (not -1). With position:fixed, z-index:-1 pushes the
+      // element behind the containing block's own background, and the
+      // AppShell outer div paints cream-white on non-video routes —
+      // which was hiding this backdrop completely.
+      style={{ zIndex: 0, backgroundColor: '#1c3424' }}
     >
       {/* Video layer — fades in when a page publishes a target, fades
           out when nothing is publishing (intro slide, toolbox). Only

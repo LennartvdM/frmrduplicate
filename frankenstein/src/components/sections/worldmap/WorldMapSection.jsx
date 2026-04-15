@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { assetUrl } from '../../../utils/assetUrl';
+import { VideoBackdropContext } from '../../../context/VideoBackdropContext';
 
 /**
  * Slide 4 mounts the ORIGINAL frmrduplicate MapComponent verbatim.
@@ -13,9 +14,17 @@ import { assetUrl } from '../../../utils/assetUrl';
  * the map behaves identically to /frmrduplicate/. A cleaner ground-up
  * rebuild lives in bashtest as future work.
  */
-export default function WorldMapSection() {
+export default function WorldMapSection({ inView }) {
   const mountRef = useRef(null);
   const cleanupRef = useRef(null);
+
+  // World map has its own SVG-based background, so we clear the shared
+  // video backdrop's target when this section is in view. Prevents the
+  // previous medical section's blur video from lingering behind the map.
+  const { setActiveVideoUrl } = useContext(VideoBackdropContext);
+  useEffect(() => {
+    if (inView) setActiveVideoUrl(null);
+  }, [inView, setActiveVideoUrl]);
 
   useEffect(() => {
     if (!mountRef.current) return undefined;

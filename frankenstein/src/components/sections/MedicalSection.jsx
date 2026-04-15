@@ -16,15 +16,13 @@ const MedicalSection = ({ inView, sectionRef, variant = 'v2' }) => {
   // side-by-side "two decks" during route transitions.
   const { setActiveVideoUrl } = useContext(VideoBackdropContext);
   useEffect(() => {
-    if (!isActive) {
-      // Clear on leave so the intro slide / worldmap / toolbox don't
-      // inherit the last medical video. The next active section
-      // (medical or blog) will publish its own URL; briefly crossing
-      // null is fine — the backdrop's video layer just dips toward 0
-      // and rides the crossfade back up.
-      setActiveVideoUrl(null);
-      return undefined;
-    }
+    // Only the ACTIVE section publishes. Inactive siblings stay silent —
+    // all medical sections are mounted at once (scroll-snap keeps them
+    // in DOM) so having each inactive one clear the URL caused the
+    // last-rendered sibling to blank whatever the active one had just
+    // published. Intro / worldmap handle "back to no video" by
+    // publishing null themselves when they come into view.
+    if (!isActive) return undefined;
     const safeHover = interactionsEnabled ? hoveredIndex : null;
     const idx = safeHover !== null ? safeHover : currentVideo;
     const url = blurVideos?.[idx]?.video ?? null;

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { flushSync } from 'react-dom';
 import { getNavIndexForPath } from './useNavIndex';
 
@@ -25,13 +25,28 @@ import { getNavIndexForPath } from './useNavIndex';
  * Falls back to a plain navigate when startViewTransition isn't
  * available.
  */
+// Module-scoped owner of `html[data-nav-direction]`. A brand-new Symbol is
+// minted for each `transitionNavigate` call; the cleanup only wipes the
+// attribute if the current owner still matches. Prevents an interrupted
+// transition's cleanup from wiping a freshly-set direction on the next one.
+let currentDirectionOwner = null;
+
 export default function useViewTransition() {
   const navigate = useNavigate();
+  // React Router's useLocation() returns the pathname with the Router's
+  // basename already stripped. Must not use window.location.pathname —
+  // the production build is deployed under /frankenstein/ (see build.sh),
+  // so window.location.pathname looks like `/frankenstein/neoflix` and
+  // never matches NAV_ORDER entries (`/neoflix`, `/publications`, ...).
+  // That falls through to the 0 fallback in getNavIndexForPath, which
+  // made fromIndex permanently 0 and every delta non-negative —
+  // data-nav-direction was always 'right' (or 'none' when returning to
+  // home), so the left-direction CSS rules had no way to ever match.
+  const location = useLocation();
 
   return (to, opts) => {
     const targetPath = typeof to === 'string' ? to.split('#')[0] || '/' : to?.pathname || '/';
-    const currentPath =
-      typeof window !== 'undefined' ? window.location.pathname : '/';
+    const currentPath = location.pathname || '/';
 
     // Same-page nav (e.g. /neoflix#collab clicked from /neoflix): just
     // navigate, no transition. Otherwise callers that aren't the
@@ -47,10 +62,19 @@ export default function useViewTransition() {
     const direction = toIndex - fromIndex;
 
     const root = typeof document !== 'undefined' ? document.documentElement : null;
+    // Each invocation gets its own token. Cleanup only clears the attribute
+    // if this invocation is still the one that owns it — critical for rapid
+    // clicks: when a second navigation starts before the first finishes, the
+    // first's `.finished` rejects and its cleanup would otherwise wipe the
+    // direction the second one just set, leaving the second transition with
+    // no direction → baseline `animation: none` → no visible slide. That
+    // would manifest as "only the first direction ever animates".
+    const token = Symbol('nav-direction');
     if (root) {
       if (direction > 0) root.dataset.navDirection = 'right';
       else if (direction < 0) root.dataset.navDirection = 'left';
       else root.dataset.navDirection = 'none';
+      currentDirectionOwner = token;
     }
 
     if (!document.startViewTransition) {
@@ -68,10 +92,14 @@ export default function useViewTransition() {
     // a later `startViewTransition` triggered by code that doesn't
     // route through this hook can't inherit a stale direction.
     // `.finished` rejects if the transition is skipped/aborted — clear
-    // in both cases (don't surface the rejection).
+    // in both cases (don't surface the rejection), but only if we still
+    // own the attribute (see token comment above).
     if (transition && transition.finished) {
       const clear = () => {
-        if (root) root.removeAttribute('data-nav-direction');
+        if (root && currentDirectionOwner === token) {
+          root.removeAttribute('data-nav-direction');
+          currentDirectionOwner = null;
+        }
       };
       transition.finished.then(clear, clear);
     }

@@ -135,11 +135,15 @@ body::-webkit-scrollbar { display: none; }
 
   /* Backdrop: independent group. Deck-fade staircase — old sits above
      new at opacity 1 → 0, new beneath stays at opacity 1. No
-     horizontal motion ever. Fades alongside the slide-out (same 0.35s,
-     no delay) so the new deck is visible before the new front slides
-     in. */
+     horizontal motion ever. Intentionally runs longer than the spatial
+     slides (0.8s vs the 0.35s slide-out) — fade has much higher
+     perceptual tolerance than spatial motion, so a long slow
+     cross-fade reads as a smooth environment change rather than a
+     hard cut. Total matches the overall transition timeline
+     (slide-out 0.35s + pause 0.1s + slide-in 0.35s = 0.8s), so
+     the fade is still finished by the time the new content settles. */
   ::view-transition-old(backdrop) {
-    animation: 0.35s cubic-bezier(0.4, 0, 0.2, 1) both backdrop-fade-out;
+    animation: 0.8s cubic-bezier(0.4, 0, 0.2, 1) both backdrop-fade-out;
     mix-blend-mode: normal;
   }
   ::view-transition-new(backdrop) {

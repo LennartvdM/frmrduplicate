@@ -40,11 +40,13 @@ export default function RouteTransition({ children }) {
         animate="center"
         exit="exit"
         transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
-        // Preserve layout: the slide is pure translateX — no opacity
-        // fade. The deck-of-cards backdrop (SharedVideoBackdrop at
-        // AppShell level) owns all opacity work; if the foreground also
-        // faded it'd fight the deck and produce a midpoint white flash.
-        style={{ willChange: 'transform' }}
+        // Pure translateX (no opacity fade) so we don't compete with
+        // the shared backdrop's own crossfade. Explicit position +
+        // z-index so the foreground sits ABOVE the fixed-position
+        // SharedVideoBackdrop (z:0), which otherwise would paint over
+        // the content because fixed elements with z-index participate
+        // in the root stacking context.
+        style={{ willChange: 'transform', position: 'relative', zIndex: 1 }}
       >
         {/* Explicit location so React Router doesn't mid-transition
             re-render the exiting tree with the new pathname. */}

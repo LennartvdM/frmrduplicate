@@ -7,28 +7,25 @@ import { VideoBackdropContext } from '../../context/VideoBackdropContext';
 
 const MedicalSection = ({ inView, sectionRef, variant = 'v2' }) => {
   const state = useMedicalSection({ inView, variant });
-  const { blurVideos, currentVideo, hoveredIndex, interactionsEnabled, isActive } = state;
+  const { blurVideos, currentVideo, hoveredIndex, interactionsEnabled } = state;
 
-  // Publish the current blur-video URL up to the single site-wide
-  // SharedVideoBackdrop at AppShell level. The shared backdrop then
-  // crossfades via deck-of-cards just like it does for BlogPage,
-  // using the same video pool — no separate medical deck, no
-  // side-by-side "two decks" during route transitions.
-  const { setActiveVideoUrl } = useContext(VideoBackdropContext);
+  // Publish this cell's current carousel-top URL to the BackdropEngine.
+  // Under the new architecture each medical variant owns its own cell
+  // in Home's 4-cell y-stack; the engine renders all four cells at all
+  // times (Intro and WorldMap as camo, V2/V3 as video decks) and
+  // translates them with the Home scroll-snap container's scrollTop.
+  // So V2 and V3 should BOTH always publish the URL they'd be showing
+  // if active — it's fine, they're on independent cells, they can't
+  // clobber each other. (Previous SharedVideoBackdrop architecture had
+  // them all write into one pile, which is why the old code gated on
+  // isActive.)
+  const { setMedicalCarouselTop } = useContext(VideoBackdropContext);
   useEffect(() => {
-    // Only the ACTIVE section publishes. Inactive siblings stay silent —
-    // all medical sections are mounted at once (scroll-snap keeps them
-    // in DOM) so having each inactive one clear the URL caused the
-    // last-rendered sibling to blank whatever the active one had just
-    // published. Intro / worldmap handle "back to no video" by
-    // publishing null themselves when they come into view.
-    if (!isActive) return undefined;
     const safeHover = interactionsEnabled ? hoveredIndex : null;
     const idx = safeHover !== null ? safeHover : currentVideo;
     const url = blurVideos?.[idx]?.video ?? null;
-    setActiveVideoUrl(url);
-    return undefined;
-  }, [isActive, currentVideo, hoveredIndex, interactionsEnabled, blurVideos, setActiveVideoUrl]);
+    setMedicalCarouselTop(variant, url);
+  }, [variant, currentVideo, hoveredIndex, interactionsEnabled, blurVideos, setMedicalCarouselTop]);
 
   if (state.isTabletLayout) {
     return <MedicalTabletLayout {...state} sectionRef={sectionRef} />;

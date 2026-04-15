@@ -4,7 +4,7 @@ import { useSectionLifecycle } from '../../../hooks/useSectionLifecycle';
 import { useTabletLayout } from '../../../hooks/useTabletLayout';
 import { useThrottleWithTrailing } from '../../../hooks/useDebounce';
 import { visibilityReducer, measurementsReducer, interactionReducer } from './MedicalSection.reducers';
-import { VARIANTS, BASE_INDEX } from './MedicalSection.data';
+import { VARIANTS } from './MedicalSection.data';
 
 export function useMedicalSection({ inView, variant = 'v2' }) {
   // Memoize config to prevent unnecessary recalculations
@@ -197,23 +197,12 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
   // Layout detection is now handled by useTabletLayout hook
   // The hook provides stable values during rotation to prevent thrashing
 
-  // When this section is fully active on tablet, gently ask the next section to preload its first videos
-  useEffect(() => {
-    if (!isTabletLayout && !isLandscapeTablet) return;
-    if (sectionState === 'active') {
-      const payload = {
-        type: 'tablet-preload-next',
-        detail: {
-          blur: blurVideos[BASE_INDEX]?.video,
-          first: mainVideos[0]?.video
-        }
-      };
-      const timer = setTimeout(() => {
-        try { window.dispatchEvent(new CustomEvent(payload.type, { detail: payload.detail })); } catch {}
-      }, 1200);
-      return () => clearTimeout(timer);
-    }
-  }, [sectionState, isTabletLayout, isLandscapeTablet]);
+  // Neighbor preload is now owned by the BackdropEngine. It reads the
+  // Home scroll container's scrollTop directly and keeps both
+  // floor(progress) and ceil(progress) cells decoding during a
+  // vertical slide, so V2↔V3 scrolls land on live videos without
+  // needing a separate dispatched preload signal. The previous
+  // tablet-preload-next CustomEvent had no listeners and was removed.
 
   // Previously we staged mounting for performance; revert to always-on for reliability
 

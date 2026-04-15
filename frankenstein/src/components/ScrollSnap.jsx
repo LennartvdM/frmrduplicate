@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useViewport } from '../hooks/useViewport';
 import HeroScrollCue from './HeroScrollCue';
+import { VideoBackdropContext } from '../context/VideoBackdropContext';
 
 const NAV_FALLBACK = 60;
 
@@ -27,6 +28,17 @@ const ScrollSnap = ({ children }) => {
   });
   const [dotNavTop, setDotNavTop] = useState(null); // null = default 50%
   const [dotNavReady, setDotNavReady] = useState(false);
+
+  // Publish the scroll container up to the BackdropEngine so it can
+  // derive Home's vertical slide progress from scrollTop / viewport
+  // height. One-shot on mount; cleans up on unmount.
+  const { registerHomeScrollContainer } = useContext(VideoBackdropContext);
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node || !registerHomeScrollContainer) return undefined;
+    registerHomeScrollContainer(node);
+    return () => registerHomeScrollContainer(null);
+  }, [registerHomeScrollContainer]);
 
   const navHeight = useCallback(() => {
     if (typeof window === 'undefined') return NAV_FALLBACK;

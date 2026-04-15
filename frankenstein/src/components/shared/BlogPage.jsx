@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import useScrollSpy from '../../hooks/useScrollSpy';
 import { renderMarkdown } from '../../utils/renderMarkdown';
+import { VideoBackdropContext } from '../../context/VideoBackdropContext';
 
 /**
  * BlogPage — shared layout for /neoflix and /publications.
@@ -11,20 +12,23 @@ import { renderMarkdown } from '../../utils/renderMarkdown';
  * component auto-detects publications-style metadata (bold link +
  * italic citation + `---`) and renders those as structured cards while
  * falling through to plain markdown for everything else.
+ *
+ * The video backdrop is NOT rendered here — it lives at AppShell level
+ * in <SharedVideoBackdrop> so it can persist across transitions between
+ * video-backdrop routes and only the foreground slides horizontally.
+ * This component just publishes its active section id upward so the
+ * shared backdrop knows which card to bring on top.
  */
-export default function BlogPage({ sections, sectionToVideo, deckSources, scrollTo }) {
+export default function BlogPage({ sections, scrollTo }) {
   const sectionIds = sections.map((s) => s.id);
   const active = useScrollSpy(sectionIds, 120);
   const [hovered, setHovered] = useState(null);
-  const backdropRef = useRef(null);
-  const [loadedSources, setLoadedSources] = useState(() => new Set());
-  // Defer loading non-target videos by 500 ms so initial paint only
-  // fetches the top card. Lifted from bashtest's MedicalCarousel.
-  const [deckLoaded, setDeckLoaded] = useState(false);
+
+  // Publish the active section up to the shared video backdrop.
+  const { setActiveSection } = useContext(VideoBackdropContext);
   useEffect(() => {
-    const t = setTimeout(() => setDeckLoaded(true), 500);
-    return () => clearTimeout(t);
-  }, []);
+    if (active) setActiveSection(active);
+  }, [active, setActiveSection]);
 
   // If the route asked for a specific section (e.g. /contact → "contact"),
   // jump to it once the page has mounted. Waits a frame so layout has
@@ -50,16 +54,6 @@ export default function BlogPage({ sections, sectionToVideo, deckSources, scroll
   }, [scrollTo]);
 
   useEffect(() => {
-    if (!backdropRef.current) return;
-    backdropRef.current.querySelectorAll('video').forEach((v) => {
-      try {
-        v.playbackRate = 0.5;
-        if (v.paused) v.play().catch(() => {});
-      } catch {}
-    });
-  }, [loadedSources]);
-
-  useEffect(() => {
     const html = document.documentElement;
     const body = document.body;
     const prevH = html.style.backgroundColor;
@@ -72,10 +66,6 @@ export default function BlogPage({ sections, sectionToVideo, deckSources, scroll
     };
   }, []);
 
-  const targetVideo = sectionToVideo?.[active];
-  const rawTargetIndex = deckSources?.indexOf(targetVideo) ?? -1;
-  const targetIndex = rawTargetIndex >= 0 ? rawTargetIndex : 0;
-
   const handleSidebarClick = (id) => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -86,64 +76,7 @@ export default function BlogPage({ sections, sectionToVideo, deckSources, scroll
   };
 
   return (
-    <div style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#f5f9fc' }}>
-      {/* Fixed video backdrop — stacked "deck of cards", NOT a crossfade.
-          Opacity rule: card is visible if idx >= targetIndex. The last
-          card is glued to the table (always opaque), so at any moment
-          at least one full-opacity layer covers the frame. That's what
-          prevents the mid-transition white flash an audio-style 50/50
-          crossfade would produce.
-          Container fills with a camo color (#1c3424, color-picked from
-          the videos) so initial paint and any edge case reads as muted
-          greenish brown instead of white. */}
-      {deckSources && deckSources.length > 0 && (
-        <div
-          className="fixed inset-0 pointer-events-none"
-          style={{ zIndex: 0, backgroundColor: '#1c3424' }}
-        >
-          <motion.div
-            ref={backdropRef}
-            className="absolute inset-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, delay: 0.3 }}
-          >
-            {deckSources.map((src, idx) => {
-              const isTarget = idx === targetIndex;
-              const isVisible = idx >= targetIndex;
-              const videoSrc = isTarget || deckLoaded ? src : undefined;
-              return (
-                <motion.video
-                  key={src}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  src={videoSrc}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload={isTarget ? 'auto' : 'metadata'}
-                  initial={{ opacity: isVisible ? 1 : 0 }}
-                  animate={{ opacity: isVisible ? 1 : 0 }}
-                  transition={{ duration: 0.6, ease: 'easeInOut' }}
-                  style={{
-                    transform: 'scale(1.06)',
-                    // Higher idx = lower in the deck (glued to the table).
-                    zIndex: deckSources.length - idx,
-                  }}
-                  onLoadedData={(e) => {
-                    e.target.playbackRate = 0.5;
-                    if (isTarget) e.target.play().catch(() => {});
-                    setLoadedSources((prev) => new Set(prev).add(src));
-                  }}
-                />
-              );
-            })}
-            <div className="absolute inset-0 bg-slate-900/20" />
-          </motion.div>
-        </div>
-      )}
-
-      {/* Foreground layout */}
+    <div style={{ position: 'relative', minHeight: '100vh' }}>
       <div
         style={{
           position: 'relative',

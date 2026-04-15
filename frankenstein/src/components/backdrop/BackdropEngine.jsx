@@ -83,12 +83,21 @@ const ROUTE_FADE_MS = 600;  // matches BackdropCell's default fadeDuration
 
 /**
  * Is `page` currently showing video, given the engine's current state?
- * Home is video iff its current scroll-parked cell is a video cell.
- * Blog pages are video iff a blogTopUrl is published.
+ *
+ * Neoflix / Publications are video pages by construction — they exist to
+ * present the universal video deck under a scroll-spy, so we treat them
+ * as video unconditionally. Using state.blogTopUrl as the signal here
+ * would be wrong: it's null on the first visit (scroll-spy hasn't fired
+ * yet) and null again after BlogPage's unmount cleanup, so a video-to-
+ * video route change would almost never be detected and the engine would
+ * fall back to a horizontal slide.
+ *
+ * Home is video iff its current scroll-parked cell (rounded from
+ * homeScrollProgress) is a video cell (V2 or V3).
  */
 function pageIsCurrentlyVideo(page, state) {
   if (page === PAGE_NEOFLIX || page === PAGE_PUBLICATIONS) {
-    return state.blogTopUrl !== null && state.blogTopUrl !== undefined;
+    return true;
   }
   if (page === PAGE_HOME) {
     const idx = Math.round(state.homeScrollProgress);

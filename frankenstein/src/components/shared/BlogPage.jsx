@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import useScrollSpy from '../../hooks/useScrollSpy';
 import { renderMarkdown } from '../../utils/renderMarkdown';
@@ -18,6 +18,13 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
   const [hovered, setHovered] = useState(null);
   const backdropRef = useRef(null);
   const [loadedSources, setLoadedSources] = useState(() => new Set());
+  // Defer loading non-target videos by 500 ms so initial paint only
+  // fetches the top card. Lifted from bashtest's MedicalCarousel.
+  const [deckLoaded, setDeckLoaded] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setDeckLoaded(true), 500);
+    return () => clearTimeout(t);
+  }, []);
 
   useEffect(() => {
     if (!backdropRef.current) return;
@@ -43,18 +50,8 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
   }, []);
 
   const targetVideo = sectionToVideo?.[active];
-  const targetIndex = deckSources?.indexOf(targetVideo) ?? -1;
-
-  const [bgTransitioning, setBgTransitioning] = useState(false);
-  const prevTargetIndex = useRef(targetIndex);
-  useLayoutEffect(() => {
-    if (targetIndex !== prevTargetIndex.current) {
-      prevTargetIndex.current = targetIndex;
-      setBgTransitioning(true);
-      const t = setTimeout(() => setBgTransitioning(false), 300);
-      return () => clearTimeout(t);
-    }
-  }, [targetIndex]);
+  const rawTargetIndex = deckSources?.indexOf(targetVideo) ?? -1;
+  const targetIndex = rawTargetIndex >= 0 ? rawTargetIndex : 0;
 
   const handleSidebarClick = (id) => {
     const el = document.getElementById(id);
@@ -67,11 +64,19 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#f5f9fc' }}>
-      {/* Fixed video backdrop */}
+      {/* Fixed video backdrop — stacked "deck of cards", NOT a crossfade.
+          Opacity rule: card is visible if idx >= targetIndex. The last
+          card is glued to the table (always opaque), so at any moment
+          at least one full-opacity layer covers the frame. That's what
+          prevents the mid-transition white flash an audio-style 50/50
+          crossfade would produce.
+          Container fills with a camo color (#1c3424, color-picked from
+          the videos) so initial paint and any edge case reads as muted
+          greenish brown instead of white. */}
       {deckSources && deckSources.length > 0 && (
         <div
           className="fixed inset-0 pointer-events-none"
-          style={{ zIndex: 0, backgroundColor: '#f5f9fc' }}
+          style={{ zIndex: 0, backgroundColor: '#1c3424' }}
         >
           <motion.div
             ref={backdropRef}
@@ -81,24 +86,30 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
             transition={{ duration: 1.2, delay: 0.3 }}
           >
             {deckSources.map((src, idx) => {
-              const isVisible = idx === targetIndex;
+              const isTarget = idx === targetIndex;
+              const isVisible = idx >= targetIndex;
+              const videoSrc = isTarget || deckLoaded ? src : undefined;
               return (
                 <motion.video
                   key={src}
                   className="absolute inset-0 w-full h-full object-cover"
-                  src={src}
+                  src={videoSrc}
                   autoPlay
                   muted
                   loop
                   playsInline
-                  preload={isVisible ? 'auto' : 'metadata'}
+                  preload={isTarget ? 'auto' : 'metadata'}
                   initial={{ opacity: isVisible ? 1 : 0 }}
                   animate={{ opacity: isVisible ? 1 : 0 }}
                   transition={{ duration: 0.6, ease: 'easeInOut' }}
-                  style={{ transform: 'scale(1.06)', zIndex: idx }}
+                  style={{
+                    transform: 'scale(1.06)',
+                    // Higher idx = lower in the deck (glued to the table).
+                    zIndex: deckSources.length - idx,
+                  }}
                   onLoadedData={(e) => {
                     e.target.playbackRate = 0.5;
-                    if (isVisible) e.target.play().catch(() => {});
+                    if (isTarget) e.target.play().catch(() => {});
                     setLoadedSources((prev) => new Set(prev).add(src));
                   }}
                 />
@@ -234,8 +245,7 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
                   borderRadius: 10,
                   padding: '96px 56px',
                   scrollMarginTop: 96,
-                  opacity: bgTransitioning ? 0.75 : 1,
-                  transition: 'opacity 0.25s ease',
+                  opacity: 1,
                   isolation: 'isolate',
                 }}
               >

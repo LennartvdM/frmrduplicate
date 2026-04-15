@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import useScrollSpy from '../../hooks/useScrollSpy';
 import { renderMarkdown } from '../../utils/renderMarkdown';
@@ -22,6 +22,45 @@ import { BLOG_DECK, blogIdxForSection } from '../../backdrop/decks';
  * backdrop's BlogBackdrop fades the cell out.
  */
 export default function BlogPage({ sections, scrollTo }) {
+  // Synchronously place window.scrollY at the right spot on mount and
+  // whenever the route's `scrollTo` changes. Runs inside the
+  // view-transition commit (via useLayoutEffect) so the NEW snapshot is
+  // captured with the page already at the target — no post-transition
+  // vertical animation layered on top of the horizontal slide, and no
+  // retained scroll from the previous page bleeding through.
+  //
+  // Target resolution:
+  //   1. `scrollTo` prop (route-configured, e.g. /contact → "contact")
+  //   2. URL hash on mount (direct visits like /neoflix#collab)
+  //   3. Otherwise top of page
+  //
+  // Defaulting to 0 (rather than leaving scroll alone) is the fix for
+  // "/publications' midway scroll leaking into /neoflix": each blog
+  // route mounts fresh at its intended anchor.
+  //
+  // behavior: 'instant' is explicit; 'auto' defers to CSS scroll-behavior
+  // and can silently smooth-animate, which is the exact diagonal motion
+  // this effect exists to prevent. Placed before useScrollSpy so the
+  // spy's initial calc() reads the post-scroll rects and picks the
+  // correct active section first try.
+  //
+  // Intentionally not depending on `location.hash`: the sidebar updates
+  // the hash via history.replaceState as the user scrolls, and we don't
+  // want that to yank the viewport back to the anchor.
+  useLayoutEffect(() => {
+    const hashId = typeof window !== 'undefined' ? window.location.hash.slice(1) : '';
+    const targetId = scrollTo || hashId;
+    let top = 0;
+    if (targetId) {
+      const el = document.getElementById(targetId);
+      if (el) {
+        const navbarOffset = 96;
+        top = el.getBoundingClientRect().top + window.scrollY - navbarOffset;
+      }
+    }
+    window.scrollTo({ top, behavior: 'instant' });
+  }, [scrollTo]);
+
   const sectionIds = sections.map((s) => s.id);
   const active = useScrollSpy(sectionIds, 120);
   const [hovered, setHovered] = useState(null);
@@ -31,29 +70,6 @@ export default function BlogPage({ sections, scrollTo }) {
     'blog',
     activeIdx >= 0 ? { kind: 'video', deck: BLOG_DECK, topIdx: activeIdx } : null
   );
-
-  // If the route asked for a specific section (e.g. /contact → "contact"),
-  // jump to it once the page has mounted. Waits a frame so layout has
-  // settled after RouteTransition's slide-in animation.
-  useEffect(() => {
-    if (!scrollTo) return undefined;
-    let raf1 = 0;
-    let raf2 = 0;
-    raf1 = requestAnimationFrame(() => {
-      raf2 = requestAnimationFrame(() => {
-        const el = document.getElementById(scrollTo);
-        if (el) {
-          const navbarOffset = 96;
-          const top = el.getBoundingClientRect().top + window.scrollY - navbarOffset;
-          window.scrollTo({ top, behavior: 'auto' });
-        }
-      });
-    });
-    return () => {
-      cancelAnimationFrame(raf1);
-      cancelAnimationFrame(raf2);
-    };
-  }, [scrollTo]);
 
   useEffect(() => {
     const html = document.documentElement;

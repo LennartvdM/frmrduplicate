@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import RouteTransition from './components/RouteTransition';
+import TransitionTuner from './components/TransitionTuner';
 import BackdropProvider from './backdrop/BackdropProvider';
 import Home from './pages/Home';
 import NeoflixPage from './pages/NeoflixPage';
@@ -39,6 +40,11 @@ function AppShell() {
           )}
         </RouteTransition>
       </BackdropProvider>
+      {/* Calibration panel — renders in dev or with `?tune` in URL.
+          Mounted outside RouteTransition so it's not captured as part
+          of the sliding content group; has its own view-transition
+          group (`tuner`) pinned to animation:none in index.css. */}
+      <TransitionTuner />
     </div>
   );
 }

@@ -84,7 +84,22 @@ body::-webkit-scrollbar { display: none; }
 
    The leftover `root` group (just the app-shell wrapper once the three
    named groups above are pulled out) is pinned to animation: none so
-   nothing accidentally slides or fades. */
+   nothing accidentally slides or fades.
+
+   Timing is expressed via CSS custom properties below so the
+   TransitionTuner dev panel can hot-swap values without editing this
+   file. Defaults match the values we ship with; the tuner sets the
+   same custom properties on documentElement.style at higher specificity
+   when it's active. */
+:root {
+  --slide-duration: 0.35s;
+  --slide-pause: 0.45s;
+  --slide-out-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --slide-in-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --backdrop-duration: 0.8s;
+  --backdrop-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 @supports (view-transition-name: none) {
   nav[data-app-navbar] { view-transition-name: navbar; }
   ::view-transition-old(navbar),
@@ -109,44 +124,47 @@ body::-webkit-scrollbar { display: none; }
     mix-blend-mode: normal;
   }
 
-  /* Timing: slide-out 0.35s → pause 0.1s → slide-in 0.35s (total 0.8s).
-     The NEW pane holds offscreen at translateX(±100%) for 0.45s thanks
-     to `animation-delay: 0.45s` combined with `fill-mode: both`
-     (shorthand `animation` here sets fill to `both`, so the "from"
-     keyframe is applied during the delay). That empty-frame in the
-     middle is what the user asked for: a breath between slide-out end
-     and slide-in start, without a leading delay (which registers as lag
-     on click). Backdrop fades during the slide-out so the new deck is
-     already visible by the time the new front slide arrives. */
+  /* Timing: slide-out → pause → slide-in. The NEW pane holds offscreen
+     at translateX(±100%) for --slide-pause via animation-delay +
+     fill: both (the shorthand sets fill). That empty-frame in the
+     middle is a breath between slide-out end and slide-in start —
+     no leading delay, so clicks stay snappy. */
   html[data-nav-direction="right"]::view-transition-old(content) {
-    animation: 0.35s cubic-bezier(0.4, 0, 0.2, 1) both slide-out-to-left;
+    animation: var(--slide-duration) var(--slide-out-ease) both slide-out-to-left;
   }
   html[data-nav-direction="right"]::view-transition-new(content) {
-    animation: 0.35s cubic-bezier(0.4, 0, 0.2, 1) 0.45s both slide-in-from-right;
+    animation: var(--slide-duration) var(--slide-in-ease) var(--slide-pause) both slide-in-from-right;
   }
 
   /* Moving left → mirror. */
   html[data-nav-direction="left"]::view-transition-old(content) {
-    animation: 0.35s cubic-bezier(0.4, 0, 0.2, 1) both slide-out-to-right;
+    animation: var(--slide-duration) var(--slide-out-ease) both slide-out-to-right;
   }
   html[data-nav-direction="left"]::view-transition-new(content) {
-    animation: 0.35s cubic-bezier(0.4, 0, 0.2, 1) 0.45s both slide-in-from-left;
+    animation: var(--slide-duration) var(--slide-in-ease) var(--slide-pause) both slide-in-from-left;
   }
 
   /* Backdrop: independent group. Deck-fade staircase — old sits above
      new at opacity 1 → 0, new beneath stays at opacity 1. No
-     horizontal motion ever. Intentionally runs longer than the spatial
-     slides (0.8s vs the 0.35s slide-out) — fade has much higher
-     perceptual tolerance than spatial motion, so a long slow
-     cross-fade reads as a smooth environment change rather than a
-     hard cut. Total matches the overall transition timeline
-     (slide-out 0.35s + pause 0.1s + slide-in 0.35s = 0.8s), so
-     the fade is still finished by the time the new content settles. */
+     horizontal motion ever. Duration is independent from the slide
+     duration because fade tolerance is much higher than spatial-motion
+     tolerance — a long slow cross-fade reads as a smooth environment
+     change behind crisp slides. */
   ::view-transition-old(backdrop) {
-    animation: 0.8s cubic-bezier(0.4, 0, 0.2, 1) both backdrop-fade-out;
+    animation: var(--backdrop-duration) var(--backdrop-ease) both backdrop-fade-out;
     mix-blend-mode: normal;
   }
   ::view-transition-new(backdrop) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  /* TransitionTuner dev panel — pinned so it doesn't animate during
+     the very transitions it's calibrating. OLD and NEW snapshots are
+     identical (the panel state doesn't change across navigations), so
+     with animation: none the user sees a static panel overlay. */
+  ::view-transition-old(tuner),
+  ::view-transition-new(tuner) {
     animation: none;
     mix-blend-mode: normal;
   }

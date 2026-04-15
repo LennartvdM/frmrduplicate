@@ -67,21 +67,24 @@ body::-webkit-scrollbar { display: none; }
   -webkit-mask-size: cover;
 }
 
-/* View Transitions own the route animation now.
-   - Root snapshot slides horizontally. Direction comes from a data
-     attribute the useViewTransition hook writes before starting the
-     transition, based on the navbar-index delta.
-   - Top navbar has its own name and no animation — it stays put.
-   - The backdrop (BackdropEngine's root div) has its own name so it's
-     an INDEPENDENT transition group, not part of the root capture.
-     This is what actually keeps it from sliding with the foreground:
-     `view-transition-name: none` was doing nothing (that's the default
-     state of every element and does NOT opt out of the root capture).
-     With its own name, the old snapshot sits above the new and fades
-     opacity 1 → 0 while the new beneath stays at opacity 1 — the
-     page-level deck-fade staircase, never a 50% crossfade valley.
-   Net: foreground slides in the nav-order direction, backdrop
-   deck-fades, navbar stays put. */
+/* View Transitions own the route animation. Three explicit named
+   groups, each with its own timeline — nothing rides on the catch-all
+   `root` bucket because that one gets contested by third-party styles
+   (Framer Motion's chunk, loaded for the WorldMap section, injects a
+   <style id="view-transition-styles"> that writes animation-name onto
+   ::view-transition-old/new(root); using our own name sidesteps it).
+
+   - `navbar`   — top strip, animation: none (stays put)
+   - `content`  — front layer, horizontal slide keyed to
+                  html[data-nav-direction] (set by useViewTransition
+                  before startViewTransition, based on navbar-index delta)
+   - `backdrop` — back layer, deck-fade staircase (old sits above new at
+                  opacity 1 → 0, new beneath stays at opacity 1). No
+                  horizontal motion — that's the foreground's job.
+
+   The leftover `root` group (just the app-shell wrapper once the three
+   named groups above are pulled out) is pinned to animation: none so
+   nothing accidentally slides or fades. */
 @supports (view-transition-name: none) {
   nav[data-app-navbar] { view-transition-name: navbar; }
   ::view-transition-old(navbar),
@@ -90,33 +93,42 @@ body::-webkit-scrollbar { display: none; }
     mix-blend-mode: normal;
   }
 
-  /* Baseline: no animation on the root. Overridden below per direction. */
+  /* Root leftover — pinned still so the app-shell wrapper doesn't
+     animate. The front content is captured as `content` below. */
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none;
     mix-blend-mode: normal;
   }
 
+  /* Content (front layer): baseline no animation, overridden per
+     direction below. */
+  ::view-transition-old(content),
+  ::view-transition-new(content) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
   /* Moving right in the navbar → old slides off to the left,
      new slides in from the right. */
-  html[data-nav-direction="right"]::view-transition-old(root) {
+  html[data-nav-direction="right"]::view-transition-old(content) {
     animation: 0.45s cubic-bezier(0.4, 0, 0.2, 1) both slide-out-to-left;
   }
-  html[data-nav-direction="right"]::view-transition-new(root) {
+  html[data-nav-direction="right"]::view-transition-new(content) {
     animation: 0.45s cubic-bezier(0.4, 0, 0.2, 1) both slide-in-from-right;
   }
 
   /* Moving left → mirror. */
-  html[data-nav-direction="left"]::view-transition-old(root) {
+  html[data-nav-direction="left"]::view-transition-old(content) {
     animation: 0.45s cubic-bezier(0.4, 0, 0.2, 1) both slide-out-to-right;
   }
-  html[data-nav-direction="left"]::view-transition-new(root) {
+  html[data-nav-direction="left"]::view-transition-new(content) {
     animation: 0.45s cubic-bezier(0.4, 0, 0.2, 1) both slide-in-from-left;
   }
 
   /* Backdrop: independent group. Deck-fade staircase — old sits above
      new at opacity 1 → 0, new beneath stays at opacity 1. No
-     horizontal motion ever. Duration matches the root slide so both
+     horizontal motion ever. Duration matches the content slide so both
      finish together. */
   ::view-transition-old(backdrop) {
     animation: 0.45s cubic-bezier(0.4, 0, 0.2, 1) both backdrop-fade-out;

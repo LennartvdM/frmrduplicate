@@ -58,10 +58,22 @@ export default function useViewTransition() {
       return;
     }
 
-    document.startViewTransition(() => {
+    const transition = document.startViewTransition(() => {
       flushSync(() => {
         navigate(to, opts);
       });
     });
+
+    // Clear the direction attribute once the transition finishes, so
+    // a later `startViewTransition` triggered by code that doesn't
+    // route through this hook can't inherit a stale direction.
+    // `.finished` rejects if the transition is skipped/aborted — clear
+    // in both cases (don't surface the rejection).
+    if (transition && transition.finished) {
+      const clear = () => {
+        if (root) root.removeAttribute('data-nav-direction');
+      };
+      transition.finished.then(clear, clear);
+    }
   };
 }

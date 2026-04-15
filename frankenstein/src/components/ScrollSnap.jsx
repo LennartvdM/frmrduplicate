@@ -1,7 +1,7 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useViewport } from '../hooks/useViewport';
 import HeroScrollCue from './HeroScrollCue';
-import { VideoBackdropContext } from '../context/VideoBackdropContext';
+import { useBackdropPublisher } from '../backdrop/useBackdrop';
 
 const NAV_FALLBACK = 60;
 
@@ -29,16 +29,37 @@ const ScrollSnap = ({ children }) => {
   const [dotNavTop, setDotNavTop] = useState(null); // null = default 50%
   const [dotNavReady, setDotNavReady] = useState(false);
 
-  // Publish the scroll container up to the BackdropEngine so it can
-  // derive Home's vertical slide progress from scrollTop / viewport
-  // height. One-shot on mount; cleans up on unmount.
-  const { registerHomeScrollContainer } = useContext(VideoBackdropContext);
+  // The backdrop's Home y-stack translates based on this container's
+  // scrollTop/clientHeight. Published imperatively from inside the
+  // scroll handler below (not via a hook prop) so 60fps scroll ticks
+  // don't force re-renders of this component.
+  const { setHomeScrollProgress } = useBackdropPublisher();
+
+  // Publish continuous scroll progress (scrollTop / clientHeight) to the
+  // backdrop on every rAF-coalesced scroll tick. Kept separate from the
+  // discrete-section listener below so progress updates don't wait on
+  // React state batching, and so this effect doesn't tangle with
+  // section-index logic.
   useEffect(() => {
-    const node = containerRef.current;
-    if (!node || !registerHomeScrollContainer) return undefined;
-    registerHomeScrollContainer(node);
-    return () => registerHomeScrollContainer(null);
-  }, [registerHomeScrollContainer]);
+    const container = containerRef.current;
+    if (!container) return undefined;
+    let raf = 0;
+    const read = () => {
+      const h = container.clientHeight;
+      if (h) setHomeScrollProgress(container.scrollTop / h);
+      raf = 0;
+    };
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(read);
+    };
+    read(); // seed
+    container.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      container.removeEventListener('scroll', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [setHomeScrollProgress]);
 
   const navHeight = useCallback(() => {
     if (typeof window === 'undefined') return NAV_FALLBACK;

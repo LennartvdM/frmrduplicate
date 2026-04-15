@@ -116,9 +116,9 @@ export default function MedicalDesktopLayout({
     >
       <style>{VIDEO_CONTROLS_HIDDEN_CSS}</style>
       {/* Full-bleed blur-video deck was removed — MedicalSection.jsx now
-          publishes the current blur-video URL to VideoBackdropContext
-          so the single site-wide SharedVideoBackdrop at AppShell level
-          renders it. One deck for the whole site means no more two
+          publishes its current carousel index through useBackdropTarget
+          so the single site-wide BackdropProvider renders it. One
+          backdrop layer for the whole site means no more duplicate
           decks sliding side-by-side during route transitions. */}
       {/* Header on tablet: render above the carousel */}
       {isTabletLayout && (

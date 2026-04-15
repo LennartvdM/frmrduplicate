@@ -31,12 +31,11 @@ export default function SectionManager({ sections }) {
   return (
     <>
       {sections.map((section, idx) => {
-        // Medical + worldmap sections were given a solid #1c3424 bg to
-        // prevent a white flash during loading. Now the site-wide
-        // SharedVideoBackdrop at AppShell level already fills with
-        // #1c3424 behind its video deck and covers the whole viewport,
-        // so sections can be transparent — that lets the backdrop's
-        // videos show through on the medical sections.
+        // Medical sections used to set their own #1c3424 bg to prevent
+        // a white flash during loading. The site-wide BackdropProvider
+        // now fills with #1c3424 behind the video deck and covers the
+        // whole viewport, so sections stay transparent — that lets the
+        // backdrop's videos show through on the medical sections.
         return (
           <ScrollSection
             key={section.name}

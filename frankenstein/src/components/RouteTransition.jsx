@@ -39,10 +39,12 @@ export default function RouteTransition({ children }) {
         initial="enter"
         animate="center"
         exit="exit"
-        transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-        // Preserve layout: the slide is just a transform, no position
-        // change — every page keeps its own scroll behaviour.
-        style={{ willChange: 'transform, opacity' }}
+        transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+        // Preserve layout: the slide is pure translateX — no opacity
+        // fade. The deck-of-cards backdrop (SharedVideoBackdrop at
+        // AppShell level) owns all opacity work; if the foreground also
+        // faded it'd fight the deck and produce a midpoint white flash.
+        style={{ willChange: 'transform' }}
       >
         {/* Explicit location so React Router doesn't mid-transition
             re-render the exiting tree with the new pathname. */}
@@ -56,17 +58,16 @@ export default function RouteTransition({ children }) {
 // current page exits to the left.
 // direction < 0 → mirror.
 // direction === 0 → no translation (e.g. clicking the same slot).
+// No opacity on any state: the slide has to be entirely spatial so it
+// doesn't compete with the backdrop's separate crossfade.
 const slideVariants = {
   enter: (direction) => ({
     x: direction === 0 ? 0 : direction > 0 ? '100%' : '-100%',
-    opacity: direction === 0 ? 1 : 0,
   }),
   center: {
     x: 0,
-    opacity: 1,
   },
   exit: (direction) => ({
     x: direction === 0 ? 0 : direction > 0 ? '-100%' : '100%',
-    opacity: direction === 0 ? 1 : 0,
   }),
 };

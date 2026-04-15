@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import RouteTransition from './components/RouteTransition';
 import Home from './pages/Home';
 import NeoflixPage from './pages/NeoflixPage';
 import PublicationsPage from './pages/PublicationsPage';
@@ -11,19 +12,26 @@ function AppShell() {
   const location = useLocation();
   const isNeoflix = location.pathname === '/neoflix' || location.pathname.startsWith('/neoflix/');
   const isPublications = location.pathname === '/publications';
+  const isContact = location.pathname === '/contact';
   const isToolbox = location.pathname.startsWith('/toolbox');
 
   return (
-    <div className={`min-h-screen ${isNeoflix || isPublications || isToolbox ? '' : 'bg-[#F5F9FC]'}`}>
+    <div className={`min-h-screen ${isNeoflix || isPublications || isContact || isToolbox ? '' : 'bg-[#F5F9FC]'}`}>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/neoflix" element={<NeoflixPage />} />
-        <Route path="/publications" element={<PublicationsPage />} />
-        <Route path="/contact" element={<NeoflixPage />} />
-        <Route path="/toolbox" element={<Toolbox />} />
-        <Route path="/toolbox/:slug" element={<ToolboxEmbed />} />
-      </Routes>
+      <RouteTransition>
+        {(captured) => (
+          // Pass the captured location to Routes so the exiting tree
+          // doesn't re-render with the new pathname mid-transition.
+          <Routes location={captured}>
+            <Route path="/" element={<Home />} />
+            <Route path="/neoflix" element={<NeoflixPage />} />
+            <Route path="/publications" element={<PublicationsPage />} />
+            <Route path="/contact" element={<NeoflixPage scrollTo="contact" />} />
+            <Route path="/toolbox" element={<Toolbox />} />
+            <Route path="/toolbox/:slug" element={<ToolboxEmbed />} />
+          </Routes>
+        )}
+      </RouteTransition>
     </div>
   );
 }

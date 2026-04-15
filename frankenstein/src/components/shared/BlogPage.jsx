@@ -12,7 +12,7 @@ import { renderMarkdown } from '../../utils/renderMarkdown';
  * italic citation + `---`) and renders those as structured cards while
  * falling through to plain markdown for everything else.
  */
-export default function BlogPage({ sections, sectionToVideo, deckSources }) {
+export default function BlogPage({ sections, sectionToVideo, deckSources, scrollTo }) {
   const sectionIds = sections.map((s) => s.id);
   const active = useScrollSpy(sectionIds, 120);
   const [hovered, setHovered] = useState(null);
@@ -25,6 +25,29 @@ export default function BlogPage({ sections, sectionToVideo, deckSources }) {
     const t = setTimeout(() => setDeckLoaded(true), 500);
     return () => clearTimeout(t);
   }, []);
+
+  // If the route asked for a specific section (e.g. /contact → "contact"),
+  // jump to it once the page has mounted. Waits a frame so layout has
+  // settled after RouteTransition's slide-in animation.
+  useEffect(() => {
+    if (!scrollTo) return undefined;
+    let raf1 = 0;
+    let raf2 = 0;
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        const el = document.getElementById(scrollTo);
+        if (el) {
+          const navbarOffset = 96;
+          const top = el.getBoundingClientRect().top + window.scrollY - navbarOffset;
+          window.scrollTo({ top, behavior: 'auto' });
+        }
+      });
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+  }, [scrollTo]);
 
   useEffect(() => {
     if (!backdropRef.current) return;

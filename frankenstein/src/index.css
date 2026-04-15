@@ -74,7 +74,13 @@ body::-webkit-scrollbar { display: none; }
     animation: 0.3s ease-in both fade-in;
     mix-blend-mode: normal;
   }
-  nav { view-transition-name: navbar; }
+  /* Scope to the top navbar only — a bare `nav` selector also matched
+     ScrollSnap.jsx's dot-nav on Home, giving two elements the same
+     view-transition-name and triggering
+     "InvalidStateError: Transition was aborted". That cascade was
+     breaking the route transitions / renders, which is why the
+     SharedVideoBackdrop target updates weren't taking effect. */
+  nav[data-app-navbar] { view-transition-name: navbar; }
   ::view-transition-old(navbar),
   ::view-transition-new(navbar) {
     animation: none;

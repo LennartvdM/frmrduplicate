@@ -57,6 +57,11 @@ export default function Navbar() {
     if (targetPath === location.pathname) {
       navigate(to);
     } else {
+      // Direction-aware View Transition. Browser snapshots the whole
+      // viewport (except elements with viewTransitionName: none, like
+      // SharedVideoBackdrop) and slides the snapshots via CSS
+      // keyframes — internal per-component fades can't fire against
+      // the user because they run on the hidden live DOM.
       transitionNavigate(to);
     }
   };

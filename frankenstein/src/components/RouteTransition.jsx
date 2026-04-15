@@ -1,75 +1,31 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
-import useNavIndex from '../hooks/useNavIndex';
 
 /**
- * Direction-aware horizontal page transition.
+ * Previously this wrapped <Routes> in a Framer Motion AnimatePresence
+ * that drove a horizontal slide. That fought with every page's
+ * internal fade-in animations (IntroSlide's own mount animation, the
+ * medical sections' visibility-based fades, etc.) — during a slide,
+ * internal state changes kept firing opacity animations against the
+ * live DOM, producing "fades out instead of slides out".
  *
- * Uses the navbar slot position (see useNavIndex) as a 1-D axis. Moving
- * to a slot further right slides the current page out to the left and
- * the next one in from the right; moving left does the mirror.
+ * The browser's View Transitions API (triggered by Navbar's
+ * useViewTransition hook) now owns the animation. The browser
+ * snapshots the whole viewport root, slides the snapshot horizontally
+ * via CSS keyframes (direction from html[data-nav-direction]) while
+ * the live DOM is hidden. Internal animations still fire, but they
+ * fire against the hidden DOM — the user only sees the frozen
+ * snapshot sliding. Top layers slide; nothing fades.
  *
- * Keyed by nav slot index rather than pathname so that Neoflix (slot 1)
- * and Contact (slot 3) — which both render NeoflixPage — still transition
- * like separate pages. The target page re-mounts at its correct scroll
- * target, so visually it reads as two distinct horizontal positions even
- * though the underlying route handler is the same.
+ * SharedVideoBackdrop opts out of the root snapshot via
+ * viewTransitionName: 'none' so its deck-of-cards crossfade keeps
+ * running live behind the sliding snapshot.
  *
- * mode="wait" keeps the layout simple: one page exists at a time, so we
- * don't have to juggle overlapping position:absolute wrappers or scroll
- * containers. Trade-off is a brief empty moment at the centre of the
- * slide, which is fine for the short duration we use.
+ * Component kept as a thin passthrough so the existing Route → page
+ * render tree (with the `children(location)` signature used by
+ * App.jsx) doesn't change.
  */
 export default function RouteTransition({ children }) {
   const location = useLocation();
-  const navIndex = useNavIndex();
-  const prevIndexRef = useRef(navIndex);
-  const direction = navIndex - prevIndexRef.current;
-  // Update after computing direction so the next transition gets the
-  // right delta.
-  prevIndexRef.current = navIndex;
-
-  return (
-    <AnimatePresence mode="wait" custom={direction} initial={false}>
-      <motion.div
-        key={navIndex}
-        custom={direction}
-        variants={slideVariants}
-        initial="enter"
-        animate="center"
-        exit="exit"
-        transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
-        // Pure translateX (no opacity fade) so we don't compete with
-        // the shared backdrop's own crossfade. Explicit position +
-        // z-index so the foreground sits ABOVE the fixed-position
-        // SharedVideoBackdrop (z:0), which otherwise would paint over
-        // the content because fixed elements with z-index participate
-        // in the root stacking context.
-        style={{ willChange: 'transform', position: 'relative', zIndex: 1 }}
-      >
-        {/* Explicit location so React Router doesn't mid-transition
-            re-render the exiting tree with the new pathname. */}
-        {typeof children === 'function' ? children(location) : children}
-      </motion.div>
-    </AnimatePresence>
-  );
+  return typeof children === 'function' ? children(location) : children;
 }
-
-// direction > 0 → user went right → new page enters from the right,
-// current page exits to the left.
-// direction < 0 → mirror.
-// direction === 0 → no translation (e.g. clicking the same slot).
-// No opacity on any state: the slide has to be entirely spatial so it
-// doesn't compete with the backdrop's separate crossfade.
-const slideVariants = {
-  enter: (direction) => ({
-    x: direction === 0 ? 0 : direction > 0 ? '100%' : '-100%',
-  }),
-  center: {
-    x: 0,
-  },
-  exit: (direction) => ({
-    x: direction === 0 ? 0 : direction > 0 ? '-100%' : '100%',
-  }),
-};

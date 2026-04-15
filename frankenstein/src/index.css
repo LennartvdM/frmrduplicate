@@ -67,25 +67,64 @@ body::-webkit-scrollbar { display: none; }
   -webkit-mask-size: cover;
 }
 
-/* Material Design 3 View Transitions */
+/* View Transitions own the route animation now.
+   - Root snapshot slides horizontally. Direction comes from a data
+     attribute the useViewTransition hook writes before starting the
+     transition, based on the navbar-index delta.
+   - Top navbar has its own name and no animation — it stays put.
+   - SharedVideoBackdrop is opted out via inline viewTransitionName:
+     'none', so the backdrop keeps rendering live behind the snapshots
+     and its deck-of-cards crossfade runs as normal.
+   Net: top layers slide (no fade because snapshots are frozen
+   images), backdrop deck-fades (never slides). */
 @supports (view-transition-name: none) {
-  ::view-transition-old(root) { animation: none; }
-  ::view-transition-new(root) {
-    animation: 0.3s ease-in both fade-in;
-    mix-blend-mode: normal;
-  }
-  /* Scope to the top navbar only — a bare `nav` selector also matched
-     ScrollSnap.jsx's dot-nav on Home, giving two elements the same
-     view-transition-name and triggering
-     "InvalidStateError: Transition was aborted". That cascade was
-     breaking the route transitions / renders, which is why the
-     SharedVideoBackdrop target updates weren't taking effect. */
   nav[data-app-navbar] { view-transition-name: navbar; }
   ::view-transition-old(navbar),
   ::view-transition-new(navbar) {
     animation: none;
     mix-blend-mode: normal;
   }
+
+  /* Baseline: no animation on the root. Overridden below per direction. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  /* Moving right in the navbar → old slides off to the left,
+     new slides in from the right. */
+  html[data-nav-direction="right"]::view-transition-old(root) {
+    animation: 0.45s cubic-bezier(0.4, 0, 0.2, 1) both slide-out-to-left;
+  }
+  html[data-nav-direction="right"]::view-transition-new(root) {
+    animation: 0.45s cubic-bezier(0.4, 0, 0.2, 1) both slide-in-from-right;
+  }
+
+  /* Moving left → mirror. */
+  html[data-nav-direction="left"]::view-transition-old(root) {
+    animation: 0.45s cubic-bezier(0.4, 0, 0.2, 1) both slide-out-to-right;
+  }
+  html[data-nav-direction="left"]::view-transition-new(root) {
+    animation: 0.45s cubic-bezier(0.4, 0, 0.2, 1) both slide-in-from-left;
+  }
+}
+
+@keyframes slide-out-to-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+@keyframes slide-in-from-right {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes slide-out-to-right {
+  from { transform: translateX(0); }
+  to   { transform: translateX(100%); }
+}
+@keyframes slide-in-from-left {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
 }
 
 @keyframes fade-out {

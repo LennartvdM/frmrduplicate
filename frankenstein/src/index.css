@@ -72,11 +72,16 @@ body::-webkit-scrollbar { display: none; }
      attribute the useViewTransition hook writes before starting the
      transition, based on the navbar-index delta.
    - Top navbar has its own name and no animation — it stays put.
-   - SharedVideoBackdrop is opted out via inline viewTransitionName:
-     'none', so the backdrop keeps rendering live behind the snapshots
-     and its deck-of-cards crossfade runs as normal.
-   Net: top layers slide (no fade because snapshots are frozen
-   images), backdrop deck-fades (never slides). */
+   - The backdrop (BackdropEngine's root div) has its own name so it's
+     an INDEPENDENT transition group, not part of the root capture.
+     This is what actually keeps it from sliding with the foreground:
+     `view-transition-name: none` was doing nothing (that's the default
+     state of every element and does NOT opt out of the root capture).
+     With its own name, the old snapshot sits above the new and fades
+     opacity 1 → 0 while the new beneath stays at opacity 1 — the
+     page-level deck-fade staircase, never a 50% crossfade valley.
+   Net: foreground slides in the nav-order direction, backdrop
+   deck-fades, navbar stays put. */
 @supports (view-transition-name: none) {
   nav[data-app-navbar] { view-transition-name: navbar; }
   ::view-transition-old(navbar),
@@ -108,6 +113,24 @@ body::-webkit-scrollbar { display: none; }
   html[data-nav-direction="left"]::view-transition-new(root) {
     animation: 0.45s cubic-bezier(0.4, 0, 0.2, 1) both slide-in-from-left;
   }
+
+  /* Backdrop: independent group. Deck-fade staircase — old sits above
+     new at opacity 1 → 0, new beneath stays at opacity 1. No
+     horizontal motion ever. Duration matches the root slide so both
+     finish together. */
+  ::view-transition-old(backdrop) {
+    animation: 0.45s cubic-bezier(0.4, 0, 0.2, 1) both backdrop-fade-out;
+    mix-blend-mode: normal;
+  }
+  ::view-transition-new(backdrop) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+}
+
+@keyframes backdrop-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }
 
 @keyframes slide-out-to-left {

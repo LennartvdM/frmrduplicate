@@ -3,7 +3,6 @@ import React, {
   useEffect,
   useMemo,
   useReducer,
-  useRef,
   useState,
 } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -13,7 +12,6 @@ import {
   UNIVERSAL_SECTION_TO_VIDEO,
 } from '../../config/videoBackdropRoutes';
 import { VARIANTS } from '../sections/medical/MedicalSection.data';
-import { getNavIndexForPath } from '../../hooks/useNavIndex';
 import { VideoBackdropContext } from '../../context/VideoBackdropContext';
 
 /**
@@ -24,20 +22,23 @@ import { VideoBackdropContext } from '../../context/VideoBackdropContext';
  * engine decides motion from page identity + scroll position + a small
  * imperative API; the content module never tries to coordinate with it.
  *
- * Two motion primitives, picked per-transition:
- *   - Deck fade — the video → video answer. Within one cell, rule 0
- *     (staircase opacity) drives it. Across pages (e.g. Home parked
- *     on V2 → /neoflix), we apply the same staircase at the PAGE
- *     level: the outgoing page sits above the incoming page and ticks
- *     from opacity 1 → 0, revealing the to-page's video beneath at
- *     full opacity the whole time. Never a 50% crossfade valley.
- *   - Slide — horizontal on route change when either side is non-video,
- *     or vertical on Home's scroll-snap y-stack (scroll-driven).
+ * Route transitions are handled by the browser's View Transitions API,
+ * not this engine. The backdrop's root div carries
+ * `view-transition-name: backdrop` so it's captured as an independent
+ * group (NOT part of root). CSS in index.css drives it with a
+ * deck-fade staircase — old snapshot above new, ticking 1 → 0 —
+ * while the foreground root snapshot slides horizontally per
+ * `html[data-nav-direction]`. Never a 50% crossfade valley, never a
+ * horizontal slide of the backdrop itself.
  *
- * The rule: video only ever fades into other video. If either side of
- * a transition is non-video, it's a slide. The one scroll-snap
- * exception (V2 ↔ V3 on Home) slides vertically because both cells
- * live in the same Home y-stack and translate with scrollProgress.
+ * (Historical note: this engine used to run its own rAF-driven page-
+ * level deck-fade, and set `view-transition-name: none` on its root
+ * div expecting to opt the backdrop out of the root snapshot. That
+ * was wrong — `none` is the default state of every element and simply
+ * means "don't create a separate named transition group". An element
+ * with `none` is still captured as part of root, so the backdrop
+ * sliding WITH root was the observed bug. Giving it a real name
+ * (`backdrop`) is what actually makes it an independent group.)
  *
  * Three scroll-aware contexts resolve the current target per-page:
  *   1. Home:  four cells stacked on y, translated by scrollProgress.
@@ -48,9 +49,11 @@ import { VideoBackdropContext } from '../../context/VideoBackdropContext';
  *             the blog page's scroll-spy via setBlogTopUrl.
  *   3. Other: single camo cell (toolbox, etc.).
  *
- * Mounted once in AppShell and never unmounts. Opts out of the root
- * View-Transition snapshot so its internal motion runs live while the
- * snapshot foreground slides on route change.
+ * V2 ↔ V3 on Home still slides vertically via the scroll-snap y-stack
+ * (translates with scrollProgress). That's the only slide the engine
+ * itself produces; route-change slides belong to the foreground.
+ *
+ * Mounted once in AppShell and never unmounts.
  */
 
 // Page identities. All non-Home pages are a single cell.
@@ -77,47 +80,6 @@ const HOME_CELLS = [
   { kind: 'video', variant: 'v3' }, // 2 MedicalSectionV3
   { kind: 'camo',  variant: null }, // 3 WorldMap
 ];
-
-const ROUTE_SLIDE_MS = 450; // matches the .45s CSS keyframes in index.css
-const ROUTE_FADE_MS = 600;  // matches BackdropCell's default fadeDuration
-
-/**
- * Is `page` currently showing video, given the engine's current state?
- *
- * Neoflix / Publications are video pages by construction — they exist to
- * present the universal video deck under a scroll-spy, so we treat them
- * as video unconditionally. Using state.blogTopUrl as the signal here
- * would be wrong: it's null on the first visit (scroll-spy hasn't fired
- * yet) and null again after BlogPage's unmount cleanup, so a video-to-
- * video route change would almost never be detected and the engine would
- * fall back to a horizontal slide.
- *
- * Home is video iff its current scroll-parked cell (rounded from
- * homeScrollProgress) is a video cell (V2 or V3).
- */
-function pageIsCurrentlyVideo(page, state) {
-  if (page === PAGE_NEOFLIX || page === PAGE_PUBLICATIONS) {
-    return true;
-  }
-  if (page === PAGE_HOME) {
-    const idx = Math.round(state.homeScrollProgress);
-    const safe = Math.max(0, Math.min(HOME_CELLS.length - 1, idx));
-    return HOME_CELLS[safe]?.kind === 'video';
-  }
-  return false;
-}
-
-/**
- * For the DESTINATION page of a route transition, state.homeScrollProgress
- * is stale if we're returning to Home (home unmounted while we were
- * elsewhere, so it still holds the last value from the previous visit).
- * Home always remounts at the top (Intro, camo), so the incoming Home
- * is non-video by definition. Blog pages keep blogTopUrl across mounts.
- */
-function toPageIsVideo(page, state) {
-  if (page === PAGE_HOME) return false;
-  return pageIsCurrentlyVideo(page, state);
-}
 
 const initialState = {
   homeScrollProgress: 0,
@@ -153,7 +115,6 @@ function reducer(state, action) {
  */
 export default function BackdropEngine({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const scrollContainerRef = useRef(null);
 
   // Scroll subscription — ScrollSnap calls registerHomeScrollContainer
   // with its scroll container element on mount. Engine reads scrollTop
@@ -227,130 +188,18 @@ export default function BackdropEngine({ children }) {
 /**
  * Renders the backdrop DOM. Split out so scroll-driven re-renders of
  * state don't bounce the provider value.
+ *
+ * Route transitions are delegated entirely to the browser's View
+ * Transitions API. The root div's `view-transition-name: backdrop`
+ * captures this subtree as its own group (independent of root), and
+ * index.css runs the deck-fade keyframes on the old snapshot while
+ * root slides horizontally. We render only the *current* page here —
+ * the browser's snapshot pair supplies the cross-page transition
+ * imagery.
  */
 function BackdropRenderer({ state }) {
   const location = useLocation();
   const currentPage = pageIdForPath(location.pathname);
-
-  // Route transition tracking. When pathname changes, we pick one of
-  // two kinds based on whether each side is currently showing video:
-  //   - 'fade'  — video ↔ video. Page-level deck-fade (outgoing sits
-  //               above incoming at opacity 1→0, no horizontal motion).
-  //   - 'slide' — any other pair. Horizontal slide, direction from
-  //               navbar-index delta.
-  // rAF-driven progress (0..1) so we never CSS-transition out of sync
-  // with the content-side slide animation.
-  const [transition, setTransition] = useState(null);
-  // transition: { kind, fromPage, toPage, direction?, progress }
-  const prevPathRef = useRef(location.pathname);
-  const rafRef = useRef(null);
-  const startRef = useRef(0);
-  // Ref mirror of `state` so the pathname effect reads fresh values
-  // without re-running every scroll tick.
-  const stateRef = useRef(state);
-  stateRef.current = state;
-
-  useEffect(() => {
-    const prevPath = prevPathRef.current;
-    const nextPath = location.pathname;
-    if (prevPath === nextPath) return undefined;
-
-    const fromPage = pageIdForPath(prevPath);
-    const toPage = pageIdForPath(nextPath);
-    prevPathRef.current = nextPath;
-    if (fromPage === toPage) return undefined;
-
-    const snapshot = stateRef.current;
-    const fromIsVideo = pageIsCurrentlyVideo(fromPage, snapshot);
-    const toIsVideo = toPageIsVideo(toPage, snapshot);
-
-    const isFade = fromIsVideo && toIsVideo;
-    const duration = isFade ? ROUTE_FADE_MS : ROUTE_SLIDE_MS;
-
-    let initial;
-    if (isFade) {
-      initial = { kind: 'fade', fromPage, toPage, progress: 0 };
-    } else {
-      const fromIdx = getNavIndexForPath(prevPath);
-      const toIdx = getNavIndexForPath(nextPath);
-      // Same convention as useViewTransition: > 0 → right, < 0 → left.
-      // Same-index cross-page pairs (e.g. /toolbox/a → /toolbox/b) map
-      // to the same pageId and never reach this code.
-      const direction = toIdx - fromIdx > 0 ? 'right' : 'left';
-      initial = { kind: 'slide', fromPage, toPage, direction, progress: 0 };
-    }
-
-    startRef.current = performance.now();
-    setTransition(initial);
-
-    const tick = (now) => {
-      const t = (now - startRef.current) / duration;
-      if (t >= 1) {
-        setTransition(null);
-        rafRef.current = null;
-        return;
-      }
-      setTransition((prev) => (prev ? { ...prev, progress: t } : prev));
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-
-    return () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
-      }
-    };
-  }, [location.pathname]);
-
-  // Which pages are currently on screen. During a transition, both
-  // fromPage and toPage render together; otherwise just current.
-  const visiblePages = useMemo(() => {
-    if (transition) return [transition.fromPage, transition.toPage];
-    return [currentPage];
-  }, [transition, currentPage]);
-
-  const getPageStyle = (page) => {
-    if (!transition) {
-      return { transform: 'translateX(0%)', opacity: 1, zIndex: 0 };
-    }
-    if (transition.kind === 'fade') {
-      // Page-level deck-fade staircase: from-page sits above at opacity
-      // 1 → 0, revealing to-page (already opaque from mount) beneath.
-      // Never a 50% valley because the layer below is never partial.
-      const { fromPage, toPage, progress } = transition;
-      if (page === fromPage) {
-        return {
-          transform: 'translateX(0%)',
-          opacity: 1 - progress,
-          zIndex: 1,
-        };
-      }
-      if (page === toPage) {
-        return { transform: 'translateX(0%)', opacity: 1, zIndex: 0 };
-      }
-      return { transform: 'translateX(0%)', opacity: 1, zIndex: 0 };
-    }
-    // kind === 'slide'
-    const { fromPage, toPage, direction, progress } = transition;
-    const outTo = direction === 'right' ? -100 : 100;
-    const inFrom = direction === 'right' ? 100 : -100;
-    if (page === fromPage) {
-      return {
-        transform: `translateX(${outTo * progress}%)`,
-        opacity: 1,
-        zIndex: 0,
-      };
-    }
-    if (page === toPage) {
-      return {
-        transform: `translateX(${inFrom * (1 - progress)}%)`,
-        opacity: 1,
-        zIndex: 0,
-      };
-    }
-    return { transform: 'translateX(0%)', opacity: 1, zIndex: 0 };
-  };
 
   return (
     <div
@@ -358,35 +207,16 @@ function BackdropRenderer({ state }) {
       style={{
         zIndex: 0,
         backgroundColor: '#1c3424',
-        // Opt the backdrop out of the root View-Transition snapshot so
-        // its internal motion keeps running live while the snapshot
-        // foreground slides on route change.
-        viewTransitionName: 'none',
+        // Independent view-transition group. `none` here would *not*
+        // opt out (that's the default for every element) — it would
+        // leave the backdrop inside the root capture and make it slide
+        // along with the foreground. A real name gives it its own
+        // old/new snapshots that index.css animates with a deck-fade.
+        viewTransitionName: 'backdrop',
       }}
       aria-hidden="true"
     >
-      {visiblePages.map((page) => {
-        const style = getPageStyle(page);
-        return (
-          <div
-            key={page}
-            className="absolute inset-0"
-            style={{
-              ...style,
-              // rAF-driven progress; no CSS transition so we can't drift
-              // out of sync with the content-side transition.
-              willChange: transition ? 'transform, opacity' : 'auto',
-            }}
-          >
-            <PageBackdrop
-              page={page}
-              state={state}
-              isActivePage={!transition && page === currentPage}
-              isTransitioning={!!transition}
-            />
-          </div>
-        );
-      })}
+      <PageBackdrop page={currentPage} state={state} />
     </div>
   );
 }
@@ -394,22 +224,18 @@ function BackdropRenderer({ state }) {
 /**
  * Compose the backdrop for one page identity.
  *
- * Decode allowance:
- *   - Parked on a page (!isTransitioning && isActivePage): that page's
- *     current cell plays its 2-video rule-2 budget.
- *   - During a route slide (isTransitioning): both the from-page and
- *     to-page pass through here, and we let them decode so the slide
- *     doesn't land on frozen first frames. Non-video pages render
- *     zero videos; video pages render one cell; so the worst pairing
- *     (video↔non-video) still decodes ≤2 videos.
+ * The route-change transition is owned by the browser (view transitions),
+ * so at any given commit this component only renders the *current* page
+ * — we always let its videos decode. The old-page imagery during a
+ * route transition is the browser's snapshot, not a concurrently-
+ * rendered sibling.
  */
-function PageBackdrop({ page, state, isActivePage, isTransitioning }) {
-  const canDecode = isActivePage || isTransitioning;
+function PageBackdrop({ page, state }) {
   if (page === PAGE_HOME) {
-    return <HomeBackdrop state={state} canDecode={canDecode} />;
+    return <HomeBackdrop state={state} canDecode />;
   }
   if (page === PAGE_NEOFLIX || page === PAGE_PUBLICATIONS) {
-    return <BlogBackdrop state={state} canDecode={canDecode} />;
+    return <BlogBackdrop state={state} canDecode />;
   }
   return <BackdropCell kind="camo" decodeState="idle" />;
 }

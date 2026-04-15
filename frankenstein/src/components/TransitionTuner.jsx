@@ -35,13 +35,16 @@ import { NAV_ORDER, getNavIndexForPath } from '../hooks/useNavIndex';
 
 const STORAGE_KEY = 'transition-tuner:v1';
 
+// Baseline the tuner resets to. Matches the `:root` block in index.css
+// so production (no-tuner) and "Reset" (tuner active) produce the same
+// timing. Re-calibrated via the tuner and locked in.
 const DEFAULTS = {
-  slideDuration: 0.35,
-  slidePause: 0.45,
-  slideOutEase: [0.4, 0, 0.2, 1],
-  slideInEase: [0.4, 0, 0.2, 1],
-  backdropDuration: 0.8,
-  backdropEase: [0.4, 0, 0.2, 1],
+  slideDuration: 0.58,
+  slidePause: 0.36,
+  slideOutEase: [1.0, 0.34, 0.0, 0.34],
+  slideInEase: [1.0, 0.75, 0.28, 0.73],
+  backdropDuration: 2.0,
+  backdropEase: [0.0, -0.02, 0.2, 1.0],
 };
 
 // Named preset pairs. Tweak slide-out/slide-in together to keep the

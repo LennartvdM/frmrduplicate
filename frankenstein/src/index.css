@@ -92,12 +92,12 @@ body::-webkit-scrollbar { display: none; }
    same custom properties on documentElement.style at higher specificity
    when it's active. */
 :root {
-  --slide-duration: 0.35s;
-  --slide-pause: 0.45s;
-  --slide-out-ease: cubic-bezier(0.4, 0, 0.2, 1);
-  --slide-in-ease: cubic-bezier(0.4, 0, 0.2, 1);
-  --backdrop-duration: 0.8s;
-  --backdrop-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --slide-duration: 0.58s;
+  --slide-pause: 0.36s;
+  --slide-out-ease: cubic-bezier(1.00, 0.34, 0.00, 0.34);
+  --slide-in-ease: cubic-bezier(1.00, 0.75, 0.28, 0.73);
+  --backdrop-duration: 2s;
+  --backdrop-ease: cubic-bezier(0.00, -0.02, 0.20, 1.00);
 }
 
 @supports (view-transition-name: none) {

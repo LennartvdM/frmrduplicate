@@ -9,6 +9,11 @@ const NAV_LINKS = [
   { label: 'Publications', to: '/publications' },
   { label: 'Contact', to: '/contact' },
   { label: 'Toolbox', to: '/toolbox' },
+  // TEMP: test button for leftward motion. V2 lives inside Home (index 0),
+  // so clicking this from Neoflix/Publications/Contact/Toolbox forces a
+  // negative delta → html[data-nav-direction="left"] → old slides right,
+  // new slides in from left. Remove once bidirectional slide is verified.
+  { label: 'V2 test', to: '/#two', section: 'two' },
 ];
 
 const BLOB_HEIGHT_FULL = 32;
@@ -51,9 +56,15 @@ export default function Navbar() {
   const navigate = useNavigate();
   const transitionNavigate = useViewTransition();
 
-  const handleNavClick = (e, to) => {
+  const handleNavClick = (e, to, section) => {
     e.preventDefault();
     const targetPath = to.split('#')[0] || '/';
+    // For links that deep-link into a ScrollSnap section on Home, hand the
+    // section id to ScrollSnap's restore key before navigating — ScrollSnap
+    // reads this on mount to jump to the right slide.
+    if (section) {
+      try { sessionStorage.setItem('scrollsnap:return-section', section); } catch {}
+    }
     if (targetPath === location.pathname) {
       navigate(to);
     } else {
@@ -283,7 +294,7 @@ export default function Navbar() {
                 )}
                 <a
                   href={link.to}
-                  onClick={(e) => handleNavClick(e, link.to)}
+                  onClick={(e) => handleNavClick(e, link.to, link.section)}
                   className={`relative z-30 flex items-center justify-center rounded-full transition-colors duration-150 transform-gpu
                     hover:scale-105 focus:scale-105 transition-transform duration-240
                     ${active ? 'text-white font-bold' : isToolbox ? 'text-white font-semibold' : 'text-[#232324] font-semibold'}

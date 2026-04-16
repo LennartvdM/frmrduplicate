@@ -123,6 +123,10 @@ function VideoDeck({ deck, topIdx, decodeState, fadeDuration, style }) {
               transition: `opacity ${fadeDuration}s cubic-bezier(0.4,0,0.2,1)`,
               willChange: 'opacity',
               transform: 'scale(1.06)',
+              // Match bashtest's BLUR_VIDEO_BASE_STYLE dimming — the source
+              // videos are deliberately heavily compressed so their artefacts
+              // stay below the noise floor under a darker render.
+              filter: 'brightness(0.7) saturate(1)',
               // Lower idx (higher in deck) sits on top.
               zIndex: deck.length - idx,
             }}

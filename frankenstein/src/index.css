@@ -174,60 +174,59 @@ body::-webkit-scrollbar { display: none; }
     mix-blend-mode: normal;
   }
 
-  /* ── Blog-sidebar stagger ─────────────────────────────────────────
+  /* ── Blog-sidebar stagger (slide-in only) ─────────────────────────
      The two-column blog layout (/neoflix, /publications, /contact) has
      a sidebar column on the left and an article column on the right.
-     Pulling the sidebar out of the `content` group into its own
-     `blog-sidebar` group lets the two columns arrive at different
-     times — the "playful rushing to get in place" feel.
+     Pulling the sidebar into its own `blog-sidebar` view-transition
+     group lets it arrive at a different time from the article column —
+     the "playful rushing to get in place" feel.
 
-     Rule of thumb: the element that's on the opposite side of the
-     slide-in direction leads; the one on the same side trails. So:
+     Critically, the pull-out happens only for the NEW capture, gated
+     on `html.vt-sidebar-named`. That class is added inside the
+     startViewTransition callback AFTER flushSync, i.e. between the
+     OLD capture (already done) and the NEW capture (still to come).
+     So:
+       OLD capture: class absent → sidebar has no view-transition-name
+                    → sidebar stays inside the `content` group → slide-
+                    out is conjoined with the rest of the page, as if
+                    blog-sidebar didn't exist. No separate-group
+                    desync, stage clears cleanly in one motion.
+       NEW capture: class present → sidebar pulled into its own group
+                    → slide-in can be staggered independently from
+                    content.
 
-       direction="right" (new enters from right) → sidebar (left column)
-           leads, article (right column) trails
-       direction="left" (new enters from left) → article (right column)
-           leads, sidebar (left column) trails
+     Direction map (slide-in only):
+       direction="right" (new from right) → sidebar (left column) LEADS,
+           article (right column) TRAILS
+       direction="left" (new from left) → article (right column) LEADS,
+           sidebar (left column) TRAILS
 
      The extra trailing delay is `--blog-stagger` on top of the regular
-     `--slide-pause`. Slide-out stays unified across both columns — the
-     stagger is arrival-only. The leader uses the same delay as a
-     non-staggered slide (--slide-pause) so non-blog pages don't slow
-     down; only the trailer is pushed back.
+     `--slide-pause`. The leader uses the regular pause so non-blog
+     pages don't slow down; only the trailer is pushed back.
 
-     The conditional content override below fires only when the NEXT
-     page has a sidebar (html[data-next-has-sidebar="true"], set by
-     useViewTransition before startViewTransition). Non-blog
-     destinations keep their original timing. */
-  ::view-transition-old(blog-sidebar),
-  ::view-transition-new(blog-sidebar) {
-    animation: none;
-    mix-blend-mode: normal;
+     The content-column override is gated on data-next-has-sidebar so
+     toolbox/home destinations keep their unified timing. */
+  html.vt-sidebar-named aside[data-blog-sidebar="true"] {
+    view-transition-name: blog-sidebar;
   }
 
-  /* Slide-out: both directions, unified timing (no stagger on exit). */
-  html[data-nav-direction="right"]::view-transition-old(blog-sidebar) {
-    animation: var(--slide-duration) var(--slide-out-ease) both slide-out-to-left;
-  }
-  html[data-nav-direction="left"]::view-transition-old(blog-sidebar) {
-    animation: var(--slide-duration) var(--slide-out-ease) both slide-out-to-right;
-  }
-
-  /* Slide-in right (new from right): sidebar LEADS — uses the default
-     pause so it arrives first. */
+  /* Slide-in right (new from right): sidebar LEADS — regular pause.
+     Uses viewport-relative sidebar-slide-in-from-right keyframes so
+     the sidebar actually slides in from off-screen (see the keyframe
+     comment for why translateX(100%) doesn't work on a narrow group). */
   html[data-nav-direction="right"]::view-transition-new(blog-sidebar) {
-    animation: var(--slide-duration) var(--slide-in-ease) var(--slide-pause) both slide-in-from-right;
+    animation: var(--slide-duration) var(--slide-in-ease) var(--slide-pause) both sidebar-slide-in-from-right;
   }
 
   /* Slide-in left (new from left): sidebar TRAILS — pause + stagger. */
   html[data-nav-direction="left"]::view-transition-new(blog-sidebar) {
-    animation: var(--slide-duration) var(--slide-in-ease) calc(var(--slide-pause) + var(--blog-stagger)) both slide-in-from-left;
+    animation: var(--slide-duration) var(--slide-in-ease) calc(var(--slide-pause) + var(--blog-stagger)) both sidebar-slide-in-from-left;
   }
 
   /* Content override — only when navigating TO a page with a sidebar.
-     Gated on data-next-has-sidebar so toolbox/home destinations don't
-     get delayed. Overrides only animation-delay; the shorthand from
-     the base rule still supplies duration, ease, keyframes, fill.
+     Overrides only animation-delay; the shorthand from the base rule
+     still supplies duration, ease, keyframes, fill.
 
      direction="right" + has-sidebar → article TRAILS (pause + stagger).
      direction="left"  + has-sidebar → article LEADS (default pause,
@@ -256,6 +255,28 @@ body::-webkit-scrollbar { display: none; }
 }
 @keyframes slide-in-from-left {
   from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+
+/* Sidebar slide-in keyframes — viewport-relative so the sidebar
+   actually travels from off-screen to its destination.
+
+   The default slide keyframes use translateX(±100%), where 100% is
+   relative to the animated element's own rect. For the `content`
+   group that's fine — RouteTransition pins it to position:fixed;
+   inset:0, so the group rect is the full viewport and 100% = 100vw.
+   For `blog-sidebar` the group rect is just the sidebar's own box
+   (~260px wide), so translateX(100%) only shifts it by ~260px and
+   it appears to pop in from right next to its resting position
+   instead of sliding in from off-screen. These keyframes use
+   translateX(±100vw) instead, guaranteeing the sidebar starts fully
+   off-screen regardless of how wide its box is. */
+@keyframes sidebar-slide-in-from-right {
+  from { transform: translateX(100vw); }
+  to   { transform: translateX(0); }
+}
+@keyframes sidebar-slide-in-from-left {
+  from { transform: translateX(-100vw); }
   to   { transform: translateX(0); }
 }
 

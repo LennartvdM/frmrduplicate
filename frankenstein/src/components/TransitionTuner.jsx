@@ -16,6 +16,8 @@ import { NAV_ORDER, getNavIndexForPath } from '../hooks/useNavIndex';
  *   --slide-in-ease     — cubic-bezier for slide-in
  *   --backdrop-duration — duration of backdrop deck-fade-out
  *   --backdrop-ease     — cubic-bezier for backdrop
+ *   --blog-stagger      — extra delay for the trailing column of the
+ *                         two-column blog layout (sidebar vs article)
  *
  * These shadow the `:root` defaults declared in index.css at higher
  * specificity, so the tuner hot-swaps live. Values persist to
@@ -45,6 +47,7 @@ const DEFAULTS = {
   slideInEase: [1.0, 0.75, 0.28, 0.73],
   backdropDuration: 2.0,
   backdropEase: [0.0, -0.02, 0.2, 1.0],
+  blogStagger: 0.5,
 };
 
 // Named preset pairs. Tweak slide-out/slide-in together to keep the
@@ -71,11 +74,12 @@ const applyVars = (v) => {
   root.style.setProperty('--slide-in-ease', bezierString(v.slideInEase));
   root.style.setProperty('--backdrop-duration', `${v.backdropDuration}s`);
   root.style.setProperty('--backdrop-ease', bezierString(v.backdropEase));
+  root.style.setProperty('--blog-stagger', `${v.blogStagger}s`);
 };
 
 const clearVars = () => {
   const root = document.documentElement;
-  ['--slide-duration', '--slide-pause', '--slide-out-ease', '--slide-in-ease', '--backdrop-duration', '--backdrop-ease']
+  ['--slide-duration', '--slide-pause', '--slide-out-ease', '--slide-in-ease', '--backdrop-duration', '--backdrop-ease', '--blog-stagger']
     .forEach((k) => root.style.removeProperty(k));
 };
 
@@ -240,6 +244,7 @@ export default function TransitionTuner() {
   --slide-in-ease: ${bezierString(values.slideInEase)};
   --backdrop-duration: ${values.backdropDuration}s;
   --backdrop-ease: ${bezierString(values.backdropEase)};
+  --blog-stagger: ${values.blogStagger}s;
 }`;
 
   const copyCSS = useCallback(async () => {
@@ -360,6 +365,12 @@ export default function TransitionTuner() {
           value={values.backdropDuration}
           onChange={(v) => setField('backdropDuration', v)}
           min={0.1} max={2} step={0.01}
+        />
+        <NumberField
+          label="Blog column stagger (s)"
+          value={values.blogStagger}
+          onChange={(v) => setField('blogStagger', v)}
+          min={0} max={1.5} step={0.01}
         />
       </section>
 

@@ -31,6 +31,13 @@ import { getNavIndexForPath } from './useNavIndex';
 // transition's cleanup from wiping a freshly-set direction on the next one.
 let currentDirectionOwner = null;
 
+// Routes that render BlogPage's two-column sticky-sidebar + scrolling-
+// article layout. When the NEXT route is one of these, we set
+// html[data-next-has-sidebar="true"] so the CSS can stagger the sidebar
+// vs article arrival (see the blog-sidebar rules in index.css). Toolbox
+// and home don't render a sidebar and keep their unified slide timing.
+const BLOG_TARGETS = new Set(['/neoflix', '/publications', '/contact']);
+
 export default function useViewTransition() {
   const navigate = useNavigate();
   // React Router's useLocation() returns the pathname with the Router's
@@ -70,10 +77,13 @@ export default function useViewTransition() {
     // no direction → baseline `animation: none` → no visible slide. That
     // would manifest as "only the first direction ever animates".
     const token = Symbol('nav-direction');
+    const nextHasSidebar = BLOG_TARGETS.has(targetPath);
     if (root) {
       if (direction > 0) root.dataset.navDirection = 'right';
       else if (direction < 0) root.dataset.navDirection = 'left';
       else root.dataset.navDirection = 'none';
+      if (nextHasSidebar) root.dataset.nextHasSidebar = 'true';
+      else delete root.dataset.nextHasSidebar;
       currentDirectionOwner = token;
     }
 
@@ -98,6 +108,7 @@ export default function useViewTransition() {
       const clear = () => {
         if (root && currentDirectionOwner === token) {
           root.removeAttribute('data-nav-direction');
+          root.removeAttribute('data-next-has-sidebar');
           currentDirectionOwner = null;
         }
       };

@@ -133,14 +133,18 @@ export default function BlogPage({ sections, scrollTo }) {
         className="blog-grid"
       >
         {/* Sticky sidebar.
-            Pulled into its own view-transition group (`blog-sidebar`)
-            so route transitions can stagger the sidebar vs the article
-            column — see the blog-sidebar rules in index.css. Sticky at
-            top:112 means the rect is stable across scroll positions
-            (natural top 96 < sticky threshold 112 → stuck from scroll=0
-            onward), so OLD/NEW rects match and the UA group-rect
-            interpolation doesn't introduce diagonal motion. */}
+            Tagged with data-blog-sidebar; the CSS rule in index.css
+            (gated on html.vt-sidebar-named) applies
+            `view-transition-name: blog-sidebar` only during the NEW
+            capture of a transition, so the OLD capture keeps the
+            sidebar inside the `content` group — slide-out stays
+            conjoined with the rest of the page, no separate-group
+            desync. Only the NEW capture pulls the sidebar into its
+            own group so the slide-in can be staggered against the
+            article column. See useViewTransition.js for the class-
+            toggle timing. */}
         <aside
+          data-blog-sidebar="true"
           style={{
             position: 'sticky',
             top: 112,
@@ -153,7 +157,6 @@ export default function BlogPage({ sections, scrollTo }) {
             flexDirection: 'column',
             justifyContent: 'center',
             minHeight: 'min(640px, calc(100vh - 160px))',
-            viewTransitionName: 'blog-sidebar',
           }}
         >
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>

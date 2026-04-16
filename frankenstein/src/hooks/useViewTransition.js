@@ -84,6 +84,13 @@ export default function useViewTransition() {
       else root.dataset.navDirection = 'none';
       if (nextHasSidebar) root.dataset.nextHasSidebar = 'true';
       else delete root.dataset.nextHasSidebar;
+      // Reset vt-sidebar-named on every nav start. A rapid second click
+      // could otherwise inherit the class from a still-running first
+      // transition and have its OLD capture pull the sidebar into its
+      // own group — breaking the conjoined slide-out. The class gets
+      // re-added inside the transition callback (after OLD is captured)
+      // only when the destination has a sidebar.
+      root.classList.remove('vt-sidebar-named');
       currentDirectionOwner = token;
     }
 
@@ -96,6 +103,18 @@ export default function useViewTransition() {
       flushSync(() => {
         navigate(to, opts);
       });
+      // Pull the blog sidebar into its own view-transition group for the
+      // NEW capture only. OLD was captured before this callback ran, so
+      // on the OLD page the sidebar is still part of the `content`
+      // group — slide-out stays conjoined with the rest of the page
+      // (that's what the user asked for: "the transition out needs to
+      // be 'normal' conjoined, otherwise the stage doesn't clear out
+      // fast enough"). The NEW capture runs after this callback, with
+      // the class applied, so the destination sidebar is its own group
+      // and can slide in staggered against the article column.
+      if (root && nextHasSidebar) {
+        root.classList.add('vt-sidebar-named');
+      }
     });
 
     // Clear the direction attribute once the transition finishes, so
@@ -109,6 +128,7 @@ export default function useViewTransition() {
         if (root && currentDirectionOwner === token) {
           root.removeAttribute('data-nav-direction');
           root.removeAttribute('data-next-has-sidebar');
+          root.classList.remove('vt-sidebar-named');
           currentDirectionOwner = null;
         }
       };

@@ -132,7 +132,14 @@ export default function BlogPage({ sections, scrollTo }) {
         }}
         className="blog-grid"
       >
-        {/* Sticky sidebar */}
+        {/* Sticky sidebar.
+            Pulled into its own view-transition group (`blog-sidebar`)
+            so route transitions can stagger the sidebar vs the article
+            column — see the blog-sidebar rules in index.css. Sticky at
+            top:112 means the rect is stable across scroll positions
+            (natural top 96 < sticky threshold 112 → stuck from scroll=0
+            onward), so OLD/NEW rects match and the UA group-rect
+            interpolation doesn't introduce diagonal motion. */}
         <aside
           style={{
             position: 'sticky',
@@ -146,6 +153,7 @@ export default function BlogPage({ sections, scrollTo }) {
             flexDirection: 'column',
             justifyContent: 'center',
             minHeight: 'min(640px, calc(100vh - 160px))',
+            viewTransitionName: 'blog-sidebar',
           }}
         >
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>

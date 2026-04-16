@@ -98,6 +98,11 @@ body::-webkit-scrollbar { display: none; }
   --slide-in-ease: cubic-bezier(1.00, 0.75, 0.28, 0.73);
   --backdrop-duration: 2s;
   --backdrop-ease: cubic-bezier(0.00, -0.02, 0.20, 1.00);
+
+  /* Extra delay added to the trailing element of the two-column blog
+     layout so sidebar and article arrive staggered. Which element
+     trails depends on slide direction (see blog-sidebar rules below). */
+  --blog-stagger: 0.5s;
 }
 
 @supports (view-transition-name: none) {
@@ -167,6 +172,68 @@ body::-webkit-scrollbar { display: none; }
   ::view-transition-new(tuner) {
     animation: none;
     mix-blend-mode: normal;
+  }
+
+  /* ── Blog-sidebar stagger ─────────────────────────────────────────
+     The two-column blog layout (/neoflix, /publications, /contact) has
+     a sidebar column on the left and an article column on the right.
+     Pulling the sidebar out of the `content` group into its own
+     `blog-sidebar` group lets the two columns arrive at different
+     times — the "playful rushing to get in place" feel.
+
+     Rule of thumb: the element that's on the opposite side of the
+     slide-in direction leads; the one on the same side trails. So:
+
+       direction="right" (new enters from right) → sidebar (left column)
+           leads, article (right column) trails
+       direction="left" (new enters from left) → article (right column)
+           leads, sidebar (left column) trails
+
+     The extra trailing delay is `--blog-stagger` on top of the regular
+     `--slide-pause`. Slide-out stays unified across both columns — the
+     stagger is arrival-only. The leader uses the same delay as a
+     non-staggered slide (--slide-pause) so non-blog pages don't slow
+     down; only the trailer is pushed back.
+
+     The conditional content override below fires only when the NEXT
+     page has a sidebar (html[data-next-has-sidebar="true"], set by
+     useViewTransition before startViewTransition). Non-blog
+     destinations keep their original timing. */
+  ::view-transition-old(blog-sidebar),
+  ::view-transition-new(blog-sidebar) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  /* Slide-out: both directions, unified timing (no stagger on exit). */
+  html[data-nav-direction="right"]::view-transition-old(blog-sidebar) {
+    animation: var(--slide-duration) var(--slide-out-ease) both slide-out-to-left;
+  }
+  html[data-nav-direction="left"]::view-transition-old(blog-sidebar) {
+    animation: var(--slide-duration) var(--slide-out-ease) both slide-out-to-right;
+  }
+
+  /* Slide-in right (new from right): sidebar LEADS — uses the default
+     pause so it arrives first. */
+  html[data-nav-direction="right"]::view-transition-new(blog-sidebar) {
+    animation: var(--slide-duration) var(--slide-in-ease) var(--slide-pause) both slide-in-from-right;
+  }
+
+  /* Slide-in left (new from left): sidebar TRAILS — pause + stagger. */
+  html[data-nav-direction="left"]::view-transition-new(blog-sidebar) {
+    animation: var(--slide-duration) var(--slide-in-ease) calc(var(--slide-pause) + var(--blog-stagger)) both slide-in-from-left;
+  }
+
+  /* Content override — only when navigating TO a page with a sidebar.
+     Gated on data-next-has-sidebar so toolbox/home destinations don't
+     get delayed. Overrides only animation-delay; the shorthand from
+     the base rule still supplies duration, ease, keyframes, fill.
+
+     direction="right" + has-sidebar → article TRAILS (pause + stagger).
+     direction="left"  + has-sidebar → article LEADS (default pause,
+                                       already set by base rule). */
+  html[data-nav-direction="right"][data-next-has-sidebar="true"]::view-transition-new(content) {
+    animation-delay: calc(var(--slide-pause) + var(--blog-stagger));
   }
 }
 

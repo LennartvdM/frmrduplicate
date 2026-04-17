@@ -343,3 +343,63 @@ html.is-resizing [data-tablet-layout="true"] {
     animation: none !important;
   }
 }
+
+/* ---------------------------------------------------------------------- */
+/* Docs (native GitBook replacement) typography.                          */
+/* Scoped under .docs-body so nothing else picks these up.                */
+/* ---------------------------------------------------------------------- */
+.docs-article { font-family: Inter, system-ui, sans-serif; color: #0e1c31; }
+.docs-body { font-size: 16px; line-height: 1.7; color: #2a323c; }
+.docs-body p { margin: 0 0 16px; }
+.docs-body h1, .docs-body h2, .docs-body h3, .docs-body h4, .docs-body h5, .docs-body h6 {
+  color: #0e1c31;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 36px 0 14px;
+  scroll-margin-top: 96px;
+}
+.docs-body h1 { font-size: 28px; }
+.docs-body h2 { font-size: 24px; }
+.docs-body h3 { font-size: 20px; }
+.docs-body h4 { font-size: 17px; }
+.docs-body h5, .docs-body h6 { font-size: 15px; }
+.docs-body a { color: #0e5fb3; text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+.docs-body a:hover { color: #0a4a8c; }
+.docs-body ul, .docs-body ol { margin: 0 0 16px; padding-left: 24px; }
+.docs-body li { margin-bottom: 6px; }
+.docs-body li > p:last-child { margin-bottom: 0; }
+.docs-body blockquote {
+  border-left: 3px solid #6ea8ff;
+  background: #f7f9fc;
+  margin: 20px 0;
+  padding: 10px 18px;
+  color: #2a323c;
+  border-radius: 6px;
+}
+.docs-body code {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+.docs-body pre {
+  background: #0e1c31;
+  color: #f5f9fc;
+  padding: 16px 18px;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 20px 0;
+}
+.docs-body pre code { background: transparent; color: inherit; padding: 0; }
+.docs-body img { max-width: 100%; height: auto; border-radius: 10px; margin: 16px 0; }
+.docs-body hr { border: none; border-top: 1px solid #e4e8ee; margin: 32px 0; }
+.docs-body table {
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+  width: 100%;
+}
+.docs-body th, .docs-body td { border: 1px solid #e4e8ee; padding: 8px 12px; text-align: left; vertical-align: top; }
+.docs-body th { background: #f7f9fc; font-weight: 600; }
+.docs-body mark { background: rgba(110, 168, 255, 0.15); color: inherit; padding: 0 2px; border-radius: 2px; }

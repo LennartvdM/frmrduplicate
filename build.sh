@@ -7,6 +7,15 @@ OUT="dist"
 rm -rf "$OUT"
 mkdir -p "$OUT"
 
+# 0. Sync docs submodule to latest main. The GitBook repo pushes via
+#    GitHub Actions whenever the client saves in GitBook; a GitHub
+#    webhook then triggers a Netlify build. We pull the latest commit
+#    on origin/main rather than the pinned SHA so docs are always live.
+echo "--- Syncing docs-content submodule ---"
+if [ -f .gitmodules ]; then
+  git submodule update --init --remote docs-content || echo "(submodule sync skipped)"
+fi
+
 # 1. Landing page (static)
 echo "--- Copying landing page ---"
 cp landing/index.html "$OUT/index.html"
@@ -24,6 +33,8 @@ cd ..
 echo "--- Building frankenstein ---"
 cd frankenstein
 npm ci --prefer-offline 2>/dev/null || npm install
+# Transform docs-content/ (GitBook mirror) → compiled AST JSON + assets
+node scripts/build-docs.mjs
 VITE_BASE=/frankenstein/ npx vite build --outDir "../$OUT/frankenstein"
 cd ..
 

@@ -7,8 +7,7 @@ import BackdropProvider from './backdrop/BackdropProvider';
 import Home from './pages/Home';
 import NeoflixPage from './pages/NeoflixPage';
 import PublicationsPage from './pages/PublicationsPage';
-import Toolbox from './pages/Toolbox';
-import ToolboxEmbed from './components/ToolboxEmbed';
+import DocsPage from './pages/DocsPage';
 
 function AppShell() {
   const location = useLocation();
@@ -34,8 +33,8 @@ function AppShell() {
               <Route path="/neoflix" element={<NeoflixPage />} />
               <Route path="/publications" element={<PublicationsPage />} />
               <Route path="/contact" element={<NeoflixPage scrollTo="contact" />} />
-              <Route path="/toolbox" element={<Toolbox />} />
-              <Route path="/toolbox/:slug" element={<ToolboxEmbed />} />
+              <Route path="/toolbox" element={<DocsPage />} />
+              <Route path="/toolbox/*" element={<DocsPage />} />
             </Routes>
           )}
         </RouteTransition>

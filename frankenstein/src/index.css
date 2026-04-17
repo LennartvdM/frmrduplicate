@@ -102,7 +102,7 @@ body::-webkit-scrollbar { display: none; }
   /* Extra delay added to the trailing element of the two-column blog
      layout so sidebar and article arrive staggered. Which element
      trails depends on slide direction (see blog-sidebar rules below). */
-  --blog-stagger: 0.22s;
+  --blog-stagger: 0.5s;
 }
 
 @supports (view-transition-name: none) {

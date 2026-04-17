@@ -47,7 +47,7 @@ const DEFAULTS = {
   slideInEase: [1.0, 0.75, 0.28, 0.73],
   backdropDuration: 2.0,
   backdropEase: [0.0, -0.02, 0.2, 1.0],
-  blogStagger: 0.5,
+  blogStagger: 0.22,
 };
 
 // Named preset pairs. Tweak slide-out/slide-in together to keep the

@@ -13,15 +13,16 @@ export const VARIANTS = {
       { id: "2", video: assetUrl("/videos/blurfocus.mp4"), alt: "Blurred medical focus" },
     ],
     headlines: [
-      { firstLine: "Medical interventions demand", secondLine: "precision and urgency." },
-      { firstLine: "Which makes coordination within", secondLine: "teams vital for success." },
-      { firstLine: "Task\u2011driven focus can lead to", secondLine: "tunnel vision and misalignment." },
+      { firstLine: "Medical interventions demand", secondLine: "precision and urgency.", sectionTarget: "time-sensitive" },
+      { firstLine: "Which makes coordination within", secondLine: "teams vital for success.", sectionTarget: "like-a-dance" },
+      { firstLine: "Task\u2011driven focus can lead to", secondLine: "tunnel vision and misalignment.", sectionTarget: "cost" },
     ],
     mainVideos: [
       { id: "0", video: assetUrl("/videos/urgency.mp4"), alt: "Medical urgency demonstration" },
       { id: "1", video: assetUrl("/videos/coordination.mp4"), alt: "Medical team coordination" },
       { id: "2", video: assetUrl("/videos/focus.mp4"), alt: "Medical focus and precision" },
     ],
+    sectionTargets: ["time-sensitive", "like-a-dance", "cost"],
     cookieComponent: SimpleCookieCutterBand,
     orientation: 'video-right',
     header: {
@@ -40,15 +41,16 @@ export const VARIANTS = {
       { id: "2", video: assetUrl("/videos/blurperspectives.mp4"), alt: "Blurred perspectives" },
     ],
     headlines: [
-      { firstLine: "Quiet reflection allows for", secondLine: "sharpening skills." },
-      { firstLine: "Further video debriefs foster", secondLine: "cohesion amongst peers." },
-      { firstLine: "Shared understanding enhances", secondLine: "decisiveness." },
+      { firstLine: "Quiet reflection allows for", secondLine: "sharpening skills.", sectionTarget: "sharpening" },
+      { firstLine: "Further video debriefs foster", secondLine: "cohesion amongst peers.", sectionTarget: "team-dynamics" },
+      { firstLine: "Shared understanding enhances", secondLine: "decisiveness.", sectionTarget: "perspectives" },
     ],
     mainVideos: [
       { id: "0", video: assetUrl("/videos/skills.mp4"), alt: "Sharpening skills" },
       { id: "1", video: assetUrl("/videos/team.mp4"), alt: "Team cohesion" },
       { id: "2", video: assetUrl("/videos/perspectives.mp4"), alt: "Shared perspectives" },
     ],
+    sectionTargets: ["sharpening", "team-dynamics", "perspectives"],
     cookieComponent: MirroredCookieCutterBand,
     orientation: 'video-left',
     header: {

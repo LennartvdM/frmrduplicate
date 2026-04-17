@@ -17,6 +17,7 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
     orientation,
     id: sectionId,
     header,
+    sectionTargets,
   } = config;
   const {
     sectionState,
@@ -534,7 +535,7 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
 
   return {
     // config
-    blurVideos, headlines, mainVideos, CookieCutterBand, orientation, sectionId, header,
+    blurVideos, headlines, mainVideos, CookieCutterBand, orientation, sectionId, header, sectionTargets,
     // lifecycle
     sectionState, shouldAnimate, isActive, isPreserved,
     // visibility

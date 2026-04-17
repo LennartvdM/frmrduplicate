@@ -4,6 +4,11 @@
 
 [build.environment]
   NODE_VERSION = "18"
+  # Pull submodule HEADs (docs-content) fresh on every build so the
+  # live site tracks the latest GitBook push. The doc repo has its own
+  # GitHub webhook pointed at Netlify's build hook for auto-rebuilds.
+  GIT_LFS_ENABLED = "false"
+  SUBMODULE_STRATEGY = "recursive"
 
 # SPA routing for bashtest (React Router)
 [[redirects]]

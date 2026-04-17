@@ -1,4 +1,6 @@
 import toolboxPages from '../data/toolboxPages';
+import legacySlugMap from '../data/legacySlugMap';
+import { pageMeta } from '../data/docsIndex';
 
 /**
  * Render markdown text to HTML.
@@ -115,19 +117,36 @@ function renderInline(str) {
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/\*([^*]+)\*/g, '<em>$1</em>')
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, label, url) => {
+      // Legacy /Toolbox-SlugName → look up new path-based slug
       const legacy = url.match(/^\.?\/Toolbox[-_](.+)$/);
       if (legacy) {
-        const slug = legacy[1].replace(/_/g, '-');
-        return `<a href="/toolbox/${slug}" data-internal="true">${label}</a>`;
+        const legacySlug = legacy[1].replace(/_/g, '-');
+        const mapped = legacySlugMap[legacySlug] ?? legacySlugMap[legacySlug.toLowerCase()];
+        const target = mapped != null ? mapped : legacySlug;
+        return `<a href="/toolbox/${target}" data-internal="true">${label}</a>`;
       }
-      const canonical = url.match(/^\/toolbox\/(.+)$/);
+      const canonical = url.match(/^\/toolbox\/(.*)$/);
       if (canonical) {
-        return `<a href="${url}" data-internal="true">${label}</a>`;
+        // Canonical may still use a legacy slug — translate if known
+        const rest = canonical[1];
+        const mapped = legacySlugMap[rest] ?? legacySlugMap[rest.toLowerCase()];
+        const target = mapped != null ? mapped : rest;
+        return `<a href="/toolbox/${target}" data-internal="true">${label}</a>`;
       }
       if (/docs\.neoflix\.care/i.test(url)) {
         const matched = findSlugFromGitBookUrl(url);
         if (matched) {
-          return `<a href="/toolbox/${matched.slug}" data-internal="true">${label}</a>`;
+          const mapped = legacySlugMap[matched.slug] ?? legacySlugMap[matched.slug.toLowerCase()];
+          const target = mapped != null ? mapped : matched.slug;
+          return `<a href="/toolbox/${target}" data-internal="true">${label}</a>`;
+        }
+        // Try full-path match against the new slug space
+        const pathMatch = url.match(/docs\.neoflix\.care\/?(.*)$/i);
+        if (pathMatch) {
+          const path = pathMatch[1].replace(/\/+$/, '');
+          if (pageMeta[path]) {
+            return `<a href="/toolbox/${path}" data-internal="true">${label}</a>`;
+          }
         }
         return `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`;
       }

@@ -1,10 +1,11 @@
 // redeploy marker: 2025-10-31T00:00:00Z
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useMedicalSection } from './medical/useMedicalSection.jsx';
 import MedicalTabletLayout from './medical/MedicalTabletLayout';
 import MedicalDesktopLayout from './medical/MedicalDesktopLayout';
 import { useBackdropTarget } from '../../backdrop/useBackdrop';
 import { MEDICAL_V2_DECK, MEDICAL_V3_DECK } from '../../backdrop/decks';
+import useViewTransition from '../../hooks/useViewTransition';
 
 const DECK_BY_VARIANT = {
   v2: MEDICAL_V2_DECK,
@@ -13,7 +14,18 @@ const DECK_BY_VARIANT = {
 
 const MedicalSection = ({ inView, sectionRef, variant = 'v2' }) => {
   const state = useMedicalSection({ inView, variant });
-  const { currentVideo, hoveredIndex, interactionsEnabled } = state;
+  const { currentVideo, hoveredIndex, interactionsEnabled, sectionTargets } = state;
+
+  const transitionNavigate = useViewTransition();
+  // Each caption/video is a deep-link into the corresponding /neoflix
+  // section. Captions and videos map 1:1 to the page's scroll anchors
+  // (see data/publications.js section ids), turning the carousel into
+  // a reverse-funnel entry point for the long-form article.
+  const navigateToSection = useCallback((idx) => {
+    const target = sectionTargets?.[idx];
+    if (!target) return;
+    transitionNavigate(`/neoflix#${target}`);
+  }, [sectionTargets, transitionNavigate]);
 
   // Publish this variant's current carousel top into Home's y-stack cell.
   // V2 and V3 own independent cells; they can't clobber each other, so
@@ -28,10 +40,10 @@ const MedicalSection = ({ inView, sectionRef, variant = 'v2' }) => {
   });
 
   if (state.isTabletLayout) {
-    return <MedicalTabletLayout {...state} sectionRef={sectionRef} />;
+    return <MedicalTabletLayout {...state} sectionRef={sectionRef} navigateToSection={navigateToSection} />;
   }
 
-  return <MedicalDesktopLayout {...state} sectionRef={sectionRef} />;
+  return <MedicalDesktopLayout {...state} sectionRef={sectionRef} navigateToSection={navigateToSection} />;
 };
 
 export default MedicalSection;

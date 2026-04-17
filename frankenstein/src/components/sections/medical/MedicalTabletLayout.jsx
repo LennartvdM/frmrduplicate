@@ -31,6 +31,7 @@ export default function MedicalTabletLayout({
   handleTabletPauseChange,
   handleTabletBarSelect,
   tabletCaptions,
+  navigateToSection,
 }) {
   const isActive = sectionState === 'active';
     // During rotation, disable all transitions for smooth experience
@@ -137,6 +138,7 @@ export default function MedicalTabletLayout({
               onPauseChange={handleTabletPauseChange}
               style={{ width: '100%', height: '100%' }}
               sectionActive={sectionState === 'entering' || sectionState === 'active'}
+              onCarouselClick={navigateToSection}
             />
           </div>
         </div>
@@ -155,7 +157,7 @@ export default function MedicalTabletLayout({
           <TabletTravellingBar
             captions={tabletCaptions}
             current={currentVideo}
-            onSelect={handleTabletBarSelect}
+            onSelect={navigateToSection || handleTabletBarSelect}
             style={{ margin: '0 auto', background: 'none' }}
             durationMs={TABLET_AUTOPLAY_MS}
             paused={isPaused}

@@ -69,6 +69,7 @@ export default function MedicalDesktopLayout({
   handleLandscapeTabletCaptionClick,
   handleLandscapeTabletTouchStart,
   handleLandscapeTabletTouchEnd,
+  navigateToSection,
 }) {
   const lineRef = useRef(null);
   const lineCircle1Ref = useRef(null);
@@ -338,6 +339,7 @@ export default function MedicalDesktopLayout({
                 enableTouchNavigation={isLandscapeTablet}
                 onTouchChange={handleTabletCarouselChange}
                 sectionActive={sectionState === 'entering' || sectionState === 'active'}
+                onCarouselClick={navigateToSection}
               />
             </div>
           </div>
@@ -521,7 +523,7 @@ export default function MedicalDesktopLayout({
                   key={i}
                   onMouseEnter={interactionsEnabled && !isLandscapeTablet ? () => handleHover(i) : undefined}
                   onMouseLeave={interactionsEnabled && !isLandscapeTablet ? handleHoverEnd : undefined}
-                  onClick={interactionsEnabled && isLandscapeTablet ? () => handleLandscapeTabletCaptionClick(i) : undefined}
+                  onClick={interactionsEnabled ? () => navigateToSection?.(i) : undefined}
                   onTouchStart={interactionsEnabled && isLandscapeTablet ? () => handleLandscapeTabletTouchStart(i) : undefined}
                   onTouchEnd={interactionsEnabled && isLandscapeTablet ? handleLandscapeTabletTouchEnd : undefined}
                   className={`relative ${isVideoLeft ? 'text-left' : 'text-right'} py-3 rounded-xl`}

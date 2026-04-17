@@ -136,6 +136,57 @@ function preprocessLiquid(src) {
     /\{%\s*file\s+src="([^"]+)"\s*%\}/g,
     (_, src) => `\n<div data-gb="file" data-src=${JSON.stringify(src)}></div>\n`,
   );
+
+  // <figure><img src="X" alt="A"><figcaption>C</figcaption></figure>
+  //   → sentinel div that survives markdown parsing and gets lifted back
+  //     into a `figure` AST node in the collapse pass.
+  out = out.replace(
+    /<figure>\s*<img\s+([^>]*?)\/?>(?:\s*<figcaption>([\s\S]*?)<\/figcaption>)?\s*<\/figure>/g,
+    (_, imgAttrs, caption) => {
+      const attrs = parseAttrs(imgAttrs);
+      const src = (attrs.src || "").replace(/"/g, "&quot;");
+      const alt = (attrs.alt || "").replace(/"/g, "&quot;");
+      const capAttr = caption ? ` data-caption=${JSON.stringify(caption.trim())}` : "";
+      return `\n<div data-gb="figure" data-src="${src}" data-alt="${alt}"${capAttr}></div>\n`;
+    },
+  );
+
+  // <table data-view="cards">... — GitBook cards. We extract each row's
+  // content-ref anchor href + the visible cell text into a typed cards node.
+  out = out.replace(
+    /<table\s+data-view="cards"[^>]*>([\s\S]*?)<\/table>/g,
+    (_, body) => {
+      const cards = [];
+      const rowRe = /<tr>([\s\S]*?)<\/tr>/g;
+      let rowMatch;
+      while ((rowMatch = rowRe.exec(body))) {
+        const row = rowMatch[1];
+        if (/<th/.test(row)) continue; // skip header row
+        const cells = [];
+        const cellRe = /<td[^>]*>([\s\S]*?)<\/td>/g;
+        let cellMatch;
+        while ((cellMatch = cellRe.exec(row))) cells.push(cellMatch[1]);
+        // Last cell holds the content-ref <a href="...">label</a>; other
+        // cells hold the visible title + description markup (sometimes img).
+        const refCell = cells[cells.length - 1] || "";
+        const hrefMatch = refCell.match(/<a[^>]*href="([^"]+)"/);
+        const href = hrefMatch ? hrefMatch[1] : "";
+        // Body cells: extract an optional leading image + plain text blocks
+        const bodyHtml = cells.slice(0, -1).join("\n");
+        const imgMatch = bodyHtml.match(/<img\s+([^>]*?)\/?>/);
+        const imgAttrs = imgMatch ? parseAttrs(imgMatch[1]) : {};
+        cards.push({
+          href,
+          src: imgAttrs.src || null,
+          alt: imgAttrs.alt || "",
+          body: bodyHtml.replace(/<img\s+[^>]*>/, "").trim(),
+        });
+      }
+      const payload = JSON.stringify(cards).replace(/"/g, "&quot;");
+      return `\n<div data-gb="cards" data-cards="${payload}"></div>\n`;
+    },
+  );
+
   return out;
 }
 
@@ -354,13 +405,38 @@ function slugifyHeading(text) {
 function convertHtml(node, ctx) {
   const raw = node.value || "";
   // Sentinel blocks from preprocessLiquid
-  const gbMatch = raw.match(/^<div\s+data-gb="([^"]+)"([^>]*)>/);
+  // Quote-aware: the data-cards value can contain `>` characters (from embedded
+  // HTML like <p>), so the attrs region has to be a sequence of well-formed
+  // `key="value"` pairs rather than "anything up to >".
+  const gbMatch = raw.match(/^<div\s+data-gb="([^"]+)"((?:\s+[a-zA-Z0-9_-]+="[^"]*")*)\s*>/);
   if (gbMatch) {
     const kind = gbMatch[1];
     const attrs = parseAttrs(gbMatch[2]);
     if (kind === "file") {
       const asset = normalizeAssetUrl(attrs.src || "", ctx.assetMap);
       return { type: "file", src: asset || attrs.src, name: path.posix.basename(attrs.src || "") };
+    }
+    if (kind === "figure") {
+      const raw = attrs.src || "";
+      const resolved = normalizeAssetUrl(raw, ctx.assetMap);
+      return {
+        type: "figure",
+        src: resolved || raw,
+        alt: attrs.alt || "",
+        caption: attrs.caption || "",
+      };
+    }
+    if (kind === "cards") {
+      const decoded = (attrs.cards || "").replace(/&quot;/g, '"');
+      let cards = [];
+      try { cards = JSON.parse(decoded); } catch { cards = []; }
+      const rewritten = cards.map((c) => ({
+        href: resolveCardHref(c.href || "", ctx),
+        src: c.src ? (normalizeAssetUrl(c.src, ctx.assetMap) || c.src) : null,
+        alt: c.alt || "",
+        body: c.body || "",
+      }));
+      return { type: "cards", cards: rewritten };
     }
     // hint / tab / tabs / embed opening: children will follow as separate mdast
     // nodes (the parser splits blocks on blank lines). We record an opener
@@ -370,8 +446,16 @@ function convertHtml(node, ctx) {
   if (/^<\/div>\s*$/.test(raw.trim())) {
     return { type: "gbClose" };
   }
-  // Cards table passthrough — we handle it elsewhere as raw HTML preserved
+  // Inline HTML (e.g. <mark style="...">) — passthrough.
   return { type: "html", value: raw };
+}
+
+function resolveCardHref(rawHref, ctx) {
+  if (!rawHref) return "";
+  const resolved = resolveInternalLink(rawHref, ctx.relPath, ctx.pageSlugs);
+  if (resolved && resolved.internal) return resolved.href;
+  if (/^https?:/i.test(rawHref)) return rawHref;
+  return rawHref;
 }
 
 function parseAttrs(str) {

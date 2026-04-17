@@ -36,7 +36,7 @@ DO NOT "fix" this to crossfade between A and B.
 The stacking is intentional to avoid ugly transitions.
 */
 
-const MedicalCarousel = memo(function MedicalCarousel({ current, setVideoCenter, hoveredIndex, isActive, videoHover, setVideoHover, interactionsEnabled, videos, enableTouchNavigation, onTouchChange, sectionActive = true }) {
+const MedicalCarousel = memo(function MedicalCarousel({ current, setVideoCenter, hoveredIndex, isActive, videoHover, setVideoHover, interactionsEnabled, videos, enableTouchNavigation, onTouchChange, sectionActive = true, onCarouselClick }) {
   const videoContainerRef = useRef(null);
   const videoRefs = useRef([null, null, null]);
   const [deckLoaded, setDeckLoaded] = React.useState(false);
@@ -103,6 +103,8 @@ const MedicalCarousel = memo(function MedicalCarousel({ current, setVideoCenter,
       }}
       onMouseEnter={() => interactionsEnabled && setVideoHover?.(true)}
       onMouseLeave={() => interactionsEnabled && setVideoHover?.(false)}
+      onClick={onCarouselClick ? () => onCarouselClick(current) : undefined}
+      role={onCarouselClick ? 'link' : undefined}
     >
       {/* Static base video (focus) as persistent background */}
       <div
@@ -192,12 +194,12 @@ const MedicalCarousel = memo(function MedicalCarousel({ current, setVideoCenter,
         <>
           <button
             aria-label="Previous"
-            onClick={() => onTouchChange?.((current - 1 + videoSlides.length) % videoSlides.length)}
+            onClick={(e) => { e.stopPropagation(); onTouchChange?.((current - 1 + videoSlides.length) % videoSlides.length); }}
             style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '15%', background: 'transparent', border: 'none', zIndex: 99, cursor: 'pointer' }}
           />
           <button
             aria-label="Next"
-            onClick={() => onTouchChange?.((current + 1) % videoSlides.length)}
+            onClick={(e) => { e.stopPropagation(); onTouchChange?.((current + 1) % videoSlides.length); }}
             style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '15%', background: 'transparent', border: 'none', zIndex: 99, cursor: 'pointer' }}
           />
         </>

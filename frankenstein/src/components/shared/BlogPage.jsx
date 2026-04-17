@@ -1,6 +1,7 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import useScrollSpy from '../../hooks/useScrollSpy';
+import useViewTransition from '../../hooks/useViewTransition';
 import { renderMarkdown } from '../../utils/renderMarkdown';
 import { useBackdropTarget } from '../../backdrop/useBackdrop';
 import { BLOG_DECK, blogIdxForSection } from '../../backdrop/decks';
@@ -95,6 +96,19 @@ export default function BlogPage({ sections, scrollTo }) {
       body.style.backgroundColor = prevB;
     };
   }, []);
+
+  // Intercept clicks on internal toolbox/article links inside the
+  // markdown body so they route through the view-transition slide
+  // machinery instead of triggering a full page reload. renderMarkdown
+  // tags every internal `/toolbox/...` and `/neoflix/...` anchor with
+  // `data-internal="true"` for exactly this handler.
+  const transitionNavigate = useViewTransition();
+  const handleBodyClick = useCallback((e) => {
+    const link = e.target.closest('a[data-internal]');
+    if (!link) return;
+    e.preventDefault();
+    transitionNavigate(link.getAttribute('href'));
+  }, [transitionNavigate]);
 
   const handleSidebarClick = (id) => {
     const container = scrollRef.current;
@@ -318,6 +332,7 @@ export default function BlogPage({ sections, scrollTo }) {
                       marginTop: parsed.titleCard || parsed.citation ? 12 : 0,
                     }}
                     dangerouslySetInnerHTML={{ __html: parsed.bodyHtml }}
+                    onClick={handleBodyClick}
                   />
                 )}
               </section>

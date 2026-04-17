@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, memo } from 'react';
 
-const TabletMedicalCarousel = memo(function TabletMedicalCarousel({ videos = [], current = 0, onChange, onPauseChange, className, style, sectionActive = true }) {
+const TabletMedicalCarousel = memo(function TabletMedicalCarousel({ videos = [], current = 0, onChange, onPauseChange, className, style, sectionActive = true, onCarouselClick }) {
   const containerRef = useRef(null);
   const videoRefs = useRef([null, null, null]);
   const [deckLoaded, setDeckLoaded] = React.useState(false);
@@ -40,7 +40,9 @@ const TabletMedicalCarousel = memo(function TabletMedicalCarousel({ videos = [],
     <div
       ref={containerRef}
       className={className}
-      style={{ position: 'relative', touchAction: 'pan-y', ...style }}
+      style={{ position: 'relative', touchAction: 'pan-y', cursor: onCarouselClick ? 'pointer' : undefined, ...style }}
+      onClick={onCarouselClick ? () => onCarouselClick(current) : undefined}
+      role={onCarouselClick ? 'link' : undefined}
     >
       {[2, 1, 0].map(i => (
         <div
@@ -76,12 +78,12 @@ const TabletMedicalCarousel = memo(function TabletMedicalCarousel({ videos = [],
       {/* Left/Right tap zones for navigation */}
       <button
         aria-label="Previous"
-        onClick={() => onChange?.((current - 1 + videos.length) % videos.length)}
+        onClick={(e) => { e.stopPropagation(); onChange?.((current - 1 + videos.length) % videos.length); }}
         style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '15%', background: 'transparent', border: 'none', zIndex: 99 }}
       />
       <button
         aria-label="Next"
-        onClick={() => onChange?.((current + 1) % videos.length)}
+        onClick={(e) => { e.stopPropagation(); onChange?.((current + 1) % videos.length); }}
         style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '15%', background: 'transparent', border: 'none', zIndex: 99 }}
       />
     </div>

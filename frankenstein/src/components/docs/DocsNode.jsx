@@ -4,6 +4,8 @@ import Hint from './blocks/Hint';
 import Tabs from './blocks/Tabs';
 import Embed from './blocks/Embed';
 import FileLink from './blocks/FileLink';
+import Figure from './blocks/Figure';
+import Cards from './blocks/Cards';
 
 // Recursive AST renderer. Node shape matches build-docs.mjs output.
 export default function DocsNode({ node }) {
@@ -85,6 +87,10 @@ export default function DocsNode({ node }) {
       return <Embed url={node.url}>{kids()}</Embed>;
     case 'file':
       return <FileLink src={node.src} name={node.name} />;
+    case 'figure':
+      return <Figure src={node.src} alt={node.alt} caption={node.caption} />;
+    case 'cards':
+      return <Cards cards={node.cards} />;
 
     case 'html':
       // Inline color markers etc. Safe to passthrough — content is trusted

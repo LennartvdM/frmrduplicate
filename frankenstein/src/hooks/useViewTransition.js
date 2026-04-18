@@ -68,6 +68,17 @@ export default function useViewTransition() {
     const toIndex = getNavIndexForPath(targetPath);
     const direction = toIndex - fromIndex;
 
+    // Same top-level nav slot (e.g. /toolbox/a → /toolbox/b): skip the
+    // view transition. There's no horizontal slide to show — the content
+    // group's `animation: none` baseline already means no motion — and
+    // the backdrop's 2s fade still runs during every transition, which
+    // blocks clicks on the sidebar for the duration. Snappy intra-section
+    // navigation matters more here than the (invisible) snapshot flip.
+    if (direction === 0) {
+      navigate(to, opts);
+      return;
+    }
+
     const root = typeof document !== 'undefined' ? document.documentElement : null;
     // Each invocation gets its own token. Cleanup only clears the attribute
     // if this invocation is still the one that owns it — critical for rapid

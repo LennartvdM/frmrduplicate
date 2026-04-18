@@ -130,15 +130,26 @@ body::-webkit-scrollbar { display: none; }
     pointer-events: none;
   }
 
-  nav[data-app-navbar] { view-transition-name: navbar; }
-  ::view-transition-old(navbar),
-  ::view-transition-new(navbar) {
-    animation: none;
-    mix-blend-mode: normal;
-  }
+  /* Navbar intentionally has no view-transition-name. Giving it one
+     (was: `navbar`) pulled the live <nav> into a captured group for the
+     duration of the transition, and the UA applies a visibility: hidden
+     equivalent to every element it captures by name — the live navbar
+     becomes non-hit-testable until `.finished` resolves. That's the
+     "patiently waiting for its turn" dead-click window regardless of
+     how much `pointer-events: none` you put on the pseudo tree: events
+     fall through the snapshots into the void where the live nav used to
+     be interactive.
 
-  /* Root leftover — pinned still so the app-shell wrapper doesn't
-     animate. The front content is captured as `content` below. */
+     The only reason the name existed was so we could pin the nav with
+     `animation: none`. Unnamed, the navbar is captured in the `root`
+     group instead — which is already pinned with `animation: none`
+     below, so it still doesn't slide. Same visual, live nav stays
+     interactive. See commit 8d5f191 (introduced the name) and dd58ec9
+     (scoped it away from ScrollSnap's dot-nav). */
+
+  /* Root (now includes the navbar): pinned still so the app-shell
+     wrapper doesn't animate. The front content is captured as `content`
+     below. */
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none;

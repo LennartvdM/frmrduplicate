@@ -5,7 +5,7 @@ import DocsNode from '../components/docs/DocsNode';
 import DocsLink from '../components/docs/DocsLink';
 import DocsSidebar from '../components/docs/DocsSidebar';
 import DocsTocRail from '../components/docs/DocsTocRail';
-import useViewTransition from '../hooks/useViewTransition';
+import useTransitionNavigate from '../hooks/useTransitionNavigate';
 import '../components/docs/docs.css';
 
 export default function DocsPage() {
@@ -16,7 +16,7 @@ export default function DocsPage() {
   const page = getPage(slug);
 
   const scrollRef = useRef(null);
-  const transitionNavigate = useViewTransition();
+  const transitionNavigate = useTransitionNavigate();
 
   useLayoutEffect(() => {
     const container = scrollRef.current;
@@ -127,7 +127,7 @@ export default function DocsPage() {
 }
 
 function NotFound({ slug }) {
-  const transitionNavigate = useViewTransition();
+  const transitionNavigate = useTransitionNavigate();
   return (
     <div className="docs-not-found">
       <h1>Page not found</h1>

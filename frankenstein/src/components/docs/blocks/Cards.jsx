@@ -1,5 +1,5 @@
 import React from 'react';
-import useViewTransition from '../../../hooks/useViewTransition';
+import useTransitionNavigate from '../../../hooks/useTransitionNavigate';
 import { assetUrl } from '../../../utils/assetUrl';
 
 // GitBook cards view. Each card has a link target + HTML body (title + desc).
@@ -15,7 +15,7 @@ export default function Cards({ cards }) {
 }
 
 function Card({ card }) {
-  const transitionNavigate = useViewTransition();
+  const transitionNavigate = useTransitionNavigate();
   const isInternal = (card.href || '').startsWith('/toolbox/');
   const onClick = (e) => {
     if (!isInternal) return;

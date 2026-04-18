@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import useScrollSpy from '../../hooks/useScrollSpy';
-import useViewTransition from '../../hooks/useViewTransition';
+import useTransitionNavigate from '../../hooks/useTransitionNavigate';
 import { renderMarkdown } from '../../utils/renderMarkdown';
 import { useBackdropTarget } from '../../backdrop/useBackdrop';
 import { BLOG_DECK, blogIdxForSection } from '../../backdrop/decks';
@@ -23,19 +23,14 @@ import { BLOG_DECK, blogIdxForSection } from '../../backdrop/decks';
  * backdrop's BlogBackdrop fades the cell out.
  */
 export default function BlogPage({ sections, scrollTo }) {
-  // Internal scroll container. BlogPage renders inside RouteTransition,
-  // which is `position: fixed; inset: 0`. That fixed wrapper must stay
-  // scroll-independent (its `getBoundingClientRect()` must be the same
-  // on OLD and NEW captures or the UA `::view-transition-group(content)`
-  // animation interpolates the rect delta — the diagonal we're avoiding).
-  // So the page scrolls on this inner element instead of `window`.
+  // Internal scroll container. BlogPage renders inside RouteSlider,
+  // which is `position: fixed; inset: 0` — window never scrolls under
+  // that layout, so the page scrolls on this inner element instead.
   const scrollRef = useRef(null);
 
   // Synchronously place the internal scroll container at the right spot
-  // on mount and whenever the route's `scrollTo` changes. Runs inside
-  // the view-transition commit (via useLayoutEffect) so the NEW snapshot
-  // is captured with the page already at the target — no post-transition
-  // vertical animation layered on top of the horizontal slide, and no
+  // on mount and whenever the route's `scrollTo` changes. useLayoutEffect
+  // fires before paint so the page renders already at the target — no
   // retained scroll from the previous page bleeding through.
   //
   // Target resolution:
@@ -98,11 +93,11 @@ export default function BlogPage({ sections, scrollTo }) {
   }, []);
 
   // Intercept clicks on internal toolbox/article links inside the
-  // markdown body so they route through the view-transition slide
-  // machinery instead of triggering a full page reload. renderMarkdown
-  // tags every internal `/toolbox/...` and `/neoflix/...` anchor with
+  // markdown body so they route through the direction-aware slide
+  // instead of triggering a full page reload. renderMarkdown tags
+  // every internal `/toolbox/...` and `/neoflix/...` anchor with
   // `data-internal="true"` for exactly this handler.
-  const transitionNavigate = useViewTransition();
+  const transitionNavigate = useTransitionNavigate();
   const handleBodyClick = useCallback((e) => {
     const link = e.target.closest('a[data-internal]');
     if (!link) return;
@@ -146,17 +141,8 @@ export default function BlogPage({ sections, scrollTo }) {
         }}
         className="blog-grid"
       >
-        {/* Sticky sidebar.
-            Tagged with data-blog-sidebar; the CSS rule in index.css
-            (gated on html.vt-sidebar-named) applies
-            `view-transition-name: blog-sidebar` only during the NEW
-            capture of a transition, so the OLD capture keeps the
-            sidebar inside the `content` group — slide-out stays
-            conjoined with the rest of the page, no separate-group
-            desync. Only the NEW capture pulls the sidebar into its
-            own group so the slide-in can be staggered against the
-            article column. See useViewTransition.js for the class-
-            toggle timing. */}
+        {/* Sticky sidebar. Tagged with data-blog-sidebar for styling
+            hooks; slides as part of the page's RouteSlider wrapper. */}
         <aside
           data-blog-sidebar="true"
           style={{

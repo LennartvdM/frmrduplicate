@@ -4,6 +4,7 @@ import React, {
   useReducer,
 } from 'react';
 import { useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import BackdropCell from './BackdropCell';
 import { BackdropContext } from './context';
 
@@ -17,11 +18,12 @@ import { BackdropContext } from './context';
  * whatever targets are currently published; callers never coordinate
  * timing with it.
  *
- * Route transitions are owned by the browser's View Transitions API.
- * The backdrop's root div carries `view-transition-name: backdrop`
- * so it's captured as its own transition group, independent of the
- * front layer's `content` group. CSS in index.css runs a deck-fade
- * staircase on the old snapshot while `content` slides horizontally.
+ * Route transitions crossfade this backdrop via Framer Motion's
+ * AnimatePresence — no browser-level view-transition snapshot. Each
+ * render mode is a separate child keyed by its page id; AnimatePresence
+ * fades the outgoing one out and the incoming one in on its own
+ * timeline, fully independent of the route slide happening in
+ * RouteSlider.
  *
  * Three render modes keyed by pathname:
  *   1. Home  — 3-cell y-stack, translated by homeScrollProgress.
@@ -125,13 +127,18 @@ export default function BackdropProvider({ children }) {
  * Renders the backdrop DOM. Split from the provider so scroll-driven
  * state changes don't bounce the context value.
  *
- * The root div's `view-transition-name: backdrop` gives it its own
- * view-transition group — completely independent of the `content`
- * group that the front layer rides on (see RouteTransition.jsx).
- * During route changes index.css deck-fades the old backdrop snapshot
- * while `content` slides horizontally; this component renders only the
- * *current* page at any commit.
+ * The backdrop root is a live, persistent element — it never enters a
+ * view-transition snapshot. When the route changes, AnimatePresence
+ * crossfades the outgoing page's render mode (home / blog / camo) out
+ * while the incoming one fades in. This happens concurrently with the
+ * route slide in RouteSlider but is completely decoupled from it.
  */
+// Long crossfade (2s) outlasts the route slide (~0.45s) on purpose:
+// fade tolerance is much higher than spatial-motion tolerance, so a
+// slow cross-fade reads as a smooth environment change behind crisp
+// slides. Matches the old VT deck-fade duration.
+const BACKDROP_FADE = { duration: 2, ease: [0, -0.02, 0.2, 1] };
+
 function BackdropRenderer({ state }) {
   const location = useLocation();
   const page = pageIdForPath(location.pathname);
@@ -142,18 +149,24 @@ function BackdropRenderer({ state }) {
       style={{
         zIndex: 0,
         backgroundColor: '#1c3424',
-        // Independent view-transition group — `none` would NOT opt out
-        // (that's the default for every element); only a real name
-        // pulls the element out of the root capture. The front content
-        // wears its own name (`content`) via RouteTransition, so the
-        // two layers never share a group.
-        viewTransitionName: 'backdrop',
       }}
       aria-hidden="true"
     >
-      {page === PAGE_HOME && <HomeBackdrop state={state} />}
-      {page === PAGE_BLOG && <BlogBackdrop state={state} />}
-      {page === PAGE_CAMO && <BackdropCell kind="camo" decodeState="idle" />}
+      <AnimatePresence mode="sync" initial={false}>
+        <motion.div
+          key={page}
+          className="absolute inset-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, transition: BACKDROP_FADE }}
+          exit={{ opacity: 0, transition: BACKDROP_FADE }}
+        >
+          {page === PAGE_HOME && <HomeBackdrop state={state} />}
+          {page === PAGE_BLOG && <BlogBackdrop state={state} />}
+          {page === PAGE_CAMO && (
+            <BackdropCell kind="camo" decodeState="idle" />
+          )}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }

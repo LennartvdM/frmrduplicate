@@ -27,7 +27,12 @@ export default function BackdropCell({
   deck = [],               // array of URLs, index 0 is the topmost card
   topIdx = 0,              // which card is currently the "top" of this cell
   decodeState = 'idle',    // 'idle' | 'active' — active = play rule-2 videos
-  fadeDuration = 0.6,      // deck-fade opacity duration in seconds
+  fadeDuration = 1.2,      // deck-fade opacity duration in seconds.
+                           // Long on purpose — the deck fade is an
+                           // echo/afterburner, not part of the route
+                           // slide. A fade reads well at durations
+                           // that would feel sluggish as spatial motion,
+                           // so it's allowed to linger past the slide.
   style,                   // positioning/transform from parent
 }) {
   if (kind === 'camo') {

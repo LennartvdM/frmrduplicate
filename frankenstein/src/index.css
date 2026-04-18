@@ -115,18 +115,41 @@ body::-webkit-scrollbar { display: none; }
      motion looks done. Navigation already ran synchronously inside
      flushSync, so the live DOM underneath is the new page in its final
      position; passing clicks through makes pinned UI responsive
-     immediately without changing any of the timing or motion above. */
-  ::view-transition { pointer-events: none; }
+     immediately without changing any of the timing or motion above.
 
-  nav[data-app-navbar] { view-transition-name: navbar; }
-  ::view-transition-old(navbar),
-  ::view-transition-new(navbar) {
-    animation: none;
-    mix-blend-mode: normal;
+     Set on every pseudo in the subtree explicitly — `pointer-events` is
+     inherited in the CSS spec, but inheritance across the view-transition
+     pseudo tree isn't reliable in practice (cursor still reads as arrow
+     and clicks get eaten by the snapshot layer if only `::view-transition`
+     is targeted). */
+  ::view-transition,
+  ::view-transition-group(*),
+  ::view-transition-image-pair(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    pointer-events: none;
   }
 
-  /* Root leftover — pinned still so the app-shell wrapper doesn't
-     animate. The front content is captured as `content` below. */
+  /* Navbar intentionally has no view-transition-name. Giving it one
+     (was: `navbar`) pulled the live <nav> into a captured group for the
+     duration of the transition, and the UA applies a visibility: hidden
+     equivalent to every element it captures by name — the live navbar
+     becomes non-hit-testable until `.finished` resolves. That's the
+     "patiently waiting for its turn" dead-click window regardless of
+     how much `pointer-events: none` you put on the pseudo tree: events
+     fall through the snapshots into the void where the live nav used to
+     be interactive.
+
+     The only reason the name existed was so we could pin the nav with
+     `animation: none`. Unnamed, the navbar is captured in the `root`
+     group instead — which is already pinned with `animation: none`
+     below, so it still doesn't slide. Same visual, live nav stays
+     interactive. See commit 8d5f191 (introduced the name) and dd58ec9
+     (scoped it away from ScrollSnap's dot-nav). */
+
+  /* Root (now includes the navbar): pinned still so the app-shell
+     wrapper doesn't animate. The front content is captured as `content`
+     below. */
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none;

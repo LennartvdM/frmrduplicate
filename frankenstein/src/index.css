@@ -164,6 +164,23 @@ body::-webkit-scrollbar { display: none; }
     mix-blend-mode: normal;
   }
 
+  /* Clip the content pseudo out of the navbar's 60px safety zone so the
+     sliding snapshot doesn't cover the live nav. The `content` wrapper
+     is `position: fixed; inset: 0` — its snapshot spans the full
+     viewport and, because named groups render above root in the
+     pseudo-element stack, it would occlude the navbar (which lives in
+     root now) for the entire transition window. Clipping the group's
+     top inset leaves that strip transparent; the root pseudo beneath
+     doesn't render the navbar either (the live nav stays visible
+     through both layers), so for 60px at the top of the viewport the
+     pseudo tree is effectively a pass-through to the live DOM.
+     --nav-h is published by Navbar.jsx on mount/resize. */
+  ::view-transition-group(content),
+  ::view-transition-old(content),
+  ::view-transition-new(content) {
+    clip-path: inset(var(--nav-h, 60px) 0 0 0);
+  }
+
   /* Timing: slide-out → pause → slide-in. The NEW pane holds offscreen
      at translateX(±100%) for --slide-pause via animation-delay +
      fill: both (the shorthand sets fill). That empty-frame in the

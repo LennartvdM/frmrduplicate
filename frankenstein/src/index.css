@@ -115,8 +115,20 @@ body::-webkit-scrollbar { display: none; }
      motion looks done. Navigation already ran synchronously inside
      flushSync, so the live DOM underneath is the new page in its final
      position; passing clicks through makes pinned UI responsive
-     immediately without changing any of the timing or motion above. */
-  ::view-transition { pointer-events: none; }
+     immediately without changing any of the timing or motion above.
+
+     Set on every pseudo in the subtree explicitly — `pointer-events` is
+     inherited in the CSS spec, but inheritance across the view-transition
+     pseudo tree isn't reliable in practice (cursor still reads as arrow
+     and clicks get eaten by the snapshot layer if only `::view-transition`
+     is targeted). */
+  ::view-transition,
+  ::view-transition-group(*),
+  ::view-transition-image-pair(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    pointer-events: none;
+  }
 
   nav[data-app-navbar] { view-transition-name: navbar; }
   ::view-transition-old(navbar),

@@ -7,7 +7,7 @@ import { useLayoutEffect, useState } from 'react';
  * @param {object|null} scrollerRef - Optional ref whose .current is the
  *   scrollable container. Falls back to window when null/undefined — used
  *   by legacy consumers (SidebarLayout) that still scroll the document.
- *   Pages inside the fixed RouteTransition wrapper must pass a ref to
+ *   Pages inside the fixed RouteSlider wrapper must pass a ref to
  *   their own internal scroll container, because `window` never scrolls
  *   in the new layout.
  * @returns {string} - ID of the currently active section

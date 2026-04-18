@@ -1,5 +1,5 @@
 import React from 'react';
-import useViewTransition from '../hooks/useViewTransition';
+import useTransitionNavigate from '../hooks/useTransitionNavigate';
 
 /**
  * Site-wide footer modeled on neoflixexporttest's richer design:
@@ -7,15 +7,14 @@ import useViewTransition from '../hooks/useViewTransition';
  * back-to-top button. Rebuilt as native React + Tailwind (structure
  * copied from the Framer export, not the bundled runtime).
  *
- * Navigation goes through useViewTransition so the direction-aware
- * slide (html[data-nav-direction] + View Transitions) fires on Footer
- * clicks the same way it does on Navbar clicks. Using plain <Link>
- * here would skip the direction logic and cause the content to teleport
- * while only the backdrop animates — breaking the spatial mapping
- * between navbar slot order and slide direction.
+ * Navigation goes through useTransitionNavigate so the direction-aware
+ * slide fires on Footer clicks the same way it does on Navbar clicks.
+ * Using plain <Link> here would skip the direction logic and cause the
+ * content to teleport — breaking the spatial mapping between navbar
+ * slot order and slide direction.
  */
 export default function Footer() {
-  const transitionNavigate = useViewTransition();
+  const transitionNavigate = useTransitionNavigate();
   const handleNav = (to) => (e) => {
     e.preventDefault();
     transitionNavigate(to);
@@ -24,7 +23,7 @@ export default function Footer() {
   // Footer only mounts inside ScrollSnap (Home). The page scrolls on
   // ScrollSnap's internal container, not `window`, so dispatch the event
   // ScrollSnap listens for. Addressing `window` here became a no-op once
-  // the fixed RouteTransition layout landed (window never scrolls).
+  // the fixed RouteSlider layout landed (window never scrolls).
   const scrollTop = () => {
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new Event('scrollsnap:go-to-top'));

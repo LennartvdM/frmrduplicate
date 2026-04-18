@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useMotionValue, animate } from 'framer-motion';
-import useViewTransition from '../hooks/useViewTransition';
+import useTransitionNavigate from '../hooks/useTransitionNavigate';
 import { assetUrl } from '../utils/assetUrl';
 
 const NAV_LINKS = [
@@ -49,7 +49,7 @@ function FaviconLogo({ onClick }) {
 export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
-  const transitionNavigate = useViewTransition();
+  const transitionNavigate = useTransitionNavigate();
 
   const handleNavClick = (e, to, section) => {
     e.preventDefault();
@@ -63,11 +63,10 @@ export default function Navbar() {
     if (targetPath === location.pathname) {
       navigate(to);
     } else {
-      // Direction-aware View Transition. Browser snapshots the whole
-      // viewport (except elements with viewTransitionName: none, like
-      // SharedVideoBackdrop) and slides the snapshots via CSS
-      // keyframes — internal per-component fades can't fire against
-      // the user because they run on the hidden live DOM.
+      // Direction-aware slide. useTransitionNavigate publishes the
+      // navbar-index delta into TransitionContext and RouteSlider
+      // turns that into a horizontal Framer Motion slide on the
+      // content subtree only — the navbar itself keeps rendering live.
       transitionNavigate(to);
     }
   };
@@ -214,7 +213,7 @@ export default function Navbar() {
         <FaviconLogo onClick={() => {
           if (location.pathname === '/') {
             // ScrollSnap owns the Home scroll container (window never
-            // scrolls with the fixed RouteTransition layout). Dispatch
+            // scrolls with the fixed RouteSlider layout). Dispatch
             // the event ScrollSnap already listens for instead of
             // addressing window.
             window.dispatchEvent(new Event('scrollsnap:go-to-top'));

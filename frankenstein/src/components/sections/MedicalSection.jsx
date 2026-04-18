@@ -5,7 +5,7 @@ import MedicalTabletLayout from './medical/MedicalTabletLayout';
 import MedicalDesktopLayout from './medical/MedicalDesktopLayout';
 import { useBackdropTarget } from '../../backdrop/useBackdrop';
 import { MEDICAL_V2_DECK, MEDICAL_V3_DECK } from '../../backdrop/decks';
-import useViewTransition from '../../hooks/useViewTransition';
+import useTransitionNavigate from '../../hooks/useTransitionNavigate';
 
 const DECK_BY_VARIANT = {
   v2: MEDICAL_V2_DECK,
@@ -16,7 +16,7 @@ const MedicalSection = ({ inView, sectionRef, variant = 'v2' }) => {
   const state = useMedicalSection({ inView, variant });
   const { currentVideo, hoveredIndex, interactionsEnabled, sectionTargets } = state;
 
-  const transitionNavigate = useViewTransition();
+  const transitionNavigate = useTransitionNavigate();
   // Each caption/video is a deep-link into the corresponding /neoflix
   // section. Captions and videos map 1:1 to the page's scroll anchors
   // (see data/publications.js section ids), turning the carousel into

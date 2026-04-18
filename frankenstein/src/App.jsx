@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import RouteTransition from './components/RouteTransition';
-import TransitionTuner from './components/TransitionTuner';
+import RouteSlider from './components/RouteSlider';
 import BackdropProvider from './backdrop/BackdropProvider';
+import { TransitionProvider } from './contexts/TransitionContext';
 import Home from './pages/Home';
 import NeoflixPage from './pages/NeoflixPage';
 import PublicationsPage from './pages/PublicationsPage';
@@ -16,17 +16,18 @@ function AppShell() {
   const isContact = location.pathname === '/contact';
   const isToolbox = location.pathname.startsWith('/toolbox');
 
-  // BackdropProvider wraps every route. It owns the one fixed backdrop
-  // layer (stays alive across route changes, independent view-transition
-  // group) and exposes the publish API through useBackdropTarget /
-  // useBackdropPublisher. Every page / section publishes its target
-  // state through that one wire — no animation state crosses the
-  // boundary.
+  // The navbar, backdrop, and route slider each render independently.
+  // They share a single source of truth — TransitionContext — for the
+  // current slide direction and "is a slide in flight" flag, but none
+  // of them are coupled through a document-scoped animation primitive.
+  // This is deliberate: the previous View Transitions API setup froze
+  // the whole page (navbar included) behind a snapshot during each
+  // nav, which produced dead-click windows on persistent chrome.
   return (
     <div className={`min-h-screen ${isNeoflix || isPublications || isContact || isToolbox ? '' : 'bg-[#F5F9FC]'}`}>
       <Navbar />
       <BackdropProvider>
-        <RouteTransition>
+        <RouteSlider>
           {(captured) => (
             <Routes location={captured}>
               <Route path="/" element={<Home />} />
@@ -37,13 +38,8 @@ function AppShell() {
               <Route path="/toolbox/*" element={<DocsPage />} />
             </Routes>
           )}
-        </RouteTransition>
+        </RouteSlider>
       </BackdropProvider>
-      {/* Calibration panel — renders in dev or with `?tune` in URL.
-          Mounted outside RouteTransition so it's not captured as part
-          of the sliding content group; has its own view-transition
-          group (`tuner`) pinned to animation:none in index.css. */}
-      <TransitionTuner />
     </div>
   );
 }
@@ -51,7 +47,9 @@ function AppShell() {
 export default function App() {
   return (
     <Router basename={import.meta.env.BASE_URL?.replace(/\/$/, '') || ''}>
-      <AppShell />
+      <TransitionProvider>
+        <AppShell />
+      </TransitionProvider>
     </Router>
   );
 }

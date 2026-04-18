@@ -1,8 +1,8 @@
 import React from 'react';
-import useViewTransition from '../../hooks/useViewTransition';
+import useTransitionNavigate from '../../hooks/useTransitionNavigate';
 
 export default function DocsLink({ href, internal, external, children }) {
-  const transitionNavigate = useViewTransition();
+  const transitionNavigate = useTransitionNavigate();
   if (internal) {
     return (
       <a

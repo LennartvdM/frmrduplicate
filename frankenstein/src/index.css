@@ -106,6 +106,18 @@ body::-webkit-scrollbar { display: none; }
 }
 
 @supports (view-transition-name: none) {
+  /* Let clicks fall through to the live DOM during the transition.
+     startViewTransition's pseudo-element subtree sits on top of the
+     document and intercepts pointer events by default, so until
+     `.finished` resolves nothing underneath is clickable. The backdrop
+     group's 2s fade keeps the transition alive well past the visible
+     slide — sidebar/navbar links stay dormant for seconds after the
+     motion looks done. Navigation already ran synchronously inside
+     flushSync, so the live DOM underneath is the new page in its final
+     position; passing clicks through makes pinned UI responsive
+     immediately without changing any of the timing or motion above. */
+  ::view-transition { pointer-events: none; }
+
   nav[data-app-navbar] { view-transition-name: navbar; }
   ::view-transition-old(navbar),
   ::view-transition-new(navbar) {

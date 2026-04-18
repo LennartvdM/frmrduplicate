@@ -7,14 +7,9 @@ OUT="dist"
 rm -rf "$OUT"
 mkdir -p "$OUT"
 
-# 0. Sync docs submodule to latest main. The GitBook repo pushes via
-#    GitHub Actions whenever the client saves in GitBook; a GitHub
-#    webhook then triggers a Netlify build. We pull the latest commit
-#    on origin/main rather than the pinned SHA so docs are always live.
-echo "--- Syncing docs-content submodule ---"
-if [ -f .gitmodules ]; then
-  git submodule update --init --remote docs-content || echo "(submodule sync skipped)"
-fi
+# 0. docs-content/ is mirrored into this repo by a GitHub Action in
+#    LennartvdM/NFLX-nieuwe-structuur (.github/workflows/mirror.yml).
+#    It lives here as regular tracked files. Do not edit by hand.
 
 # 1. Landing page (static)
 echo "--- Copying landing page ---"

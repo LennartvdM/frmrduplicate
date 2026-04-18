@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 import { motion } from 'framer-motion';
 import useScrollSpy from '../../hooks/useScrollSpy';
 import useTransitionNavigate from '../../hooks/useTransitionNavigate';
+import { useTransitionState } from '../../contexts/TransitionContext';
 import { renderMarkdown } from '../../utils/renderMarkdown';
 import { useBackdropTarget } from '../../backdrop/useBackdrop';
 import { BLOG_DECK, blogIdxForSection } from '../../backdrop/decks';
@@ -22,11 +23,36 @@ import { BLOG_DECK, blogIdxForSection } from '../../backdrop/decks';
  * section. When no section is resolved the target is null and the
  * backdrop's BlogBackdrop fades the cell out.
  */
+// Two-column blog stagger. The outer RouteSlider already slides the
+// whole page; this adds an internal translateX on just one of the two
+// columns so they arrive at different times. Matches the old VT-era
+// choreography:
+//   direction > 0 (new from right) → sidebar leads, article trails
+//   direction < 0 (new from left)  → article leads, sidebar trails
+// The leader rides the outer slide without extra motion; the trailer
+// gets an additional inner slide from STAGGER_OFFSET → 0, delayed so
+// it lands after the outer slide settles.
+const STAGGER_OFFSET = '40%';
+const STAGGER_DELAY = 0.25;
+const STAGGER_DURATION = 0.5;
+const STAGGER_EASE = [0.4, 0, 0.2, 1];
+
 export default function BlogPage({ sections, scrollTo }) {
   // Internal scroll container. BlogPage renders inside RouteSlider,
   // which is `position: fixed; inset: 0` — window never scrolls under
   // that layout, so the page scrolls on this inner element instead.
   const scrollRef = useRef(null);
+
+  // Capture the slide direction at mount. BlogPage is keyed by
+  // pathname in AnimatePresence, so a fresh mount = a fresh arrival;
+  // the direction at that instant is the one that staged this entry.
+  // Reading directly from context on every render would let a later
+  // navigation (which mutates context direction before the next
+  // transition starts) retroactively change our stagger half-way.
+  const { direction } = useTransitionState();
+  const [entryDir] = useState(direction);
+  const sidebarTrails = entryDir < 0;
+  const articleTrails = entryDir > 0;
 
   // Synchronously place the internal scroll container at the right spot
   // on mount and whenever the route's `scrollTo` changes. useLayoutEffect
@@ -142,9 +168,13 @@ export default function BlogPage({ sections, scrollTo }) {
         className="blog-grid"
       >
         {/* Sticky sidebar. Tagged with data-blog-sidebar for styling
-            hooks; slides as part of the page's RouteSlider wrapper. */}
-        <aside
+            hooks; slides as part of the page's RouteSlider wrapper,
+            plus an optional inner translate when it trails. */}
+        <motion.aside
           data-blog-sidebar="true"
+          initial={sidebarTrails ? { x: `-${STAGGER_OFFSET}` } : false}
+          animate={sidebarTrails ? { x: 0 } : undefined}
+          transition={sidebarTrails ? { duration: STAGGER_DURATION, delay: STAGGER_DELAY, ease: STAGGER_EASE } : undefined}
           style={{
             position: 'sticky',
             top: 112,
@@ -237,10 +267,15 @@ export default function BlogPage({ sections, scrollTo }) {
               );
             })}
           </ul>
-        </aside>
+        </motion.aside>
 
         {/* Content column */}
-        <article style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
+        <motion.article
+          initial={articleTrails ? { x: STAGGER_OFFSET } : false}
+          animate={articleTrails ? { x: 0 } : undefined}
+          transition={articleTrails ? { duration: STAGGER_DURATION, delay: STAGGER_DELAY, ease: STAGGER_EASE } : undefined}
+          style={{ display: 'flex', flexDirection: 'column', gap: 40 }}
+        >
           {sections.map((section) => {
             const parsed = parseSectionContent(section.content || '');
             const { numberPart, titlePart } = splitHeading(section.title);
@@ -324,7 +359,7 @@ export default function BlogPage({ sections, scrollTo }) {
               </section>
             );
           })}
-        </article>
+        </motion.article>
       </div>
 
       <style>{`

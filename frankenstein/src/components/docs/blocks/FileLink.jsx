@@ -1,4 +1,5 @@
 import React from 'react';
+import { assetUrl } from '../../../utils/assetUrl';
 
 // GitBook {% file src="..." %} — downloadable attachment. src is already
 // rewritten to /docs-assets/... by the transformer.
@@ -7,7 +8,7 @@ export default function FileLink({ src, name }) {
   const ext = extOf(displayName);
   return (
     <a
-      href={src}
+      href={assetUrl(src)}
       download
       className="docs-file"
       style={{

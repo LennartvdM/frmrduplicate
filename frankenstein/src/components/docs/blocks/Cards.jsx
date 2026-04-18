@@ -1,5 +1,6 @@
 import React from 'react';
 import useViewTransition from '../../../hooks/useViewTransition';
+import { assetUrl } from '../../../utils/assetUrl';
 
 // GitBook cards view. Each card has a link target + HTML body (title + desc).
 export default function Cards({ cards }) {
@@ -29,7 +30,7 @@ function Card({ card }) {
       rel={isInternal ? undefined : 'noopener noreferrer'}
       className="docs-card"
     >
-      {card.src && <img src={card.src} alt={card.alt || ''} className="docs-card-img" />}
+      {card.src && <img src={assetUrl(card.src)} alt={card.alt || ''} className="docs-card-img" />}
       <div className="docs-card-body" dangerouslySetInnerHTML={{ __html: card.body }} />
     </a>
   );

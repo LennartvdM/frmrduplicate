@@ -265,7 +265,10 @@ function resolveInternalLink(rawHref, fromRelPath, pageSlugs) {
 
 function stripGitBookHeadingAnchor(text) {
   // "Heading <a href="#slug" id="slug"></a>" → "Heading"
-  return text.replace(/\s*<a\s+[^>]*id="[^"]*"[^>]*>\s*<\/a>\s*/g, "").trim();
+  // Note: no .trim() — text nodes carry meaningful whitespace between inline
+  // siblings (e.g. " " between a text and a following link). Heading text
+  // consumers that need trimming (id generation) should trim themselves.
+  return text.replace(/\s*<a\s+[^>]*id="[^"]*"[^>]*>\s*<\/a>\s*/g, "");
 }
 
 function mdastToAst(tree, ctx) {
@@ -617,7 +620,7 @@ async function main() {
     let title = frontmatter.title || null;
     if (!title) {
       visit(tree, "heading", (n) => {
-        if (!title && n.depth === 1) title = stripGitBookHeadingAnchor(mdastToString(n));
+        if (!title && n.depth === 1) title = stripGitBookHeadingAnchor(mdastToString(n)).trim();
       });
     }
     if (!title) title = path.basename(relPath, ".md");

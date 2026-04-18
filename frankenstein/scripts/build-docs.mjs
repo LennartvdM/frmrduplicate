@@ -290,11 +290,17 @@ function mdastToAst(tree, ctx) {
           children: node.children
             .map(convert)
             .filter(Boolean)
-            // Drop the trailing anchor element GitBook inserts
-            .filter(
-              (c) =>
-                !(c && c.type === "html" && /<a[^>]*id="[^"]*"[^>]*>\s*<\/a>/.test(c.value || "")),
-            ),
+            // Drop the trailing anchor element GitBook inserts. Remark
+            // splits `<a ...></a>` into TWO separate html nodes — an
+            // opening `<a ... id="x">` and a closing `</a>` — so match
+            // either form, not just the self-closed single-node case.
+            .filter((c) => {
+              if (!c || c.type !== "html") return true;
+              const v = (c.value || "").trim();
+              if (/^<a\s+[^>]*id="[^"]*"[^>]*>\s*(?:<\/a>)?$/.test(v)) return false;
+              if (v === "</a>") return false;
+              return true;
+            }),
         };
       }
 

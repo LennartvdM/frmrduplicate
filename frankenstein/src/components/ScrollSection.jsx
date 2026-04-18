@@ -1,11 +1,39 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useViewport } from '../hooks/useViewport';
+import { useTransitionState } from '../contexts/TransitionContext';
 
 export default function ScrollSection({ name, children, background }) {
   const ref = useRef();
+  // Two inView values. `realInView` is what the IntersectionObserver
+  // actually sees right now; `inView` is what we expose to children.
+  // While a route slide is in flight (isSliding === true) we freeze the
+  // exposed value so downstream animations — medical entrance ceremony,
+  // carousel autoplay, backdrop target publishing — don't fire against
+  // a page that's mid-translate. Before the refactor the View
+  // Transitions API snapshotted the DOM and made this a non-issue;
+  // with the live Framer Motion slide we have to gate the flag
+  // explicitly.
   const [inView, setInView] = useState(false);
+  const realInViewRef = useRef(false);
   const { isTablet } = useViewport();
+  const { isSliding } = useTransitionState();
+  const isSlidingRef = useRef(isSliding);
   const observerRef = useRef(null);
+
+  // Keep a ref mirror of isSliding so the observer callback (closed
+  // over once per effect run) always reads the latest value.
+  useEffect(() => {
+    isSlidingRef.current = isSliding;
+  }, [isSliding]);
+
+  // When a slide ends, flush the real observed value through to
+  // children. If the section scrolled into view during the slide, its
+  // ceremony fires now — on a settled page — instead of mid-translate.
+  useEffect(() => {
+    if (!isSliding && inView !== realInViewRef.current) {
+      setInView(realInViewRef.current);
+    }
+  }, [isSliding, inView]);
 
   // Update IntersectionObserver when viewport state changes
   useEffect(() => {
@@ -34,10 +62,14 @@ export default function ScrollSection({ name, children, background }) {
     observerRef.current = new window.IntersectionObserver(
       ([entry]) => {
         // For tablets, be more lenient - trigger if any significant portion is visible
-        if (isTablet) {
-          setInView(entry.intersectionRatio > 0.3 || entry.isIntersecting);
-        } else {
-          setInView(entry.isIntersecting);
+        const next = isTablet
+          ? (entry.intersectionRatio > 0.3 || entry.isIntersecting)
+          : entry.isIntersecting;
+        realInViewRef.current = next;
+        // Don't propagate during a slide — the effect above will flush
+        // the real value once the slide completes.
+        if (!isSlidingRef.current) {
+          setInView(next);
         }
       },
       {

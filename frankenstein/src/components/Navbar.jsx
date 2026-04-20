@@ -278,18 +278,25 @@ export default function Navbar() {
                 tabIndex={-1}
                 style={{ minHeight: navCellHeight, height: navCellHeight, zIndex: 2 }}
               >
-                {active && (
-                  <span
-                    className="absolute inset-0 z-20 rounded-full bg-[#4fa6a6]"
-                    style={{
-                      boxShadow: '0 2px 8px 0 rgba(79,166,166,0.10)',
-                      pointerEvents: 'none',
-                      height: navCellHeight,
-                      minHeight: navCellHeight,
-                      maxHeight: navCellHeight,
-                    }}
-                  />
-                )}
+                <AnimatePresence>
+                  {active && (
+                    <motion.span
+                      key="active-pill"
+                      className="absolute inset-0 z-20 rounded-full bg-[#4fa6a6]"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.18, ease: 'easeOut' }}
+                      style={{
+                        boxShadow: '0 2px 8px 0 rgba(79,166,166,0.10)',
+                        pointerEvents: 'none',
+                        height: navCellHeight,
+                        minHeight: navCellHeight,
+                        maxHeight: navCellHeight,
+                      }}
+                    />
+                  )}
+                </AnimatePresence>
                 <a
                   href={link.to}
                   onClick={(e) => handleNavClick(e, link.to, link.section)}

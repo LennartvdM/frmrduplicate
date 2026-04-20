@@ -204,13 +204,31 @@ export default function BlogPage({ sections, scrollTo }) {
                 : isHovered
                 ? '#c4ccd6'
                 : '#666f7c';
-              // First item with no number (e.g. "Preface") is an intro —
-              // give it a thin divider below so it's visually separated
-              // from the numbered index that follows.
+              // Intro divider: render below the first item only when
+              // it's unnumbered and the next item IS numbered (e.g.
+              // "Preface" → "1. Narrative Review"). The /neoflix index
+              // has no numbering, so it doesn't get this divider.
               const { numberPart: myNumber } = splitHeading(s.title);
-              const isIntro = idx === 0 && !myNumber && sections.length > 1;
+              const nextNumber = sections[idx + 1]
+                ? splitHeading(sections[idx + 1].title).numberPart
+                : '';
+              const isIntro =
+                idx === 0 && !myNumber && sections.length > 1 && !!nextNumber;
+              // Divider above the Contact pin in the /neoflix index.
+              const dividerAbove = s.id === 'contact' && idx > 0;
               return (
                 <React.Fragment key={s.id}>
+                  {dividerAbove && (
+                    <li aria-hidden="true" style={{ listStyle: 'none', padding: '10px 0' }}>
+                      <div
+                        style={{
+                          height: 1,
+                          background: 'rgba(255, 255, 255, 0.1)',
+                          margin: '0 8px',
+                        }}
+                      />
+                    </li>
+                  )}
                   <li>
                     <motion.button
                       type="button"
@@ -359,6 +377,10 @@ export default function BlogPage({ sections, scrollTo }) {
               </section>
             );
           })}
+          {/* Bottom scroll spacer: lets the last (possibly short) post
+              scroll up far enough to align with the sticky sidebar top
+              instead of getting pinned at the end of the scroll range. */}
+          <div aria-hidden="true" style={{ minHeight: 'calc(100vh - 200px)' }} />
         </motion.article>
       </div>
 

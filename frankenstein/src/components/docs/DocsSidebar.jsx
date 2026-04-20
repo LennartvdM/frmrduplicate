@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import DocsLink from './DocsLink';
 
 /**
@@ -6,11 +6,17 @@ import DocsLink from './DocsLink';
  * the active nav row with smooth top/height transitions, mirroring the
  * questionnaire's `.mobile-highlighter` treatment.
  *
- * Implementation: the highlighter is absolutely positioned inside the
- * sidebar's scroll container and its top/height are driven by an effect
- * keyed on `activeSlug`. The first position is applied without a
- * transition (so it lands on the active row on mount without sliding in
- * from 0); subsequent position changes animate via CSS.
+ * Layout (two-container split):
+ *   .docs-sidebar          sticky, overflow: visible — hosts the
+ *                           highlighter so its left outcrop can bleed
+ *                           past the card's edge into the video gutter.
+ *   .docs-sidebar-scroll   overflow-y: auto — the actual scrollable
+ *                           viewport that holds the nav sections.
+ *
+ * The highlighter is a sibling of the scroll container. Its position is
+ * measured in viewport coords (getBoundingClientRect) relative to the
+ * outer sidebar, which naturally absorbs both inner scroll and outer
+ * page scroll without dedicated math.
  */
 export default function DocsSidebar({ sections, activeSlug }) {
   const initiallyOpen = useMemo(() => {
@@ -36,36 +42,37 @@ export default function DocsSidebar({ sections, activeSlug }) {
   }, [activeSlug, sections]);
 
   const sidebarRef = useRef(null);
+  const scrollRef = useRef(null);
   const highlighterRef = useRef(null);
   const hasPositioned = useRef(false);
 
-  useLayoutEffect(() => {
+  const updateHighlighter = useCallback((animate = true) => {
     const sidebar = sidebarRef.current;
+    const scroller = scrollRef.current;
     const highlighter = highlighterRef.current;
-    if (!sidebar || !highlighter) return;
+    if (!sidebar || !scroller || !highlighter) return;
 
-    const activeRow = sidebar.querySelector('.docs-nav-row.is-active');
+    const activeRow = scroller.querySelector('.docs-nav-row.is-active');
     if (!activeRow) {
       highlighter.classList.remove('is-visible');
       return;
     }
 
-    // Position in the sidebar's scroll-coordinate space: offsetTop walks
-    // up to .docs-sidebar without adding scrollTop, which is what we
-    // want — the highlighter lives inside the scroll container and
-    // scrolls with the content, so its position is relative to the
-    // scrolled content, not the viewport.
-    const top = offsetWithin(activeRow, sidebar);
-    const height = activeRow.offsetHeight;
+    // Viewport-relative measurement naturally accounts for both inner
+    // (.docs-sidebar-scroll) scroll and outer (.docs-scroll) page scroll
+    // — the pill ends up exactly under the active row on screen.
+    const sidebarRect = sidebar.getBoundingClientRect();
+    const rowRect = activeRow.getBoundingClientRect();
+    const top = rowRect.top - sidebarRect.top;
+    const height = rowRect.height;
 
-    if (!hasPositioned.current) {
-      // First paint: land without a transition so the pill appears on
-      // the active row instead of sliding in from top: 0.
+    if (!animate || !hasPositioned.current) {
+      // First paint / post-scroll updates: land without a transition so
+      // the pill doesn't lag the scroll (which would read as a drift).
       highlighter.style.transition = 'none';
       highlighter.style.top = `${top}px`;
       highlighter.style.height = `${height}px`;
-      // Force a reflow before re-enabling transitions.
-      void highlighter.offsetHeight;
+      void highlighter.offsetHeight; // flush so the next frame can animate
       highlighter.style.transition = '';
       hasPositioned.current = true;
     } else {
@@ -73,17 +80,51 @@ export default function DocsSidebar({ sections, activeSlug }) {
       highlighter.style.height = `${height}px`;
     }
     highlighter.classList.add('is-visible');
-  }, [activeSlug, open]);
+  }, []);
+
+  // Animated update on active-slug / expand-collapse changes.
+  useLayoutEffect(() => {
+    updateHighlighter(true);
+  }, [activeSlug, open, updateHighlighter]);
+
+  // Non-animated updates when either scroll container moves. The inner
+  // scroll is the sidebar's own nav scroll; the outer is the page scroll
+  // that drags the sticky sidebar along — both shift the active row's
+  // viewport position and need the pill to follow without drift.
+  useEffect(() => {
+    const scroller = scrollRef.current;
+    if (!scroller) return;
+    const onScroll = () => updateHighlighter(false);
+    scroller.addEventListener('scroll', onScroll, { passive: true });
+    // Outer page scroll container — closest ancestor with overflow-y auto.
+    let outer = scroller.parentElement;
+    while (outer && outer !== document.body) {
+      const cs = getComputedStyle(outer);
+      if (/(auto|scroll)/.test(cs.overflowY)) break;
+      outer = outer.parentElement;
+    }
+    if (outer && outer !== document.body) {
+      outer.addEventListener('scroll', onScroll, { passive: true });
+    }
+    return () => {
+      scroller.removeEventListener('scroll', onScroll);
+      if (outer && outer !== document.body) {
+        outer.removeEventListener('scroll', onScroll);
+      }
+    };
+  }, [updateHighlighter]);
 
   return (
     <aside className="docs-sidebar" ref={sidebarRef}>
       <div className="docs-sidebar-highlighter" ref={highlighterRef} aria-hidden="true" />
-      {sections.map((section, i) => (
-        <div key={i} className="docs-sidebar-section">
-          <div className="docs-sidebar-heading">{section.title.toUpperCase()}</div>
-          <NavList items={section.items} activeSlug={activeSlug} depth={0} open={open} toggle={toggle} />
-        </div>
-      ))}
+      <div className="docs-sidebar-scroll" ref={scrollRef}>
+        {sections.map((section, i) => (
+          <div key={i} className="docs-sidebar-section">
+            <div className="docs-sidebar-heading">{section.title.toUpperCase()}</div>
+            <NavList items={section.items} activeSlug={activeSlug} depth={0} open={open} toggle={toggle} />
+          </div>
+        ))}
+      </div>
     </aside>
   );
 }
@@ -123,18 +164,6 @@ function NavList({ items, activeSlug, depth, open, toggle }) {
       })}
     </ul>
   );
-}
-
-// Walk offsetParents up to (but not past) the given ancestor so the
-// returned top is in the ancestor's internal coordinate space.
-function offsetWithin(el, ancestor) {
-  let y = 0;
-  let node = el;
-  while (node && node !== ancestor) {
-    y += node.offsetTop;
-    node = node.offsetParent;
-  }
-  return y;
 }
 
 function collectAncestors(items, activeSlug, outSet, trail = []) {

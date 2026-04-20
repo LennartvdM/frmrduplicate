@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light only">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Printbare vragenlijst — Monitoring Cultureel Talent naar de Top 2026</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #111162;
+      --navy-deep: #07072f;
+      --blue: #8caef4;
+      --blue-soft: #c5d6f8;
+      --sand: #e1e9f4;
+      --sand-light: #f1f4f8;
+      --ink: #1d1d30;
+      --ink-soft: #3c3c5d;
+      --ink-mute: #6b6b85;
+      --line: #d9dfeb;
+      --line-soft: #ebeff6;
+      --cream: #fafbfc;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 18mm 18mm 20mm;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-size: 10pt;
+      line-height: 1.55;
+      color: var(--ink);
+      background: #fff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Screen-only toolbar */
+    .p-toolbar {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      display: flex;
+      gap: 8px;
+      z-index: 100;
+    }
+    .p-toolbar button {
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 14px;
+      background: var(--navy);
+      color: #fff;
+      border: 0;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(17, 17, 98, 0.25);
+    }
+    .p-toolbar button:hover { background: var(--navy-deep); }
+    .p-toolbar .p-toolbar-secondary {
+      background: #fff;
+      color: var(--navy);
+      border: 1px solid var(--line);
+    }
+    @media print { .p-toolbar { display: none; } }
+
+    /* ── Header (no personal info) ── */
+    .p-header {
+      padding: 0 0 14pt;
+      margin-bottom: 18pt;
+      border-bottom: 1.2pt solid var(--navy);
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+    .p-header-eyebrow {
+      font-size: 8pt;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 6pt;
+    }
+    .p-header-title {
+      font-size: 18pt;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--navy-deep);
+      margin-bottom: 8pt;
+      letter-spacing: -0.01em;
+    }
+    .p-header-lede {
+      font-size: 10pt;
+      color: var(--ink-soft);
+      line-height: 1.55;
+      max-width: 150mm;
+    }
+
+    /* ── Section ── */
+    .p-section {
+      margin-bottom: 16pt;
+      page-break-inside: auto;
+    }
+    .p-section + .p-section { margin-top: 16pt; }
+    .p-section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10pt;
+      margin-bottom: 4pt;
+      padding-bottom: 4pt;
+      border-bottom: 0.75pt solid var(--line);
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+    .p-section-num, .p-section-kicker {
+      display: inline-block;
+      min-width: 18pt;
+      padding: 2pt 6pt;
+      background: var(--navy);
+      color: #fff;
+      font-size: 8.5pt;
+      font-weight: 700;
+      border-radius: 2pt;
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+    .p-section-kicker {
+      background: var(--blue);
+      color: var(--navy-deep);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 7.5pt;
+    }
+    .p-section-title {
+      font-size: 13pt;
+      font-weight: 700;
+      color: var(--navy-deep);
+      letter-spacing: -0.005em;
+      line-height: 1.25;
+    }
+    .p-section-sub {
+      font-size: 10pt;
+      color: var(--ink-soft);
+      margin: 6pt 0 10pt;
+      font-weight: 500;
+    }
+    .p-section-intro {
+      font-size: 9.5pt;
+      color: var(--ink-soft);
+      margin: 4pt 0 10pt;
+      line-height: 1.55;
+    }
+    .p-lede {
+      font-size: 10pt;
+      color: var(--ink-soft);
+      margin: 4pt 0 10pt;
+      line-height: 1.6;
+    }
+
+    /* Force the Kwalitatief (section 3) intro onto its own page */
+    .p-section.p-section-break { page-break-before: always; break-before: page; }
+
+    /* ── Fields ── */
+    .p-field { margin-bottom: 8pt; page-break-inside: avoid; break-inside: avoid; }
+    .p-field-inline {
+      display: flex;
+      align-items: baseline;
+      gap: 10pt;
+      flex-wrap: wrap;
+    }
+    .p-field-inline .p-field-label { flex: 0 0 auto; max-width: 60%; }
+    .p-field-inline .p-field-input { flex: 1 1 50mm; min-width: 40mm; }
+    .p-field-label {
+      font-size: 9pt;
+      font-weight: 600;
+      color: var(--ink-soft);
+      line-height: 1.4;
+    }
+    .p-field-block .p-field-label { margin-bottom: 4pt; }
+    .p-indent { padding-left: 16pt; }
+    .p-field-compact .p-field-input { flex: 0 0 30mm; min-width: 24mm; }
+    .p-hint {
+      flex: 1 1 100%;
+      font-size: 8pt;
+      color: var(--ink-mute);
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    /* Blanks */
+    .p-blank {
+      display: inline-block;
+      width: 100%;
+      min-height: 14pt;
+      border-bottom: 0.75pt solid var(--line);
+    }
+    .p-blank-number { width: 30mm; }
+    .p-blank-date { width: 40mm; }
+
+    /* ── Textareas ── */
+    .p-textarea-blank { padding: 6pt 0 2pt; }
+    .p-textarea-blank .p-rule {
+      display: block;
+      border-bottom: 0.75pt solid var(--line);
+      height: 16pt;
+    }
+
+    /* ── Checkboxes ── */
+    .p-checkbox {
+      display: flex;
+      align-items: baseline;
+      gap: 8pt;
+      font-size: 9.5pt;
+      color: var(--ink);
+    }
+    .p-check-box {
+      flex: 0 0 auto;
+      display: inline-block;
+      width: 10pt;
+      height: 10pt;
+      border: 1pt solid var(--navy);
+      border-radius: 2pt;
+      background: #fff;
+      position: relative;
+      top: 1.5pt;
+    }
+    .p-check-label { color: var(--ink-soft); }
+
+    /* ── Questions ── */
+    .p-question {
+      margin-bottom: 10pt;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    /* Forced page break before a specific question */
+    .p-question.p-question-break { page-break-before: always; break-before: page; }
+    .p-question-label {
+      font-size: 10pt;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 6pt;
+      line-height: 1.45;
+    }
+
+    .p-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 4pt;
+      margin-bottom: 4pt;
+    }
+    .p-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 8pt;
+      padding: 6pt 10pt;
+      border: 0.75pt solid var(--line);
+      border-radius: 4pt;
+      background: #fff;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .p-card-radio {
+      flex: 0 0 auto;
+      width: 10pt;
+      height: 10pt;
+      border: 1pt solid var(--ink-mute);
+      border-radius: 50%;
+      background: #fff;
+      position: relative;
+      top: 2pt;
+    }
+    .p-card-body { flex: 1 1 auto; }
+    .p-card-title {
+      font-size: 10pt;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+    .p-card-desc {
+      font-size: 8.5pt;
+      color: var(--ink-mute);
+      margin-top: 1pt;
+      line-height: 1.4;
+    }
+
+    .p-radio-list { display: flex; flex-direction: column; gap: 3pt; }
+    .p-radio-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8pt;
+      padding: 3pt 8pt;
+      border-radius: 3pt;
+      font-size: 9.5pt;
+      color: var(--ink-soft);
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .p-radio-dot {
+      flex: 0 0 auto;
+      width: 9pt;
+      height: 9pt;
+      border: 1pt solid var(--ink-mute);
+      border-radius: 50%;
+      background: #fff;
+      position: relative;
+      top: 2pt;
+    }
+    .p-radio-text { flex: 1 1 auto; line-height: 1.4; }
+
+    /* Conditional sub-block — always shown for blank printable form */
+    .p-conditional {
+      margin: 6pt 0 6pt 10pt;
+      padding: 8pt 12pt;
+      border-left: 1.5pt solid var(--blue);
+      background: linear-gradient(90deg, rgba(140,174,244,0.10) 0%, rgba(140,174,244,0) 100%);
+      border-radius: 0 3pt 3pt 0;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .p-conditional .p-field:last-child { margin-bottom: 0; }
+
+    /* Field groups (shared block background) */
+    .p-group {
+      margin-bottom: 10pt;
+      padding: 8pt 10pt;
+      background: var(--sand-light);
+      border-radius: 4pt;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .p-group .p-field:last-child { margin-bottom: 0; }
+
+    /* Info block — compact variant keeps the CBS citation together on one page */
+    .p-info {
+      margin: 6pt 0 10pt;
+      padding: 8pt 12pt;
+      background: var(--cream);
+      border: 0.5pt solid var(--line);
+      border-radius: 3pt;
+      font-size: 8pt;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .p-info p + p, .p-info p + ol, .p-info ol + p { margin-top: 4pt; }
+    .p-info ol { padding-left: 14pt; }
+    .p-info li { margin-bottom: 1pt; }
+    .p-info strong { color: var(--navy-deep); }
+
+    /* Likert table — unchanged, breaks within are acceptable */
+    .p-likert {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 6pt 0 12pt;
+      font-size: 9pt;
+    }
+    .p-likert thead { display: table-header-group; }
+    .p-likert th {
+      padding: 6pt 4pt;
+      font-weight: 600;
+      text-transform: none;
+      color: var(--navy-deep);
+      background: var(--sand-light);
+      border-bottom: 1pt solid var(--navy);
+    }
+    .p-likert-head-q {
+      text-align: left;
+      width: 58%;
+      padding-left: 6pt;
+      font-size: 9pt;
+    }
+    .p-likert-head-opt {
+      text-align: center;
+      width: 10.5%;
+      font-size: 8pt;
+    }
+    .p-likert tbody tr {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .p-likert tbody tr:nth-child(even) { background: #fafcff; }
+    .p-likert td {
+      padding: 6pt 4pt;
+      border-bottom: 0.5pt solid var(--line-soft);
+      vertical-align: middle;
+      line-height: 1.4;
+    }
+    .p-likert-q {
+      text-align: left;
+      padding-left: 6pt;
+      color: var(--ink);
+    }
+    .p-likert-num {
+      display: inline-block;
+      min-width: 12pt;
+      margin-right: 4pt;
+      color: var(--navy);
+      font-weight: 700;
+    }
+    .p-likert-opt { text-align: center; }
+    .p-likert-cell {
+      display: inline-block;
+      width: 11pt;
+      height: 11pt;
+      border: 0.75pt solid var(--ink-mute);
+      border-radius: 50%;
+      background: #fff;
+      vertical-align: middle;
+    }
+
+    /* Footer */
+    .p-footer {
+      margin-top: 24pt;
+      padding-top: 10pt;
+      border-top: 0.75pt solid var(--line);
+      text-align: center;
+    }
+    .p-footer-mark {
+      font-size: 9pt;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .p-footer-note {
+      font-size: 8pt;
+      color: var(--ink-mute);
+      margin-top: 2pt;
+    }
+
+    /* Stronger page-break rules for print */
+    @media print {
+      .p-header { page-break-after: avoid; }
+      .p-section { page-break-inside: auto; }
+      h2.p-section-title, .p-section-sub, .p-section-intro { page-break-after: avoid; }
+      .p-question-label, .p-field-label { page-break-after: avoid; }
+      tr, .p-card, .p-radio-row, .p-field, .p-conditional, .p-group, .p-info {
+        page-break-inside: avoid;
+      }
+    }
+
+    /* Screen preview (visible when tab is open but not yet printed) */
+    @media screen {
+      html, body { background: #eef1f6; }
+      body {
+        max-width: 210mm;
+        margin: 18mm auto;
+        padding: 18mm;
+        background: #fff;
+        box-shadow: 0 4px 24px rgba(17, 17, 98, 0.10);
+        border-radius: 3px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="p-toolbar">
+    <button type="button" id="printBtn">Afdrukken</button>
+    <button type="button" class="p-toolbar-secondary" id="closeBtn">Sluiten</button>
+  </div>
+
+  <div id="printRoot"></div>
+
+  <script type="module" src="/js/printbare-vragenlijst.js"></script>
+
+</body>
+</html>

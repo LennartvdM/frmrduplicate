@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Panel - Overlay Popover Design</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="privacy-panel.css">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f5f5f5;
+      padding: 40px;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    .demo-container {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 24px;
+      color: #333;
+    }
+
+    .demo-content {
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+    }
+
+    .demo-content p {
+      margin: 0 0 16px 0;
+      color: #666;
+    }
+
+    .demo-note {
+      margin-top: 40px;
+      padding: 16px;
+      background: #fff;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-container">
+    <h1>Privacy Panel - Overlay Design</h1>
+
+    <div class="demo-content">
+      <p>This is some example page content that will blur when the privacy panel is opened.</p>
+      <p>Click the panel below to see the overlay effect.</p>
+    </div>
+
+    <!-- ====================================================================
+         PRIVACY PANEL - Overlay popover design
+         ==================================================================== -->
+    <div class="privacy-panel" id="privacyPanel">
+
+      <!-- De Deur - Base panel (always visible initially) -->
+      <div class="pp-door" data-panel="door">
+        <h3>Waar is de cookiemelding?</h3>
+        <p class="pp-lead">Die is er niet. Wat doen we wél?</p>
+      </div>
+
+      <!-- Kamer: Het Verhaal -->
+      <div class="pp-kamer" data-panel="kamer">
+        <div class="pp-kamer-content">
+          <h3>Waar is de cookiemelding?</h3>
+          <p>Websites gebruiken cookies om informatie te onthouden tussen bezoeken. Vaak ook om u te volgen, of om te koppelen aan advertentienetwerken. Daar hoort een melding bij, en toestemming.</p>
+          <p class="has-inline-trigger">Wij gebruiken geen cookies. Nul. Uw browser heeft wel een andere opslagplek: <span class="pp-trigger-wrap"><span class="pp-trigger-inline" data-pop="voortgang">localStorage</span></span>. Die is van u, niet van ons. Gegevens daar verlaten uw apparaat niet.</p>
+          <p>Daarom is er geen melding. Er is niets om toestemming voor te vragen.</p>
+          <p>Wilt u het checken? Open Developer Tools &#8594; Application &#8594; Cookies. Die lijst is leeg. Kijk daarna bij Local Storage. Daar staat wat dit formulier onthoudt.</p>
+        </div>
+
+        <div class="pp-trigger-area">
+          <p>
+            <span class="pp-trigger-wrap">
+              <span class="pp-trigger-inline" data-pop="verzenden">Wat gebeurt er als u op verzenden klikt?</span>
+            </span>
+          </p>
+          <p>
+            <span class="pp-trigger-wrap">
+              <span class="pp-trigger-inline" data-pop="rechten">Wat kunt u doen met uw gegevens?</span>
+            </span>
+          </p>
+        </div>
+
+        <!-- Popovers -->
+        <div class="pp-popover" id="pp-pop-voortgang">
+          <h4>Uw voortgang</h4>
+          <p>Dit formulier onthoudt waar u was. Als u halverwege stopt en morgen terugkomt, zijn uw antwoorden er nog.</p>
+          <p>Dat werkt via localStorage, een stukje opslagruimte dat bij uw apparaat hoort. Wij zetten uw antwoorden daar neer onder een sleutel die begint met <code>cttt_</code>.</p>
+          <p>Wij zien die opslag niet. Het is alsof u een kladblok op uw bureau heeft liggen. Wij staan niet in uw kantoor.</p>
+        </div>
+
+        <div class="pp-popover" id="pp-pop-verzenden">
+          <h4>Het verzenden</h4>
+          <p>Tot nu toe bestaan uw antwoorden alleen op uw apparaat. Wij weten niet dat u er bent.</p>
+          <p>Dat verandert wanneer u op verzenden klikt. Uw antwoorden gaan dan versleuteld naar een Google-spreadsheet. Eén keer, één richting. Alleen de onderzoeksbeheerder heeft toegang.</p>
+          <p>Daar stopt het. Niet gedeeld. Niet verkocht. Niet gebruikt om u te profileren.</p>
+          <p>Na verzending krijgt u een kopie in uw browser. Die blijft van u.</p>
+        </div>
+
+        <div class="pp-popover" id="pp-pop-rechten">
+          <h4>Uw rechten</h4>
+          <p>Wat lokaal staat is van u. Bekijk het in Developer Tools &#8594; Local Storage. Verwijder het via uw browsergegevens.</p>
+          <p>Wat u heeft verzonden staat op onze server. Daar gelden uw AVG-rechten:</p>
+          <div class="pp-rights-tags">
+            <span>Inzage</span>
+            <span>Correctie</span>
+            <span>Verwijdering</span>
+            <span>Overdracht</span>
+          </div>
+          <p>Wilt u uw gegevens inzien, aanpassen of verwijderen? Mail ons: <span class="pp-rechten-email"></span>. We reageren binnen 5 werkdagen.</p>
+        </div>
+      </div>
+
+      <!-- Trigger clone for inline localStorage link -->
+      <span class="pp-trigger-clone" id="triggerClone">localStorage</span>
+
+      <!-- Safezone (moved to overlay by JS) -->
+      <div class="pp-popover-safezone" id="popoverSafezone"></div>
+
+    </div>
+    <!-- ==================================================================== -->
+
+    <div class="demo-note">
+      <p><strong>Interaction:</strong></p>
+      <p>Click "De Deur" to open the overlay. The rest of the page will blur.</p>
+      <p>Hover over highlighted terms to see popovers with more information.</p>
+      <p>Click the backdrop or press Escape to close the overlay.</p>
+    </div>
+  </div>
+
+  <script src="privacy-panel.js"></script>
+
+</body>
+</html>

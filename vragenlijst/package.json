@@ -1,0 +1,28 @@
+{
+  "name": "vragenlijst",
+  "version": "1.0.0",
+  "description": "Een webapplicatie voor het monitoren van culturele diversiteit in Nederlandse organisaties.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:lib": "vite build -c lib/vite.config.js",
+    "build:html": "node scripts/build-survey-html.js",
+    "preview": "vite preview",
+    "postinstall": "npm run build:html && npm run build"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "http://local_proxy@127.0.0.1:33877/git/LennartvdM/Vragenlijst"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^7.3.1"
+  }
+}

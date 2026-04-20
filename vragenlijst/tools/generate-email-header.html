@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Email Header Generator — Monitoring Cultureel Talent naar de Top 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: Inter, sans-serif; background: #f5f5f5; padding: 40px; }
+    h2 { color: #1d1d30; margin-bottom: 16px; }
+    .controls { margin-bottom: 20px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .controls label { font-size: 14px; font-weight: 500; color: #3c3c5d; }
+    .controls input { padding: 6px 10px; border: 1px solid #adbcd2; border-radius: 4px; font-size: 14px; }
+    .controls input[type="number"] { width: 80px; }
+    .controls button { padding: 8px 16px; background: #111162; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; }
+    .controls button:hover { background: #07072f; }
+    canvas { display: block; margin: 20px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+    .info { font-size: 13px; color: #666; margin-top: 8px; }
+    .preview-label { font-size: 13px; color: #7a7a96; margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <h2>Email Header PNG Generator</h2>
+  <div class="controls">
+    <label>Heading line 1: <input type="text" id="line1" value="Monitoring Cultureel Talent" size="35"></label>
+    <label>Heading line 2: <input type="text" id="line2" value="naar de Top" size="20"></label>
+    <label>Badge: <input type="text" id="badge" value="2026" size="6"></label>
+  </div>
+  <div class="controls">
+    <label>Width: <input type="number" id="width" value="1200"></label>
+    <button onclick="render()">Render</button>
+    <button onclick="download()">Download PNG</button>
+  </div>
+  <p class="preview-label">Preview (scaled to 600px display width):</p>
+  <canvas id="c" style="max-width: 600px; width: 100%;"></canvas>
+  <p class="info">Width 1200 = 2x retina for 600px email. Layout matches the login screen header. Background (#f3ece2) is baked into corners for Outlook transparency compatibility.</p>
+
+  <script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+
+    // Logo SVG (Talent naar de Top icon, from index.html)
+    const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 57.614 67.051" width="58" height="68">
+      <g transform="translate(-741 -4156)">
+        <path d="M48.72,105.206,30.284,91.174a2.438,2.438,0,0,0-2.951,0L8.9,105.205a3.1,3.1,0,0,1-4.337-.588L.634,99.459a3.094,3.094,0,0,1,.587-4.338l24.1-18.347a5.748,5.748,0,0,1,6.964,0l24.1,18.347a3.094,3.094,0,0,1,.59,4.336h0l-3.927,5.16a3.094,3.094,0,0,1-4.336.589h0" transform="translate(740.999 4117.211)" fill="rgba(255,255,255,0.87)"/>
+        <path d="M48.719,67.465,34.359,56.536a9.17,9.17,0,0,0-11.106,0L8.9,67.465a3.094,3.094,0,0,1-4.337-.588L.632,61.718a3.094,3.094,0,0,1,.587-4.336h0L16.239,45.95a20.75,20.75,0,0,1,25.136,0L56.394,57.384a3.1,3.1,0,0,1,.588,4.336h0l-3.924,5.157a3.1,3.1,0,0,1-4.337.588" transform="translate(741 4134.599)" fill="rgba(255,255,255,0.87)"/>
+        <path d="M58.5,12.356A12.355,12.355,0,1,1,46.143,0h0A12.355,12.355,0,0,1,58.5,12.356" transform="translate(723.664 4155.999)" fill="rgba(255,255,255,0.87)"/>
+      </g>
+    </svg>`;
+
+    // Layout constants (1x values, matching .login-header CSS)
+    const PAD_TOP = 40, LOGO_W = 56, LOGO_H = 64, LOGO_R = 12, GAP_LOGO = 16;
+    const H1_SIZE = 20, H1_LH = 1.3, GAP_HEADING = 8;
+    const BADGE_SIZE = 14, BADGE_PV = 6, BADGE_PH = 18, PAD_BOTTOM = 40;
+    const CORNER_R_1X = 16;
+    const SVG_VB = { w: 57.614, h: 67.051 };
+
+    function roundedRect(x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function pill(x, y, w, h) {
+      const r = h / 2;
+      ctx.beginPath();
+      ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y);
+      ctx.arc(x + w - r, y + r, r, -Math.PI / 2, Math.PI / 2);
+      ctx.lineTo(x + r, y + h);
+      ctx.arc(x + r, y + r, r, Math.PI / 2, -Math.PI / 2);
+      ctx.closePath();
+    }
+
+    function render() {
+      const W = parseInt(document.getElementById('width').value) || 1200;
+      const S = W / 600;
+      const line1 = document.getElementById('line1').value;
+      const line2 = document.getElementById('line2').value;
+      const badge = document.getElementById('badge').value;
+
+      const lineH = Math.round(H1_SIZE * H1_LH);
+      const badgeH = BADGE_SIZE + BADGE_PV * 2;
+      const H = Math.round((PAD_TOP + LOGO_H + GAP_LOGO + lineH * 2 + GAP_HEADING + badgeH + PAD_BOTTOM) * S);
+      const R = Math.round(CORNER_R_1X * S);
+
+      canvas.width = W;
+      canvas.height = H;
+
+      // 1. Background (baked into corners for Outlook)
+      ctx.fillStyle = '#f3ece2';
+      ctx.fillRect(0, 0, W, H);
+
+      // 2. Gradient rounded-top rect
+      ctx.beginPath();
+      ctx.moveTo(R, 0); ctx.lineTo(W - R, 0);
+      ctx.quadraticCurveTo(W, 0, W, R);
+      ctx.lineTo(W, H); ctx.lineTo(0, H);
+      ctx.lineTo(0, R);
+      ctx.quadraticCurveTo(0, 0, R, 0);
+      ctx.closePath();
+      const grad = ctx.createLinearGradient(0, 0, W, H);
+      grad.addColorStop(0, '#8caef4');
+      grad.addColorStop(1, '#111162');
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // 3. Logo icon box
+      const lbW = LOGO_W * S, lbH = LOGO_H * S;
+      const lbX = (W - lbW) / 2, lbY = PAD_TOP * S;
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+      roundedRect(lbX, lbY, lbW, lbH, LOGO_R * S);
+      ctx.fill();
+
+      // 4. Logo SVG (draw via Image)
+      const svgH = 38 * S;
+      const svgRatio = SVG_VB.w / SVG_VB.h;
+      const svgW = svgH * svgRatio;
+      const svgX = lbX + (lbW - svgW) / 2;
+      const svgY = lbY + (lbH - svgH) / 2;
+
+      const img = new Image();
+      img.onload = function () {
+        ctx.drawImage(img, svgX, svgY, svgW, svgH);
+      };
+      img.src = 'data:image/svg+xml;base64,' + btoa(LOGO_SVG);
+
+      // 5. Heading (two lines)
+      const h1px = Math.round(H1_SIZE * S);
+      ctx.font = `600 ${h1px}px Inter, sans-serif`;
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.87)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      const headY = (PAD_TOP + LOGO_H + GAP_LOGO) * S;
+      ctx.fillText(line1, W / 2, headY);
+      ctx.fillText(line2, W / 2, headY + lineH * S);
+
+      // 6. Year badge pill
+      const bdPx = Math.round(BADGE_SIZE * S);
+      ctx.font = `600 ${bdPx}px Inter, sans-serif`;
+      const bdTW = ctx.measureText(badge).width;
+      const bdW = bdTW + BADGE_PH * 2 * S;
+      const bdTotalH = badgeH * S;
+      const bdX = (W - bdW) / 2;
+      const bdY = (PAD_TOP + LOGO_H + GAP_LOGO + lineH * 2 + GAP_HEADING) * S;
+
+      // Badge shadow
+      ctx.save();
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.08)';
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 4 * S;
+      ctx.shadowBlur = 12 * S;
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+      pill(bdX, bdY, bdW, bdTotalH);
+      ctx.fill();
+      ctx.restore();
+
+      // Badge text
+      ctx.fillStyle = '#1d1d30';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(badge, W / 2, bdY + bdTotalH / 2);
+    }
+
+    function download() {
+      const link = document.createElement('a');
+      link.download = 'email-header.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // Wait for Inter font to load, then render
+    document.fonts.ready.then(() => render());
+  </script>
+</body>
+</html>

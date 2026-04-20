@@ -1,0 +1,512 @@
+/**
+ * Privacy Panel - Overlay Popover Component
+ *
+ * A compact door that expands into a centered overlay with blur backdrop.
+ * Based on a "kamer" (room) metaphor with inline triggers.
+ */
+
+/* ==========================================================================
+   CSS Custom Properties
+   ========================================================================== */
+.privacy-panel,
+.pp-overlay-container {
+  --pp-cream: var(--cream, #fafbfc);
+  --pp-sand: var(--sand, #e1e9f4);
+  --pp-sand-light: var(--sand-light, #f1f4f8);
+  --pp-sand-dark: var(--sand-dark, #adbcd2);
+  --pp-terracotta: var(--terracotta, #111162);
+  --pp-terracotta-light: var(--salmon, #8caef4);
+  --pp-text: var(--text, #1d1d30);
+  --pp-text-light: var(--text-light, #3c3c5d);
+  --pp-teal: var(--teal-dark, #5aada8);
+  --pp-teal-dark: var(--teal-dark, #5aada8);
+  --pp-card-radius: 16px;
+
+  /* RGB components for rgba() usage */
+  --pp-brown-rgb: var(--brown-rgb, 8, 9, 30);
+  --pp-terracotta-rgb: var(--terracotta-rgb, 17, 17, 98);
+  --pp-text-rgb: var(--text-rgb, 29, 29, 48);
+  --pp-cream-rgb: var(--cream-rgb, 250, 251, 252);
+  --pp-sand-dark-rgb: 173, 188, 210;
+  --pp-teal-rgb: 90, 173, 168;
+}
+
+/* ==========================================================================
+   Container
+   ========================================================================== */
+.privacy-panel {
+  position: relative;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--pp-text);
+  margin-top: 24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.privacy-panel *,
+.privacy-panel *::before,
+.privacy-panel *::after {
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   Page Blur Effect - Applied to body when panel is open
+   ========================================================================== */
+body.pp-blur-active {
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Blur Layer - Stays in overlay-container, switches z-index
+   Behind kamer (z-index 0) = page blur
+   Above kamer (z-index 2) = page + card blur
+   ========================================================================== */
+.pp-blur-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.pp-blur-layer.is-active {
+  opacity: 1;
+}
+
+/* Popover active: rise above kamer (z-index 1) but below popovers (10000) */
+.pp-blur-layer.above-kamer {
+  z-index: 2;
+}
+
+/* ==========================================================================
+   Overlay Container - Fixed overlay for kamer
+   ========================================================================== */
+.pp-overlay-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.pp-overlay-container.is-open {
+  display: flex;
+}
+
+/* Backdrop with subtle darkening */
+.pp-overlay-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(var(--pp-text-rgb), 0.1);
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   De Deur - Compact trigger (always visible initially)
+   ========================================================================== */
+.pp-door {
+  background: var(--pp-cream);
+  border-radius: 12px;
+  padding: 14px 18px;
+  box-shadow:
+    0 1px 8px rgba(var(--pp-brown-rgb), 0.05),
+    0 0 0 1px rgba(var(--pp-terracotta-rgb), 0.06);
+  cursor: pointer;
+  transition: all 0.2s;
+  max-width: 320px;
+}
+
+.pp-door:hover {
+  box-shadow:
+    0 2px 14px rgba(var(--pp-brown-rgb), 0.09),
+    0 0 0 1px rgba(var(--pp-terracotta-rgb), 0.09);
+}
+
+.pp-door h3 {
+  margin: 0 0 2px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--pp-text-light);
+}
+
+.pp-door .pp-lead {
+  margin: 0;
+  font-size: 12px;
+  color: var(--pp-text-light);
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   Kamer (Room) - Main expanded card (inside overlay)
+   ========================================================================== */
+.pp-kamer {
+  position: relative;
+  z-index: 1;
+  border-radius: var(--pp-card-radius);
+  padding: 36px 40px;
+  box-shadow:
+    0 12px 48px rgba(var(--pp-text-rgb), 0.2),
+    0 0 0 1px rgba(var(--pp-terracotta-rgb), 0.1);
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--pp-text);
+  max-width: 540px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  animation: ppSlideIn 0.3s linear;
+}
+
+/* Translucent screen-blend fill as pseudo so border-radius stays intact */
+.pp-kamer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(var(--pp-cream-rgb), 0.93);
+  mix-blend-mode: screen;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+@keyframes ppSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.pp-kamer h3 {
+  margin: 0 0 16px 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.pp-kamer p {
+  margin-bottom: 14px;
+}
+
+.pp-kamer p:last-child {
+  margin-bottom: 0;
+}
+
+/* Disable interaction on kamer-content when popover is active */
+.pp-kamer.has-popover .pp-kamer-content {
+  pointer-events: none;
+}
+
+/* Hide original triggers when popover is open (clones take over above blur) */
+.pp-kamer.has-popover .pp-kamer-content .pp-trigger-inline {
+  opacity: 0;
+}
+
+.pp-kamer.has-popover .pp-trigger-area {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Trigger Area - Navigation links section
+   ========================================================================== */
+.pp-trigger-area {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--pp-sand);
+}
+
+.pp-trigger-area p {
+  margin-bottom: 8px;
+}
+
+.pp-trigger-area p:last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   Trigger - Inline link that opens popover
+   ========================================================================== */
+.pp-trigger-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.pp-trigger-inline {
+  color: var(--pp-terracotta);
+  font-weight: 600;
+  border-bottom: 1px dashed var(--pp-terracotta);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.pp-trigger-inline:hover {
+  border-bottom-style: solid;
+}
+
+.pp-trigger-inline.is-active {
+  color: var(--pp-text);
+  border-bottom-color: var(--pp-text);
+  border-bottom-style: solid;
+}
+
+/* ==========================================================================
+   Trigger Clone - Fixed position copy of inline trigger
+   ========================================================================== */
+.pp-trigger-clone {
+  position: fixed;
+  z-index: 10001;
+  color: var(--pp-terracotta);
+  font-weight: 600;
+  border-bottom: 1px dashed var(--pp-terracotta);
+  cursor: pointer;
+  user-select: none;
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1;
+  display: none;
+  pointer-events: auto;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.pp-trigger-clone:hover {
+  border-bottom-style: solid;
+}
+
+.pp-trigger-clone.is-visible {
+  display: inline;
+  opacity: 1;
+}
+
+/* ==========================================================================
+   Trigger Area Clone - Fixed position copy of trigger-area links
+   ========================================================================== */
+.pp-trigger-area-clone {
+  position: fixed;
+  z-index: 3;
+  display: none;
+  pointer-events: auto;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.75;
+  padding-top: 17px;
+}
+
+.pp-trigger-area-clone.is-visible {
+  display: block;
+  opacity: 1;
+}
+
+.pp-trigger-area-clone p {
+  margin-bottom: 8px;
+}
+
+.pp-trigger-area-clone p:last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   Popover - Floating info panel
+   ========================================================================== */
+.pp-popover {
+  position: fixed;
+  width: 360px;
+  background: rgba(var(--pp-cream-rgb), 0.93);
+  border-radius: var(--pp-card-radius);
+  padding: 28px 32px;
+  box-shadow:
+    0 8px 32px rgba(var(--pp-text-rgb), 0.22),
+    0 0 0 1px rgba(var(--pp-terracotta-rgb), 0.12);
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--pp-text);
+  z-index: 10000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s linear, visibility 0.35s linear;
+}
+
+.pp-popover.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Arrow pointing down (default, for popovers above triggers) */
+.pp-popover::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  right: 40px;
+  width: 16px;
+  height: 16px;
+  background: rgba(var(--pp-cream-rgb), 0.93);
+  border-radius: 2px;
+  transform: rotate(45deg);
+  box-shadow: 2px 2px 4px rgba(var(--pp-text-rgb), 0.05);
+}
+
+/* Arrow pointing left (for popovers to the right of inline triggers) */
+.pp-popover.arrow-left::after {
+  bottom: auto;
+  top: 50%;
+  transform: rotate(45deg) translateY(-50%);
+  left: -8px;
+  right: auto;
+}
+
+.pp-popover h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+}
+
+.pp-popover p {
+  margin-bottom: 12px;
+}
+
+.pp-popover p:last-child {
+  margin-bottom: 0;
+}
+
+.pp-popover code {
+  background: rgba(var(--pp-sand-dark-rgb), 0.4);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'SF Mono', Monaco, monospace;
+  font-size: 0.85em;
+  color: var(--pp-terracotta);
+}
+
+.pp-popover a {
+  color: var(--pp-terracotta);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.pp-popover a:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Popover Safe Zone - Invisible area around popover
+   ========================================================================== */
+.pp-popover-safezone {
+  position: fixed;
+  z-index: 9999;
+  display: none;
+  pointer-events: auto;
+}
+
+.pp-popover-safezone.is-visible {
+  display: block;
+}
+
+/* ==========================================================================
+   Rights Tags
+   ========================================================================== */
+.pp-rights-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.pp-rights-tags span {
+  padding: 6px 12px;
+  background: rgba(var(--pp-terracotta-rgb), 0.15);
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pp-terracotta);
+}
+
+/* ==========================================================================
+   Grab Bar - Swipe-down affordance (touch devices only)
+   ========================================================================== */
+.pp-grab-bar {
+  display: none;
+}
+
+@media (hover: none) {
+  .pp-grab-bar {
+    display: flex;
+    justify-content: center;
+    padding: 4px 0 8px;
+    cursor: grab;
+  }
+
+  .pp-grab-bar span {
+    width: 32px;
+    height: 4px;
+    background: rgba(var(--pp-text-rgb), 0.15);
+    border-radius: 2px;
+  }
+
+  /* Blur layer intercepts taps on mobile to close popover */
+  .pp-blur-layer.is-active.above-kamer {
+    pointer-events: auto;
+  }
+
+  /* Tap feedback on triggers */
+  .pp-trigger-inline:active {
+    opacity: 0.7;
+  }
+}
+
+/* ==========================================================================
+   Mobile Styles
+   ========================================================================== */
+@media (max-width: 768px) {
+  .pp-overlay-container {
+    padding: 16px;
+  }
+
+  .pp-kamer {
+    padding: 24px 20px;
+    max-width: 100%;
+  }
+
+  .pp-popover {
+    width: calc(100vw - 32px);
+    max-width: 360px;
+    max-height: 60vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Hide arrow on mobile — popover is centered */
+  .pp-popover::after {
+    display: none;
+  }
+
+  .pp-door {
+    max-width: 100%;
+  }
+
+  /* No hover state on mobile */
+  .pp-door:hover {
+    box-shadow:
+      0 1px 8px rgba(var(--pp-brown-rgb), 0.05),
+      0 0 0 1px rgba(var(--pp-terracotta-rgb), 0.06);
+  }
+}

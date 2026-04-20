@@ -153,10 +153,10 @@
   height: 100%;
   overflow-y: auto;
   overflow-x: visible;
-  padding: 28px 14px 56px 20px;
-  /* Carry a hair of left padding on the inner scroll-viewport so active
-     labels that shift left don't clip when the pill contracts on exit. */
-  padding-left: 28px;
+  /* No horizontal padding: rows span the sidebar strip edge-to-edge
+     as flat ribbons. Text inset is carried by the link's own padding,
+     which leaves enough room for the active-label translateX shift. */
+  padding: 28px 0 56px 0;
 }
 
 /* Glassy pill that slides behind the active nav row. Lives in the outer
@@ -195,12 +195,13 @@
    vertical axis needs visual treatment — the horizontal grouping is
    already carried by the section heading and the inter-section gap.
 
-   So the wrappers are now transparent, and the alpha hierarchy is
-   applied directly to each nav row: depth-0 (top-level) rows get the
-   lightest wash, depth-1 gets medium, depth-2+ gets the most opaque.
-   Combined with the sidebar strip's 0.4-alpha base, row coverage is
-   roughly 0.4 → 0.5 → 0.6 → 0.7 — the same gradient as before, just
-   expressed row-wise instead of block-wise. */
+   So the wrappers are transparent and the hierarchy is expressed
+   row-wise as three distinct alpha bands:
+     depth-0: 0    (bare sidebar strip, ~0.4 cream over video)
+     depth-1: 0.35 (cream ribbon, noticeably more opaque)
+     depth-2+: 0.7 (near-solid cream ribbon)
+   Rows run edge-to-edge with no border-radius so they read as flat
+   horizontal ribbons, not pills or boxes. */
 .docs-sidebar-section {
   position: relative;
   margin: 0 0 18px;
@@ -211,7 +212,7 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--docs-navy);
-  padding: 12px 10px 6px;
+  padding: 12px 20px 6px;
 }
 .docs-nav-list { list-style: none; padding: 0; margin: 0; position: relative; }
 .docs-nav-depth-1,
@@ -224,45 +225,44 @@
 }
 
 /* Nav row sits above the highlighter so text/icons render on top of
-   the pill. Each row carries its own cream wash at a depth-appropriate
-   alpha — that's the remaining hierarchy cue now that the enclosing
-   blocks are gone. */
+   the pill. Rows are flat, edge-to-edge ribbons — no border-radius,
+   no margin — with a depth-graded cream wash that gives the 3-layer
+   alpha hierarchy. Steps are large (0 → 0.35 → 0.7) so the levels
+   read as three distinct bands over the sidebar's translucent strip
+   rather than as a subtle progressive tint. */
 .docs-nav-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 4px;
-  border-radius: 8px;
   position: relative;
   z-index: 1;
-  margin: 1px 0;
-  background: rgba(250, 251, 252, 0.16);
+  background: transparent;
 }
 .docs-nav-depth-1 > .docs-nav-item > .docs-nav-row {
-  background: rgba(250, 251, 252, 0.32);
+  background: rgba(250, 251, 252, 0.35);
 }
 .docs-nav-depth-2 > .docs-nav-item > .docs-nav-row,
 .docs-nav-depth-3 > .docs-nav-item > .docs-nav-row {
-  background: rgba(250, 251, 252, 0.48);
+  background: rgba(250, 251, 252, 0.7);
 }
 .docs-nav-row a {
   flex: 1;
   display: block;
-  padding: 8px 12px;
+  padding: 8px 20px;
   color: var(--docs-text-light);
   text-decoration: none;
   font-weight: 400;
   line-height: 1.4;
-  border-radius: 8px;
   transition: transform 0.6s ease-out, color 0.2s ease;
 }
 
 /* Depth indent — padding-left on the link only, so the row's cream
    wash still spans full width and the chevron stays pinned to the
-   right edge. Read as text-ladder while backgrounds stay flush. */
-.docs-nav-depth-1 > .docs-nav-item > .docs-nav-row a { padding-left: 22px; }
-.docs-nav-depth-2 > .docs-nav-item > .docs-nav-row a { padding-left: 32px; }
-.docs-nav-depth-3 > .docs-nav-item > .docs-nav-row a { padding-left: 42px; }
+   right edge. Read as text-ladder while row backgrounds stay flush. */
+.docs-nav-depth-1 > .docs-nav-item > .docs-nav-row a { padding-left: 32px; }
+.docs-nav-depth-2 > .docs-nav-item > .docs-nav-row a { padding-left: 44px; }
+.docs-nav-depth-3 > .docs-nav-item > .docs-nav-row a { padding-left: 56px; }
 
 /* Gentle nudge on hover for non-active rows, matching vragenlijst's
    `.index-item:not(.active):hover .label` treatment. */

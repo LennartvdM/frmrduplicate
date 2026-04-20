@@ -187,23 +187,23 @@
 }
 .docs-sidebar-highlighter.is-visible { opacity: 1; }
 
-/* -------- Stacked-glass hierarchy --------------------------------------
-   The sidebar reads the nav tree's depth through layered translucency:
-   each nested scope paints another low-alpha cream wash, so deeper
-   items sit on more layers and read as more opaque / more legible.
-   Nesting is: section block → depth-1 child list → depth-2 grandchild
-   list → depth-3. With the shell's 0.4-alpha sidebar strip as base,
-   effective cream coverage climbs roughly 0.4 → 0.5 → 0.6 → 0.7.
+/* -------- Row-level alpha hierarchy ------------------------------------
+   Earlier revisions nested the tree in literal block wrappers (section
+   block → depth-1 list → depth-2 list → depth-3) with a cream wash on
+   each layer, which produced boxes-within-boxes. The ontology is two-
+   dimensional (horizontal grouping + vertical depth), but only the
+   vertical axis needs visual treatment — the horizontal grouping is
+   already carried by the section heading and the inter-section gap.
 
-   A small top/bottom padding on each layer and matching rounded
-   corners make the boundary between layers visible as a soft glass
-   seam — the "segmented" cue the user is after. */
+   So the wrappers are now transparent, and the alpha hierarchy is
+   applied directly to each nav row: depth-0 (top-level) rows get the
+   lightest wash, depth-1 gets medium, depth-2+ gets the most opaque.
+   Combined with the sidebar strip's 0.4-alpha base, row coverage is
+   roughly 0.4 → 0.5 → 0.6 → 0.7 — the same gradient as before, just
+   expressed row-wise instead of block-wise. */
 .docs-sidebar-section {
   position: relative;
-  margin: 0 2px 14px;
-  padding: 2px 6px 6px;
-  background: rgba(250, 251, 252, 0.16);
-  border-radius: 12px;
+  margin: 0 0 18px;
 }
 .docs-sidebar-heading {
   font-size: 11px;
@@ -217,14 +217,16 @@
 .docs-nav-depth-1,
 .docs-nav-depth-2,
 .docs-nav-depth-3 {
-  margin: 4px 0 6px 10px;
-  padding: 4px 4px 4px 6px;
-  background: rgba(250, 251, 252, 0.16);
-  border-radius: 10px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
 }
 
 /* Nav row sits above the highlighter so text/icons render on top of
-   the pill. Gap-filling ::after keeps hover continuous between rows. */
+   the pill. Each row carries its own cream wash at a depth-appropriate
+   alpha — that's the remaining hierarchy cue now that the enclosing
+   blocks are gone. */
 .docs-nav-row {
   display: flex;
   align-items: center;
@@ -233,6 +235,15 @@
   border-radius: 8px;
   position: relative;
   z-index: 1;
+  margin: 1px 0;
+  background: rgba(250, 251, 252, 0.16);
+}
+.docs-nav-depth-1 > .docs-nav-item > .docs-nav-row {
+  background: rgba(250, 251, 252, 0.32);
+}
+.docs-nav-depth-2 > .docs-nav-item > .docs-nav-row,
+.docs-nav-depth-3 > .docs-nav-item > .docs-nav-row {
+  background: rgba(250, 251, 252, 0.48);
 }
 .docs-nav-row a {
   flex: 1;
@@ -246,6 +257,13 @@
   transition: transform 0.6s ease-out, color 0.2s ease;
 }
 
+/* Depth indent — padding-left on the link only, so the row's cream
+   wash still spans full width and the chevron stays pinned to the
+   right edge. Read as text-ladder while backgrounds stay flush. */
+.docs-nav-depth-1 > .docs-nav-item > .docs-nav-row a { padding-left: 22px; }
+.docs-nav-depth-2 > .docs-nav-item > .docs-nav-row a { padding-left: 32px; }
+.docs-nav-depth-3 > .docs-nav-item > .docs-nav-row a { padding-left: 42px; }
+
 /* Gentle nudge on hover for non-active rows, matching vragenlijst's
    `.index-item:not(.active):hover .label` treatment. */
 .docs-nav-row:not(.is-active):hover a {
@@ -254,9 +272,13 @@
   transition: transform 0.15s ease-out, color 0.15s ease;
 }
 
-/* Active row: the highlighter paints the background — the row itself
-   just upgrades the label weight and shifts it slightly left, echoing
-   the questionnaire's `.index-item.active .label` offset. */
+/* Active row: the highlighter paints the background — the row's own
+   cream wash is cleared so the pill (sibling, z-index 0) isn't hidden
+   under it. Label gets bumped in weight and nudged slightly left,
+   echoing the questionnaire's `.index-item.active .label` offset. */
+.docs-nav-row.is-active {
+  background: transparent;
+}
 .docs-nav-row.is-active a {
   color: var(--docs-navy);
   font-weight: 600;

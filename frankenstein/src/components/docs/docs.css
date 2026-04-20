@@ -197,11 +197,14 @@
 
    So the wrappers are transparent and the hierarchy is expressed
    row-wise as three distinct alpha bands:
-     depth-0: 0    (bare sidebar strip, ~0.4 cream over video)
-     depth-1: 0.35 (cream ribbon, noticeably more opaque)
-     depth-2+: 0.7 (near-solid cream ribbon)
-   Rows run edge-to-edge with no border-radius so they read as flat
-   horizontal ribbons, not pills or boxes. */
+     depth-0: 0.22 (lightest cream ribbon)
+     depth-1: 0.46 (medium cream ribbon)
+     depth-2+: 0.7  (near-solid cream ribbon)
+   Every row has a wash so every item reads as its own segment. A 2px
+   vertical gap between rows lets the darker sidebar strip show through
+   between ribbons, so adjacent same-depth rows stay segmented rather
+   than fusing into one long band. Rows run edge-to-edge with no
+   border-radius so they read as flat horizontal ribbons, not pills. */
 .docs-sidebar-section {
   position: relative;
   margin: 0 0 18px;
@@ -237,10 +240,11 @@
   gap: 4px;
   position: relative;
   z-index: 1;
-  background: transparent;
+  margin-bottom: 2px;
+  background: rgba(250, 251, 252, 0.22);
 }
 .docs-nav-depth-1 > .docs-nav-item > .docs-nav-row {
-  background: rgba(250, 251, 252, 0.35);
+  background: rgba(250, 251, 252, 0.46);
 }
 .docs-nav-depth-2 > .docs-nav-item > .docs-nav-row,
 .docs-nav-depth-3 > .docs-nav-item > .docs-nav-row {

@@ -187,22 +187,40 @@
 }
 .docs-sidebar-highlighter.is-visible { opacity: 1; }
 
-.docs-sidebar-section { margin-bottom: 18px; position: relative; }
+/* -------- Stacked-glass hierarchy --------------------------------------
+   The sidebar reads the nav tree's depth through layered translucency:
+   each nested scope paints another low-alpha cream wash, so deeper
+   items sit on more layers and read as more opaque / more legible.
+   Nesting is: section block → depth-1 child list → depth-2 grandchild
+   list → depth-3. With the shell's 0.4-alpha sidebar strip as base,
+   effective cream coverage climbs roughly 0.4 → 0.5 → 0.6 → 0.7.
+
+   A small top/bottom padding on each layer and matching rounded
+   corners make the boundary between layers visible as a soft glass
+   seam — the "segmented" cue the user is after. */
+.docs-sidebar-section {
+  position: relative;
+  margin: 0 2px 14px;
+  padding: 2px 6px 6px;
+  background: rgba(250, 251, 252, 0.16);
+  border-radius: 12px;
+}
 .docs-sidebar-heading {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--docs-navy);
-  padding: 14px 12px 8px;
+  padding: 12px 10px 6px;
 }
 .docs-nav-list { list-style: none; padding: 0; margin: 0; position: relative; }
 .docs-nav-depth-1,
 .docs-nav-depth-2,
 .docs-nav-depth-3 {
-  padding-left: 14px;
-  margin-left: 4px;
-  border-left: 1px solid var(--docs-border);
+  margin: 4px 0 6px 10px;
+  padding: 4px 4px 4px 6px;
+  background: rgba(250, 251, 252, 0.16);
+  border-radius: 10px;
 }
 
 /* Nav row sits above the highlighter so text/icons render on top of

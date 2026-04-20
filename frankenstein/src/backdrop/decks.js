@@ -17,6 +17,7 @@ import {
   deckSources as publicationsDeck,
   sectionToVideo as publicationsMap,
 } from '../data/publicationsPage';
+import { assetUrl } from '../utils/assetUrl';
 
 export const MEDICAL_V2_DECK = VARIANTS.v2.blurVideos.map((b) => b.video);
 export const MEDICAL_V3_DECK = VARIANTS.v3.blurVideos.map((b) => b.video);
@@ -45,3 +46,40 @@ export function blogIdxForSection(sectionId) {
   const idx = BLOG_DECK.indexOf(url);
   return idx >= 0 ? idx : -1;
 }
+
+/**
+ * Toolbox (docs) deck — the 6 blur videos, reused from the site-wide
+ * video pool. The mapping from a docs slug to an index is deterministic
+ * (slug-hash mod 6) so the same page shows the same video across visits,
+ * which keeps the "video change = page change" cue from reading as
+ * random flicker. The mapping itself is arbitrary — videos carry no
+ * meaning, they just mark that you moved.
+ */
+export const TOOLBOX_DECK = [
+  assetUrl('/videos/blurcoordination.mp4'),
+  assetUrl('/videos/blurfocus.mp4'),
+  assetUrl('/videos/blurperspectives.mp4'),
+  assetUrl('/videos/blursskills.mp4'),
+  assetUrl('/videos/blurteam.mp4'),
+  assetUrl('/videos/blururgency.mp4'),
+];
+
+/**
+ * Stable string hash (FNV-1a 32-bit). Deterministic across sessions and
+ * builds — we never want the same slug to land on different videos on
+ * different visits.
+ */
+function hashSlug(slug) {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < slug.length; i++) {
+    h ^= slug.charCodeAt(i);
+    h = (h + ((h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24))) >>> 0;
+  }
+  return h >>> 0;
+}
+
+export function toolboxIdxForSlug(slug) {
+  if (!slug) return 0;
+  return hashSlug(slug) % TOOLBOX_DECK.length;
+}
+

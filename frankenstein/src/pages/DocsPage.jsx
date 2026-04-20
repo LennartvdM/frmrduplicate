@@ -6,6 +6,8 @@ import DocsLink from '../components/docs/DocsLink';
 import DocsSidebar from '../components/docs/DocsSidebar';
 import DocsTocRail from '../components/docs/DocsTocRail';
 import useTransitionNavigate from '../hooks/useTransitionNavigate';
+import { useBackdropTarget } from '../backdrop/useBackdrop';
+import { TOOLBOX_DECK, toolboxIdxForSlug } from '../backdrop/decks';
 import '../components/docs/docs.css';
 
 export default function DocsPage() {
@@ -17,6 +19,20 @@ export default function DocsPage() {
 
   const scrollRef = useRef(null);
   const transitionNavigate = useTransitionNavigate();
+
+  // Map the current docs slug to a fixed index in the toolbox video
+  // deck (slug-hash mod 6). Deterministic: same page, same video, every
+  // visit — so the change-video cue reads as "you moved" and not as
+  // random flicker between reloads.
+  const toolboxTarget = useMemo(
+    () => ({
+      kind: 'video',
+      deck: TOOLBOX_DECK,
+      topIdx: toolboxIdxForSlug(slug),
+    }),
+    [slug]
+  );
+  useBackdropTarget('toolbox', toolboxTarget);
 
   useLayoutEffect(() => {
     const container = scrollRef.current;

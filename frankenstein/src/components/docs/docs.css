@@ -71,34 +71,41 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* The shell is the "card": cream surface, rounded, with a 6px negative
-   outline drawn by ::before (same compound-shape technique as
-   .login-card / .container in the questionnaire). */
+/* The shell is the "card". Interior is split: a translucent strip
+   under the sidebar column (videodeck shows through — the windowpane)
+   and a solid cream reading surface under the main column. The outer
+   frame is drawn as a solid box-shadow ring so it stays opaque over
+   video even though the sidebar area behind it is see-through. */
 .docs-shell {
   position: relative;
   display: grid;
   grid-template-columns: var(--docs-nav-width) minmax(0, 1fr);
   max-width: 1280px;
   margin: calc(var(--docs-top-offset) + 32px) auto 64px;
-  background: var(--docs-cream);
+  /* Hard stop between the two fills at the grid's column boundary. */
+  background: linear-gradient(
+    to right,
+    rgba(250, 251, 252, 0.4) 0,
+    rgba(250, 251, 252, 0.4) var(--docs-nav-width),
+    var(--docs-cream) var(--docs-nav-width),
+    var(--docs-cream) 100%
+  );
+  /* Blur only applies over the translucent strip — the solid cream half
+     hides its own backdrop — so this frosts the sidebar's videodeck
+     without costing anything on the reading surface. */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: var(--docs-radius);
   min-height: calc(100vh - var(--docs-top-offset) - 96px);
-  isolation: isolate;
-}
-.docs-shell::before {
-  content: '';
-  position: absolute;
-  top: calc(-1 * var(--docs-outline-width));
-  left: calc(-1 * var(--docs-outline-width));
-  right: calc(-1 * var(--docs-outline-width));
-  bottom: calc(-1 * var(--docs-outline-width));
-  background: var(--docs-cream);
-  border-radius: calc(var(--docs-radius) + var(--docs-outline-width));
+  /* Solid outline stroke + drop shadow. Replaces the old ::before +
+     mix-blend-mode: screen: that one painted a cream-filled rectangle
+     behind the whole card, which defeats the windowpane effect over
+     video. A box-shadow ring stays opaque and stays a ring. */
   box-shadow:
-    0 8px 32px rgba(var(--docs-navy-rgb), 0.15),
-    0 2px 8px rgba(var(--docs-navy-rgb), 0.1);
-  mix-blend-mode: screen;
-  z-index: -1;
+    0 0 0 var(--docs-outline-width) var(--docs-cream),
+    0 8px 32px rgba(var(--docs-navy-rgb), 0.18),
+    0 2px 8px rgba(var(--docs-navy-rgb), 0.12);
+  isolation: isolate;
 }
 
 .docs-main {
@@ -112,12 +119,16 @@
   .docs-rail { display: none; }
 }
 @media (max-width: 768px) {
+  /* Mobile hides the sidebar, so the split gradient collapses to one
+     solid cream fill and the shell becomes a single-column card. */
   .docs-shell {
     grid-template-columns: 1fr;
     margin: calc(var(--docs-top-offset) + 16px) 12px 32px;
     border-radius: 12px;
+    background: var(--docs-cream);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
-  .docs-shell::before { border-radius: calc(12px + var(--docs-outline-width)); }
   .docs-sidebar { display: none; }
   .docs-main { padding: 20px 20px 48px; }
 }
@@ -132,9 +143,11 @@
   align-self: start;
   height: calc(100vh - var(--docs-top-offset) - 32px);
   overflow: visible;
-  border-right: 1px solid var(--docs-border);
   font-size: 14px;
   color: var(--docs-text-light);
+  /* No background or border here. The split comes from the shell's
+     gradient stop at x = var(--docs-nav-width), which gives a clean
+     seam that stays consistent regardless of sticky position. */
 }
 .docs-sidebar-scroll {
   height: 100%;

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useRef } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { breadcrumbFor, getPage, navSections, neighbors, pageMeta, resolveSlug } from '../data/docsIndex';
 import DocsNode from '../components/docs/DocsNode';
@@ -34,19 +34,6 @@ export default function DocsPage() {
     }
     container.scrollTo({ top, behavior: 'instant' });
   }, [slug, location.hash]);
-
-  useEffect(() => {
-    const html = document.documentElement;
-    const body = document.body;
-    const prevH = html.style.backgroundColor;
-    const prevB = body.style.backgroundColor;
-    html.style.backgroundColor = '#ffffff';
-    body.style.backgroundColor = '#ffffff';
-    return () => {
-      html.style.backgroundColor = prevH;
-      body.style.backgroundColor = prevB;
-    };
-  }, []);
 
   const handleBodyClick = useCallback((e) => {
     const link = e.target.closest('a[data-internal]');

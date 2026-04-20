@@ -37,9 +37,11 @@ export default function useTransitionNavigate() {
     const toIndex = getNavIndexForPath(targetPath);
     const direction = toIndex - fromIndex;
 
-    // Same navbar slot (e.g. /toolbox/a → /toolbox/b): no slide, no
-    // direction change — just navigate.
+    // Same navbar slot (e.g. /toolbox/a → /toolbox/b): no slide, and
+    // clear any stale direction the context may still hold from the
+    // last cross-slot nav so downstream consumers don't animate.
     if (direction === 0) {
+      setDirection(0);
       navigate(to, opts);
       return;
     }

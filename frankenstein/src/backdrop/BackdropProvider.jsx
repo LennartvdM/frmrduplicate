@@ -36,9 +36,11 @@ import { BackdropContext } from './context';
  * Mounted once in App.jsx and never unmounts.
  */
 
-// Route identity. All non-Home, non-Blog pages get the camo renderer.
+// Route identity. Each mode keys a distinct renderer below; the
+// AnimatePresence key is the page id, so changing mode crossfades.
 const PAGE_HOME = 'home';
 const PAGE_BLOG = 'blog';
+const PAGE_TOOLBOX = 'toolbox';
 const PAGE_CAMO = 'camo';
 
 function pageIdForPath(pathname) {
@@ -46,6 +48,7 @@ function pageIdForPath(pathname) {
   if (pathname === '/neoflix' || pathname === '/publications' || pathname === '/contact') {
     return PAGE_BLOG;
   }
+  if (pathname === '/toolbox' || pathname.startsWith('/toolbox/')) return PAGE_TOOLBOX;
   return PAGE_CAMO;
 }
 
@@ -162,6 +165,7 @@ function BackdropRenderer({ state }) {
         >
           {page === PAGE_HOME && <HomeBackdrop state={state} />}
           {page === PAGE_BLOG && <BlogBackdrop state={state} />}
+          {page === PAGE_TOOLBOX && <ToolboxBackdrop state={state} />}
           {page === PAGE_CAMO && (
             <BackdropCell kind="camo" decodeState="idle" />
           )}
@@ -231,6 +235,33 @@ function HomeBackdrop({ state }) {
         );
       })}
     </>
+  );
+}
+
+/**
+ * Toolbox (docs) pages: one cell rendering the 6-video toolbox deck.
+ * topIdx comes from targets['toolbox'] (published by DocsPage from the
+ * current slug via toolboxIdxForSlug). When nothing is published, fade
+ * out — same pattern as the blog cell.
+ */
+function ToolboxBackdrop({ state }) {
+  const target = state.targets.toolbox;
+  const hasTarget = Boolean(target);
+  return (
+    <div
+      className="absolute inset-0"
+      style={{
+        opacity: hasTarget ? 1 : 0,
+        transition: 'opacity 0.35s ease-out',
+      }}
+    >
+      <BackdropCell
+        kind="video"
+        deck={target?.deck || []}
+        topIdx={target?.topIdx ?? 0}
+        decodeState={hasTarget ? 'active' : 'idle'}
+      />
+    </div>
   );
 }
 

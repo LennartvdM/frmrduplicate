@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTransitionState } from '../contexts/TransitionContext';
+import { getNavIndexForPath } from '../hooks/useNavIndex';
 
 /**
  * RouteSlider — scoped page-transition wrapper.
@@ -48,6 +49,14 @@ export default function RouteSlider({ children }) {
   const rendered =
     typeof children === 'function' ? children(location) : children;
 
+  // Key the animated wrapper on navbar slot, not the raw pathname. Pages
+  // that share a slot (e.g. every /toolbox/:slug route) thus share a key,
+  // so intra-slot navigation is a plain prop update on the child Routes
+  // rather than an AnimatePresence swap. That kills the stale-slide flash
+  // on sidebar clicks inside the toolbox and preserves per-route state
+  // (sidebar scroll position, open/collapsed sections, etc).
+  const slotKey = getNavIndexForPath(location.pathname);
+
   // Flip sliding on whenever a transition is starting. AnimatePresence's
   // `onExitComplete` flips it back off.
   useEffect(() => {
@@ -86,7 +95,7 @@ export default function RouteSlider({ children }) {
         onExitComplete={() => setIsSliding(false)}
       >
         <motion.div
-          key={location.pathname}
+          key={slotKey}
           custom={directionAtStart.current}
           variants={variants}
           initial="enter"

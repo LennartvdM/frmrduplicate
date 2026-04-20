@@ -129,12 +129,38 @@
   align-self: start;
   max-height: calc(100vh - var(--docs-top-offset) - 32px);
   overflow-y: auto;
-  padding: 28px 14px 56px 28px;
+  padding: 28px 14px 56px 20px;
   border-right: 1px solid var(--docs-border);
   font-size: 14px;
   color: var(--docs-text-light);
+  /* Highlighter is absolutely positioned inside this scroll container,
+     so it scrolls with the content. */
 }
-.docs-sidebar-section { margin-bottom: 18px; }
+
+/* Glassy pill that slides behind the active nav row. Position (top,
+   height) is set by DocsSidebar.jsx on every activeSlug change. */
+.docs-sidebar-highlighter {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 19px 8px 8px 19px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  box-shadow: 0 2px 8px rgba(var(--docs-navy-rgb), 0.06);
+  transition:
+    top 0.35s ease-in-out,
+    height 0.35s ease-in-out,
+    opacity 0.2s ease;
+}
+.docs-sidebar-highlighter.is-visible { opacity: 1; }
+
+.docs-sidebar-section { margin-bottom: 18px; position: relative; }
 .docs-sidebar-heading {
   font-size: 11px;
   font-weight: 700;
@@ -143,7 +169,7 @@
   color: var(--docs-navy);
   padding: 14px 12px 8px;
 }
-.docs-nav-list { list-style: none; padding: 0; margin: 0; }
+.docs-nav-list { list-style: none; padding: 0; margin: 0; position: relative; }
 .docs-nav-depth-1,
 .docs-nav-depth-2,
 .docs-nav-depth-3 {
@@ -151,30 +177,51 @@
   margin-left: 4px;
   border-left: 1px solid var(--docs-border);
 }
+
+/* Nav row sits above the highlighter so text/icons render on top of
+   the pill. Gap-filling ::after keeps hover continuous between rows. */
 .docs-nav-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 4px;
-  border-radius: 6px;
-  transition: background-color 0.15s;
+  border-radius: 8px;
+  position: relative;
+  z-index: 1;
 }
-.docs-nav-row:hover { background: var(--docs-sand-light); }
 .docs-nav-row a {
   flex: 1;
   display: block;
-  padding: 7px 10px;
+  padding: 8px 12px;
   color: var(--docs-text-light);
   text-decoration: none;
   font-weight: 400;
   line-height: 1.4;
-  border-radius: 6px;
+  border-radius: 8px;
+  transition: transform 0.6s ease-out, color 0.2s ease;
 }
+
+/* Gentle nudge on hover for non-active rows, matching vragenlijst's
+   `.index-item:not(.active):hover .label` treatment. */
+.docs-nav-row:not(.is-active):hover a {
+  color: var(--docs-navy);
+  transform: translateX(3px);
+  transition: transform 0.15s ease-out, color 0.15s ease;
+}
+
+/* Active row: the highlighter paints the background — the row itself
+   just upgrades the label weight and shifts it slightly left, echoing
+   the questionnaire's `.index-item.active .label` offset. */
 .docs-nav-row.is-active a {
   color: var(--docs-navy);
   font-weight: 600;
+  transform: translateX(-2px);
 }
-.docs-nav-row.is-active { background: var(--docs-sand); }
+.docs-nav-row.is-active:hover a {
+  transform: translateX(-4px);
+  transition: transform 0.15s ease-out;
+}
+
 .docs-nav-chevron {
   display: inline-flex;
   align-items: center;
@@ -187,9 +234,11 @@
   border-radius: 4px;
   color: var(--docs-text-muted);
   cursor: pointer;
-  transition: transform 0.15s, background-color 0.15s;
+  transition: transform 0.15s, background-color 0.15s, color 0.15s;
+  position: relative;
+  z-index: 2;
 }
-.docs-nav-chevron:hover { background: var(--docs-sand); color: var(--docs-navy); }
+.docs-nav-chevron:hover { background: rgba(var(--docs-navy-rgb), 0.06); color: var(--docs-navy); }
 .docs-nav-chevron.is-open { transform: rotate(90deg); }
 
 /* -------- Main content ------------------------------------------------- */

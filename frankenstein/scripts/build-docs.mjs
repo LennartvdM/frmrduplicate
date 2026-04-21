@@ -263,6 +263,17 @@ function resolveInternalLink(rawHref, fromRelPath, pageSlugs) {
 // a React component. We keep the shape close to mdast to minimize translation
 // cost but flatten text/inline details that React handles natively.
 
+function astNodeText(node) {
+  if (!node) return "";
+  if (typeof node.value === "string") return node.value;
+  if (Array.isArray(node.children)) return node.children.map(astNodeText).join("");
+  return "";
+}
+
+function normalizeHeadingText(text) {
+  return (text || "").replace(/\s+/g, " ").trim().toLowerCase();
+}
+
 function stripGitBookHeadingAnchor(text) {
   // "Heading <a href="#slug" id="slug"></a>" → "Heading"
   // Note: no .trim() — text nodes carry meaningful whitespace between inline
@@ -630,6 +641,20 @@ async function main() {
       });
     }
     if (!title) title = path.basename(relPath, ".md");
+
+    // GitBook pages conventionally start with an H1 matching the page title.
+    // We render the title separately, so drop that leading H1 to avoid showing
+    // it twice. Only strip when the text actually matches — a custom frontmatter
+    // title against a different body H1 should still render the body heading.
+    if (ast.children?.length) {
+      const first = ast.children[0];
+      if (first && first.type === "heading" && first.depth === 1) {
+        const firstText = astNodeText(first);
+        if (normalizeHeadingText(firstText) === normalizeHeadingText(title)) {
+          ast = { ...ast, children: ast.children.slice(1) };
+        }
+      }
+    }
 
     const slug = pageSlugFromRelPath(relPath);
     const outFile = slug === "" ? "_root.json" : `${slug.replace(/\//g, "__")}.json`;

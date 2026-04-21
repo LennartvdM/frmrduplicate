@@ -26,9 +26,10 @@ import { BackdropContext } from './context';
  * RouteSlider.
  *
  * Three render modes keyed by pathname:
- *   1. Home  — 3-cell y-stack, translated by homeScrollProgress.
+ *   1. Home  — 4-cell y-stack, translated by homeScrollProgress.
  *              Intro is camo; medical V2/V3 read their topIdx from
- *              targets['medical-v2'] / targets['medical-v3'].
+ *              targets['medical-v2'] / targets['medical-v3']; the
+ *              worldmap slide is camo (it paints its own background).
  *   2. Blog  — one cell backed by the union blog deck; topIdx from
  *              targets['blog'].
  *   3. Other — single camo cell (toolbox, unknown routes).
@@ -53,13 +54,14 @@ function pageIdForPath(pathname) {
 }
 
 // Home y-stack layout — must match Home.jsx's sections array order.
-// WorldMap is parked, so Home is 3 sections: intro + two medical variants.
-// Cell 0 is the intro (camo), cells 1-2 are medical variants that read
-// their topIdx from targets['medical-v{variant}'].
+// Home is 4 sections: intro (camo) + two medical variants (video) +
+// worldmap (camo). The worldmap slide paints its own gradient + SVG,
+// so its cell is a camo fill behind it (the video decks stay idle).
 const HOME_CELLS = [
   { kind: 'camo' },
   { kind: 'video', targetKey: 'medical-v2' },
   { kind: 'video', targetKey: 'medical-v3' },
+  { kind: 'camo' },
 ];
 
 const initialState = {
@@ -176,10 +178,10 @@ function BackdropRenderer({ state }) {
 }
 
 /**
- * Home: 3-cell y-stack. Translates with the Home scroll-snap
+ * Home: 4-cell y-stack. Translates with the Home scroll-snap
  * container's progress (published by ScrollSnap through
- * useHomeScrollProgress). Intro is camo; the two medical variants
- * read their topIdx from published targets.
+ * useHomeScrollProgress). Intro and worldmap are camo; the two
+ * medical variants read their topIdx from published targets.
  *
  * Decode budget during a vertical slide: floor(progress) and
  * ceil(progress) are both "on-screen" and allowed to decode — that

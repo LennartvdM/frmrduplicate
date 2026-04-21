@@ -15,8 +15,9 @@ function AppShell() {
   const isNeoflix = location.pathname === '/neoflix' || location.pathname.startsWith('/neoflix/');
   const isAdmin = location.pathname === '/admin';
   const isToolbox = location.pathname.startsWith('/toolbox');
+  const isMapEditor = location.pathname === '/map-editor';
   const showMapEditor = new URLSearchParams(window.location.search).get('editor') === 'true';
-  const hideNavbar = showMapEditor || isAdmin;
+  const hideNavbar = showMapEditor || isAdmin || isMapEditor;
 
   return (
     <div className={`min-h-screen ${isNeoflix || isAdmin || isToolbox ? '' : 'bg-[#F5F9FC]'}`}>

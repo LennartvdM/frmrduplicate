@@ -195,16 +195,24 @@
    vertical axis needs visual treatment — the horizontal grouping is
    already carried by the section heading and the inter-section gap.
 
-   So the wrappers are transparent and the hierarchy is expressed
-   row-wise as three distinct alpha bands:
-     depth-0: 0.22 (lightest cream ribbon)
-     depth-1: 0.46 (medium cream ribbon)
-     depth-2+: 0.7  (near-solid cream ribbon)
-   Every row has a wash so every item reads as its own segment. A 2px
-   vertical gap between rows lets the darker sidebar strip show through
-   between ribbons, so adjacent same-depth rows stay segmented rather
-   than fusing into one long band. Rows run edge-to-edge with no
-   border-radius so they read as flat horizontal ribbons, not pills. */
+   The hierarchy is keyed strictly on ontological depth — NOT on
+   foldout vs. leaf. A top-level foldout (e.g. "Quick-start") and a
+   top-level leaf (e.g. "Who is this for?") sit on the same band
+   because they're the same ontological level; it's the children that
+   expand out of a foldout which step down to the next band.
+
+     depth-0: 0.3   top-level items (foldouts + leaves alike)
+     depth-1: 0.55  items that expand out of a foldout
+     depth-2+: 0.8  deeper nesting if the tree ever gets there
+
+   Depth-0 is kept high enough (0.3) that it reads as its own ribbon
+   above the sidebar strip — if it's too close to the strip's 0.4
+   base, top-level rows read as background and the depth-0/depth-1
+   step registers as "foldout vs. leaf" instead of "level 1 vs.
+   level 2". Every row has a wash so every item reads as its own
+   segment. A 2px vertical gap between rows lets the darker sidebar
+   strip show through between ribbons, so adjacent same-depth rows
+   stay segmented rather than fusing into one long band. */
 .docs-sidebar-section {
   position: relative;
   margin: 0 0 18px;
@@ -227,12 +235,11 @@
   border-radius: 0;
 }
 
-/* Nav row sits above the highlighter so text/icons render on top of
-   the pill. Rows are flat, edge-to-edge ribbons — no border-radius,
-   no margin — with a depth-graded cream wash that gives the 3-layer
-   alpha hierarchy. Steps are large (0 → 0.35 → 0.7) so the levels
-   read as three distinct bands over the sidebar's translucent strip
-   rather than as a subtle progressive tint. */
+/* Nav row is a flat, edge-to-edge ribbon that sits above the
+   highlighter. Background is applied per-depth (not on the base
+   .docs-nav-row) so specificity makes the depth rule unambiguous —
+   there's no "all rows get X, then some depths override" cascade
+   that could leak when the tree shape changes. */
 .docs-nav-row {
   display: flex;
   align-items: center;
@@ -241,14 +248,16 @@
   position: relative;
   z-index: 1;
   margin-bottom: 2px;
-  background: rgba(250, 251, 252, 0.22);
+}
+.docs-nav-depth-0 > .docs-nav-item > .docs-nav-row {
+  background: rgba(250, 251, 252, 0.3);
 }
 .docs-nav-depth-1 > .docs-nav-item > .docs-nav-row {
-  background: rgba(250, 251, 252, 0.46);
+  background: rgba(250, 251, 252, 0.55);
 }
 .docs-nav-depth-2 > .docs-nav-item > .docs-nav-row,
 .docs-nav-depth-3 > .docs-nav-item > .docs-nav-row {
-  background: rgba(250, 251, 252, 0.7);
+  background: rgba(250, 251, 252, 0.8);
 }
 .docs-nav-row a {
   flex: 1;

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neoflix — World Map (minimal)</title>
+  <link rel="icon" type="image/svg+xml" href="/frankenstein/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Montserrat:wght@500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: #fff;
+      font-family: 'Inter', 'Inter Placeholder', sans-serif;
+      color: #383437;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Framer design tokens used by the nav */
+    :root {
+      --token-bar-green: rgb(114, 194, 194);
+      --token-text-dark: rgb(33, 33, 33);
+      --token-toolbox-bg: #383437;
+      --token-toolbox-fg: rgba(245, 249, 252, 0.9);
+    }
+
+    /* Navbar — transcribed from frmrduplicate index.page.css
+       (the .framer-13yn9ib / .framer-xvlq3 / .framer-rfpe3x / .framer-pi7ax rules) */
+    .wm-nav {
+      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(5px);
+      background-color: #ffffff80;
+      box-shadow: 0 2px 2px #0003;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      padding: 24px 40px 24px 24px;
+      width: 100%;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .wm-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      height: 40px;
+      width: 40px;
+      text-decoration: none;
+      flex: none;
+    }
+
+    .wm-logo svg {
+      width: 40px;
+      height: 40px;
+      display: block;
+    }
+
+    .wm-links {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 20px;
+      flex: none;
+    }
+
+    .wm-link {
+      font-family: 'Montserrat', 'Montserrat Placeholder', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      white-space: pre;
+      user-select: none;
+    }
+
+    .wm-link--neoflix     { color: var(--token-bar-green); }
+    .wm-link--publications { color: var(--token-text-dark); }
+
+    .wm-link--toolbox {
+      background-color: var(--token-toolbox-bg);
+      color: var(--token-toolbox-fg);
+      border-radius: 128px;
+      padding: 2px 11px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    /* World map slot — matches frmrduplicate's desktop worldmap slide
+       (DeviceSizeContainer height=1000, width=100vw) */
+    .wm-map-slot {
+      width: 100vw;
+      height: 1000px;
+      position: relative;
+      /* Fallback gradient while the Framer chunks are loading.
+         Taken from frmrduplicate's worldmap background. */
+      background: linear-gradient(180deg, rgb(211, 227, 227) 0%, rgb(82, 156, 156) 100%);
+      overflow: hidden;
+    }
+
+    .wm-map-slot > div { width: 100%; height: 100%; }
+
+    /* Tiny debug stripe so we can see the frame even before the map boots. */
+    .wm-debug-note {
+      position: fixed;
+      bottom: 12px;
+      left: 12px;
+      font: 500 11px/1 'Inter', sans-serif;
+      color: rgba(255,255,255,0.7);
+      background: rgba(0,0,0,0.35);
+      padding: 6px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="wm-nav" aria-label="Primary">
+    <a class="wm-logo" href="/" aria-label="Neoflix">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 406.548 428.788" aria-hidden="true">
+        <defs><style>.cls-1{fill:#48c2c5}</style></defs>
+        <g><g>
+          <path class="cls-1" d="M26.01 307.464c5.39 68.03 63.415 121.324 211.152 121.324-58.907 0-104.765-26.64-130.847-72.367-37.136-11.599-63.256-28.585-80.304-48.957ZM286.307 21.4C163.502-75.529-79.82 181.001 26.01 307.463 16.49 187.289 171.26 21.145 286.307 21.399Zm120.241 210.503c0-154.088-53.418-210.356-120.241-210.504 21.27 16.788 38.913 44.194 50.509 84.701 41.835 26.47 69.732 72.903 69.732 125.803Z"/>
+          <path class="cls-1" d="M82.183 255.473c0 39.41 8.53 73.592 24.132 100.947 34.05 10.634 77.32 16.753 131.42 16.753-63.114 0-100.797-43.992-100.797-117.674 0-64.553 53.329-117.069 118.875-117.069 52.924 0 95.98 42.787 95.98 95.376 0-52.356-5.454-94.437-14.977-127.706a149.154 149.154 0 0 0-80.013-23.285c-96.287 0-174.62 77.455-174.62 172.658Z"/>
+          <circle class="cls-1" cx="244.366" cy="248.571" r="43.387"/>
+        </g></g>
+      </svg>
+    </a>
+
+    <div class="wm-links">
+      <a class="wm-link wm-link--neoflix"      href="/frmrduplicate/neoflix.html">Neoflix</a>
+      <a class="wm-link wm-link--publications" href="/frmrduplicate/Publications.html">Publications</a>
+      <a class="wm-link wm-link--toolbox"      href="/frmrduplicate/toolbox.html">Toolbox</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="wm-map-slot">
+      <div id="worldmap-root"></div>
+    </section>
+  </main>
+
+  <div class="wm-debug-note">Step 1 — frmrduplicate stack · desktop variant JxNX4Rz95</div>
+
+  <script type="module">
+    import { renderMapInto } from './frmr-map/bootstrap.mjs';
+    const mount = document.getElementById('worldmap-root');
+    if (mount) {
+      try {
+        renderMapInto(mount);
+      } catch (err) {
+        console.error('[frmr-worldmap-only] failed to boot map chunks', err);
+      }
+    }
+  </script>
+
+</body>
+</html>

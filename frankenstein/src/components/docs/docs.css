@@ -53,6 +53,13 @@
   /* Outer stroke thickness — matches --outline-width in vragenlijst. */
   --docs-outline-width: 6px;
   --docs-radius: 16px;
+
+  /* Width of the transparent "moat" column between sidebar and main.
+     The shell's backdrop-filter still applies over it, so the video
+     reads as a frosted gutter — same treatment as the sidebar strip,
+     just without the cream wash. Nav-row outcrops peek into it. */
+  --docs-moat-width: 28px;
+  --docs-nav-outcrop: 20px;
 }
 
 /* -------- Outer shell -------------------------------------------------- */
@@ -71,23 +78,27 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* The shell is the "card". Interior is split: a translucent strip
-   under the sidebar column (videodeck shows through — the windowpane)
-   and a solid cream reading surface under the main column. The outer
-   frame is drawn as a solid box-shadow ring so it stays opaque over
-   video even though the sidebar area behind it is see-through. */
+/* The shell is the "card". Interior is split into three strips: a
+   translucent wash under the sidebar (videodeck shows through — the
+   windowpane), a fully transparent moat (video reads at full
+   intensity between the two panels), and a solid cream reading
+   surface under the main column. The outer frame is drawn as a
+   solid box-shadow ring so it stays opaque over video even though
+   the sidebar + moat areas behind it are see-through. */
 .docs-shell {
   position: relative;
   display: grid;
-  grid-template-columns: var(--docs-nav-width) minmax(0, 1fr);
+  grid-template-columns: var(--docs-nav-width) var(--docs-moat-width) minmax(0, 1fr);
   max-width: 1280px;
   margin: calc(var(--docs-top-offset) + 32px) auto 64px;
-  /* Hard stop between the two fills at the grid's column boundary. */
+  /* Hard stops between the three fills at each column boundary. */
   background: linear-gradient(
     to right,
     rgba(250, 251, 252, 0.4) 0,
     rgba(250, 251, 252, 0.4) var(--docs-nav-width),
-    var(--docs-cream) var(--docs-nav-width),
+    transparent var(--docs-nav-width),
+    transparent calc(var(--docs-nav-width) + var(--docs-moat-width)),
+    var(--docs-cream) calc(var(--docs-nav-width) + var(--docs-moat-width)),
     var(--docs-cream) 100%
   );
   /* Blur only applies over the translucent strip — the solid cream half
@@ -135,8 +146,9 @@
 
 /* -------- Sidebar ------------------------------------------------------ */
 /* Outer sidebar: sticky positioning + overflow: visible so the pill can
-   bleed past the card's left edge into the video gutter. The actual
-   scrollable viewport is the inner .docs-sidebar-scroll. */
+   bleed past the sidebar column's right edge into the moat between
+   sidebar and main. The actual scrollable viewport is the inner
+   .docs-sidebar-scroll. */
 .docs-sidebar {
   position: sticky;
   top: calc(var(--docs-top-offset) + 16px);
@@ -160,22 +172,26 @@
 }
 
 /* Glassy pill that slides behind the active nav row. Lives in the outer
-   sidebar (not the scroll viewport) so its -20px outcrop can peek past
-   the sidebar/card edge. Position (top, height) is set by DocsSidebar.jsx
-   on activeSlug change AND on scroll events, using viewport-relative
-   measurements so page scroll + inner scroll both track correctly. */
+   sidebar (not the scroll viewport) so its rightward outcrop can peek
+   past the sidebar column's right edge into the moat — matching the
+   sketch where the active row appears to poke through the gutter
+   between sidebar and reading surface. Position (top, height) is set
+   by DocsSidebar.jsx on activeSlug change AND on scroll events, using
+   viewport-relative measurements so page scroll + inner scroll both
+   track correctly. */
 .docs-sidebar-highlighter {
   position: absolute;
-  left: -20px;
-  right: 8px;
+  left: 8px;
+  right: calc(var(--docs-nav-outcrop) * -1);
   top: 0;
   height: 0;
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  /* Rounded hard on the left (for the outcrop cap), gentler on the
-     right. Same 19/8/8/19 shape as vragenlijst's .mobile-highlighter. */
-  border-radius: 19px 8px 8px 19px;
+  /* Rounded hard on the right (for the outcrop cap that pokes into
+     the moat), gentler on the left. Mirrors the 19/8/8/19 shape the
+     vragenlijst `.mobile-highlighter` uses, flipped horizontally. */
+  border-radius: 8px 19px 19px 8px;
   pointer-events: none;
   z-index: 0;
   opacity: 0;

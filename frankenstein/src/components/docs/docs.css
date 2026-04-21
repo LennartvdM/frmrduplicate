@@ -57,8 +57,10 @@
   /* Width of the transparent "moat" column between sidebar and main.
      The shell's backdrop-filter still applies over it, so the video
      reads as a frosted gutter — same treatment as the sidebar strip,
-     just without the cream wash. Nav-row outcrops peek into it. */
-  --docs-moat-width: 28px;
+     just without the cream wash. Nav-row outcrops peek into it by
+     --docs-nav-outcrop; the remaining width is "pure" moat visible
+     between the outcrop cap and the cream column's left edge. */
+  --docs-moat-width: 32px;
   --docs-nav-outcrop: 20px;
 }
 
@@ -88,10 +90,18 @@
 .docs-shell {
   position: relative;
   display: grid;
-  grid-template-columns: var(--docs-nav-width) var(--docs-moat-width) minmax(0, 1fr);
+  /* Two columns with a transparent gap between them. Using column-gap
+     (instead of a third grid track) keeps the child order aligned:
+     <DocsSidebar/> maps to column 1, <main/> maps to column 2 without
+     needing explicit grid-column placement on either. */
+  grid-template-columns: var(--docs-nav-width) minmax(0, 1fr);
+  column-gap: var(--docs-moat-width);
   max-width: 1280px;
   margin: calc(var(--docs-top-offset) + 32px) auto 64px;
-  /* Hard stops between the three fills at each column boundary. */
+  /* Hard stops between the three fills at each column boundary. The
+     gradient is painted across the whole shell width (including the
+     gap region), so the middle transparent band lines up with the
+     column-gap and reads as the moat. */
   background: linear-gradient(
     to right,
     rgba(250, 251, 252, 0.4) 0,
@@ -163,13 +173,25 @@
 }
 .docs-sidebar-scroll {
   height: 100%;
+  /* Widened by the outcrop amount so child ribbons can extend past
+     the sidebar column's right edge into the moat without being
+     clipped. overflow-y: auto clips overflow-x at this (wider) box's
+     right edge, which is now inside the moat — so the outcrops are
+     visible, but anything that tries to extend further still clips
+     cleanly at the cream column's left edge. */
+  width: calc(100% + var(--docs-nav-outcrop));
   overflow-y: auto;
   overflow-x: visible;
+  /* Hide the scrollbar so it doesn't float inside the moat. Content
+     is still scrollable via wheel/touch/keyboard. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   /* No horizontal padding: rows span the sidebar strip edge-to-edge
      as flat ribbons. Text inset is carried by the link's own padding,
      which leaves enough room for the active-label translateX shift. */
   padding: 28px 0 56px 0;
 }
+.docs-sidebar-scroll::-webkit-scrollbar { display: none; }
 
 /* Glassy pill that slides behind the active nav row. Lives in the outer
    sidebar (not the scroll viewport) so its rightward outcrop can peek
@@ -264,6 +286,12 @@
   position: relative;
   z-index: 1;
   margin-bottom: 2px;
+  /* The scroll container is widened by --docs-nav-outcrop, so each
+     row's right edge lands inside the moat. Rounded right corners
+     turn that overhang into a rounded "outcrop" cap — a softer,
+     row-level echo of the highlighter pill's poke into the gutter. */
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 .docs-nav-depth-0 > .docs-nav-item > .docs-nav-row {
   background: rgba(250, 251, 252, 0.3);
@@ -324,7 +352,10 @@
   justify-content: center;
   width: 26px;
   height: 26px;
-  margin-right: 4px;
+  /* Push the chevron in by the outcrop amount so it stays pinned
+     inside the sidebar column rather than floating out in the moat
+     where the row's rounded cap lives. */
+  margin-right: calc(var(--docs-nav-outcrop) + 4px);
   background: transparent;
   border: none;
   border-radius: 4px;

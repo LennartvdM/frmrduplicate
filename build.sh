@@ -43,5 +43,12 @@ cp -r neoflixexporttest "$OUT/neoflixexporttest"
 # Remove .git artifacts and node_modules if any snuck in
 rm -rf "$OUT/neoflixexporttest/.git" "$OUT/neoflixexporttest/node_modules"
 
+# 6. Copy frmr-worldmap-only (static HTML + compiled Framer chunks).
+#    Step 1 of porting the worldmap into Frankenstein: a stripped-down
+#    page that boots the frmrduplicate MapComponent with its own bundled
+#    React 18 + Framer SDK, alongside a hand-built static navbar.
+echo "--- Copying frmr-worldmap-only ---"
+cp -r frmr-worldmap-only "$OUT/frmr-worldmap-only"
+
 echo "=== Build complete → $OUT/ ==="
 ls -la "$OUT/"

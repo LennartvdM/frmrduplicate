@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Plus, Copy, Upload, Trash2, Crosshair, Move3D, Target } from 'lucide-react';
+import { Plus, Copy, Upload, Download, Trash2, Crosshair, Move3D, Target } from 'lucide-react';
 import { cities as seedCities, zoomLevels as seedZoomLevels } from './mapLocations';
 
 /**
@@ -67,14 +67,6 @@ function roundCoord(n) {
 }
 
 export default function WorldMapEditor() {
-  const [gateOpen, setGateOpen] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const editor = new URLSearchParams(window.location.search).get('editor') === 'true';
-    return isLocalhost || editor;
-  });
-  const [accessCode, setAccessCode] = useState('');
-
   const [cities, setCities] = useState(loadCities);
   const [viewBox, setViewBox] = useState(fullViewBox);
   const [cursorSvg, setCursorSvg] = useState(null);
@@ -87,14 +79,12 @@ export default function WorldMapEditor() {
   const dragRef = useRef(null);
 
   useEffect(() => {
-    if (!gateOpen) return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(cities));
-  }, [cities, gateOpen]);
+  }, [cities]);
 
   useEffect(() => {
-    if (!gateOpen) return;
     localStorage.setItem(ZOOM_STORAGE_KEY, JSON.stringify(zoomLevels));
-  }, [zoomLevels, gateOpen]);
+  }, [zoomLevels]);
 
   useEffect(() => {
     if (!toast) return;
@@ -261,89 +251,66 @@ export default function WorldMapEditor() {
     }));
   };
 
-  const exportCitiesSource = useMemo(() => () => {
-    const citiesOut = JSON.stringify(cities, null, 2);
+  // Editor is a one-way street: it only emits JSON to the user's clipboard
+  // or a file download. Nothing touches the server or the repo. Whoever
+  // reaches the editor can tinker with their own local state, copy JSON,
+  // and walk away — the deployed site is never modified.
+  const exportJson = useMemo(() => () => {
     const pairs = cities.map((c, i) => ({
       id: i + 1,
       name: c.name,
       out: { x: c.x, y: c.y, zoom: zoomLevels.out },
       in: { x: c.x, y: c.y, zoom: zoomLevels.in },
     }));
-    const pairsOut = JSON.stringify(pairs, null, 2);
-    return (
-`// Paste into src/components/WorldMapEditor/mapLocations.js
-export const cities = ${citiesOut};
-
-export const zoomLevels = ${JSON.stringify(zoomLevels, null, 2)};
-
-// Drop-in for src/components/sections/worldmap/WorldMapSection.jsx locationPairs:
-export const locationPairs = ${pairsOut};
-`
+    return JSON.stringify(
+      { cities, zoomLevels, locationPairs: pairs },
+      null,
+      2
     );
   }, [cities, zoomLevels]);
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(exportCitiesSource());
-      setToast({ kind: 'ok', text: 'Copied to clipboard' });
+      await navigator.clipboard.writeText(exportJson());
+      setToast({ kind: 'ok', text: 'JSON copied to clipboard' });
     } catch {
       setToast({ kind: 'err', text: 'Clipboard write failed' });
     }
   };
 
+  const handleDownload = () => {
+    const blob = new Blob([exportJson()], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `worldmap-cities-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setToast({ kind: 'ok', text: 'JSON downloaded' });
+  };
+
   const handleImport = async () => {
     try {
       const txt = await navigator.clipboard.readText();
-      const match = txt.match(/export const cities\s*=\s*(\[[\s\S]*?\]);/);
-      if (!match) {
-        setToast({ kind: 'err', text: 'No cities array found in clipboard' });
+      const parsed = JSON.parse(txt);
+      const nextCities = Array.isArray(parsed)
+        ? parsed
+        : Array.isArray(parsed?.cities)
+          ? parsed.cities
+          : null;
+      if (!nextCities) {
+        setToast({ kind: 'err', text: 'Clipboard has no cities array' });
         return;
       }
-      const parsed = JSON.parse(match[1]);
-      setCities(parsed);
-      setToast({ kind: 'ok', text: `Imported ${parsed.length} cities` });
+      setCities(nextCities);
+      if (parsed?.zoomLevels) setZoomLevels(parsed.zoomLevels);
+      setToast({ kind: 'ok', text: `Imported ${nextCities.length} cities` });
     } catch {
-      setToast({ kind: 'err', text: 'Import failed — check clipboard format' });
+      setToast({ kind: 'err', text: 'Import failed — clipboard is not valid JSON' });
     }
   };
-
-  if (!gateOpen) {
-    return (
-      <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-50">
-        <div className="bg-white text-gray-900 p-8 rounded-lg shadow-xl max-w-md w-full mx-4">
-          <h2 className="text-2xl font-bold mb-2">Map Editor Access</h2>
-          <p className="mb-4 text-gray-600">Enter the access code to use the editor.</p>
-          <input
-            type="password"
-            value={accessCode}
-            onChange={(e) => setAccessCode(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg mb-4"
-            placeholder="Access code"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                if (accessCode === 'map2024') setGateOpen(true);
-                else alert('Invalid access code');
-              }
-            }}
-          />
-          <div className="flex gap-2">
-            <button
-              onClick={() => (accessCode === 'map2024' ? setGateOpen(true) : alert('Invalid access code'))}
-              className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-            >
-              Enter
-            </button>
-            <button
-              onClick={() => { window.location.href = '/'; }}
-              className="flex-1 bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="absolute inset-0 bg-gray-900 text-gray-100 flex flex-col overflow-hidden">
@@ -353,6 +320,7 @@ export const locationPairs = ${pairsOut};
         setZoomLevels={setZoomLevels}
         onFit={() => setViewBox(fullViewBox())}
         onCopy={handleCopy}
+        onDownload={handleDownload}
         onImport={handleImport}
       />
 
@@ -437,7 +405,7 @@ export const locationPairs = ${pairsOut};
   );
 }
 
-function Toolbar({ cityCount, zoomLevels, setZoomLevels, onFit, onCopy, onImport }) {
+function Toolbar({ cityCount, zoomLevels, setZoomLevels, onFit, onCopy, onDownload, onImport }) {
   return (
     <div className="flex items-center gap-3 px-4 py-2 bg-gray-900 border-b border-gray-800 text-sm">
       <div className="flex items-center gap-2">
@@ -477,8 +445,11 @@ function Toolbar({ cityCount, zoomLevels, setZoomLevels, onFit, onCopy, onImport
       <button onClick={onImport} className="flex items-center gap-1 px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded">
         <Upload size={16} /> Import
       </button>
-      <button onClick={onCopy} className="flex items-center gap-1 px-3 py-1 bg-sky-600 hover:bg-sky-500 rounded">
-        <Copy size={16} /> Copy export
+      <button onClick={onCopy} className="flex items-center gap-1 px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded">
+        <Copy size={16} /> Copy JSON
+      </button>
+      <button onClick={onDownload} className="flex items-center gap-1 px-3 py-1 bg-sky-600 hover:bg-sky-500 rounded">
+        <Download size={16} /> Download
       </button>
     </div>
   );

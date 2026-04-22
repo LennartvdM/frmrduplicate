@@ -1,30 +1,37 @@
 # World Map Editor
 
-Click-to-place editor for city coordinates on the world map. Lives at
-`/map-editor`.
+Click-to-place editor for city coordinates on the world map. Mounted on
+slide 4 of the home page and at the standalone `/map-editor` route.
 
-## Access
+## One-way design
 
-- Localhost: unrestricted.
-- Live site: append `?editor=true` or enter access code `map2024`.
+The editor is safe by construction: it **never writes to the server or
+the repo**. Everything it produces is local — state in `localStorage`,
+JSON on the clipboard, or a JSON file download. You copy the result and
+commit it to the repo yourself. Anyone who reaches the editor can
+tinker with their own local state and walk away. The deployed site is
+untouchable.
+
+There is no access code, no login, no API.
 
 ## Workflow
 
-1. Navigate to `/map-editor`.
-2. **Pan / zoom** the editor view to the region you want to work in —
-   mouse wheel zooms, drag on empty space pans. This view is purely for
-   your cursor convenience; it's never persisted and doesn't affect the
-   runtime animation.
+1. Open slide 4 (scroll-snap section on `/`) or `/map-editor` directly.
+2. **Pan / zoom** to the region you want to work in — mouse wheel zooms
+   around the cursor, drag on empty space pans. The editor view is
+   purely for your cursor convenience; it's never persisted and doesn't
+   affect the runtime animation.
 3. **Click the map** to drop a city marker at the cursor. The sidebar
    gets a new row with editable name + optional `lat` / `lon` fields.
-4. **Drag a marker** to nudge its position; right-click or the sidebar
-   trash button removes it.
-5. **Copy export** to push the city array + `locationPairs` drop-in code
-   to your clipboard.
+4. **Drag a marker** to nudge its position; the sidebar trash button
+   removes it.
+5. **Copy JSON** or **Download** to get the data. Paste / save into the
+   repo and import where it's needed.
 
-State is auto-saved to `localStorage` (keys `worldMapEditor.cities.v2`
-and `worldMapEditor.zoomLevels.v2`), so refresh won't lose work. "Import"
-reads an export string back from the clipboard.
+Editor state auto-saves to `localStorage` (keys
+`worldMapEditor.cities.v2` and `worldMapEditor.zoomLevels.v2`) so
+refresh is safe. "Import" reads a JSON export back from the clipboard
+to resume work.
 
 ## Data shape
 
@@ -40,13 +47,21 @@ reads an export string back from the clipboard.
 
 ## Export format
 
-"Copy export" writes three artefacts at once:
+A single JSON document with three fields:
 
-- `cities` — the raw array (paste into `mapLocations.js`).
+```json
+{
+  "cities":       [ { "id": "...", "name": "...", "x": 0, "y": 0, "lat": null, "lon": null } ],
+  "zoomLevels":   { "out": 1, "in": 5 },
+  "locationPairs":[ { "id": 1, "name": "...", "out": { "x": 0, "y": 0, "zoom": 1 }, "in": { "x": 0, "y": 0, "zoom": 5 } } ]
+}
+```
+
+- `cities` — the raw array for future calibration work.
 - `zoomLevels` — the current `{ in, out }` pair.
 - `locationPairs` — drop-in for
-  `sections/worldmap/WorldMapSection.jsx`'s existing shape (same `(x, y)`
-  for both `in` and `out`, zooms taken from `zoomLevels`).
+  `sections/worldmap/WorldMapSection.jsx`'s existing shape (same
+  `(x, y)` for both `in` and `out`, zooms taken from `zoomLevels`).
 
 ## File structure
 

@@ -32,6 +32,10 @@ const MOVE_THRESHOLD_PX = 3;
 const STORAGE_KEY = 'worldMapEditor.cities.v2';
 const ZOOM_STORAGE_KEY = 'worldMapEditor.zoomLevels.v2';
 
+// Prefix with Vite's base URL so the map loads correctly whether the site
+// deploys at `/` or at a subpath (e.g. `/bashtest/`).
+const WORLDMAP_URL = `${(import.meta.env.BASE_URL || '/').replace(/\/+$/, '')}/worldmap.svg`;
+
 const fullViewBox = () => ({ x: 0, y: 0, w: SVG_WIDTH, h: SVG_HEIGHT });
 
 function loadCities() {
@@ -305,7 +309,7 @@ export const locationPairs = ${pairsOut};
 
   if (!gateOpen) {
     return (
-      <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+      <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-50">
         <div className="bg-white text-gray-900 p-8 rounded-lg shadow-xl max-w-md w-full mx-4">
           <h2 className="text-2xl font-bold mb-2">Map Editor Access</h2>
           <p className="mb-4 text-gray-600">Enter the access code to use the editor.</p>
@@ -342,7 +346,7 @@ export const locationPairs = ${pairsOut};
   }
 
   return (
-    <div className="fixed inset-0 bg-gray-900 text-gray-100 flex flex-col overflow-hidden">
+    <div className="absolute inset-0 bg-gray-900 text-gray-100 flex flex-col overflow-hidden">
       <Toolbar
         cityCount={cities.length}
         zoomLevels={zoomLevels}
@@ -373,15 +377,16 @@ export const locationPairs = ${pairsOut};
             onMouseDown={(e) => { if (e.button === 0) beginPan(e); }}
           >
             <rect x={0} y={0} width={SVG_WIDTH} height={SVG_HEIGHT} fill="#0f172a" />
-            <image
-              href="/worldmap.svg"
-              x={0}
-              y={0}
-              width={SVG_WIDTH}
-              height={SVG_HEIGHT}
-              preserveAspectRatio="xMidYMid meet"
-              style={{ pointerEvents: 'none' }}
-            />
+            <foreignObject x={0} y={0} width={SVG_WIDTH} height={SVG_HEIGHT} style={{ pointerEvents: 'none' }}>
+              <img
+                src={WORLDMAP_URL}
+                alt=""
+                width={SVG_WIDTH}
+                height={SVG_HEIGHT}
+                draggable={false}
+                style={{ display: 'block', width: '100%', height: '100%', pointerEvents: 'none', userSelect: 'none' }}
+              />
+            </foreignObject>
 
             {cities.map((c) => {
               const isSelected = c.id === selectedId;

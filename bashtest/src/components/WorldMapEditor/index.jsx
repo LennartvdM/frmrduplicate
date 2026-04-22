@@ -1,28 +1,36 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Plus, Copy, Upload, Download, Trash2, Crosshair, Move3D, Target } from 'lucide-react';
+import { Plus, Copy, Upload, Download, Trash2, Crosshair, Move3D, Target, Play, Square } from 'lucide-react';
 import { cities as seedCities, zoomLevels as seedZoomLevels } from './mapLocations';
 
 /**
- * Click-to-place world-map editor.
+ * Click-to-place world-map editor + preview player.
  *
  * View controls (editor-only, never persisted):
  *   - Mouse wheel        → zoom the editor viewBox around the cursor.
  *   - Drag on empty map  → pan the editor viewBox.
  *   - "Fit" button       → reset to the full 1440×700 map.
  *
- * City operations (persisted to localStorage, exportable):
+ * City operations:
  *   - Click on empty map → place a new city at cursor position.
  *   - Drag a city        → nudge its position.
- *   - Click a city       → select it (sidebar scrolls to it).
- *   - Sidebar X / Delete → remove.
+ *   - Click a city       → select it.
+ *   - Sidebar trash      → remove.
  *
- * Data shape captured per city: { id, name, x, y, lat, lon }. (x, y) are
- * in SVG viewBox units (1440×700). lat/lon are optional — filled only for
- * calibration anchors so a later pass can fit a lat/lon → SVG transform
- * and auto-place additional cities.
+ * Preview mode:
+ *   - "Play" steps through the cities with the same two-phase animation
+ *     the runtime will use: pan + zoom-out to the next location, then
+ *     zoom in, dwell, repeat. The dot strip under the map highlights
+ *     the current city; click any dot to jump there.
+ *   - Any manual interaction (wheel / pan / drag) stops the preview.
  *
- * Access gate: localhost OR `?editor=true`. The access-code fallback from
- * the previous drag-based editor is preserved.
+ * One-way design: the editor only writes to localStorage, the clipboard,
+ * or a JSON file download. Nothing is sent to the server, nothing
+ * modifies the repo. Export payload is a single JSON document with
+ * { cities, zoomLevels, locationPairs }.
+ *
+ * Data shape per city: { id, name, x, y, lat, lon }. (x, y) in SVG
+ * viewBox units (1440 × 700). lat/lon are optional — filled only for
+ * calibration anchors so a later pass can fit lat/lon → (x, y).
  */
 
 const SVG_WIDTH = 1440;
@@ -32,11 +40,27 @@ const MOVE_THRESHOLD_PX = 3;
 const STORAGE_KEY = 'worldMapEditor.cities.v2';
 const ZOOM_STORAGE_KEY = 'worldMapEditor.zoomLevels.v2';
 
+// Preview animation constants — the same two-phase pan+zoom pattern the
+// runtime worldmap uses. pan_ms covers "zoom out while moving to next
+// location"; zoom_in_ms covers "zoom in at destination"; dwell_ms is the
+// pause before moving on.
+const PREVIEW_PAN_MS = 1500;
+const PREVIEW_ZOOM_IN_MS = 1000;
+const PREVIEW_DWELL_MS = 2000;
+
+// Matches the teal gradient used by the runtime worldmap section and
+// /frmrduplicate/ — land masses from the SVG render white on top of this.
+const MAP_GRADIENT = 'linear-gradient(to bottom, #D3E3E3, #529C9C)';
+
 // Prefix with Vite's base URL so the map loads correctly whether the site
 // deploys at `/` or at a subpath (e.g. `/bashtest/`).
 const WORLDMAP_URL = `${(import.meta.env.BASE_URL || '/').replace(/\/+$/, '')}/worldmap.svg`;
 
 const fullViewBox = () => ({ x: 0, y: 0, w: SVG_WIDTH, h: SVG_HEIGHT });
+
+function easeInOutCubic(t) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
 
 function loadCities() {
   try {
@@ -73,10 +97,13 @@ export default function WorldMapEditor() {
   const [selectedId, setSelectedId] = useState(null);
   const [zoomLevels, setZoomLevels] = useState(loadZoom);
   const [toast, setToast] = useState(null);
+  const [previewIdx, setPreviewIdx] = useState(null);
 
   const svgRef = useRef(null);
   const panRef = useRef(null);
   const dragRef = useRef(null);
+  const previewRunRef = useRef(null);
+  const previewTimerRef = useRef(null);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(cities));
@@ -106,6 +133,7 @@ export default function WorldMapEditor() {
 
   const handleWheel = useCallback((e) => {
     e.preventDefault();
+    if (previewRunRef.current) { previewRunRef.current.cancelled = true; setPreviewIdx(null); }
     const factor = Math.exp(e.deltaY * 0.0015);
     const at = screenToSvg(e.clientX, e.clientY);
     if (!at) return;
@@ -130,6 +158,7 @@ export default function WorldMapEditor() {
   }, [handleWheel]);
 
   const beginPan = useCallback((e) => {
+    if (previewRunRef.current) { previewRunRef.current.cancelled = true; setPreviewIdx(null); }
     panRef.current = {
       startClient: { x: e.clientX, y: e.clientY },
       startVB: { ...viewBox },
@@ -139,6 +168,7 @@ export default function WorldMapEditor() {
 
   const beginCityDrag = useCallback((e, city) => {
     e.stopPropagation();
+    if (previewRunRef.current) { previewRunRef.current.cancelled = true; setPreviewIdx(null); }
     setSelectedId(city.id);
     dragRef.current = {
       id: city.id,
@@ -251,6 +281,105 @@ export default function WorldMapEditor() {
     }));
   };
 
+  // Preview: scripted two-phase animation through the city list. Each
+  // iteration is (pan + zoom-out to next city) → (zoom-in) → (dwell).
+  // Any manual interaction (wheel / pan / drag) stops the run.
+  const stopPreview = useCallback(() => {
+    if (previewRunRef.current) previewRunRef.current.cancelled = true;
+    if (previewTimerRef.current) {
+      clearTimeout(previewTimerRef.current);
+      previewTimerRef.current = null;
+    }
+    previewRunRef.current = null;
+    setPreviewIdx(null);
+  }, []);
+
+  const tweenViewBox = useCallback((from, to, durationMs, run) => (
+    new Promise((resolve) => {
+      const start = performance.now();
+      const step = (now) => {
+        if (run.cancelled) { resolve(false); return; }
+        const t = Math.min(1, (now - start) / durationMs);
+        const e = easeInOutCubic(t);
+        setViewBox({
+          x: from.x + (to.x - from.x) * e,
+          y: from.y + (to.y - from.y) * e,
+          w: from.w + (to.w - from.w) * e,
+          h: from.h + (to.h - from.h) * e,
+        });
+        if (t < 1) requestAnimationFrame(step);
+        else resolve(true);
+      };
+      requestAnimationFrame(step);
+    })
+  ), []);
+
+  const sleepPreview = useCallback((ms, run) => (
+    new Promise((resolve) => {
+      previewTimerRef.current = setTimeout(() => {
+        previewTimerRef.current = null;
+        resolve(!run.cancelled);
+      }, ms);
+    })
+  ), []);
+
+  const runPreviewFrom = useCallback(async (startIdx, startVB) => {
+    if (cities.length === 0) return;
+    const run = { cancelled: false };
+    previewRunRef.current = run;
+
+    let idx = startIdx;
+    let currentVB = startVB;
+    setPreviewIdx(idx);
+
+    while (!run.cancelled) {
+      const city = cities[idx];
+      const w = SVG_WIDTH / zoomLevels.out;
+      const outVB = clampViewBox({
+        x: city.x - w / 2,
+        y: city.y - (w * SVG_HEIGHT / SVG_WIDTH) / 2,
+        w,
+        h: w * SVG_HEIGHT / SVG_WIDTH,
+      });
+      const iw = SVG_WIDTH / zoomLevels.in;
+      const inVB = clampViewBox({
+        x: city.x - iw / 2,
+        y: city.y - (iw * SVG_HEIGHT / SVG_WIDTH) / 2,
+        w: iw,
+        h: iw * SVG_HEIGHT / SVG_WIDTH,
+      });
+
+      if (!(await tweenViewBox(currentVB, outVB, PREVIEW_PAN_MS, run))) return;
+      if (!(await tweenViewBox(outVB, inVB, PREVIEW_ZOOM_IN_MS, run))) return;
+      currentVB = inVB;
+      if (!(await sleepPreview(PREVIEW_DWELL_MS, run))) return;
+
+      idx = (idx + 1) % cities.length;
+      if (!run.cancelled) setPreviewIdx(idx);
+    }
+  }, [cities, zoomLevels, tweenViewBox, sleepPreview]);
+
+  const startPreview = useCallback(() => {
+    if (cities.length === 0) return;
+    stopPreview();
+    runPreviewFrom(0, viewBox);
+  }, [cities.length, stopPreview, runPreviewFrom, viewBox]);
+
+  const jumpToCity = useCallback((idx) => {
+    const wasPlaying = previewRunRef.current && !previewRunRef.current.cancelled;
+    stopPreview();
+    if (wasPlaying) {
+      runPreviewFrom(idx, viewBox);
+    } else {
+      centerOn(cities[idx]);
+    }
+  }, [cities, stopPreview, runPreviewFrom, viewBox]);
+
+  useEffect(() => () => {
+    if (previewRunRef.current) previewRunRef.current.cancelled = true;
+    if (previewTimerRef.current) clearTimeout(previewTimerRef.current);
+  }, []);
+
   // Editor is a one-way street: it only emits JSON to the user's clipboard
   // or a file download. Nothing touches the server or the repo. Whoever
   // reaches the editor can tinker with their own local state, copy JSON,
@@ -312,6 +441,8 @@ export default function WorldMapEditor() {
     }
   };
 
+  const playing = previewIdx !== null;
+
   return (
     <div className="absolute inset-0 bg-gray-900 text-gray-100 flex flex-col overflow-hidden">
       <Toolbar
@@ -322,12 +453,17 @@ export default function WorldMapEditor() {
         onCopy={handleCopy}
         onDownload={handleDownload}
         onImport={handleImport}
+        onPlay={startPreview}
+        onStop={stopPreview}
+        playing={playing}
+        disablePlay={cities.length === 0}
       />
 
       <div className="flex-1 flex min-h-0">
         <Sidebar
           cities={cities}
           selectedId={selectedId}
+          previewIdx={previewIdx}
           onSelect={centerOn}
           onRename={renameCity}
           onLat={setCityLat}
@@ -335,7 +471,7 @@ export default function WorldMapEditor() {
           onRemove={removeCity}
         />
 
-        <div className="relative flex-1 bg-gray-800 min-w-0">
+        <div className="relative flex-1 min-w-0" style={{ background: MAP_GRADIENT }}>
           <svg
             ref={svgRef}
             viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`}
@@ -344,7 +480,6 @@ export default function WorldMapEditor() {
             style={{ touchAction: 'none' }}
             onMouseDown={(e) => { if (e.button === 0) beginPan(e); }}
           >
-            <rect x={0} y={0} width={SVG_WIDTH} height={SVG_HEIGHT} fill="#0f172a" />
             <foreignObject x={0} y={0} width={SVG_WIDTH} height={SVG_HEIGHT} style={{ pointerEvents: 'none' }}>
               <img
                 src={WORLDMAP_URL}
@@ -356,30 +491,34 @@ export default function WorldMapEditor() {
               />
             </foreignObject>
 
-            {cities.map((c) => {
+            {cities.map((c, i) => {
               const isSelected = c.id === selectedId;
-              const r = Math.max(3, 6 * (SVG_WIDTH / viewBox.w) ** 0.5);
+              const isPlaying = i === previewIdx;
+              // Scale markers with zoom so a dot stays ~constant screen size
+              // instead of covering half of Europe when zoomed in.
+              const r = Math.max(1.2, 9 * viewBox.w / SVG_WIDTH);
               return (
                 <g key={c.id} style={{ cursor: 'grab' }}>
                   <circle
                     cx={c.x}
                     cy={c.y}
                     r={r}
-                    fill={isSelected ? '#facc15' : '#38bdf8'}
-                    stroke="#0f172a"
-                    strokeWidth={r * 0.25}
+                    fill={isPlaying ? '#f59e0b' : isSelected ? '#facc15' : '#0c4a6e'}
+                    stroke="#ffffff"
+                    strokeWidth={r * 0.35}
                     onMouseDown={(e) => beginCityDrag(e, c)}
                   />
                   <text
-                    x={c.x + r * 1.2}
-                    y={c.y + r * 0.4}
-                    fill={isSelected ? '#facc15' : '#e5e7eb'}
-                    fontSize={Math.max(9, r * 1.8)}
+                    x={c.x + r * 1.4}
+                    y={c.y + r * 0.45}
+                    fill={isPlaying || isSelected ? '#7c2d12' : '#0f172a'}
+                    fontSize={Math.max(8, r * 2)}
                     fontFamily="system-ui, sans-serif"
-                    fontWeight={600}
+                    fontWeight={700}
                     style={{ pointerEvents: 'none', paintOrder: 'stroke' }}
-                    stroke="#0f172a"
-                    strokeWidth={r * 0.45}
+                    stroke="#ffffff"
+                    strokeWidth={r * 0.5}
+                    strokeLinejoin="round"
                   >
                     {c.name}
                   </text>
@@ -387,6 +526,24 @@ export default function WorldMapEditor() {
               );
             })}
           </svg>
+
+          {cities.length > 0 && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-black/35 backdrop-blur-sm rounded-full px-3 py-2">
+              {cities.map((c, i) => (
+                <button
+                  key={c.id}
+                  onClick={() => jumpToCity(i)}
+                  className={`rounded-full transition-all ${
+                    i === previewIdx
+                      ? 'w-3 h-3 bg-amber-300 ring-2 ring-amber-100'
+                      : 'w-2 h-2 bg-white/70 hover:bg-white'
+                  }`}
+                  title={c.name}
+                  aria-label={c.name}
+                />
+              ))}
+            </div>
+          )}
 
           <ReadoutPanel cursor={cursorSvg} viewBox={viewBox} />
 
@@ -405,7 +562,19 @@ export default function WorldMapEditor() {
   );
 }
 
-function Toolbar({ cityCount, zoomLevels, setZoomLevels, onFit, onCopy, onDownload, onImport }) {
+function Toolbar({
+  cityCount,
+  zoomLevels,
+  setZoomLevels,
+  onFit,
+  onCopy,
+  onDownload,
+  onImport,
+  onPlay,
+  onStop,
+  playing,
+  disablePlay,
+}) {
   return (
     <div className="flex items-center gap-3 px-4 py-2 bg-gray-900 border-b border-gray-800 text-sm">
       <div className="flex items-center gap-2">
@@ -439,6 +608,19 @@ function Toolbar({ cityCount, zoomLevels, setZoomLevels, onFit, onCopy, onDownlo
         />
       </label>
 
+      {playing ? (
+        <button onClick={onStop} className="flex items-center gap-1 px-3 py-1 bg-amber-600 hover:bg-amber-500 rounded">
+          <Square size={16} /> Stop
+        </button>
+      ) : (
+        <button
+          onClick={onPlay}
+          disabled={disablePlay}
+          className="flex items-center gap-1 px-3 py-1 bg-emerald-600 hover:bg-emerald-500 rounded disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          <Play size={16} /> Play
+        </button>
+      )}
       <button onClick={onFit} className="flex items-center gap-1 px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded">
         <Target size={16} /> Fit
       </button>
@@ -455,7 +637,7 @@ function Toolbar({ cityCount, zoomLevels, setZoomLevels, onFit, onCopy, onDownlo
   );
 }
 
-function Sidebar({ cities, selectedId, onSelect, onRename, onLat, onLon, onRemove }) {
+function Sidebar({ cities, selectedId, previewIdx, onSelect, onRename, onLat, onLon, onRemove }) {
   return (
     <aside className="w-80 bg-gray-950 border-r border-gray-800 flex flex-col min-h-0">
       <div className="px-4 py-3 border-b border-gray-800 flex items-center gap-2 text-sm">
@@ -466,13 +648,14 @@ function Sidebar({ cities, selectedId, onSelect, onRename, onLat, onLon, onRemov
         {cities.length === 0 && (
           <div className="p-4 text-sm text-gray-500">No cities yet.</div>
         )}
-        {cities.map((city) => {
+        {cities.map((city, i) => {
           const isSelected = city.id === selectedId;
+          const isPlaying = i === previewIdx;
           return (
             <div
               key={city.id}
               className={`px-3 py-2 border-b border-gray-800 text-sm ${
-                isSelected ? 'bg-gray-900' : 'hover:bg-gray-900/60'
+                isPlaying ? 'bg-amber-500/10 border-l-2 border-l-amber-400' : isSelected ? 'bg-gray-900' : 'hover:bg-gray-900/60'
               }`}
             >
               <div className="flex items-center gap-2 mb-2">

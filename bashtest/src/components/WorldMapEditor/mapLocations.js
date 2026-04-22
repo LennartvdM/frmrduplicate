@@ -1,16 +1,19 @@
-export const mapLocations = [
-  // Your locations will be added here after using the editor
-  // Example structure:
-  // {
-  //   id: 1,
-  //   name: "New York",
-  //   coordinates: { x: 25, y: 30 },
-  //   viewport: { x: 0, y: 0, zoom: 1 }
-  // }
-];
+/**
+ * City coordinate store for the click-to-place editor (`/map-editor`).
+ *
+ * Shape:
+ *   { id, name, x, y, lat, lon }
+ *     - x, y are in SVG viewBox units (0..1440, 0..700 for the world map)
+ *     - lat, lon are optional (only filled for calibration anchors)
+ *
+ * The editor persists to localStorage and exports in two formats on demand:
+ * the raw city array (what lives here) and the `locationPairs` shape that
+ * `sections/worldmap/WorldMapSection.jsx` consumes — zoom-out and zoom-in
+ * viewports share the same (x, y) center, only zoom differs.
+ */
+export const cities = [];
 
-export const defaultViewportSettings = {
-  showCrosshair: false,
-  transitionDuration: 1,
-  peakZoom: 0.8
-}; 
+export const zoomLevels = {
+  out: 1,
+  in: 5,
+};

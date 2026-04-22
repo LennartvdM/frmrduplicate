@@ -1,83 +1,58 @@
 # World Map Editor
 
-A live coordinate editor for positioning world map viewports and locations.
+Click-to-place editor for city coordinates on the world map. Lives at
+`/map-editor`.
 
 ## Access
 
-- **Normal site**: `yoursite.netlify.app`
-- **Map editor**: `yoursite.netlify.app?editor=true`
+- Localhost: unrestricted.
+- Live site: append `?editor=true` or enter access code `map2024`.
 
-## How to Use
+## Workflow
 
-1. **Access the Editor**
-   - Navigate to your site with `?editor=true` parameter
-   - Enter access code: `map2024`
+1. Navigate to `/map-editor`.
+2. **Pan / zoom** the editor view to the region you want to work in —
+   mouse wheel zooms, drag on empty space pans. This view is purely for
+   your cursor convenience; it's never persisted and doesn't affect the
+   runtime animation.
+3. **Click the map** to drop a city marker at the cursor. The sidebar
+   gets a new row with editable name + optional `lat` / `lon` fields.
+4. **Drag a marker** to nudge its position; right-click or the sidebar
+   trash button removes it.
+5. **Copy export** to push the city array + `locationPairs` drop-in code
+   to your clipboard.
 
-2. **Position the Viewport**
-   - Click "Enable Edit Mode" to start positioning
-   - Drag the map to position the viewport
-   - Use the crosshair to see the center point
+State is auto-saved to `localStorage` (keys `worldMapEditor.cities.v2`
+and `worldMapEditor.zoomLevels.v2`), so refresh won't lose work. "Import"
+reads an export string back from the clipboard.
 
-3. **Add Locations**
-   - Position the viewport where you want a location
-   - Click "Add Current Position" to save the location
-   - Repeat for all desired locations
+## Data shape
 
-4. **Export Coordinates**
-   - Click "Export Locations" to copy coordinate data
-   - Paste the exported code into `mapLocations.js`
+```js
+{ id, name, x, y, lat, lon }
+```
 
-## Features
+- `x`, `y` — SVG viewBox units (the map is 1440 × 700).
+- `lat`, `lon` — optional; fill these for the anchor points you know
+  geographically. Once enough are filled (~8–15 globally distributed),
+  a calibration pass can fit a `lat/lon → (x, y)` transform and
+  auto-place additional cities.
 
-- **Live coordinate display**: See X/Y percentages and pixel positions
-- **Drag-to-pan**: Smooth map positioning with framer-motion
-- **Location markers**: Visual indicators for saved positions
-- **Export functionality**: Copy coordinates to clipboard
-- **Access control**: Password protection for live sites
-- **Responsive design**: Works on desktop and mobile
+## Export format
 
-## File Structure
+"Copy export" writes three artefacts at once:
+
+- `cities` — the raw array (paste into `mapLocations.js`).
+- `zoomLevels` — the current `{ in, out }` pair.
+- `locationPairs` — drop-in for
+  `sections/worldmap/WorldMapSection.jsx`'s existing shape (same `(x, y)`
+  for both `in` and `out`, zooms taken from `zoomLevels`).
+
+## File structure
 
 ```
 src/components/WorldMapEditor/
-├── index.jsx              # Main editor component
-├── WorldMapViewport.jsx   # Map display component
-├── mapLocations.js        # Coordinate storage
-└── README.md             # This file
+├── index.jsx          # Editor component (single file)
+├── mapLocations.js    # Seed cities + zoom levels (empty by default)
+└── README.md          # This file
 ```
-
-## Customization
-
-### Replace the Map SVG
-Update the `worldMapSVG` variable in `WorldMapViewport.jsx` with your actual map:
-
-```jsx
-const worldMapSVG = `
-  <svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
-    <!-- Your custom map SVG here -->
-  </svg>
-`;
-```
-
-### Change Access Code
-Update the access code in `index.jsx`:
-
-```jsx
-if (accessCode === 'your-new-code') {
-  setShowAccessPrompt(false);
-}
-```
-
-## Security Notes
-
-- The editor is only accessible via URL parameter
-- Access code protection prevents unauthorized use
-- Normal site functionality is unaffected
-- Consider using environment variables for production
-
-## Troubleshooting
-
-- **Editor not loading**: Check URL parameter `?editor=true`
-- **Access denied**: Verify access code is correct
-- **Map not displaying**: Check SVG path in WorldMapViewport
-- **Export not working**: Ensure clipboard permissions are granted 

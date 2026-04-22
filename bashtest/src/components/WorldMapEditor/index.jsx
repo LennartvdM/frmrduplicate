@@ -305,7 +305,7 @@ export const locationPairs = ${pairsOut};
 
   if (!gateOpen) {
     return (
-      <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+      <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-50">
         <div className="bg-white text-gray-900 p-8 rounded-lg shadow-xl max-w-md w-full mx-4">
           <h2 className="text-2xl font-bold mb-2">Map Editor Access</h2>
           <p className="mb-4 text-gray-600">Enter the access code to use the editor.</p>
@@ -342,7 +342,7 @@ export const locationPairs = ${pairsOut};
   }
 
   return (
-    <div className="fixed inset-0 bg-gray-900 text-gray-100 flex flex-col overflow-hidden">
+    <div className="absolute inset-0 bg-gray-900 text-gray-100 flex flex-col overflow-hidden">
       <Toolbar
         cityCount={cities.length}
         zoomLevels={zoomLevels}

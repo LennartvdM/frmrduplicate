@@ -27,7 +27,7 @@ function AppShell() {
         <Route path="/neoflix" element={<SidebarScrollSpyDemo />} />
         <Route path="/publications" element={<Publications />} />
         <Route path="/toolbox" element={<Toolbox />} />
-        <Route path="/map-editor" element={<WorldMapEditor />} />
+        <Route path="/map-editor" element={<div className="fixed inset-0"><WorldMapEditor /></div>} />
         <Route path="/admin" element={<CMSAdmin />} />
         <Route path="/toolbox/:slug" element={<ToolboxEmbed />} />
       </Routes>

@@ -576,63 +576,65 @@ function Toolbar({
   disablePlay,
 }) {
   return (
-    <div className="flex items-center gap-3 px-4 py-2 bg-gray-900 border-b border-gray-800 text-sm">
-      <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-2 bg-gray-900 border-b border-gray-800 text-sm">
+      <div className="flex items-center gap-2 shrink-0">
         <Crosshair size={18} className="text-sky-400" />
         <span className="font-semibold">World Map Editor</span>
         <span className="text-gray-400">— {cityCount} {cityCount === 1 ? 'city' : 'cities'}</span>
       </div>
 
-      <div className="flex-1" />
-
-      <label className="flex items-center gap-2 text-gray-300">
-        zoom out
-        <input
-          type="number"
-          step="0.1"
-          min="0.1"
-          value={zoomLevels.out}
-          onChange={(e) => setZoomLevels({ ...zoomLevels, out: Number(e.target.value) })}
-          className="w-16 px-2 py-1 bg-gray-800 border border-gray-700 rounded"
-        />
-      </label>
-      <label className="flex items-center gap-2 text-gray-300">
-        zoom in
-        <input
-          type="number"
-          step="0.1"
-          min="0.1"
-          value={zoomLevels.in}
-          onChange={(e) => setZoomLevels({ ...zoomLevels, in: Number(e.target.value) })}
-          className="w-16 px-2 py-1 bg-gray-800 border border-gray-700 rounded"
-        />
-      </label>
-
+      {/* Play / Stop anchored next to the title so the primary action
+          never gets pushed off-screen on narrow layouts. */}
       {playing ? (
-        <button onClick={onStop} className="flex items-center gap-1 px-3 py-1 bg-amber-600 hover:bg-amber-500 rounded">
+        <button onClick={onStop} className="flex items-center gap-1 px-3 py-1 bg-amber-600 hover:bg-amber-500 rounded shrink-0">
           <Square size={16} /> Stop
         </button>
       ) : (
         <button
           onClick={onPlay}
           disabled={disablePlay}
-          className="flex items-center gap-1 px-3 py-1 bg-emerald-600 hover:bg-emerald-500 rounded disabled:opacity-40 disabled:cursor-not-allowed"
+          className="flex items-center gap-1 px-3 py-1 bg-emerald-600 hover:bg-emerald-500 rounded disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
         >
           <Play size={16} /> Play
         </button>
       )}
-      <button onClick={onFit} className="flex items-center gap-1 px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded">
-        <Target size={16} /> Fit
-      </button>
-      <button onClick={onImport} className="flex items-center gap-1 px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded">
-        <Upload size={16} /> Import
-      </button>
-      <button onClick={onCopy} className="flex items-center gap-1 px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded">
-        <Copy size={16} /> Copy JSON
-      </button>
-      <button onClick={onDownload} className="flex items-center gap-1 px-3 py-1 bg-sky-600 hover:bg-sky-500 rounded">
-        <Download size={16} /> Download
-      </button>
+
+      <div className="ml-auto flex flex-wrap items-center gap-x-3 gap-y-2">
+        <label className="flex items-center gap-2 text-gray-300 shrink-0">
+          zoom out
+          <input
+            type="number"
+            step="0.1"
+            min="0.1"
+            value={zoomLevels.out}
+            onChange={(e) => setZoomLevels({ ...zoomLevels, out: Number(e.target.value) })}
+            className="w-16 px-2 py-1 bg-gray-800 border border-gray-700 rounded"
+          />
+        </label>
+        <label className="flex items-center gap-2 text-gray-300 shrink-0">
+          zoom in
+          <input
+            type="number"
+            step="0.1"
+            min="0.1"
+            value={zoomLevels.in}
+            onChange={(e) => setZoomLevels({ ...zoomLevels, in: Number(e.target.value) })}
+            className="w-16 px-2 py-1 bg-gray-800 border border-gray-700 rounded"
+          />
+        </label>
+        <button onClick={onFit} className="flex items-center gap-1 px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded shrink-0">
+          <Target size={16} /> Fit
+        </button>
+        <button onClick={onImport} className="flex items-center gap-1 px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded shrink-0">
+          <Upload size={16} /> Import
+        </button>
+        <button onClick={onCopy} className="flex items-center gap-1 px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded shrink-0">
+          <Copy size={16} /> Copy
+        </button>
+        <button onClick={onDownload} className="flex items-center gap-1 px-3 py-1 bg-sky-600 hover:bg-sky-500 rounded shrink-0">
+          <Download size={16} /> Download
+        </button>
+      </div>
     </div>
   );
 }

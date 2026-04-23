@@ -1,16 +1,13 @@
 /**
  * Neoflix Product Page Data
- * Content sourced from neoflixexporttest (source of truth)
- * Layout/styling matches frmrduplicate's Neoflix design
  *
- * Note: the product/philosophy sections (time-sensitive, dance, cost,
- * skills, team, perspectives) live here for the /neoflix route.
- * The academic publications live in publicationsPage.js for /publications.
+ * The product/philosophy sections (time-sensitive, dance, cost, skills,
+ * team, perspectives) live here for the /neoflix route. The academic
+ * publications live in publicationsPage.js for /publications.
  */
 import { assetUrl } from '../utils/assetUrl';
 
-// Re-export the product sections from publications.js
-// (bashtest named the file confusingly but the content is correct)
+// Product sections are defined in publications.js (legacy filename).
 export { sections, animationConfig } from './publications';
 
 // Video backdrop mapping for product sections

@@ -1,11 +1,9 @@
 /**
  * Publications Page Data
- * Content sourced from neoflixexporttest (source of truth)
- * Styling/layout follows frmrduplicate's design
  */
 import { assetUrl } from '../utils/assetUrl';
 
-// All 7 publication sections — content from neoflixexporttest
+// All 7 publication sections
 export const sections = [
   {
     id: 'preface',

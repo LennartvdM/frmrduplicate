@@ -61,7 +61,7 @@
      --docs-nav-outcrop; the remaining width is "pure" moat visible
      between the outcrop cap and the cream column's left edge. */
   --docs-moat-width: 32px;
-  --docs-nav-outcrop: 20px;
+  --docs-nav-outcrop: 10px;
 }
 
 /* -------- Outer shell -------------------------------------------------- */
@@ -239,18 +239,22 @@
    because they're the same ontological level; it's the children that
    expand out of a foldout which step down to the next band.
 
-     depth-0: 0.3   top-level items (foldouts + leaves alike)
-     depth-1: 0.55  items that expand out of a foldout
-     depth-2+: 0.8  deeper nesting if the tree ever gets there
+   Alphas sit near-opaque so each row fully knocks out the sidebar
+   strip (shell gradient, 0.4 wash) that's painted behind it. Without
+   this, rows compose with the strip at their leftmost edge but sit
+   over pure moat at their right outcrop — two different composites
+   on the same pill, which reads as a visible seam along the sidebar
+   column's right edge. Knocking out the strip makes each row look
+   uniform across its whole width. The small alpha deltas between
+   depths preserve the hierarchy cue (deeper = cleaner/whiter tile).
 
-   Depth-0 is kept high enough (0.3) that it reads as its own ribbon
-   above the sidebar strip — if it's too close to the strip's 0.4
-   base, top-level rows read as background and the depth-0/depth-1
-   step registers as "foldout vs. leaf" instead of "level 1 vs.
-   level 2". Every row has a wash so every item reads as its own
-   segment. A 2px vertical gap between rows lets the darker sidebar
-   strip show through between ribbons, so adjacent same-depth rows
-   stay segmented rather than fusing into one long band. */
+     depth-0: 0.85  top-level items (foldouts + leaves alike)
+     depth-1: 0.92  items that expand out of a foldout
+     depth-2+: 0.97 deeper nesting if the tree ever gets there
+
+   A 2px vertical gap between rows lets the sidebar strip (0.4 wash)
+   show through between ribbons, so adjacent same-depth rows stay
+   segmented rather than fusing into one long band. */
 .docs-sidebar-section {
   position: relative;
   margin: 0 0 18px;
@@ -294,14 +298,14 @@
   border-bottom-right-radius: 12px;
 }
 .docs-nav-depth-0 > .docs-nav-item > .docs-nav-row {
-  background: rgba(250, 251, 252, 0.3);
+  background: rgba(250, 251, 252, 0.85);
 }
 .docs-nav-depth-1 > .docs-nav-item > .docs-nav-row {
-  background: rgba(250, 251, 252, 0.55);
+  background: rgba(250, 251, 252, 0.92);
 }
 .docs-nav-depth-2 > .docs-nav-item > .docs-nav-row,
 .docs-nav-depth-3 > .docs-nav-item > .docs-nav-row {
-  background: rgba(250, 251, 252, 0.8);
+  background: rgba(250, 251, 252, 0.97);
 }
 .docs-nav-row a {
   flex: 1;

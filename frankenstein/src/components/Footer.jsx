@@ -2,10 +2,8 @@ import React from 'react';
 import useTransitionNavigate from '../hooks/useTransitionNavigate';
 
 /**
- * Site-wide footer modeled on neoflixexporttest's richer design:
- * teal → dark-blue gradient, nav columns, signature + funding line,
- * back-to-top button. Rebuilt as native React + Tailwind (structure
- * copied from the Framer export, not the bundled runtime).
+ * Site-wide footer: teal → dark-blue gradient, nav columns, signature +
+ * funding line, back-to-top button.
  *
  * Navigation goes through useTransitionNavigate so the direction-aware
  * slide fires on Footer clicks the same way it does on Navbar clicks.

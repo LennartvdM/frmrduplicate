@@ -1,9 +1,0 @@
-@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }
-
-.framer-gdsq7.framer-71ejvw, .framer-gdsq7 .framer-71ejvw { display: block; }
-
-.framer-gdsq7.framer-6uc7fk { cursor: pointer; height: 72px; overflow: visible; position: relative; width: 380px; }
-
-.framer-gdsq7 .framer-1pt2td0 { -webkit-user-select: none; flex: none; height: auto; left: 50%; overflow: visible; position: absolute; top: 50%; user-select: none; white-space: pre-wrap; width: 360px; word-break: break-word; word-wrap: break-word; }
-
-.framer-gdsq7.framer-v-13j692f.framer-6uc7fk { overflow: hidden; will-change: var(--framer-will-change-override, transform); }

@@ -10,26 +10,20 @@
   GIT_LFS_ENABLED = "false"
   SUBMODULE_STRATEGY = "recursive"
 
-# SPA routing for bashtest (React Router)
+# SPA routing (React Router)
 [[redirects]]
-  from = "/bashtest/*"
-  to = "/bashtest/index.html"
-  status = 200
-
-# SPA routing for frankenstein (React Router)
-[[redirects]]
-  from = "/frankenstein/*"
-  to = "/frankenstein/index.html"
+  from = "/*"
+  to = "/index.html"
   status = 200
 
 # Cache static assets
 [[headers]]
-  for = "/*/assets/*"
+  for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "/*/videos/*"
+  for = "/videos/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 

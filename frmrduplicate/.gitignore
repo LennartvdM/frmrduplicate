@@ -1,6 +1,0 @@
-# Generated toolbox pages (run `node tools/generate-toolbox-pages.mjs` to rebuild)
-site/toolbox_*.html
-site/toolbox-*.html
-
-# Dependencies
-node_modules/

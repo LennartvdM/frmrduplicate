@@ -1,9 +1,0 @@
-@supports (aspect-ratio: 1) { body { --framer-aspect-ratio-supported: auto; } }
-
-.framer-zeXf1.framer-1hmkm8a, .framer-zeXf1 .framer-1hmkm8a { display: block; }
-
-.framer-zeXf1.framer-2yaxv0 { height: 800px; overflow: hidden; pointer-events: none; position: relative; width: 1200px; }
-
-.framer-zeXf1 .framer-15s3poq, .framer-zeXf1 .framer-1k92q7k-container, .framer-zeXf1 .framer-ksez6a-container { bottom: 0px; flex: none; left: 0px; position: absolute; right: 0px; top: 0px; }
-
-.framer-zeXf1 .framer-1m9pxy0 { bottom: 0px; flex: none; left: 0px; mix-blend-mode: screen; overflow: visible; position: absolute; right: 0px; top: 0px; }

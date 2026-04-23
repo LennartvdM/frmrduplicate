@@ -4,7 +4,6 @@
  */
 import { assetUrl } from '../utils/assetUrl';
 
-// Section definitions — content sourced from neoflixexporttest (source of truth)
 export const sections = [
   {
     id: 'preface',

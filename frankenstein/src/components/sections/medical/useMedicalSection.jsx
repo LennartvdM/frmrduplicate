@@ -108,6 +108,7 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
   const {
     mode: layoutMode,
     isDesktop,
+    isMobile,
     isTabletPortrait,
     isTabletLandscape,
     isTablet,
@@ -554,7 +555,7 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
     // derived
     safeVideoHover, safeHoveredIndex, shouldTransition,
     NUDGE_TRANSITION, SLIDE_TRANSITION,
-    isDesktop, isTabletPortrait, isTabletLandscape, isTablet, isRotating, isTouchDevice,
+    isDesktop, isMobile, isTabletPortrait, isTabletLandscape, isTablet, isRotating, isTouchDevice,
     isTabletLayout, isLandscapeTablet, isVideoLeft,
     bandWidth, bandHeight, cutoutWidth, cutoutHeight, cornerRadius, gap, videoHeight,
     videoContainerWidth, captionContainerWidth, videoOffscreenTransform, captionOffscreenTransform, layoutKey,

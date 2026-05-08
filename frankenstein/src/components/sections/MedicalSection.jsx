@@ -1,6 +1,7 @@
 // redeploy marker: 2025-10-31T00:00:00Z
 import React, { useCallback } from 'react';
 import { useMedicalSection } from './medical/useMedicalSection.jsx';
+import MedicalMobileLayout from './medical/MedicalMobileLayout';
 import MedicalTabletLayout from './medical/MedicalTabletLayout';
 import MedicalDesktopLayout from './medical/MedicalDesktopLayout';
 import { useBackdropTarget } from '../../backdrop/useBackdrop';
@@ -38,6 +39,10 @@ const MedicalSection = ({ inView, sectionRef, variant = 'v2' }) => {
     deck: DECK_BY_VARIANT[variant],
     topIdx,
   });
+
+  if (state.isMobile) {
+    return <MedicalMobileLayout {...state} sectionRef={sectionRef} navigateToSection={navigateToSection} />;
+  }
 
   if (state.isTabletLayout) {
     return <MedicalTabletLayout {...state} sectionRef={sectionRef} navigateToSection={navigateToSection} />;

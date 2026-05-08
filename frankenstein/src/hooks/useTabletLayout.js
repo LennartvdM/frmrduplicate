@@ -26,11 +26,15 @@ const detectLayoutMode = () => {
     isPortrait = window.matchMedia('(orientation: portrait)').matches;
   }
 
+  const isMobileSize = width < 600;
   const isTabletSize = width >= 600 && width <= 1400;
+  const isMobileDevice = isTouchDevice && isMobileSize;
   const isTabletDevice = isTouchDevice && isTabletSize;
 
   let mode = 'desktop';
-  if (isTabletDevice) {
+  if (isMobileDevice) {
+    mode = 'mobile';
+  } else if (isTabletDevice) {
     mode = isPortrait ? 'tablet-portrait' : 'tablet-landscape';
   }
 
@@ -96,6 +100,7 @@ export function useTabletLayout() {
   return {
     mode: effectiveMode,
     isDesktop: effectiveMode === 'desktop',
+    isMobile: effectiveMode === 'mobile',
     isTabletPortrait: effectiveMode === 'tablet-portrait',
     isTabletLandscape: effectiveMode === 'tablet-landscape',
     isTablet: effectiveMode.startsWith('tablet'),

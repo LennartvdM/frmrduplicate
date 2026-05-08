@@ -59,10 +59,11 @@ const EASE_DECEL = [0.05, 0.7, 0.1, 1];
 const EASE_STANDARD = [0.4, 0, 0.2, 1];
 
 const HOVER_OPEN_DELAY_MS = 60;
-// Hover-close grace. Combined with the intent gate below, the close
-// no longer needs to be glacial — the structural fix kills the
-// feedback loop, so the timer can land closer to feel-good values.
-const HOVER_CLOSE_DELAY_MS = 350;
+// Hover-close grace. Doubled to give the user a generous window to
+// come back (e.g. brief drift to read something, then return). The
+// outer-leave cleanup (clearing click-opened foldouts that aren't on
+// the active path) is gated on the same window.
+const HOVER_CLOSE_DELAY_MS = 700;
 // The intent gate. A `mouseenter` is treated as user intent only if a
 // real `mousemove` was seen within this window. A stationary cursor
 // receiving `mouseenter` purely because the row drifted into it —
@@ -84,18 +85,13 @@ const subListVariants = {
     height: 0,
     opacity: 0,
     transition: {
-      // Hold the container at full height for a beat. During this window
-      // the items are already lifting + fading via their own transition,
-      // so visually the foldout content "separates" from the focused tab
-      // below before the container itself starts collapsing — that's the
-      // moment of disconnect the user described. After the beat, the
-      // container rolls up like a blind from the bottom.
-      height: { duration: 0.55, ease: EASE_STANDARD, delay: 0.12 },
-      opacity: { duration: 0.45, ease: EASE_STANDARD },
-      // Reverse-order stagger means the bottommost item starts first,
-      // matching how a blind rolls up (bottom rises toward the spool at
-      // the top). 65ms lets each step land visibly without dragging.
-      staggerChildren: 0.065,
+      // Both the separation beat (delay) and the actual collapse have
+      // been doubled. Items continue to lift + fade during the delay
+      // so the foldout visibly disconnects from the focused tab below
+      // before the container itself rolls up.
+      height: { duration: 1.1, ease: EASE_STANDARD, delay: 0.24 },
+      opacity: { duration: 0.9, ease: EASE_STANDARD },
+      staggerChildren: 0.13,
       staggerDirection: -1,
     },
   },
@@ -109,11 +105,8 @@ const itemVariants = {
   },
   closed: {
     opacity: 0,
-    // Big upward travel so the "pulled up" reads — 8px was too subtle
-    // and looked like a fade-in-place. -36 takes the item visibly off
-    // its row toward the parent foldout's spool.
     y: -36,
-    transition: { duration: 0.5, ease: EASE_STANDARD },
+    transition: { duration: 1.0, ease: EASE_STANDARD },
   },
 };
 
@@ -310,6 +303,33 @@ export default function DocsSidebar({ sections, activeSlug }) {
     restoreRafIdRef.current = requestAnimationFrame(tick);
   }, []);
 
+  // When the cursor leaves the sidebar, clear click-opened foldouts
+  // that aren't part of the active page's group. The active group
+  // stays open via autoOpen, so the user can keep reading the page
+  // they're on while the rest of the tree settles back to a clean
+  // state. Entries explicitly closed by the user (`false`) are kept
+  // — those represent a deliberate choice that shouldn't be undone
+  // by a cursor exit.
+  const cleanupUserToggle = useCallback(() => {
+    setUserToggle((prev) => {
+      if (prev.size === 0) return prev;
+      const activePath = new Set();
+      for (const section of sections) {
+        collectAncestors(regroupPhaseMarkers(section.items), activeSlug, activePath);
+      }
+      let changed = false;
+      const next = new Map();
+      for (const [slug, val] of prev) {
+        if (val === true && !activePath.has(slug)) {
+          changed = true; // drop this open-override
+        } else {
+          next.set(slug, val);
+        }
+      }
+      return changed ? next : prev;
+    });
+  }, [activeSlug, sections]);
+
   // Poll until everything's settled, then restore.
   const tryRestore = useCallback(() => {
     if (animationCountRef.current > 0 || hoveredRef.current.size > 0) {
@@ -339,11 +359,16 @@ export default function DocsSidebar({ sections, activeSlug }) {
 
   const onOuterLeave = useCallback(() => {
     if (restoreTimerRef.current) clearTimeout(restoreTimerRef.current);
-    // Wait for the close grace + close animations to finish before
-    // running the restore — otherwise the scroll-home would race the
-    // anchor compensation that's still running.
-    restoreTimerRef.current = setTimeout(tryRestore, HOVER_CLOSE_DELAY_MS + 80);
-  }, [tryRestore]);
+    // After the close grace, sweep any click-opened foldouts that
+    // aren't part of the active group, then poll for a quiet state
+    // before easing the scroll back. Both run on the same timer so
+    // hover-induced and click-induced closes share one grace window —
+    // returning to the sidebar inside that window cancels both.
+    restoreTimerRef.current = setTimeout(() => {
+      cleanupUserToggle();
+      tryRestore();
+    }, HOVER_CLOSE_DELAY_MS + 40);
+  }, [cleanupUserToggle, tryRestore]);
 
   // Manual user scroll while quiet → that's the new home.
   useEffect(() => {
@@ -531,10 +556,10 @@ export default function DocsSidebar({ sections, activeSlug }) {
     const start = performance.now();
     const tick = () => {
       updateHighlighter(false);
-      // Cover the whole close window: ~120 ms separation beat + ~550 ms
-      // container collapse + a touch of margin for the staggered items
-      // still finishing.
-      if (performance.now() - start < 950) {
+      // Cover the doubled close window: ~240 ms separation beat +
+      // ~1100 ms container collapse + the staggered items finishing
+      // (1000 ms each at 130 ms reverse stagger).
+      if (performance.now() - start < 1900) {
         rafId = requestAnimationFrame(tick);
       }
     };

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { renderMapInto } from '../../../frmr-map/bootstrap.mjs';
+import useTransitionNavigate from '../../../hooks/useTransitionNavigate';
 
 /**
  * Slide 4 mounts the original frmrduplicate MapComponent.
@@ -9,10 +10,40 @@ import { renderMapInto } from '../../../frmr-map/bootstrap.mjs';
  * imported via Vite's build graph. One React instance, one fiber tree;
  * the SDK shares context with the host app while the compiled Panzoom
  * and variant state machine stay bit-for-bit identical to /frmrduplicate/.
+ *
+ * City markers are intercepted at the DOM level: each marker button is
+ * tagged with `data-framer-name="<City>"` + `data-highlight="true"` by
+ * the compiled Framer output. We catch pointerdown/click in the capture
+ * phase on the wrapper, swallow the gesture before Framer Motion's
+ * onTap zoom-in fires, and slide-route into the matching toolbox page.
  */
+
+const CITY_SLUGS = {
+  Leiden:
+    'level-1-fundamentals/4.-learning-from-success-stories/nicu-in-leiden-the-netherlands',
+  Philadelphia:
+    'level-1-fundamentals/4.-learning-from-success-stories/nicu-in-philadelphia-pennsylvania-usa',
+  Vienna:
+    'level-1-fundamentals/4.-learning-from-success-stories/nicu-in-vienna-austria',
+  Melbourne:
+    'level-1-fundamentals/4.-learning-from-success-stories/nicu-in-melbourne-australia',
+};
+
+function findCityFromEvent(event) {
+  const el = event.target?.closest?.(
+    '[data-framer-name][data-highlight="true"]'
+  );
+  if (!el) return null;
+  const name = el.getAttribute('data-framer-name');
+  return CITY_SLUGS[name] ? name : null;
+}
+
 export default function WorldMapSection() {
   const mountRef = useRef(null);
   const cleanupRef = useRef(null);
+  const transitionNavigate = useTransitionNavigate();
+  const navigateRef = useRef(transitionNavigate);
+  navigateRef.current = transitionNavigate;
 
   useEffect(() => {
     if (!mountRef.current) return undefined;
@@ -25,10 +56,38 @@ export default function WorldMapSection() {
     };
   }, []);
 
+  useEffect(() => {
+    const node = mountRef.current;
+    if (!node) return undefined;
+
+    const swallow = (event) => {
+      if (findCityFromEvent(event)) {
+        event.stopPropagation();
+      }
+    };
+
+    const handleClick = (event) => {
+      const city = findCityFromEvent(event);
+      if (!city) return;
+      event.preventDefault();
+      event.stopPropagation();
+      navigateRef.current(`/toolbox/${CITY_SLUGS[city]}`);
+    };
+
+    node.addEventListener('pointerdown', swallow, true);
+    node.addEventListener('pointerup', swallow, true);
+    node.addEventListener('click', handleClick, true);
+    return () => {
+      node.removeEventListener('pointerdown', swallow, true);
+      node.removeEventListener('pointerup', swallow, true);
+      node.removeEventListener('click', handleClick, true);
+    };
+  }, []);
+
   return (
     <div
       ref={mountRef}
-      className="w-full h-full"
+      className="w-full h-full worldmap-mount"
       style={{
         background:
           'linear-gradient(180deg, rgb(211, 227, 227) 0%, rgb(82, 156, 156) 100%)',

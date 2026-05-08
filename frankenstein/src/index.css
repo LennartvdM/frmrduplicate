@@ -128,3 +128,10 @@ html.is-resizing [data-tablet-layout="true"] {
   }
 }
 
+.worldmap-mount [data-framer-name="Leiden"][data-highlight="true"],
+.worldmap-mount [data-framer-name="Philadelphia"][data-highlight="true"],
+.worldmap-mount [data-framer-name="Vienna"][data-highlight="true"],
+.worldmap-mount [data-framer-name="Melbourne"][data-highlight="true"] {
+  cursor: pointer;
+}
+

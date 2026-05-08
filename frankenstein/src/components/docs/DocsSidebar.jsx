@@ -84,9 +84,18 @@ const subListVariants = {
     height: 0,
     opacity: 0,
     transition: {
-      height: { duration: 0.7, ease: EASE_STANDARD },
-      opacity: { duration: 0.5, ease: EASE_STANDARD },
-      staggerChildren: 0.035,
+      // Hold the container at full height for a beat. During this window
+      // the items are already lifting + fading via their own transition,
+      // so visually the foldout content "separates" from the focused tab
+      // below before the container itself starts collapsing — that's the
+      // moment of disconnect the user described. After the beat, the
+      // container rolls up like a blind from the bottom.
+      height: { duration: 0.55, ease: EASE_STANDARD, delay: 0.12 },
+      opacity: { duration: 0.45, ease: EASE_STANDARD },
+      // Reverse-order stagger means the bottommost item starts first,
+      // matching how a blind rolls up (bottom rises toward the spool at
+      // the top). 65ms lets each step land visibly without dragging.
+      staggerChildren: 0.065,
       staggerDirection: -1,
     },
   },
@@ -100,7 +109,10 @@ const itemVariants = {
   },
   closed: {
     opacity: 0,
-    y: -8,
+    // Big upward travel so the "pulled up" reads — 8px was too subtle
+    // and looked like a fade-in-place. -36 takes the item visibly off
+    // its row toward the parent foldout's spool.
+    y: -36,
     transition: { duration: 0.5, ease: EASE_STANDARD },
   },
 };
@@ -241,6 +253,107 @@ export default function DocsSidebar({ sections, activeSlug }) {
     if (anchorTargetTopRef.current === null) return; // no anchor → no-op
     anchorRafIdRef.current = requestAnimationFrame(tickAnchor);
   }, [resolveAnchorDOM, captureAnchor, tickAnchor]);
+
+  // ── Cleanup phase ───────────────────────────────────────────────────
+  // The anchor compensation can leave scrollTop in an unusual place by
+  // the time a session ends — sometimes pushed past the natural top of
+  // the sidebar so the upper section labels are scrolled out of view.
+  // When the cursor leaves the entire sidebar, gently animate scrollTop
+  // back to wherever the user "started" the session. Manual scrolls
+  // during a quiet moment (no transitions, no hovered foldouts) update
+  // the home target so we don't yank the user back from a position they
+  // deliberately scrolled to.
+  const sessionHomeRef = useRef(null);
+  const restoreTimerRef = useRef(null);
+  const restoreRafIdRef = useRef(0);
+  const restoringRef = useRef(false);
+
+  const restoreScrollHome = useCallback(() => {
+    const scroller = scrollRef.current;
+    const target = sessionHomeRef.current;
+    if (!scroller || target == null) return;
+    const start = scroller.scrollTop;
+    if (Math.abs(start - target) < 1) return;
+
+    // Match the close animation's tone: 550ms with a soft-out curve.
+    const duration = 550;
+    const t0 = performance.now();
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+    restoringRef.current = true;
+    const tick = () => {
+      const elapsed = performance.now() - t0;
+      const t = Math.min(1, elapsed / duration);
+      const eased = easeOutCubic(t);
+      const cur = start + (target - start) * eased;
+      if (scrollRef.current) scrollRef.current.scrollTop = cur;
+      if (t < 1) {
+        restoreRafIdRef.current = requestAnimationFrame(tick);
+      } else {
+        restoreRafIdRef.current = 0;
+        restoringRef.current = false;
+      }
+    };
+    restoreRafIdRef.current = requestAnimationFrame(tick);
+  }, []);
+
+  // Poll until everything's settled, then restore.
+  const tryRestore = useCallback(() => {
+    if (animationCountRef.current > 0 || hoveredRef.current.size > 0) {
+      restoreTimerRef.current = setTimeout(tryRestore, 80);
+      return;
+    }
+    restoreTimerRef.current = null;
+    restoreScrollHome();
+  }, [restoreScrollHome]);
+
+  const onOuterEnter = useCallback(() => {
+    // Cancel any pending or in-flight restore.
+    if (restoreTimerRef.current) {
+      clearTimeout(restoreTimerRef.current);
+      restoreTimerRef.current = null;
+    }
+    if (restoreRafIdRef.current) {
+      cancelAnimationFrame(restoreRafIdRef.current);
+      restoreRafIdRef.current = 0;
+      restoringRef.current = false;
+    }
+    // Capture this entry's home scroll if we're starting fresh.
+    if (animationCountRef.current === 0 && hoveredRef.current.size === 0) {
+      sessionHomeRef.current = scrollRef.current?.scrollTop ?? 0;
+    }
+  }, []);
+
+  const onOuterLeave = useCallback(() => {
+    if (restoreTimerRef.current) clearTimeout(restoreTimerRef.current);
+    // Wait for the close grace + close animations to finish before
+    // running the restore — otherwise the scroll-home would race the
+    // anchor compensation that's still running.
+    restoreTimerRef.current = setTimeout(tryRestore, HOVER_CLOSE_DELAY_MS + 80);
+  }, [tryRestore]);
+
+  // Manual user scroll while quiet → that's the new home.
+  useEffect(() => {
+    const scroller = scrollRef.current;
+    if (!scroller) return;
+    const onScroll = () => {
+      if (
+        animationCountRef.current === 0 &&
+        hoveredRef.current.size === 0 &&
+        !restoringRef.current
+      ) {
+        sessionHomeRef.current = scroller.scrollTop;
+      }
+    };
+    scroller.addEventListener('scroll', onScroll, { passive: true });
+    return () => scroller.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Drain timers + RAFs on unmount.
+  useEffect(() => () => {
+    if (restoreTimerRef.current) clearTimeout(restoreTimerRef.current);
+    if (restoreRafIdRef.current) cancelAnimationFrame(restoreRafIdRef.current);
+  }, []);
 
   const stopAnchorRaf = useCallback(() => {
     if (anchorRafIdRef.current) {
@@ -385,7 +498,10 @@ export default function DocsSidebar({ sections, activeSlug }) {
     const start = performance.now();
     const tick = () => {
       updateHighlighter(false);
-      if (performance.now() - start < 800) {
+      // Cover the whole close window: ~120 ms separation beat + ~550 ms
+      // container collapse + a touch of margin for the staggered items
+      // still finishing.
+      if (performance.now() - start < 950) {
         rafId = requestAnimationFrame(tick);
       }
     };
@@ -437,7 +553,12 @@ export default function DocsSidebar({ sections, activeSlug }) {
   const item = reducedMotion ? itemVariantsReduced : itemVariants;
 
   return (
-    <aside className="docs-sidebar" ref={sidebarRef}>
+    <aside
+      className="docs-sidebar"
+      ref={sidebarRef}
+      onMouseEnter={onOuterEnter}
+      onMouseLeave={onOuterLeave}
+    >
       <div className="docs-sidebar-highlighter" ref={highlighterRef} aria-hidden="true" />
       <div className="docs-sidebar-scroll" ref={scrollRef}>
         {sections.map((section, i) => {

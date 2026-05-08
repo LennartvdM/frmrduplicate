@@ -85,11 +85,14 @@ const subListVariants = {
     height: 0,
     opacity: 0,
     transition: {
-      // Both the separation beat (delay) and the actual collapse have
-      // been doubled. Items continue to lift + fade during the delay
-      // so the foldout visibly disconnects from the focused tab below
-      // before the container itself rolls up.
-      height: { duration: 1.1, ease: EASE_STANDARD, delay: 0.24 },
+      // Container collapse runs in lockstep with the items lifting (no
+      // separation delay). The earlier 240ms beat let items translate
+      // up while the container stayed at full height, which created a
+      // visible empty gap at the bottom of the foldout — and that gap
+      // fought the curtain-rail anchor compensation. Synced, the items
+      // lift while the container collapses around them, no gap, and
+      // the focus group can hold its position cleanly.
+      height: { duration: 1.1, ease: EASE_STANDARD },
       opacity: { duration: 0.9, ease: EASE_STANDARD },
       staggerChildren: 0.13,
       staggerDirection: -1,
@@ -196,22 +199,42 @@ export default function DocsSidebar({ sections, activeSlug }) {
   const anchorTargetTopRef = useRef(null);
   const anchorRafIdRef = useRef(0);
 
+  // Mirror activeSlug so the rAF closure (which doesn't re-run on
+  // prop changes) can read the latest active slug for the anchor
+  // fallback below.
+  const activeSlugRef = useRef(activeSlug);
+  useEffect(() => { activeSlugRef.current = activeSlug; }, [activeSlug]);
+
   const resolveAnchorDOM = useCallback(() => {
+    const lookup = (slug) => {
+      if (!slug) return null;
+      const safe = (typeof CSS !== 'undefined' && CSS.escape)
+        ? CSS.escape(slug)
+        : slug.replace(/"/g, '\\"');
+      return scrollRef.current?.querySelector(`[data-slug="${safe}"]`) || null;
+    };
+
+    // Prefer the deepest currently-hovered foldout — that's whatever
+    // the user is actively reaching for. Longest slug = most-nested.
     const hov = hoveredRef.current;
-    if (!hov || hov.size === 0) return null;
-    // Deepest = longest slug — gives nested foldouts priority over
-    // their parents when both are technically "hovered".
-    let deepest = null;
-    let maxLen = -1;
-    for (const slug of hov) {
-      const len = (slug || '').length;
-      if (len > maxLen) { maxLen = len; deepest = slug; }
+    if (hov && hov.size > 0) {
+      let deepest = null;
+      let maxLen = -1;
+      for (const slug of hov) {
+        const len = (slug || '').length;
+        if (len > maxLen) { maxLen = len; deepest = slug; }
+      }
+      const node = lookup(deepest);
+      if (node) return node;
     }
-    if (!deepest) return null;
-    const safe = (typeof CSS !== 'undefined' && CSS.escape)
-      ? CSS.escape(deepest)
-      : deepest.replace(/"/g, '\\"');
-    return scrollRef.current?.querySelector(`[data-slug="${safe}"]`) || null;
+    // Fall back to the active page's row. This is what makes the
+    // cleanup phase work correctly: when the user leaves and `hovered`
+    // drains before the close animations start, the anchor would
+    // otherwise be null and the active group would drift upward as
+    // the foldouts above it collapse. Anchoring on the active row
+    // keeps the user's reading context locked while everything else
+    // contracts around it.
+    return lookup(activeSlugRef.current);
   }, []);
 
   const captureAnchor = useCallback(() => {

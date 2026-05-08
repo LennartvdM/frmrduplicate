@@ -44,32 +44,39 @@ export const CITY_VARIANTS = {
   Melbourne: 'MVG35Wb9S',
 };
 
-// "Markerleiden" → "Leiden". Framer used PascalCase with one lowercase
-// outlier; we normalize so on-map pins click through the same way as the
-// legend buttons.
-const PIN_TO_CITY = {
-  Markerleiden: 'Leiden',
-  MarkerPhiladelphia: 'Philadelphia',
-  MarkerVienna: 'Vienna',
-  MarkerMelbourne: 'Melbourne',
-};
+// All the data-framer-name flavors Framer uses for each city: legend
+// button ("Leiden"), zoomed wrapper ("Leiden Zoomed"), click variants
+// ("Clickedzoomleiden", "ClickzoomPhiladelphia", "Clickzoomvienna",
+// "ClickzoomAustralia"), on-map pins ("Markerleiden",
+// "MarkerPhiladelphia", "MarkerVienna", "MarkerMelbourne") and the
+// floating label ("NICU Vienna" etc). Substring match keeps this robust
+// across every variant the autocycle can land on. "Australia" (Framer's
+// region label) maps to Melbourne.
+const NAME_SUBSTRINGS = [
+  ['leiden', 'Leiden'],
+  ['philadelphia', 'Philadelphia'],
+  ['vienna', 'Vienna'],
+  ['melbourne', 'Melbourne'],
+  ['australia', 'Melbourne'],
+];
+
+function cityFromName(name) {
+  if (!name) return null;
+  if (CITY_SLUGS[name]) return name;
+  const lower = name.toLowerCase();
+  for (const [needle, city] of NAME_SUBSTRINGS) {
+    if (lower.includes(needle)) return city;
+  }
+  return null;
+}
 
 function findCityFromEvent(event) {
-  const target = event.target;
-  if (!target?.closest) return null;
-  // Legend buttons in the corner: tagged with data-highlight by Framer.
-  const legendEl = target.closest('[data-framer-name][data-highlight="true"]');
-  if (legendEl) {
-    const name = legendEl.getAttribute('data-framer-name');
-    if (CITY_SLUGS[name]) return name;
-  }
-  // On-map pins: Markerleiden / MarkerPhiladelphia / MarkerVienna /
-  // MarkerMelbourne. No data-highlight; match by name prefix.
-  const pinEl = target.closest('[data-framer-name^="Marker"]');
-  if (pinEl) {
-    const name = pinEl.getAttribute('data-framer-name');
-    const city = PIN_TO_CITY[name];
-    if (city && CITY_SLUGS[city]) return city;
+  let el = event.target?.closest?.('[data-framer-name]');
+  while (el) {
+    const city = cityFromName(el.getAttribute('data-framer-name') || '');
+    if (city) return city;
+    const parent = el.parentElement;
+    el = parent ? parent.closest('[data-framer-name]') : null;
   }
   return null;
 }

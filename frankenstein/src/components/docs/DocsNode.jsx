@@ -6,6 +6,7 @@ import Embed from './blocks/Embed';
 import FileLink from './blocks/FileLink';
 import Figure from './blocks/Figure';
 import Cards from './blocks/Cards';
+import WorldMapEmbed from './blocks/WorldMapEmbed';
 
 // Recursive AST renderer. Node shape matches build-docs.mjs output.
 export default function DocsNode({ node }) {
@@ -91,6 +92,8 @@ export default function DocsNode({ node }) {
       return <Figure src={node.src} alt={node.alt} caption={node.caption} />;
     case 'cards':
       return <Cards cards={node.cards} />;
+    case 'worldmap':
+      return <WorldMapEmbed />;
 
     case 'html':
       // Inline color markers etc. Safe to passthrough — content is trusted

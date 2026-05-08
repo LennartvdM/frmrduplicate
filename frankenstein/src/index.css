@@ -135,3 +135,18 @@ html.is-resizing [data-tablet-layout="true"] {
   cursor: pointer;
 }
 
+/* Tuck the four-city legend into the top-left of the docs embed and
+ * shrink it. Framer applies its own absolute positioning + a
+ * translateX(-50%) transformTemplate, so we override with !important on
+ * inline styles. The slide-4 full-bleed worldmap keeps the original
+ * layout. */
+.docs-worldmap-embed [data-framer-name="Leganda"] {
+  top: 12px !important;
+  left: 12px !important;
+  bottom: auto !important;
+  right: auto !important;
+  transform: scale(0.7) !important;
+  transform-origin: top left !important;
+  z-index: 2 !important;
+}
+

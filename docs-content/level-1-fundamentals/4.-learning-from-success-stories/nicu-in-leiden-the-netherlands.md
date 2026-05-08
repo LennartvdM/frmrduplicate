@@ -1,5 +1,7 @@
 # NICU in Leiden, the Netherlands
 
+{% worldmap city="leiden" %}
+
 ## Neonatal Intensive Care Unit (NICU) of the Leiden University Medical Center
 
 #### Type of recording <a href="#two-fixed-cameras-recording-neonatal-stabilization" id="two-fixed-cameras-recording-neonatal-stabilization"></a>

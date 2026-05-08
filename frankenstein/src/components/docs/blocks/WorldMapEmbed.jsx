@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useCallback, useState } from 'react';
 
 // Lazy-load the WorldMap so the ~500 kB Framer chunks stay out of the
 // main bundle. Docs pages without {% worldmap %} pay nothing.
@@ -15,13 +15,42 @@ const wrapperStyle = {
   background: 'linear-gradient(180deg, rgb(211, 227, 227) 0%, rgb(82, 156, 156) 100%)',
 };
 
-// Renders {% worldmap %} from a docs page. Bounded box so the Framer
-// MapComponent gets explicit dimensions (it sizes to its parent).
-export default function WorldMapEmbed() {
+// City strings authored in markdown (case-insensitive). The build script
+// passes the raw value through; we normalize here.
+const CITY_BY_KEY = {
+  leiden: 'Leiden',
+  philadelphia: 'Philadelphia',
+  vienna: 'Vienna',
+  melbourne: 'Melbourne',
+};
+
+const CITY_VARIANTS = {
+  Leiden: 'JxNX4Rz95',
+  Philadelphia: 'EvvqCP6nV',
+  Vienna: 'jnA617SP9',
+  Melbourne: 'MVG35Wb9S',
+};
+
+// Renders {% worldmap %} (autocycling) or {% worldmap city="vienna" %}
+// (paused on Vienna; first click anywhere in the embed starts the
+// autocycle). Bounded box so the Framer MapComponent gets explicit
+// dimensions.
+export default function WorldMapEmbed({ city: cityKey }) {
+  const city = cityKey ? CITY_BY_KEY[String(cityKey).toLowerCase()] || null : null;
+  const variant = city ? CITY_VARIANTS[city] : undefined;
+  const [paused, setPaused] = useState(Boolean(city));
+  const handleActivate = useCallback(() => setPaused(false), []);
+
   return (
-    <div className="docs-worldmap-embed" style={wrapperStyle}>
+    <div className="docs-worldmap-embed" data-paused={paused || undefined} style={wrapperStyle}>
       <Suspense fallback={null}>
-        <WorldMap style={{ position: 'absolute', inset: 0 }} />
+        <WorldMap
+          variant={variant}
+          paused={paused}
+          currentCity={city}
+          onActivate={handleActivate}
+          style={{ position: 'absolute', inset: 0 }}
+        />
       </Suspense>
     </div>
   );

@@ -93,7 +93,7 @@ export default function DocsNode({ node }) {
     case 'cards':
       return <Cards cards={node.cards} />;
     case 'worldmap':
-      return <WorldMapEmbed />;
+      return <WorldMapEmbed city={node.city} />;
 
     case 'html':
       // Inline color markers etc. Safe to passthrough — content is trusted

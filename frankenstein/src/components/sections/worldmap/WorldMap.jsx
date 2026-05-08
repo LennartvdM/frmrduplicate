@@ -1,21 +1,26 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import { renderMapInto } from '../../../frmr-map/bootstrap.mjs';
 import useTransitionNavigate from '../../../hooks/useTransitionNavigate';
 
 /**
- * Shared worldmap mount used by both the home slide (full-bleed) and the
- * docs `{% worldmap %}` embed (bounded). Mounts the original frmrduplicate
+ * Shared worldmap mount used by both the home slide (full-bleed,
+ * autocycling) and the docs `{% worldmap %}` embed (bounded, can start
+ * paused on a chosen city). Mounts the original frmrduplicate
  * MapComponent and intercepts city-marker clicks.
  *
- * The Framer chunks in src/frmr-map/ are patched to externalize React and
- * ReactDOM — their internal `x` and `un` vars redirect to npm copies via
- * Vite's build graph. One React instance, one fiber tree.
+ * The Framer chunks in src/frmr-map/ are patched to externalize React
+ * and ReactDOM (one React instance, one fiber tree) and to gate the
+ * variant-cycle delay behind `globalThis.__FRMR_AUTOCYCLE_PAUSED__` —
+ * see chunk-5swt4qjj.mjs. When the flag is true, scheduled variant
+ * advances no-op, freezing the map on its current variant.
  *
  * City markers are tagged by the compiled Framer output with
  * `data-framer-name="<City>"` + `data-highlight="true"`. We catch
  * pointerdown/up/click in the capture phase on the wrapper, swallow the
  * gesture before Framer Motion's onTap zoom fires, and slide-route into
- * the matching toolbox page via useTransitionNavigate.
+ * the matching toolbox page via useTransitionNavigate. A click on the
+ * map's "own" city (currentCity) or on background fires onActivate
+ * instead of navigating — used by the embed to start autocycling.
  */
 
 export const CITY_SLUGS = {
@@ -29,6 +34,16 @@ export const CITY_SLUGS = {
     'level-1-fundamentals/4.-learning-from-success-stories/nicu-in-melbourne-australia',
 };
 
+// Framer variant IDs for the world-view focused on each city. These are
+// stops on the autocycle (Leiden → Philadelphia Zoomed → ... → Australia
+// Zoomed → Leiden) — when the map is paused the variant stays here.
+export const CITY_VARIANTS = {
+  Leiden: 'JxNX4Rz95',
+  Philadelphia: 'EvvqCP6nV',
+  Vienna: 'jnA617SP9',
+  Melbourne: 'MVG35Wb9S',
+};
+
 function findCityFromEvent(event) {
   const el = event.target?.closest?.(
     '[data-framer-name][data-highlight="true"]'
@@ -38,23 +53,45 @@ function findCityFromEvent(event) {
   return CITY_SLUGS[name] ? name : null;
 }
 
-export default function WorldMap({ className = '', style }) {
+export default function WorldMap({
+  className = '',
+  style,
+  variant,
+  paused = false,
+  currentCity = null,
+  onActivate,
+}) {
   const mountRef = useRef(null);
   const cleanupRef = useRef(null);
   const transitionNavigate = useTransitionNavigate();
   const navigateRef = useRef(transitionNavigate);
   navigateRef.current = transitionNavigate;
+  const onActivateRef = useRef(onActivate);
+  onActivateRef.current = onActivate;
+  const currentCityRef = useRef(currentCity);
+  currentCityRef.current = currentCity;
+  const pausedRef = useRef(paused);
+  pausedRef.current = paused;
+
+  // Set the autocycle flag synchronously, before Framer's first
+  // activeVariantCallback schedules its delay timer.
+  useLayoutEffect(() => {
+    globalThis.__FRMR_AUTOCYCLE_PAUSED__ = paused;
+    return () => {
+      globalThis.__FRMR_AUTOCYCLE_PAUSED__ = false;
+    };
+  }, [paused]);
 
   useEffect(() => {
     if (!mountRef.current) return undefined;
-    cleanupRef.current = renderMapInto(mountRef.current);
+    cleanupRef.current = renderMapInto(mountRef.current, variant ? { variant } : {});
     return () => {
       if (cleanupRef.current) {
         cleanupRef.current();
         cleanupRef.current = null;
       }
     };
-  }, []);
+  }, [variant]);
 
   useEffect(() => {
     const node = mountRef.current;
@@ -68,10 +105,19 @@ export default function WorldMap({ className = '', style }) {
 
     const handleClick = (event) => {
       const city = findCityFromEvent(event);
-      if (!city) return;
-      event.preventDefault();
-      event.stopPropagation();
-      navigateRef.current(`/toolbox/${CITY_SLUGS[city]}`);
+      if (city && city !== currentCityRef.current) {
+        event.preventDefault();
+        event.stopPropagation();
+        navigateRef.current(`/toolbox/${CITY_SLUGS[city]}`);
+        return;
+      }
+      // Same-city marker click or background click while paused →
+      // hand off to the embed so it can resume autocycling.
+      if (pausedRef.current && onActivateRef.current) {
+        event.preventDefault();
+        event.stopPropagation();
+        onActivateRef.current();
+      }
     };
 
     node.addEventListener('pointerdown', swallow, true);

@@ -18,10 +18,42 @@ import DocsLink from './DocsLink';
  * outer sidebar, which naturally absorbs both inner scroll and outer
  * page scroll without dedicated math.
  */
+/**
+ * Level 2 has three flat phase markers (RECORD, REFLECT, REFINE) sitting
+ * inline among the numbered modules. The data has them as siblings, not
+ * parents — but visually they're meant to gate the items that follow,
+ * matching how "3. Safe, Simple & Small" foldout-groups its sub-pages.
+ *
+ * Walk the items in order: each phase marker absorbs subsequent
+ * non-marker siblings as its children, until the next marker or the
+ * end of the list. Items appearing before any marker are passed through
+ * untouched. Markers' own pre-existing `children` (currently always
+ * empty for record/reflect/refine, but kept for safety) are preserved.
+ */
+const PHASE_MARKER_RE = /\/(record|reflect|refine)$/i;
+
+function regroupPhaseMarkers(items) {
+  const out = [];
+  let bucket = null;
+  for (const item of items) {
+    if (PHASE_MARKER_RE.test(item.slug || '')) {
+      bucket = { ...item, children: [...(item.children || [])] };
+      out.push(bucket);
+    } else if (bucket) {
+      bucket.children.push(item);
+    } else {
+      out.push(item);
+    }
+  }
+  return out;
+}
+
 export default function DocsSidebar({ sections, activeSlug }) {
   const initiallyOpen = useMemo(() => {
     const set = new Set();
-    for (const section of sections) collectAncestors(section.items, activeSlug, set);
+    for (const section of sections) {
+      collectAncestors(regroupPhaseMarkers(section.items), activeSlug, set);
+    }
     return set;
   }, [sections, activeSlug]);
 
@@ -36,7 +68,9 @@ export default function DocsSidebar({ sections, activeSlug }) {
   useEffect(() => {
     setOpen((prev) => {
       const next = new Set(prev);
-      for (const section of sections) collectAncestors(section.items, activeSlug, next);
+      for (const section of sections) {
+        collectAncestors(regroupPhaseMarkers(section.items), activeSlug, next);
+      }
       return next;
     });
   }, [activeSlug, sections]);
@@ -128,7 +162,8 @@ export default function DocsSidebar({ sections, activeSlug }) {
             indexItem &&
             indexItem.title.trim().toLowerCase() === section.title.trim().toLowerCase();
           const headingItem = indexMatchesSection ? indexItem : null;
-          const remainingItems = headingItem ? section.items.slice(1) : section.items;
+          const baseItems = headingItem ? section.items.slice(1) : section.items;
+          const remainingItems = regroupPhaseMarkers(baseItems);
           const isHeadingActive = headingItem && headingItem.slug === activeSlug;
 
           return (

@@ -62,19 +62,19 @@ const subListVariants = {
     height: 'auto',
     opacity: 1,
     transition: {
-      height: { duration: 0.28, ease: EASE_DECEL },
-      opacity: { duration: 0.18 },
-      staggerChildren: 0.028,
-      delayChildren: 0.04,
+      height: { duration: 0.44, ease: EASE_DECEL },
+      opacity: { duration: 0.3, ease: EASE_DECEL },
+      staggerChildren: 0.05,
+      delayChildren: 0.06,
     },
   },
   closed: {
     height: 0,
     opacity: 0,
     transition: {
-      height: { duration: 0.22, ease: EASE_ACCEL },
-      opacity: { duration: 0.14, delay: 0.04 },
-      staggerChildren: 0.014,
+      height: { duration: 0.32, ease: EASE_ACCEL },
+      opacity: { duration: 0.22 },
+      staggerChildren: 0.02,
       staggerDirection: -1,
     },
   },
@@ -84,12 +84,12 @@ const itemVariants = {
   open: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.22, ease: EASE_DECEL },
+    transition: { duration: 0.4, ease: EASE_DECEL },
   },
   closed: {
     opacity: 0,
-    y: -4,
-    transition: { duration: 0.14, ease: EASE_ACCEL },
+    y: -8,
+    transition: { duration: 0.22, ease: EASE_ACCEL },
   },
 };
 
@@ -243,7 +243,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
     const start = performance.now();
     const tick = () => {
       updateHighlighter(false);
-      if (performance.now() - start < 360) {
+      if (performance.now() - start < 520) {
         rafId = requestAnimationFrame(tick);
       }
     };
@@ -371,7 +371,7 @@ function NavItem({ item, activeSlug, depth, open, toggle, hovered, onHover, subL
       onMouseEnter={hasChildren ? () => onHover(item.slug, true) : undefined}
       onMouseLeave={hasChildren ? () => onHover(item.slug, false) : undefined}
     >
-      <div className={`docs-nav-row${isActive ? ' is-active' : ''}`}>
+      <div className={`docs-nav-row${hasChildren ? ' is-foldout' : ''}${isActive ? ' is-active' : ''}`}>
         <DocsLink href={`/toolbox/${item.slug}`} internal>
           <span className="docs-nav-label">{item.title}</span>
         </DocsLink>

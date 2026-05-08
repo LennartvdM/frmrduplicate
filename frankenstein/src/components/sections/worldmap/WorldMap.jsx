@@ -44,13 +44,34 @@ export const CITY_VARIANTS = {
   Melbourne: 'MVG35Wb9S',
 };
 
+// "Markerleiden" → "Leiden". Framer used PascalCase with one lowercase
+// outlier; we normalize so on-map pins click through the same way as the
+// legend buttons.
+const PIN_TO_CITY = {
+  Markerleiden: 'Leiden',
+  MarkerPhiladelphia: 'Philadelphia',
+  MarkerVienna: 'Vienna',
+  MarkerMelbourne: 'Melbourne',
+};
+
 function findCityFromEvent(event) {
-  const el = event.target?.closest?.(
-    '[data-framer-name][data-highlight="true"]'
-  );
-  if (!el) return null;
-  const name = el.getAttribute('data-framer-name');
-  return CITY_SLUGS[name] ? name : null;
+  const target = event.target;
+  if (!target?.closest) return null;
+  // Legend buttons in the corner: tagged with data-highlight by Framer.
+  const legendEl = target.closest('[data-framer-name][data-highlight="true"]');
+  if (legendEl) {
+    const name = legendEl.getAttribute('data-framer-name');
+    if (CITY_SLUGS[name]) return name;
+  }
+  // On-map pins: Markerleiden / MarkerPhiladelphia / MarkerVienna /
+  // MarkerMelbourne. No data-highlight; match by name prefix.
+  const pinEl = target.closest('[data-framer-name^="Marker"]');
+  if (pinEl) {
+    const name = pinEl.getAttribute('data-framer-name');
+    const city = PIN_TO_CITY[name];
+    if (city && CITY_SLUGS[city]) return city;
+  }
+  return null;
 }
 
 export default function WorldMap({

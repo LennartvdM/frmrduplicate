@@ -131,7 +131,11 @@ html.is-resizing [data-tablet-layout="true"] {
 .worldmap-mount [data-framer-name="Leiden"][data-highlight="true"],
 .worldmap-mount [data-framer-name="Philadelphia"][data-highlight="true"],
 .worldmap-mount [data-framer-name="Vienna"][data-highlight="true"],
-.worldmap-mount [data-framer-name="Melbourne"][data-highlight="true"] {
+.worldmap-mount [data-framer-name="Melbourne"][data-highlight="true"],
+.worldmap-mount [data-framer-name="Markerleiden"],
+.worldmap-mount [data-framer-name="MarkerPhiladelphia"],
+.worldmap-mount [data-framer-name="MarkerVienna"],
+.worldmap-mount [data-framer-name="MarkerMelbourne"] {
   cursor: pointer;
 }
 

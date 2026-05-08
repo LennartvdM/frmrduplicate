@@ -329,29 +329,14 @@
   border-bottom-right-radius: 12px;
 }
 .docs-nav-depth-0 > .docs-nav-item > .docs-nav-row {
-  background: rgba(250, 251, 252, 0.85);
+  background: rgba(250, 251, 252, 0.92);
 }
 .docs-nav-depth-1 > .docs-nav-item > .docs-nav-row {
-  background: rgba(250, 251, 252, 0.92);
+  background: rgba(250, 251, 252, 0.6);
 }
 .docs-nav-depth-2 > .docs-nav-item > .docs-nav-row,
 .docs-nav-depth-3 > .docs-nav-item > .docs-nav-row {
-  background: rgba(250, 251, 252, 0.97);
-}
-
-/* Foldout rows (parents with children) get a more translucent fill so
-   they read as group headers rather than blending into the leaves at
-   the same depth. The :not(.is-active) clause keeps the highlighter
-   pill clean when the foldout's own page is the active one. */
-.docs-nav-depth-0 > .docs-nav-item > .docs-nav-row.is-foldout:not(.is-active) {
-  background: rgba(250, 251, 252, 0.55);
-}
-.docs-nav-depth-1 > .docs-nav-item > .docs-nav-row.is-foldout:not(.is-active) {
-  background: rgba(250, 251, 252, 0.66);
-}
-.docs-nav-depth-2 > .docs-nav-item > .docs-nav-row.is-foldout:not(.is-active),
-.docs-nav-depth-3 > .docs-nav-item > .docs-nav-row.is-foldout:not(.is-active) {
-  background: rgba(250, 251, 252, 0.77);
+  background: rgba(250, 251, 252, 0.5);
 }
 .docs-nav-row a {
   flex: 1;

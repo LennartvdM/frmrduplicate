@@ -59,7 +59,12 @@ const EASE_DECEL = [0.05, 0.7, 0.1, 1];
 const EASE_STANDARD = [0.4, 0, 0.2, 1];
 
 const HOVER_OPEN_DELAY_MS = 60;
-const HOVER_CLOSE_DELAY_MS = 220;
+// Generous close delay so cursor jitter or a brief drift between siblings
+// doesn't trigger a close. Combined with the long close duration below,
+// this kills the "feedback loop" where a closing foldout shifts the row
+// the cursor is over, which retriggers another foldout, which shifts the
+// row again, etc. The user has plenty of time to course-correct.
+const HOVER_CLOSE_DELAY_MS = 700;
 
 const subListVariants = {
   open: {
@@ -76,9 +81,9 @@ const subListVariants = {
     height: 0,
     opacity: 0,
     transition: {
-      height: { duration: 0.7, ease: EASE_STANDARD },
-      opacity: { duration: 0.5, ease: EASE_STANDARD },
-      staggerChildren: 0.03,
+      height: { duration: 1.3, ease: EASE_STANDARD },
+      opacity: { duration: 0.85, ease: EASE_STANDARD },
+      staggerChildren: 0.05,
       staggerDirection: -1,
     },
   },
@@ -93,7 +98,7 @@ const itemVariants = {
   closed: {
     opacity: 0,
     y: -8,
-    transition: { duration: 0.48, ease: EASE_STANDARD },
+    transition: { duration: 0.95, ease: EASE_STANDARD },
   },
 };
 
@@ -247,7 +252,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
     const start = performance.now();
     const tick = () => {
       updateHighlighter(false);
-      if (performance.now() - start < 760) {
+      if (performance.now() - start < 1400) {
         rafId = requestAnimationFrame(tick);
       }
     };

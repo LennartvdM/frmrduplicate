@@ -295,7 +295,10 @@ export default function BlogPage({ sections, scrollTo }) {
           style={{ display: 'flex', flexDirection: 'column', gap: 40 }}
         >
           {sections.map((section) => {
-            const parsed = parseSectionContent(section.content || '');
+            const parsed = parseSectionContent(section.content || '', {
+              video: section.video,
+              videoAfterParagraph: section.videoAfterParagraph,
+            });
             const { numberPart, titlePart } = splitHeading(section.title);
             return (
               <section
@@ -358,7 +361,7 @@ export default function BlogPage({ sections, scrollTo }) {
 
                 {parsed.titleCard && <TitleCard card={parsed.titleCard} />}
                 {parsed.citation && <CitationCard text={parsed.citation} />}
-                {parsed.bodyHtml && (
+                {parsed.bodyHtmlBefore && (
                   <div
                     className="blog-body"
                     style={{
@@ -370,7 +373,26 @@ export default function BlogPage({ sections, scrollTo }) {
                       maxWidth: 600,
                       marginTop: parsed.titleCard || parsed.citation ? 12 : 0,
                     }}
-                    dangerouslySetInnerHTML={{ __html: parsed.bodyHtml }}
+                    dangerouslySetInnerHTML={{ __html: parsed.bodyHtmlBefore }}
+                    onClick={handleBodyClick}
+                  />
+                )}
+                {section.video && (
+                  <InlineVideo src={section.video} />
+                )}
+                {parsed.bodyHtmlAfter && (
+                  <div
+                    className="blog-body"
+                    style={{
+                      fontFamily: 'Inter, sans-serif',
+                      fontWeight: 500,
+                      fontSize: 16,
+                      lineHeight: 1.9,
+                      color: '#383437',
+                      maxWidth: 600,
+                      marginTop: section.video ? 24 : (parsed.titleCard || parsed.citation ? 12 : 0),
+                    }}
+                    dangerouslySetInnerHTML={{ __html: parsed.bodyHtmlAfter }}
                     onClick={handleBodyClick}
                   />
                 )}
@@ -573,21 +595,75 @@ function splitHeading(title) {
 //
 // If the pattern matches, pull the title + citation out as structured
 // cards and render the body as markdown. Otherwise everything is body.
-function parseSectionContent(content) {
+function parseSectionContent(content, opts = {}) {
+  const { video, videoAfterParagraph } = opts;
   const match = content.match(
     /^\s*\*\*\[([^\]]+)\]\(([^)]+)\)\*\*\s*\n+\*([^*][^\n]*?)\*\s*\n+---\s*\n+([\s\S]*)$/
   );
+  let titleCard = null;
+  let citation = null;
+  let body = content;
   if (match) {
-    const [, title, href, citation, body] = match;
+    const [, title, href, cite, b] = match;
+    titleCard = { title: title.trim().replace(/\.$/, ''), href };
+    citation = cite.trim();
+    body = b;
+  }
+
+  if (video && Number.isFinite(videoAfterParagraph) && videoAfterParagraph > 0) {
+    const paragraphs = body.split(/\n\s*\n+/);
+    const split = Math.min(videoAfterParagraph, paragraphs.length);
+    const before = paragraphs.slice(0, split).join('\n\n');
+    const after = paragraphs.slice(split).join('\n\n');
     return {
-      titleCard: { title: title.trim().replace(/\.$/, ''), href },
-      citation: citation.trim(),
-      bodyHtml: renderMarkdown(body),
+      titleCard,
+      citation,
+      bodyHtmlBefore: renderMarkdown(before),
+      bodyHtmlAfter: renderMarkdown(after),
     };
   }
+
   return {
-    titleCard: null,
-    citation: null,
-    bodyHtml: renderMarkdown(content),
+    titleCard,
+    citation,
+    bodyHtmlBefore: renderMarkdown(body),
+    bodyHtmlAfter: '',
   };
+}
+
+/* ── Inline illustrative video ──────────────────────────────────────── */
+function InlineVideo({ src }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return undefined;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.play().catch(() => {});
+          } else {
+            el.pause();
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <div style={{ maxWidth: 600, margin: '24px 0', borderRadius: 12, overflow: 'hidden', boxShadow: '0 4px 18px rgba(0,0,0,0.10)' }}>
+      <video
+        ref={ref}
+        src={src}
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+        style={{ display: 'block', width: '100%', height: 'auto', aspectRatio: '3 / 2', objectFit: 'cover', background: '#000' }}
+      />
+    </div>
+  );
 }

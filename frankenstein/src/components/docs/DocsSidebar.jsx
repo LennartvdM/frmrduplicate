@@ -131,7 +131,9 @@ const itemVariantsReduced = {
 export default function DocsSidebar({ sections, activeSlug }) {
   const reducedMotion = useReducedMotion();
 
-  const initiallyOpen = useMemo(() => {
+  // Foldouts that lie on the active page's path are auto-open. Computed
+  // fresh from activeSlug + sections — no state to keep in sync.
+  const autoOpen = useMemo(() => {
     const set = new Set();
     for (const section of sections) {
       collectAncestors(regroupPhaseMarkers(section.items), activeSlug, set);
@@ -139,13 +141,24 @@ export default function DocsSidebar({ sections, activeSlug }) {
     return set;
   }, [sections, activeSlug]);
 
-  const [open, setOpen] = useState(initiallyOpen);
-  // Hover state lives separately from click-toggled state so a click-to-
-  // close can collapse a foldout even while the cursor still rests on
+  // userToggle lets a user explicitly override autoOpen — true forces
+  // open, false forces closed. Without this, clicking a foldout's own
+  // row to close it would race the auto-open recompute (the row's slug
+  // becomes the new active slug, autoOpen re-adds it). Storing the
+  // explicit choice means the close sticks.
+  const [userToggle, setUserToggle] = useState(() => new Map());
+
+  // Hover state lives separately from the click-toggled state so a click-
+  // to-close collapses a foldout even while the cursor still rests on
   // its row, and so leaving a hovered foldout doesn't collapse one the
   // user explicitly clicked open.
   const [hovered, setHovered] = useState(() => new Set());
   const hoverTimers = useRef(new Map());
+
+  const isOpen = useCallback((slug) => {
+    if (userToggle.has(slug)) return userToggle.get(slug);
+    return autoOpen.has(slug) || hovered.has(slug);
+  }, [userToggle, autoOpen, hovered]);
 
   // ── Layout-shift loop fix ───────────────────────────────────────────
   // mouseenter fires whenever an element's box crosses the cursor — and
@@ -374,9 +387,15 @@ export default function DocsSidebar({ sections, activeSlug }) {
   }, [stopAnchorRaf]);
 
   const toggle = useCallback((slug) => {
-    setOpen((prev) => {
-      const next = new Set(prev);
-      if (next.has(slug)) next.delete(slug); else next.add(slug);
+    setUserToggle((prev) => {
+      // Read current effective-open from prev + fresh autoOpen + hovered.
+      // Using prev here (rather than the closure-captured userToggle) is
+      // safe even when toggle fires twice in the same React batch.
+      const next = new Map(prev);
+      const currentlyOpen = prev.has(slug)
+        ? prev.get(slug)
+        : (autoOpen.has(slug) || hovered.has(slug));
+      next.set(slug, !currentlyOpen);
       return next;
     });
     setHovered((prev) => {
@@ -385,7 +404,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
       next.delete(slug);
       return next;
     });
-  }, []);
+  }, [autoOpen, hovered]);
 
   const onHover = useCallback((slug, isEntering) => {
     const timers = hoverTimers.current;
@@ -431,14 +450,28 @@ export default function DocsSidebar({ sections, activeSlug }) {
     hoverTimers.current.clear();
   }, []);
 
-  // Keep the sidebar open for the new active slug when it changes via nav click.
+  // When activeSlug changes, clear userToggle entries for STRICT ancestors
+  // of the new active slug (i.e. ancestors not including the slug itself).
+  // This keeps an explicit "closed" sticky on the foldout the user just
+  // clicked (its slug is the new activeSlug — strict ancestors don't
+  // include it, so the close persists), while letting an in-page link to
+  // a deep child still auto-open the chain leading to it (those parents
+  // get cleared from userToggle, so autoOpen takes over).
   useEffect(() => {
-    setOpen((prev) => {
-      const next = new Set(prev);
+    setUserToggle((prev) => {
+      if (prev.size === 0) return prev;
+      const path = new Set();
       for (const section of sections) {
-        collectAncestors(regroupPhaseMarkers(section.items), activeSlug, next);
+        collectAncestors(regroupPhaseMarkers(section.items), activeSlug, path);
       }
-      return next;
+      path.delete(activeSlug); // strict ancestors only
+      if (path.size === 0) return prev;
+      let changed = false;
+      const next = new Map(prev);
+      for (const slug of path) {
+        if (next.has(slug)) { next.delete(slug); changed = true; }
+      }
+      return changed ? next : prev;
     });
   }, [activeSlug, sections]);
 
@@ -509,7 +542,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
     return () => {
       if (rafId) cancelAnimationFrame(rafId);
     };
-  }, [open, hovered, updateHighlighter]);
+  }, [userToggle, autoOpen, hovered, updateHighlighter]);
 
   // Non-animated updates when either scroll container moves. The inner
   // scroll is the sidebar's own nav scroll; the outer is the page scroll
@@ -592,7 +625,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
                 items={remainingItems}
                 activeSlug={activeSlug}
                 depth={0}
-                open={open}
+                isOpen={isOpen}
                 toggle={toggle}
                 hovered={hovered}
                 onHover={onHover}
@@ -609,7 +642,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
   );
 }
 
-function NavList({ items, activeSlug, depth, open, toggle, hovered, onHover, onAnimStart, onAnimComplete, subListVariants, itemVariants }) {
+function NavList({ items, activeSlug, depth, isOpen, toggle, hovered, onHover, onAnimStart, onAnimComplete, subListVariants, itemVariants }) {
   return (
     <ul className={`docs-nav-list docs-nav-depth-${depth}`}>
       {items.map((item, i) => (
@@ -618,7 +651,7 @@ function NavList({ items, activeSlug, depth, open, toggle, hovered, onHover, onA
           item={item}
           activeSlug={activeSlug}
           depth={depth}
-          open={open}
+          isOpen={isOpen}
           toggle={toggle}
           hovered={hovered}
           onHover={onHover}
@@ -632,10 +665,18 @@ function NavList({ items, activeSlug, depth, open, toggle, hovered, onHover, onA
   );
 }
 
-function NavItem({ item, activeSlug, depth, open, toggle, hovered, onHover, onAnimStart, onAnimComplete, subListVariants, itemVariants }) {
+function NavItem({ item, activeSlug, depth, isOpen, toggle, hovered, onHover, onAnimStart, onAnimComplete, subListVariants, itemVariants }) {
   const isActive = item.slug === activeSlug;
   const hasChildren = item.children && item.children.length > 0;
-  const isOpen = hasChildren && (open.has(item.slug) || hovered.has(item.slug));
+  const isExpanded = hasChildren && isOpen(item.slug);
+
+  // Clicking anywhere on a foldout's row toggles it. The DocsLink inside
+  // already calls preventDefault and runs the SPA navigate; we don't
+  // stopPropagation there, so click events bubble to this onClick and
+  // both fire as part of the same React event. Clicking the chevron
+  // routes through its own handler below (which stopsPropagation, so
+  // it doesn't double-toggle here).
+  const onRowClick = hasChildren ? () => toggle(item.slug) : undefined;
 
   // motion.li picks up `itemVariants` only when it's inside a parent
   // motion.div with `animate="open"|"closed"` that propagates the
@@ -652,6 +693,7 @@ function NavItem({ item, activeSlug, depth, open, toggle, hovered, onHover, onAn
       <div
         data-slug={item.slug}
         className={`docs-nav-row${hasChildren ? ' is-foldout' : ''}${isActive ? ' is-active' : ''}`}
+        onClick={onRowClick}
       >
         <DocsLink href={`/toolbox/${item.slug}`} internal>
           <span className="docs-nav-label">{item.title}</span>
@@ -659,10 +701,10 @@ function NavItem({ item, activeSlug, depth, open, toggle, hovered, onHover, onAn
         {hasChildren && (
           <button
             type="button"
-            aria-label={isOpen ? 'Collapse' : 'Expand'}
-            aria-expanded={isOpen}
-            className={`docs-nav-chevron${isOpen ? ' is-open' : ''}`}
-            onClick={() => toggle(item.slug)}
+            aria-label={isExpanded ? 'Collapse' : 'Expand'}
+            aria-expanded={isExpanded}
+            className={`docs-nav-chevron${isExpanded ? ' is-open' : ''}`}
+            onClick={(e) => { e.stopPropagation(); toggle(item.slug); }}
           >
             <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
               <path d="M3 1 L7 5 L3 9" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
@@ -672,7 +714,7 @@ function NavItem({ item, activeSlug, depth, open, toggle, hovered, onHover, onAn
       </div>
       {hasChildren && (
         <AnimatePresence initial={false}>
-          {isOpen && (
+          {isExpanded && (
             <motion.div
               key="children"
               variants={subListVariants}
@@ -687,7 +729,7 @@ function NavItem({ item, activeSlug, depth, open, toggle, hovered, onHover, onAn
                 items={item.children}
                 activeSlug={activeSlug}
                 depth={depth + 1}
-                open={open}
+                isOpen={isOpen}
                 toggle={toggle}
                 hovered={hovered}
                 onHover={onHover}

@@ -2,12 +2,15 @@
  * Publications Section Data
  * Content for the Publications page (/publications route)
  */
+import { assetUrl } from '../utils/assetUrl';
 
 // Section definitions with real content
 export const sections = [
   {
     id: 'time-sensitive',
     title: 'Medical procedures are time-sensitive',
+    video: assetUrl('/videos/urgency.mp4'),
+    videoAfterParagraph: 1,
     content: `Medical interventions demand precision, urgency, and a high degree of [**adaptability**](/toolbox/level-1-fundamentals/2.-planning-your-initiative). In critical care situations, every [**decision**](/toolbox/level-2-in-action/reflect) and action carries significant weight. Healthcare providers must assess complex scenarios rapidly, weighing potential risks and benefits within limited timeframes. The ability to [**prioritize**](/toolbox/level-1-fundamentals/3.-safe-simple-and-small) effectively and maintain clear focus under pressure is paramount.
 
 Even in less urgent settings, time remains a critical factor. Delays can compromise [**patient outcomes**](/toolbox/level-2-in-action/13.1-the-neoflix-approach/13.3-learning-from-variety-or-best-practices), requiring medical professionals to balance thoroughness with swift execution. This pressure is compounded by the dynamic nature of the medical field. Unforeseen complications, individual patient variations, and the demands of team coordination introduce variables that require constant reassessment.
@@ -17,6 +20,8 @@ Healthcare providers must navigate this complex landscape with unwavering profes
   {
     id: 'like-a-dance',
     title: 'Like a dance',
+    video: assetUrl('/videos/coordination.mp4'),
+    videoAfterParagraph: 2,
     content: `While individual members excel in their specific roles, true success requires more than just technical skill. Nurses, physicians, technicians, and support staff communicate and [**anticipate**](/toolbox/level-2-in-action/9.-after-the-intervention/9.3-metadata-and-archiving) each other's needs, ensuring necessary [**resources**](/toolbox/level-2-in-action/15.-recordings-for-research) are available at the critical moment. An experienced team functions as a well-oiled machine, with every member moving in sync.
 
 Beyond the immediate patient care team, effective coordination extends throughout the healthcare system. Lab technicians swiftly process critical samples, pharmacists carefully prepare medications, and administrators manage resources so that the care team has the right tools and support. This [**network of collaboration**](/toolbox/level-3-growth/18.-expanding-your-video-program/18.1-revolutionize-reflection-in-medical-care-join-the-network) allows care teams to focus on treating patients, knowing the right information and resources are flowing smoothly behind the scenes.
@@ -26,6 +31,8 @@ This fluidity develops over time through collaboration and shared experiences. T
   {
     id: 'cost',
     title: 'But this comes at a cost',
+    video: assetUrl('/videos/focus.mp4'),
+    videoAfterParagraph: 1,
     content: `The pressure to perform individual tasks with precision can inadvertently diminish the importance of [**team cohesion**](/toolbox/level-2-in-action/11.-lets-neoflix/11.2-a-safe-learning-environment). When members become overly absorbed in their specific responsibilities, subtle [**communication breakdowns**](/toolbox/level-1-fundamentals/1.-preproduction/1.1-beyond-the-procedure) may occur. This can manifest as misinterpretations, delays, or a decreased ability to anticipate the needs of other team members. Such breakdowns can disrupt the coordinated effort required for optimal patient care.
 
 The division of labor within medical teams is essential for efficiency, yet it can inadvertently create [**silos of information**](/toolbox/welcome/neoflix/how-it-works). This compartmentalization can lead to a decreased awareness of how individual actions might impact the broader team effort. Seemingly minor discrepancies or misalignments between team members can, in aggregate, have a significant effect on the [**overall flow**](/toolbox/level-1-fundamentals/1.-preproduction/1.4-unburdening-the-process) and success of a procedure.
@@ -35,6 +42,8 @@ The emphasis on individual expertise risks obscuring the collaborative nature of
   {
     id: 'sharpening',
     title: 'Sharpening skills',
+    video: assetUrl('/videos/skills.mp4'),
+    videoAfterParagraph: 2,
     content: `The complexity of the medical field necessitates continuous learning. Complex cases offer [**valuable opportunities**](/toolbox/level-1-fundamentals/4.-learning-from-success-stories) for critical self-review. Healthcare providers can carefully examine their decision-making, technical precision, and potential complications in the context of each case.
 
 This [**introspective analysis**](/toolbox/level-2-in-action/10.-previewing/10.1-questions-to-ask-during-previewing) can enhance patient care. It suggests a dedication to ongoing [**skill refinement**](/toolbox/level-2-in-action/5.-preparation-and-consent). Self-reflection allows healthcare providers to identify both their strengths and areas for further development.
@@ -44,6 +53,8 @@ A commitment to continuous, [**self-directed learning**](/toolbox/level-2-in-act
   {
     id: 'team-dynamics',
     title: 'Strengthening team dynamics',
+    video: assetUrl('/videos/team.mp4'),
+    videoAfterParagraph: 1,
     content: `While healthcare providers continuously develop their individual skills, it's equally important to foster strong team dynamics. Video debriefs offer a valuable tool for [**collaborative analysis**](/toolbox/level-2-in-action/11.-lets-neoflix) and improvement. In these sessions, teams review medical footage, identifying successful strategies, potential areas for optimization, and any breakdowns in communication or workflow.
 
 The emphasis within debriefings is on [**constructive problem-solving**](/toolbox/level-2-in-action/13.1-the-neoflix-approach/13.2-input-for-research). This creates a safe space for open communication without judgment, promoting transparency and a focus on team-wide improvement. By inviting all team members to share their unique perspectives, video debriefs enhance understanding between colleagues, regardless of role or experience level.
@@ -53,6 +64,8 @@ Regularly reviewing cases in this structured format can lead to improved patient
   {
     id: 'perspectives',
     title: 'Broadening perspectives',
+    video: assetUrl('/videos/perspectives.mp4'),
+    videoAfterParagraph: 2,
     content: `Collaborative case reviews offer benefits beyond individual skills and procedural analysis. They establish a [**foundation of shared confidence**](/toolbox/level-1-fundamentals/4.-learning-from-success-stories/4.1-share-your-experience) across the team. Through the careful examination of past workflows, each member gains clarity on their responsibilities, effective communication strategies, and potential contingency plans for complex scenarios.
 
 This knowledge can minimize hesitation during critical procedures, leading to more [**deliberate actions**](/toolbox/level-1-fundamentals/1.-preproduction/1.4-unburdening-the-process) and efficient communication. A [**sense of preparedness**](/toolbox/level-2-in-action/9.-after-the-intervention) emerges, bolstering confidence in both individual skills and team cohesion. Additionally, the review process allows the team to identify and address potential areas for improvement in their workflow or communication patterns.

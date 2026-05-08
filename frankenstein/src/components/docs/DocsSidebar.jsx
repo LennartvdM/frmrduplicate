@@ -214,17 +214,36 @@ export default function DocsSidebar({ sections, activeSlug }) {
       return scrollRef.current?.querySelector(`[data-slug="${safe}"]`) || null;
     };
 
-    // Prefer the deepest currently-hovered foldout — that's whatever
-    // the user is actively reaching for. Longest slug = most-nested.
+    // Group-level anchor: the OUTERMOST currently-hovered foldout (shortest
+    // slug). Inside a group's `<li>`, every ancestor up to the depth-0
+    // foldout is in `hovered` (mouseenter on a child doesn't fire
+    // mouseleave on the parent); picking the outermost means the user
+    // can roam freely between the group's children and the group's
+    // parent row holds its viewport position. Sub-foldouts inside the
+    // group can open/close without the group itself shifting.
+    //
+    // Tie-break at equal slug length: most-recently-added wins. JS Sets
+    // preserve insertion order, so the higher iteration index = newer.
+    // This handles the brief overlap window during a sibling-foldout
+    // switch (e.g. hovered = {RECORD, REFLECT} for ~600ms while
+    // RECORD's leave timer ticks down) — the cursor's current target
+    // is the newer entry, so anchor on it.
     const hov = hoveredRef.current;
     if (hov && hov.size > 0) {
-      let deepest = null;
-      let maxLen = -1;
+      let best = null;
+      let bestLen = Infinity;
+      let bestIdx = -1;
+      let i = 0;
       for (const slug of hov) {
         const len = (slug || '').length;
-        if (len > maxLen) { maxLen = len; deepest = slug; }
+        if (len < bestLen || (len === bestLen && i > bestIdx)) {
+          best = slug;
+          bestLen = len;
+          bestIdx = i;
+        }
+        i++;
       }
-      const node = lookup(deepest);
+      const node = lookup(best);
       if (node) return node;
     }
     // Fall back to the active page's row. This is what makes the

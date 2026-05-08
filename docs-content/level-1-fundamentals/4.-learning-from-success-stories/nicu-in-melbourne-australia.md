@@ -1,5 +1,7 @@
 # NICU in Melbourne, Australia
 
+{% worldmap city="melbourne" %}
+
 ## Neonatal Intensive Care Unit (NICU) of the Ritchie Centre, Monash University
 
 **Type of recording**

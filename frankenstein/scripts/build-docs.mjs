@@ -138,12 +138,17 @@ function preprocessLiquid(src) {
   );
 
   // {% worldmap %} — renders the interactive Framer worldmap inline.
-  // Local extension (not GitBook native): the docs source lives in this
-  // repo and is rendered exclusively by the Frankenstein SPA, so we own
-  // the dialect. See components/docs/blocks/WorldMapEmbed.jsx.
+  // {% worldmap city="vienna" %} — same, paused on the named city until
+  // the reader clicks anywhere inside the embed. Local extension (not
+  // GitBook native): the docs source lives in this repo and is rendered
+  // exclusively by the Frankenstein SPA, so we own the dialect. See
+  // components/docs/blocks/WorldMapEmbed.jsx.
   out = out.replace(
-    /\{%\s*worldmap\s*%\}/g,
-    () => `\n<div data-gb="worldmap"></div>\n`,
+    /\{%\s*worldmap(?:\s+city="([^"]+)")?\s*%\}/g,
+    (_, city) => {
+      const attr = city ? ` data-city=${JSON.stringify(city)}` : '';
+      return `\n<div data-gb="worldmap"${attr}></div>\n`;
+    },
   );
 
   // <figure><img src="X" alt="A"><figcaption>C</figcaption></figure>
@@ -446,7 +451,7 @@ function convertHtml(node, ctx) {
       return { type: "file", src: asset || attrs.src, name: path.posix.basename(attrs.src || "") };
     }
     if (kind === "worldmap") {
-      return { type: "worldmap" };
+      return { type: "worldmap", city: attrs.city || null };
     }
     if (kind === "figure") {
       const raw = attrs.src || "";

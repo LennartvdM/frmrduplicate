@@ -16,3 +16,5 @@ The global adoption of video review highlights its universal applicability in he
 * **Respectful Dialogue:** Creating an environment where patients and staff feel comfortable asking questions and raising concerns about consent.
 
 By prioritizing informed consent and learning from established practices, you can help ensure your video review program fosters trust, transparency, and continuous improvement in patient care. Below we highlight the set-up of four different centers who have successfully implemented video recording and reviewing in their unit.
+
+{% worldmap %}

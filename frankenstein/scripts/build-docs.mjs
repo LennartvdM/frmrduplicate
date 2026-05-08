@@ -137,6 +137,15 @@ function preprocessLiquid(src) {
     (_, src) => `\n<div data-gb="file" data-src=${JSON.stringify(src)}></div>\n`,
   );
 
+  // {% worldmap %} — renders the interactive Framer worldmap inline.
+  // Local extension (not GitBook native): the docs source lives in this
+  // repo and is rendered exclusively by the Frankenstein SPA, so we own
+  // the dialect. See components/docs/blocks/WorldMapEmbed.jsx.
+  out = out.replace(
+    /\{%\s*worldmap\s*%\}/g,
+    () => `\n<div data-gb="worldmap"></div>\n`,
+  );
+
   // <figure><img src="X" alt="A"><figcaption>C</figcaption></figure>
   //   → sentinel div that survives markdown parsing and gets lifted back
   //     into a `figure` AST node in the collapse pass.
@@ -435,6 +444,9 @@ function convertHtml(node, ctx) {
     if (kind === "file") {
       const asset = normalizeAssetUrl(attrs.src || "", ctx.assetMap);
       return { type: "file", src: asset || attrs.src, name: path.posix.basename(attrs.src || "") };
+    }
+    if (kind === "worldmap") {
+      return { type: "worldmap" };
     }
     if (kind === "figure") {
       const raw = attrs.src || "";

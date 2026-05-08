@@ -118,12 +118,36 @@ export default function DocsSidebar({ sections, activeSlug }) {
     <aside className="docs-sidebar" ref={sidebarRef}>
       <div className="docs-sidebar-highlighter" ref={highlighterRef} aria-hidden="true" />
       <div className="docs-sidebar-scroll" ref={scrollRef}>
-        {sections.map((section, i) => (
-          <div key={i} className="docs-sidebar-section">
-            <div className="docs-sidebar-heading">{section.title.toUpperCase()}</div>
-            <NavList items={section.items} activeSlug={activeSlug} depth={0} open={open} toggle={toggle} />
-          </div>
-        ))}
+        {sections.map((section, i) => {
+          // Each section's first item is its index page (e.g. "Welcome" → "",
+          // "LEVEL 1: Fundamentals" → "level-1-fundamentals/level-1-fundamentals").
+          // Promote it onto the section heading itself so the heading is a
+          // live link instead of dead text sitting above a duplicate row.
+          const indexItem = section.items[0];
+          const indexMatchesSection =
+            indexItem &&
+            indexItem.title.trim().toLowerCase() === section.title.trim().toLowerCase();
+          const headingItem = indexMatchesSection ? indexItem : null;
+          const remainingItems = headingItem ? section.items.slice(1) : section.items;
+          const isHeadingActive = headingItem && headingItem.slug === activeSlug;
+
+          return (
+            <div key={i} className="docs-sidebar-section">
+              {headingItem ? (
+                <div
+                  className={`docs-nav-row is-section-heading${isHeadingActive ? ' is-active' : ''}`}
+                >
+                  <DocsLink href={`/toolbox/${headingItem.slug}`} internal>
+                    <span className="docs-nav-label">{section.title.toUpperCase()}</span>
+                  </DocsLink>
+                </div>
+              ) : (
+                <div className="docs-sidebar-heading">{section.title.toUpperCase()}</div>
+              )}
+              <NavList items={remainingItems} activeSlug={activeSlug} depth={0} open={open} toggle={toggle} />
+            </div>
+          );
+        })}
       </div>
     </aside>
   );

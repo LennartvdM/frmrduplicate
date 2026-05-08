@@ -267,6 +267,37 @@
   color: var(--docs-navy);
   padding: 12px 20px 6px;
 }
+
+/* Section heading row: a clickable variant that links to the section's
+   index page. Keeps the small uppercase letter-spaced look of the
+   plain .docs-sidebar-heading, but participates in nav-row plumbing so
+   the highlighter pill slides up onto it when the user is on that
+   section's index. The row itself stays background-less (no cream
+   ribbon — depth-0 selectors don't reach this row since it's not in a
+   .docs-nav-list). */
+.docs-nav-row.is-section-heading {
+  background: transparent;
+  margin-bottom: 4px;
+}
+.docs-nav-row.is-section-heading a {
+  padding: 12px 20px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--docs-navy);
+  line-height: 1.4;
+}
+.docs-nav-row.is-section-heading:not(.is-active):hover a {
+  color: var(--docs-accent);
+  transform: translateX(2px);
+  transition: transform 0.15s ease-out, color 0.15s ease;
+}
+.docs-nav-row.is-section-heading.is-active a {
+  color: var(--docs-navy);
+  font-weight: 700;
+  transform: translateX(-2px);
+}
 .docs-nav-list { list-style: none; padding: 0; margin: 0; position: relative; }
 .docs-nav-depth-1,
 .docs-nav-depth-2,

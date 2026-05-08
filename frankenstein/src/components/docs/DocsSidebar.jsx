@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import DocsLink from './DocsLink';
 
 /**
@@ -18,25 +19,170 @@ import DocsLink from './DocsLink';
  * outer sidebar, which naturally absorbs both inner scroll and outer
  * page scroll without dedicated math.
  */
+/**
+ * Level 2 has three flat phase markers (RECORD, REFLECT, REFINE) sitting
+ * inline among the numbered modules. The data has them as siblings, not
+ * parents — but visually they're meant to gate the items that follow,
+ * matching how "3. Safe, Simple & Small" foldout-groups its sub-pages.
+ *
+ * Walk the items in order: each phase marker absorbs subsequent
+ * non-marker siblings as its children, until the next marker or the
+ * end of the list. Items appearing before any marker are passed through
+ * untouched. Markers' own pre-existing `children` (currently always
+ * empty for record/reflect/refine, but kept for safety) are preserved.
+ */
+const PHASE_MARKER_RE = /\/(record|reflect|refine)$/i;
+
+function regroupPhaseMarkers(items) {
+  const out = [];
+  let bucket = null;
+  for (const item of items) {
+    if (PHASE_MARKER_RE.test(item.slug || '')) {
+      bucket = { ...item, children: [...(item.children || [])] };
+      out.push(bucket);
+    } else if (bucket) {
+      bucket.children.push(item);
+    } else {
+      out.push(item);
+    }
+  }
+  return out;
+}
+
+// M3 emphasized easing curves — decelerated for entering (lands soft),
+// accelerated for exiting (leaves quick).
+const EASE_DECEL = [0.05, 0.7, 0.1, 1];
+const EASE_ACCEL = [0.3, 0, 0.8, 0.15];
+
+const HOVER_OPEN_DELAY_MS = 60;
+const HOVER_CLOSE_DELAY_MS = 140;
+
+const subListVariants = {
+  open: {
+    height: 'auto',
+    opacity: 1,
+    transition: {
+      height: { duration: 0.28, ease: EASE_DECEL },
+      opacity: { duration: 0.18 },
+      staggerChildren: 0.028,
+      delayChildren: 0.04,
+    },
+  },
+  closed: {
+    height: 0,
+    opacity: 0,
+    transition: {
+      height: { duration: 0.22, ease: EASE_ACCEL },
+      opacity: { duration: 0.14, delay: 0.04 },
+      staggerChildren: 0.014,
+      staggerDirection: -1,
+    },
+  },
+};
+
+const itemVariants = {
+  open: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.22, ease: EASE_DECEL },
+  },
+  closed: {
+    opacity: 0,
+    y: -4,
+    transition: { duration: 0.14, ease: EASE_ACCEL },
+  },
+};
+
+// Reduced-motion variants: skip the y-offset and stagger; leave a tiny
+// fade so the appear/disappear is still legible without motion.
+const subListVariantsReduced = {
+  open: { height: 'auto', opacity: 1, transition: { duration: 0.12 } },
+  closed: { height: 0, opacity: 0, transition: { duration: 0.1 } },
+};
+const itemVariantsReduced = {
+  open: { opacity: 1, y: 0, transition: { duration: 0.1 } },
+  closed: { opacity: 1, y: 0, transition: { duration: 0 } },
+};
+
 export default function DocsSidebar({ sections, activeSlug }) {
+  const reducedMotion = useReducedMotion();
+
   const initiallyOpen = useMemo(() => {
     const set = new Set();
-    for (const section of sections) collectAncestors(section.items, activeSlug, set);
+    for (const section of sections) {
+      collectAncestors(regroupPhaseMarkers(section.items), activeSlug, set);
+    }
     return set;
   }, [sections, activeSlug]);
 
   const [open, setOpen] = useState(initiallyOpen);
-  const toggle = (slug) => setOpen((prev) => {
-    const next = new Set(prev);
-    if (next.has(slug)) next.delete(slug); else next.add(slug);
-    return next;
-  });
+  // Hover state lives separately from click-toggled state so a click-to-
+  // close can collapse a foldout even while the cursor still rests on
+  // its row, and so leaving a hovered foldout doesn't collapse one the
+  // user explicitly clicked open.
+  const [hovered, setHovered] = useState(() => new Set());
+  const hoverTimers = useRef(new Map());
+
+  const toggle = useCallback((slug) => {
+    setOpen((prev) => {
+      const next = new Set(prev);
+      if (next.has(slug)) next.delete(slug); else next.add(slug);
+      return next;
+    });
+    setHovered((prev) => {
+      if (!prev.has(slug)) return prev;
+      const next = new Set(prev);
+      next.delete(slug);
+      return next;
+    });
+  }, []);
+
+  const onHover = useCallback((slug, isEntering) => {
+    const timers = hoverTimers.current;
+    const existing = timers.get(slug);
+    if (existing) {
+      clearTimeout(existing);
+      timers.delete(slug);
+    }
+    if (isEntering) {
+      const id = setTimeout(() => {
+        setHovered((prev) => {
+          if (prev.has(slug)) return prev;
+          const next = new Set(prev);
+          next.add(slug);
+          return next;
+        });
+        timers.delete(slug);
+      }, HOVER_OPEN_DELAY_MS);
+      timers.set(slug, id);
+    } else {
+      const id = setTimeout(() => {
+        setHovered((prev) => {
+          if (!prev.has(slug)) return prev;
+          const next = new Set(prev);
+          next.delete(slug);
+          return next;
+        });
+        timers.delete(slug);
+      }, HOVER_CLOSE_DELAY_MS);
+      timers.set(slug, id);
+    }
+  }, []);
+
+  // Drain pending timers on unmount so we don't leak setState into a
+  // stale tree if the user navigates away mid-animation.
+  useEffect(() => () => {
+    for (const id of hoverTimers.current.values()) clearTimeout(id);
+    hoverTimers.current.clear();
+  }, []);
 
   // Keep the sidebar open for the new active slug when it changes via nav click.
   useEffect(() => {
     setOpen((prev) => {
       const next = new Set(prev);
-      for (const section of sections) collectAncestors(section.items, activeSlug, next);
+      for (const section of sections) {
+        collectAncestors(regroupPhaseMarkers(section.items), activeSlug, next);
+      }
       return next;
     });
   }, [activeSlug, sections]);
@@ -82,10 +228,30 @@ export default function DocsSidebar({ sections, activeSlug }) {
     highlighter.classList.add('is-visible');
   }, []);
 
-  // Animated update on active-slug / expand-collapse changes.
+  // Smooth glide when the active row itself changes (page nav).
   useLayoutEffect(() => {
     updateHighlighter(true);
-  }, [activeSlug, open, updateHighlighter]);
+  }, [activeSlug, updateHighlighter]);
+
+  // Foldouts opening/closing don't change which row is active, but they
+  // shift the active row's on-screen position as the list expands or
+  // collapses around it. Sample-and-snap on rAF for the duration of the
+  // foldout animation so the pill rides the row instead of waiting for
+  // its own CSS transition (which would lag and drift).
+  useEffect(() => {
+    let rafId;
+    const start = performance.now();
+    const tick = () => {
+      updateHighlighter(false);
+      if (performance.now() - start < 360) {
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+    rafId = requestAnimationFrame(tick);
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [open, hovered, updateHighlighter]);
 
   // Non-animated updates when either scroll container moves. The inner
   // scroll is the sidebar's own nav scroll; the outer is the page scroll
@@ -114,6 +280,9 @@ export default function DocsSidebar({ sections, activeSlug }) {
     };
   }, [updateHighlighter]);
 
+  const subList = reducedMotion ? subListVariantsReduced : subListVariants;
+  const item = reducedMotion ? itemVariantsReduced : itemVariants;
+
   return (
     <aside className="docs-sidebar" ref={sidebarRef}>
       <div className="docs-sidebar-highlighter" ref={highlighterRef} aria-hidden="true" />
@@ -128,7 +297,8 @@ export default function DocsSidebar({ sections, activeSlug }) {
             indexItem &&
             indexItem.title.trim().toLowerCase() === section.title.trim().toLowerCase();
           const headingItem = indexMatchesSection ? indexItem : null;
-          const remainingItems = headingItem ? section.items.slice(1) : section.items;
+          const baseItems = headingItem ? section.items.slice(1) : section.items;
+          const remainingItems = regroupPhaseMarkers(baseItems);
           const isHeadingActive = headingItem && headingItem.slug === activeSlug;
 
           return (
@@ -144,7 +314,17 @@ export default function DocsSidebar({ sections, activeSlug }) {
               ) : (
                 <div className="docs-sidebar-heading">{section.title.toUpperCase()}</div>
               )}
-              <NavList items={remainingItems} activeSlug={activeSlug} depth={0} open={open} toggle={toggle} />
+              <NavList
+                items={remainingItems}
+                activeSlug={activeSlug}
+                depth={0}
+                open={open}
+                toggle={toggle}
+                hovered={hovered}
+                onHover={onHover}
+                subListVariants={subList}
+                itemVariants={item}
+              />
             </div>
           );
         })}
@@ -153,40 +333,89 @@ export default function DocsSidebar({ sections, activeSlug }) {
   );
 }
 
-function NavList({ items, activeSlug, depth, open, toggle }) {
+function NavList({ items, activeSlug, depth, open, toggle, hovered, onHover, subListVariants, itemVariants }) {
   return (
     <ul className={`docs-nav-list docs-nav-depth-${depth}`}>
-      {items.map((item, i) => {
-        const isActive = item.slug === activeSlug;
-        const hasChildren = item.children && item.children.length > 0;
-        const isOpen = open.has(item.slug);
-        return (
-          <li key={i} className="docs-nav-item">
-            <div className={`docs-nav-row${isActive ? ' is-active' : ''}`}>
-              <DocsLink href={`/toolbox/${item.slug}`} internal>
-                <span className="docs-nav-label">{item.title}</span>
-              </DocsLink>
-              {hasChildren && (
-                <button
-                  type="button"
-                  aria-label={isOpen ? 'Collapse' : 'Expand'}
-                  aria-expanded={isOpen}
-                  className={`docs-nav-chevron${isOpen ? ' is-open' : ''}`}
-                  onClick={() => toggle(item.slug)}
-                >
-                  <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
-                    <path d="M3 1 L7 5 L3 9" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-              )}
-            </div>
-            {hasChildren && isOpen && (
-              <NavList items={item.children} activeSlug={activeSlug} depth={depth + 1} open={open} toggle={toggle} />
-            )}
-          </li>
-        );
-      })}
+      {items.map((item, i) => (
+        <NavItem
+          key={item.slug || i}
+          item={item}
+          activeSlug={activeSlug}
+          depth={depth}
+          open={open}
+          toggle={toggle}
+          hovered={hovered}
+          onHover={onHover}
+          subListVariants={subListVariants}
+          itemVariants={itemVariants}
+        />
+      ))}
     </ul>
+  );
+}
+
+function NavItem({ item, activeSlug, depth, open, toggle, hovered, onHover, subListVariants, itemVariants }) {
+  const isActive = item.slug === activeSlug;
+  const hasChildren = item.children && item.children.length > 0;
+  const isOpen = hasChildren && (open.has(item.slug) || hovered.has(item.slug));
+
+  // motion.li picks up `itemVariants` only when it's inside a parent
+  // motion.div with `animate="open"|"closed"` that propagates the
+  // variant context. Top-level items have no such parent, so rendering
+  // them with motion.li + variants is a no-op visually — they just sit
+  // there. Inside a foldout, they animate as a stagger.
+  return (
+    <motion.li
+      className="docs-nav-item"
+      variants={itemVariants}
+      onMouseEnter={hasChildren ? () => onHover(item.slug, true) : undefined}
+      onMouseLeave={hasChildren ? () => onHover(item.slug, false) : undefined}
+    >
+      <div className={`docs-nav-row${isActive ? ' is-active' : ''}`}>
+        <DocsLink href={`/toolbox/${item.slug}`} internal>
+          <span className="docs-nav-label">{item.title}</span>
+        </DocsLink>
+        {hasChildren && (
+          <button
+            type="button"
+            aria-label={isOpen ? 'Collapse' : 'Expand'}
+            aria-expanded={isOpen}
+            className={`docs-nav-chevron${isOpen ? ' is-open' : ''}`}
+            onClick={() => toggle(item.slug)}
+          >
+            <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+              <path d="M3 1 L7 5 L3 9" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        )}
+      </div>
+      {hasChildren && (
+        <AnimatePresence initial={false}>
+          {isOpen && (
+            <motion.div
+              key="children"
+              variants={subListVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              style={{ overflow: 'hidden' }}
+            >
+              <NavList
+                items={item.children}
+                activeSlug={activeSlug}
+                depth={depth + 1}
+                open={open}
+                toggle={toggle}
+                hovered={hovered}
+                onHover={onHover}
+                subListVariants={subListVariants}
+                itemVariants={itemVariants}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
+    </motion.li>
   );
 }
 

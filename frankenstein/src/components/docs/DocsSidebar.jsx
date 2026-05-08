@@ -49,32 +49,36 @@ function regroupPhaseMarkers(items) {
   return out;
 }
 
-// M3 emphasized easing curves — decelerated for entering (lands soft),
-// accelerated for exiting (leaves quick).
+// M3 emphasized easing for the open (decelerates → lands soft), and
+// the gentler standard easing for the close. The close intentionally
+// runs *longer* than the open: this is a hover-driven menu, and when
+// the cursor wanders briefly between siblings the close shouldn't slam
+// shut — a slow, soft retract gives the user time to course-correct
+// instead of snapping back into a "constant cascade collapse" loop.
 const EASE_DECEL = [0.05, 0.7, 0.1, 1];
-const EASE_ACCEL = [0.3, 0, 0.8, 0.15];
+const EASE_STANDARD = [0.4, 0, 0.2, 1];
 
 const HOVER_OPEN_DELAY_MS = 60;
-const HOVER_CLOSE_DELAY_MS = 140;
+const HOVER_CLOSE_DELAY_MS = 220;
 
 const subListVariants = {
   open: {
     height: 'auto',
     opacity: 1,
     transition: {
-      height: { duration: 0.44, ease: EASE_DECEL },
-      opacity: { duration: 0.3, ease: EASE_DECEL },
-      staggerChildren: 0.05,
-      delayChildren: 0.06,
+      height: { duration: 0.38, ease: EASE_DECEL },
+      opacity: { duration: 0.28, ease: EASE_DECEL },
+      staggerChildren: 0.045,
+      delayChildren: 0.05,
     },
   },
   closed: {
     height: 0,
     opacity: 0,
     transition: {
-      height: { duration: 0.32, ease: EASE_ACCEL },
-      opacity: { duration: 0.22 },
-      staggerChildren: 0.02,
+      height: { duration: 0.7, ease: EASE_STANDARD },
+      opacity: { duration: 0.5, ease: EASE_STANDARD },
+      staggerChildren: 0.03,
       staggerDirection: -1,
     },
   },
@@ -84,12 +88,12 @@ const itemVariants = {
   open: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: EASE_DECEL },
+    transition: { duration: 0.36, ease: EASE_DECEL },
   },
   closed: {
     opacity: 0,
     y: -8,
-    transition: { duration: 0.22, ease: EASE_ACCEL },
+    transition: { duration: 0.48, ease: EASE_STANDARD },
   },
 };
 
@@ -243,7 +247,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
     const start = performance.now();
     const tick = () => {
       updateHighlighter(false);
-      if (performance.now() - start < 520) {
+      if (performance.now() - start < 760) {
         rafId = requestAnimationFrame(tick);
       }
     };

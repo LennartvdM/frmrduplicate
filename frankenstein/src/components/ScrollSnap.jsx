@@ -510,10 +510,19 @@ const ScrollSnap = ({ children }) => {
         .arrow-dot:hover:not(.active) {
           background: rgba(255,255,255,0.5);
         }
+        @media (max-width: 599px) {
+          .scrollsnap-dotnav {
+            right: 12px !important;
+            gap: 8px !important;
+          }
+          .scrollsnap-dotnav .arrow-btn { display: none !important; }
+          .scrollsnap-dotnav .arrow-dot { width: 6px; height: 6px; }
+          .scrollsnap-dotnav .arrow-dot.active { transform: scale(1.4); }
+        }
       `}</style>
 
       <nav
-        className="fixed right-7 z-50 flex flex-col items-center"
+        className="scrollsnap-dotnav fixed right-7 z-50 flex flex-col items-center"
         style={{
           gap: '12px',
           top: dotNavTop != null ? `${dotNavTop}px` : '50%',

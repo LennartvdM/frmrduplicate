@@ -161,12 +161,104 @@ export default function DocsSidebar({ sections, activeSlug }) {
   const animationCountRef = useRef(0);
   const lastMoveAtRef = useRef(0);
 
+  // ── Curtain-rail anchor ─────────────────────────────────────────────
+  // While transitions are in flight, the deepest currently-hovered
+  // foldout's row is "the ring on the rail" — it should stay pinned at
+  // its viewport position while siblings expand/contract around it.
+  // The technique is straightforward: read the anchor row's top each
+  // frame, see how much it's drifted, and add the drift to the
+  // sidebar scroll so the row visually stays put.
+  //
+  // hoveredRef mirrors the state so the rAF closure can read the
+  // latest set without re-instantiating per render.
+  const hoveredRef = useRef(hovered);
+  useEffect(() => { hoveredRef.current = hovered; }, [hovered]);
+
+  const anchorRowRef = useRef(null);
+  const anchorTargetTopRef = useRef(null);
+  const anchorRafIdRef = useRef(0);
+
+  const resolveAnchorDOM = useCallback(() => {
+    const hov = hoveredRef.current;
+    if (!hov || hov.size === 0) return null;
+    // Deepest = longest slug — gives nested foldouts priority over
+    // their parents when both are technically "hovered".
+    let deepest = null;
+    let maxLen = -1;
+    for (const slug of hov) {
+      const len = (slug || '').length;
+      if (len > maxLen) { maxLen = len; deepest = slug; }
+    }
+    if (!deepest) return null;
+    const safe = (typeof CSS !== 'undefined' && CSS.escape)
+      ? CSS.escape(deepest)
+      : deepest.replace(/"/g, '\\"');
+    return scrollRef.current?.querySelector(`[data-slug="${safe}"]`) || null;
+  }, []);
+
+  const captureAnchor = useCallback(() => {
+    const anchor = anchorRowRef.current;
+    const scroller = scrollRef.current;
+    if (!anchor || !scroller) {
+      anchorTargetTopRef.current = null;
+      return;
+    }
+    const scrollerRect = scroller.getBoundingClientRect();
+    const anchorRect = anchor.getBoundingClientRect();
+    anchorTargetTopRef.current = anchorRect.top - scrollerRect.top;
+  }, []);
+
+  const tickAnchor = useCallback(() => {
+    if (animationCountRef.current === 0) {
+      anchorRafIdRef.current = 0;
+      return;
+    }
+    // Re-resolve each frame so a hover swap mid-animation lands cleanly.
+    const fresh = resolveAnchorDOM();
+    if (fresh && fresh !== anchorRowRef.current) {
+      anchorRowRef.current = fresh;
+      captureAnchor();
+    }
+    const anchor = anchorRowRef.current;
+    const scroller = scrollRef.current;
+    const target = anchorTargetTopRef.current;
+    if (anchor && scroller && target !== null) {
+      const scrollerRect = scroller.getBoundingClientRect();
+      const anchorRect = anchor.getBoundingClientRect();
+      const current = anchorRect.top - scrollerRect.top;
+      const drift = current - target;
+      if (Math.abs(drift) > 0.5) {
+        scroller.scrollTop += drift;
+      }
+    }
+    anchorRafIdRef.current = requestAnimationFrame(tickAnchor);
+  }, [resolveAnchorDOM, captureAnchor]);
+
+  const startAnchorRaf = useCallback(() => {
+    if (anchorRafIdRef.current) return;
+    anchorRowRef.current = resolveAnchorDOM();
+    captureAnchor();
+    if (anchorTargetTopRef.current === null) return; // no anchor → no-op
+    anchorRafIdRef.current = requestAnimationFrame(tickAnchor);
+  }, [resolveAnchorDOM, captureAnchor, tickAnchor]);
+
+  const stopAnchorRaf = useCallback(() => {
+    if (anchorRafIdRef.current) {
+      cancelAnimationFrame(anchorRafIdRef.current);
+      anchorRafIdRef.current = 0;
+    }
+    anchorTargetTopRef.current = null;
+    anchorRowRef.current = null;
+  }, []);
+
   const onAnimStart = useCallback(() => {
     animationCountRef.current += 1;
-  }, []);
+    if (animationCountRef.current === 1) startAnchorRaf();
+  }, [startAnchorRaf]);
   const onAnimComplete = useCallback(() => {
     animationCountRef.current = Math.max(0, animationCountRef.current - 1);
-  }, []);
+    if (animationCountRef.current === 0) stopAnchorRaf();
+  }, [stopAnchorRaf]);
 
   const toggle = useCallback((slug) => {
     setOpen((prev) => {
@@ -436,7 +528,10 @@ function NavItem({ item, activeSlug, depth, open, toggle, hovered, onHover, onAn
       onMouseEnter={hasChildren ? () => onHover(item.slug, true) : undefined}
       onMouseLeave={hasChildren ? () => onHover(item.slug, false) : undefined}
     >
-      <div className={`docs-nav-row${hasChildren ? ' is-foldout' : ''}${isActive ? ' is-active' : ''}`}>
+      <div
+        data-slug={item.slug}
+        className={`docs-nav-row${hasChildren ? ' is-foldout' : ''}${isActive ? ' is-active' : ''}`}
+      >
         <DocsLink href={`/toolbox/${item.slug}`} internal>
           <span className="docs-nav-label">{item.title}</span>
         </DocsLink>

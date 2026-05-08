@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { renderMapInto } from '../../../frmr-map/bootstrap.mjs';
 import useTransitionNavigate from '../../../hooks/useTransitionNavigate';
 
@@ -44,13 +44,41 @@ export const CITY_VARIANTS = {
   Melbourne: 'MVG35Wb9S',
 };
 
+// All the data-framer-name flavors Framer uses for each city: legend
+// button ("Leiden"), zoomed wrapper ("Leiden Zoomed"), click variants
+// ("Clickedzoomleiden", "ClickzoomPhiladelphia", "Clickzoomvienna",
+// "ClickzoomAustralia"), on-map pins ("Markerleiden",
+// "MarkerPhiladelphia", "MarkerVienna", "MarkerMelbourne") and the
+// floating label ("NICU Vienna" etc). Substring match keeps this robust
+// across every variant the autocycle can land on. "Australia" (Framer's
+// region label) maps to Melbourne.
+const NAME_SUBSTRINGS = [
+  ['leiden', 'Leiden'],
+  ['philadelphia', 'Philadelphia'],
+  ['vienna', 'Vienna'],
+  ['melbourne', 'Melbourne'],
+  ['australia', 'Melbourne'],
+];
+
+function cityFromName(name) {
+  if (!name) return null;
+  if (CITY_SLUGS[name]) return name;
+  const lower = name.toLowerCase();
+  for (const [needle, city] of NAME_SUBSTRINGS) {
+    if (lower.includes(needle)) return city;
+  }
+  return null;
+}
+
 function findCityFromEvent(event) {
-  const el = event.target?.closest?.(
-    '[data-framer-name][data-highlight="true"]'
-  );
-  if (!el) return null;
-  const name = el.getAttribute('data-framer-name');
-  return CITY_SLUGS[name] ? name : null;
+  let el = event.target?.closest?.('[data-framer-name]');
+  while (el) {
+    const city = cityFromName(el.getAttribute('data-framer-name') || '');
+    if (city) return city;
+    const parent = el.parentElement;
+    el = parent ? parent.closest('[data-framer-name]') : null;
+  }
+  return null;
 }
 
 export default function WorldMap({
@@ -61,6 +89,18 @@ export default function WorldMap({
   currentCity = null,
   onActivate,
 }) {
+  // Set the autocycle flag synchronously during render so it is in
+  // place before Framer's first activeVariantCallback can schedule its
+  // delay timer. (useLayoutEffect would also be early enough in normal
+  // ordering, but the inner createRoot pass that mounts MapComponent
+  // can race depending on React's scheduler — doing it in render is the
+  // simplest guarantee.) The patched `delay` in chunk-5swt4qjj.mjs
+  // polls this flag after each setTimeout, so any state we publish here
+  // takes effect on the next tick.
+  if (typeof globalThis !== 'undefined') {
+    globalThis.__FRMR_AUTOCYCLE_PAUSED__ = paused;
+  }
+
   const mountRef = useRef(null);
   const cleanupRef = useRef(null);
   const transitionNavigate = useTransitionNavigate();
@@ -73,14 +113,15 @@ export default function WorldMap({
   const pausedRef = useRef(paused);
   pausedRef.current = paused;
 
-  // Set the autocycle flag synchronously, before Framer's first
-  // activeVariantCallback schedules its delay timer.
-  useLayoutEffect(() => {
-    globalThis.__FRMR_AUTOCYCLE_PAUSED__ = paused;
+  // Always clear the flag on unmount so the next page (e.g. slide 4)
+  // doesn't inherit a stale paused state.
+  useEffect(() => {
     return () => {
-      globalThis.__FRMR_AUTOCYCLE_PAUSED__ = false;
+      if (typeof globalThis !== 'undefined') {
+        globalThis.__FRMR_AUTOCYCLE_PAUSED__ = false;
+      }
     };
-  }, [paused]);
+  }, []);
 
   useEffect(() => {
     if (!mountRef.current) return undefined;

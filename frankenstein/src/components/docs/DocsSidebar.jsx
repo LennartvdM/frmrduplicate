@@ -59,12 +59,15 @@ const EASE_DECEL = [0.05, 0.7, 0.1, 1];
 const EASE_STANDARD = [0.4, 0, 0.2, 1];
 
 const HOVER_OPEN_DELAY_MS = 60;
-// Generous close delay so cursor jitter or a brief drift between siblings
-// doesn't trigger a close. Combined with the long close duration below,
-// this kills the "feedback loop" where a closing foldout shifts the row
-// the cursor is over, which retriggers another foldout, which shifts the
-// row again, etc. The user has plenty of time to course-correct.
-const HOVER_CLOSE_DELAY_MS = 700;
+// Hover-close grace. Combined with the intent gate below, the close
+// no longer needs to be glacial — the structural fix kills the
+// feedback loop, so the timer can land closer to feel-good values.
+const HOVER_CLOSE_DELAY_MS = 350;
+// The intent gate. A `mouseenter` is treated as user intent only if a
+// real `mousemove` was seen within this window. A stationary cursor
+// receiving `mouseenter` purely because the row drifted into it —
+// during an open/close transition — gets rejected.
+const FRESH_MOVE_MS = 100;
 
 const subListVariants = {
   open: {
@@ -81,9 +84,9 @@ const subListVariants = {
     height: 0,
     opacity: 0,
     transition: {
-      height: { duration: 1.3, ease: EASE_STANDARD },
-      opacity: { duration: 0.85, ease: EASE_STANDARD },
-      staggerChildren: 0.05,
+      height: { duration: 0.7, ease: EASE_STANDARD },
+      opacity: { duration: 0.5, ease: EASE_STANDARD },
+      staggerChildren: 0.035,
       staggerDirection: -1,
     },
   },
@@ -98,7 +101,7 @@ const itemVariants = {
   closed: {
     opacity: 0,
     y: -8,
-    transition: { duration: 0.95, ease: EASE_STANDARD },
+    transition: { duration: 0.5, ease: EASE_STANDARD },
   },
 };
 
@@ -132,6 +135,39 @@ export default function DocsSidebar({ sections, activeSlug }) {
   const [hovered, setHovered] = useState(() => new Set());
   const hoverTimers = useRef(new Map());
 
+  // ── Layout-shift loop fix ───────────────────────────────────────────
+  // mouseenter fires whenever an element's box crosses the cursor — and
+  // that happens both when the cursor moves AND when the element moves
+  // around a stationary cursor. Opening one foldout slides every sibling
+  // below it through the cursor's static position, firing fresh enters
+  // on rows the user never aimed at. Without a guard, those phantom
+  // enters cascade.
+  //
+  // Two refs collaborate to filter them out:
+  //
+  //   animationCountRef — incremented on each foldout's animation start
+  //     and decremented on complete. While > 0, the sidebar is layout-
+  //     shifting. We treat enters during this window as suspect.
+  //
+  //   lastMoveAtRef — stamped on every `mousemove` over the sidebar.
+  //     A genuine hover always has a recent stamp. A layout-shift-
+  //     induced enter does not (the cursor never moved).
+  //
+  // The rule: reject an enter only when BOTH (a) a transition is in
+  // flight AND (b) the cursor hasn't moved within FRESH_MOVE_MS. Either
+  // condition alone is fine — animations without movement still allow
+  // user-driven hover, and movement during animation still allows
+  // intentional traversal.
+  const animationCountRef = useRef(0);
+  const lastMoveAtRef = useRef(0);
+
+  const onAnimStart = useCallback(() => {
+    animationCountRef.current += 1;
+  }, []);
+  const onAnimComplete = useCallback(() => {
+    animationCountRef.current = Math.max(0, animationCountRef.current - 1);
+  }, []);
+
   const toggle = useCallback((slug) => {
     setOpen((prev) => {
       const next = new Set(prev);
@@ -154,6 +190,11 @@ export default function DocsSidebar({ sections, activeSlug }) {
       timers.delete(slug);
     }
     if (isEntering) {
+      // Intent gate (see comment near animationCountRef): drop enters
+      // that happen mid-transition without a recent real cursor move.
+      const stationary = performance.now() - lastMoveAtRef.current > FRESH_MOVE_MS;
+      if (animationCountRef.current > 0 && stationary) return;
+
       const id = setTimeout(() => {
         setHovered((prev) => {
           if (prev.has(slug)) return prev;
@@ -252,7 +293,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
     const start = performance.now();
     const tick = () => {
       updateHighlighter(false);
-      if (performance.now() - start < 1400) {
+      if (performance.now() - start < 800) {
         rafId = requestAnimationFrame(tick);
       }
     };
@@ -288,6 +329,17 @@ export default function DocsSidebar({ sections, activeSlug }) {
       }
     };
   }, [updateHighlighter]);
+
+  // Stamp the timestamp on every real cursor movement over the sidebar.
+  // Used by the intent gate in onHover to tell user-initiated enters
+  // from layout-shift artifacts (see comment near animationCountRef).
+  useEffect(() => {
+    const scroller = scrollRef.current;
+    if (!scroller) return;
+    const onMove = () => { lastMoveAtRef.current = performance.now(); };
+    scroller.addEventListener('mousemove', onMove);
+    return () => scroller.removeEventListener('mousemove', onMove);
+  }, []);
 
   const subList = reducedMotion ? subListVariantsReduced : subListVariants;
   const item = reducedMotion ? itemVariantsReduced : itemVariants;
@@ -331,6 +383,8 @@ export default function DocsSidebar({ sections, activeSlug }) {
                 toggle={toggle}
                 hovered={hovered}
                 onHover={onHover}
+                onAnimStart={onAnimStart}
+                onAnimComplete={onAnimComplete}
                 subListVariants={subList}
                 itemVariants={item}
               />
@@ -342,7 +396,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
   );
 }
 
-function NavList({ items, activeSlug, depth, open, toggle, hovered, onHover, subListVariants, itemVariants }) {
+function NavList({ items, activeSlug, depth, open, toggle, hovered, onHover, onAnimStart, onAnimComplete, subListVariants, itemVariants }) {
   return (
     <ul className={`docs-nav-list docs-nav-depth-${depth}`}>
       {items.map((item, i) => (
@@ -355,6 +409,8 @@ function NavList({ items, activeSlug, depth, open, toggle, hovered, onHover, sub
           toggle={toggle}
           hovered={hovered}
           onHover={onHover}
+          onAnimStart={onAnimStart}
+          onAnimComplete={onAnimComplete}
           subListVariants={subListVariants}
           itemVariants={itemVariants}
         />
@@ -363,7 +419,7 @@ function NavList({ items, activeSlug, depth, open, toggle, hovered, onHover, sub
   );
 }
 
-function NavItem({ item, activeSlug, depth, open, toggle, hovered, onHover, subListVariants, itemVariants }) {
+function NavItem({ item, activeSlug, depth, open, toggle, hovered, onHover, onAnimStart, onAnimComplete, subListVariants, itemVariants }) {
   const isActive = item.slug === activeSlug;
   const hasChildren = item.children && item.children.length > 0;
   const isOpen = hasChildren && (open.has(item.slug) || hovered.has(item.slug));
@@ -407,6 +463,8 @@ function NavItem({ item, activeSlug, depth, open, toggle, hovered, onHover, subL
               initial="closed"
               animate="open"
               exit="closed"
+              onAnimationStart={onAnimStart}
+              onAnimationComplete={onAnimComplete}
               style={{ overflow: 'hidden' }}
             >
               <NavList
@@ -417,6 +475,8 @@ function NavItem({ item, activeSlug, depth, open, toggle, hovered, onHover, subL
                 toggle={toggle}
                 hovered={hovered}
                 onHover={onHover}
+                onAnimStart={onAnimStart}
+                onAnimComplete={onAnimComplete}
                 subListVariants={subListVariants}
                 itemVariants={itemVariants}
               />

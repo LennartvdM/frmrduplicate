@@ -64,7 +64,7 @@ async function walk(dir, base = dir) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) out.push(...(await walk(full, base)));
     else if (entry.isFile() && entry.name.endsWith(".md")) {
-      out.push(path.relative(base, full));
+      out.push(path.relative(base, full).replace(/\\/g, "/"));
     }
   }
   return out;
@@ -559,7 +559,7 @@ function finalizeGbFrame(frame) {
 // ---------------------------------------------------------------------------
 
 function parseSummary(src, pageSlugs) {
-  const lines = src.split("\n");
+  const lines = src.split(/\r?\n/);
   const sections = [];
   let currentSection = null;
   // Stack holds nodes at each indent depth

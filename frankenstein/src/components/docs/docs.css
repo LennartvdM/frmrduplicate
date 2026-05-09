@@ -221,6 +221,13 @@
     inset 1px 0 0 rgba(255, 255, 255, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.45),
     inset 0 -1px 0 rgba(255, 255, 255, 0.18);
+  /* Clip the card's render area at its right edge (and only the right
+     edge) so the drop shadow's 17 px feathered halo can't spill past
+     x=320 onto the article card's surface. Top/bottom/left clip is
+     pushed far out so the shadow still lifts the card visually on
+     those sides. The card's box, background, content, and inset
+     highlights all sit inside the clip and render normally. */
+  clip-path: inset(-100px 0 -100px -100px);
 }
 
 

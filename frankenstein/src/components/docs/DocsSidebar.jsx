@@ -542,8 +542,14 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   ].join(' ');
 
   // The SVG box covers the section + RADIUS px above and below so
-  // outward corners have room to render.
+  // outward corners have room to render. Width is also extended by
+  // ARTICLE_CORNER_OFFSET on the right so the first/last section's
+  // "into the corner top" extension is INSIDE the SVG's viewport
+  // (not relying on overflow: visible to escape it). The empty area
+  // on the right when no extension applies is harmless — the SVG is
+  // pointer-events: none and renders nothing there.
   const svgHeight = height + 2 * RADIUS;
+  const svgWidth = width + ARTICLE_CORNER_OFFSET;
 
   // Extension stroke for the first/last section: a small horizontal
   // segment from (width, 0) to (width + ARTICLE_CORNER_OFFSET, 0) at
@@ -574,9 +580,9 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
     <>
       <svg
         className="docs-section-outline docs-section-outline-inactive"
-        width={width}
+        width={svgWidth}
         height={svgHeight}
-        viewBox={`0 ${-RADIUS} ${width} ${svgHeight}`}
+        viewBox={`0 ${-RADIUS} ${svgWidth} ${svgHeight}`}
         aria-hidden="true"
       >
         <path
@@ -596,9 +602,9 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
       </svg>
       <svg
         className="docs-section-outline docs-section-outline-focus"
-        width={width}
+        width={svgWidth}
         height={svgHeight}
-        viewBox={`0 ${-RADIUS} ${width} ${svgHeight}`}
+        viewBox={`0 ${-RADIUS} ${svgWidth} ${svgHeight}`}
         aria-hidden="true"
       >
         {/* Fill goes first so the stroke renders on top. */}

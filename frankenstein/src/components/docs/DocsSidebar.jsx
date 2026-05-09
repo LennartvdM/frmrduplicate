@@ -1,44 +1,30 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import DocsLink from './DocsLink';
 
 /**
- * Vragenlijst-style sidebar: a glassy "highlighter" pill slides behind
- * the active nav row with smooth top/height transitions, mirroring the
- * questionnaire's `.mobile-highlighter` treatment.
+ * Docs sidebar — closed-card edition.
  *
- * Layout (two-container split):
- *   .docs-sidebar          sticky, overflow: visible — hosts the
- *                           highlighter so its left outcrop can bleed
- *                           past the card's edge into the video gutter.
- *   .docs-sidebar-scroll   overflow-y: auto — the actual scrollable
- *                           viewport that holds the nav sections.
+ * Each top-level section renders as its own glassy, fully-rounded card
+ * floating on the videodeck (see `.docs-sidebar-section` in docs.css).
+ * Inside the card sits the section heading and a flat list of nav rows.
  *
- * The highlighter is a sibling of the scroll container. Its position is
- * measured in viewport coords (getBoundingClientRect) relative to the
- * outer sidebar, which naturally absorbs both inner scroll and outer
- * page scroll without dedicated math.
- */
-
-/**
- * Foldout interaction model (click-only):
+ * Foldouts are click-only and start closed. There is no auto-open from
+ * the active path: arriving on a deep page does NOT expand its parents.
+ * The active leaf is identified by a per-row treatment (inside whatever
+ * card it lives in); there is no sliding pill, no moat outcrop, and no
+ * scroll-position math. If a parent is collapsed, the active leaf simply
+ * isn't in the DOM — the in-article breadcrumb carries that orientation
+ * (see DocsPage's `.docs-section-crumb`).
  *
- * - Click a closed foldout's row → navigate AND open it.
- * - Click an open foldout's row → navigate AND close it.
- * - Click a child row inside a foldout → navigate to it; the parent
- *   stays open (the foldout's purpose is to let you pick from its set,
- *   so picking from it doesn't dismiss it).
- * - Click the row of the page you're already on → close its containing
- *   foldout (an explicit "I've made my choice, panel can go").
- * - Click anywhere outside the sidebar (article body, navbar, empty
- *   space) → close every non-active foldout.
+ * Accordion: opening a foldout closes its same-level siblings. Closing
+ * a foldout doesn't affect siblings.
  *
- * Accordion: at most one user-clicked-open foldout per level. Opening
- * a foldout closes its same-level siblings. The active page's path is
- * exempt — its foldouts stay auto-open regardless.
- *
- * No hover, no scroll compensation, no anchor magic. The cascading
- * open/close animation is for visual nicety, not for interaction.
+ * Click semantics:
+ *   - Foldout row → toggle this foldout (with accordion).
+ *   - Active leaf row → close its containing foldout (only when nested
+ *     under one). "I've made my choice, panel can go."
+ *   - Click outside the sidebar → close every open foldout.
  */
 
 /**
@@ -118,48 +104,28 @@ const itemVariantsReduced = {
 export default function DocsSidebar({ sections, activeSlug }) {
   const reducedMotion = useReducedMotion();
 
-  // Foldouts that lie on the active page's path are auto-open. Computed
-  // fresh from activeSlug + sections — no state to keep in sync.
-  const autoOpen = useMemo(() => {
-    const set = new Set();
-    for (const section of sections) {
-      collectAncestors(regroupPhaseMarkers(section.items), activeSlug, set);
-    }
-    return set;
-  }, [sections, activeSlug]);
-
-  // userToggle lets a user explicitly override autoOpen — true forces
-  // open, false forces closed. Without this, clicking a foldout's own
-  // row to close it would race the auto-open recompute (the row's slug
-  // becomes the new active slug, autoOpen re-adds it).
+  // Single source of truth for foldout state: `userToggle.get(slug) === true`
+  // means open, anything else (missing or `false`) means closed. Default
+  // closed — no auto-open from active path.
   const [userToggle, setUserToggle] = useState(() => new Map());
 
-  const isOpen = useCallback((slug) => {
-    if (userToggle.has(slug)) return userToggle.get(slug);
-    return autoOpen.has(slug);
-  }, [userToggle, autoOpen]);
+  const isOpen = useCallback(
+    (slug) => userToggle.get(slug) === true,
+    [userToggle]
+  );
 
   // Accordion-aware toggle. Opening a foldout closes its same-level
-  // siblings (passed in from the rendering NavList). Closing a foldout
-  // doesn't affect siblings.
+  // siblings. Closing a foldout doesn't affect siblings.
   const toggle = useCallback((slug, siblingSlugs) => {
     setUserToggle((prev) => {
-      const wasOpen = prev.has(slug)
-        ? prev.get(slug)
-        : autoOpen.has(slug);
+      const wasOpen = prev.get(slug) === true;
       const next = new Map(prev);
       if (wasOpen) {
         next.set(slug, false);
       } else {
-        // Accordion: close other open siblings (but keep entries that
-        // are part of the active path — those stay auto-open via
-        // autoOpen, so writing `false` here would actively close them
-        // against the user's navigation state).
         if (siblingSlugs && siblingSlugs.length > 0) {
           for (const sib of siblingSlugs) {
-            if (sib === slug) continue;
-            const sibOpen = prev.has(sib) ? prev.get(sib) : autoOpen.has(sib);
-            if (sibOpen && !autoOpen.has(sib)) {
+            if (sib !== slug && prev.get(sib) === true) {
               next.set(sib, false);
             }
           }
@@ -168,51 +134,22 @@ export default function DocsSidebar({ sections, activeSlug }) {
       }
       return next;
     });
-  }, [autoOpen]);
-
-  // When activeSlug changes, clear userToggle entries for STRICT ancestors
-  // of the new active slug (i.e. ancestors not including the slug itself).
-  // Preserves an explicit "closed" choice on the foldout the user just
-  // clicked-and-navigated-to (its slug isn't a strict ancestor, so the
-  // override stays); in-page links to deep children still cleanly auto-
-  // open the chain leading to them (those parents get cleared, so
-  // autoOpen takes over).
-  useEffect(() => {
-    setUserToggle((prev) => {
-      if (prev.size === 0) return prev;
-      const path = new Set();
-      for (const section of sections) {
-        collectAncestors(regroupPhaseMarkers(section.items), activeSlug, path);
-      }
-      path.delete(activeSlug);
-      if (path.size === 0) return prev;
-      let changed = false;
-      const next = new Map(prev);
-      for (const slug of path) {
-        if (next.has(slug)) { next.delete(slug); changed = true; }
-      }
-      return changed ? next : prev;
-    });
-  }, [activeSlug, sections]);
+  }, []);
 
   const sidebarRef = useRef(null);
-  const scrollRef = useRef(null);
-  const highlighterRef = useRef(null);
-  const hasPositioned = useRef(false);
 
-  // Click-outside-sidebar → close all non-active userToggle.true
-  // entries. The active group stays open via autoOpen.
+  // Click-outside-sidebar → close every open foldout.
   useEffect(() => {
     const onDocClick = (e) => {
       const sidebar = sidebarRef.current;
       if (!sidebar) return;
-      if (sidebar.contains(e.target)) return; // inside sidebar; let toggle handle
+      if (sidebar.contains(e.target)) return;
       setUserToggle((prev) => {
         if (prev.size === 0) return prev;
         let changed = false;
         const next = new Map(prev);
         for (const [slug, val] of prev) {
-          if (val === true && !autoOpen.has(slug)) {
+          if (val === true) {
             next.set(slug, false);
             changed = true;
           }
@@ -222,95 +159,14 @@ export default function DocsSidebar({ sections, activeSlug }) {
     };
     document.addEventListener('click', onDocClick);
     return () => document.removeEventListener('click', onDocClick);
-  }, [autoOpen]);
-
-  const updateHighlighter = useCallback((animate = true) => {
-    const sidebar = sidebarRef.current;
-    const scroller = scrollRef.current;
-    const highlighter = highlighterRef.current;
-    if (!sidebar || !scroller || !highlighter) return;
-
-    const activeRow = scroller.querySelector('.docs-nav-row.is-active');
-    if (!activeRow) {
-      highlighter.classList.remove('is-visible');
-      return;
-    }
-
-    const sidebarRect = sidebar.getBoundingClientRect();
-    const rowRect = activeRow.getBoundingClientRect();
-    const top = rowRect.top - sidebarRect.top;
-    const height = rowRect.height;
-
-    if (!animate || !hasPositioned.current) {
-      highlighter.style.transition = 'none';
-      highlighter.style.top = `${top}px`;
-      highlighter.style.height = `${height}px`;
-      void highlighter.offsetHeight;
-      highlighter.style.transition = '';
-      hasPositioned.current = true;
-    } else {
-      highlighter.style.top = `${top}px`;
-      highlighter.style.height = `${height}px`;
-    }
-    highlighter.classList.add('is-visible');
   }, []);
-
-  // Smooth glide when the active row itself changes (page nav).
-  useLayoutEffect(() => {
-    updateHighlighter(true);
-  }, [activeSlug, updateHighlighter]);
-
-  // Foldouts opening/closing shift the active row's on-screen position.
-  // Sample-and-snap on rAF for the duration of the open/close animation
-  // so the pill rides the row instead of waiting on its own CSS
-  // transition.
-  useEffect(() => {
-    let rafId;
-    const start = performance.now();
-    const tick = () => {
-      updateHighlighter(false);
-      // Cover the close window: ~280ms container collapse + a touch
-      // of margin for staggered items finishing.
-      if (performance.now() - start < 480) {
-        rafId = requestAnimationFrame(tick);
-      }
-    };
-    rafId = requestAnimationFrame(tick);
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId);
-    };
-  }, [userToggle, autoOpen, updateHighlighter]);
-
-  // Non-animated updates when either scroll container moves.
-  useEffect(() => {
-    const scroller = scrollRef.current;
-    if (!scroller) return;
-    const onScroll = () => updateHighlighter(false);
-    scroller.addEventListener('scroll', onScroll, { passive: true });
-    let outer = scroller.parentElement;
-    while (outer && outer !== document.body) {
-      const cs = getComputedStyle(outer);
-      if (/(auto|scroll)/.test(cs.overflowY)) break;
-      outer = outer.parentElement;
-    }
-    if (outer && outer !== document.body) {
-      outer.addEventListener('scroll', onScroll, { passive: true });
-    }
-    return () => {
-      scroller.removeEventListener('scroll', onScroll);
-      if (outer && outer !== document.body) {
-        outer.removeEventListener('scroll', onScroll);
-      }
-    };
-  }, [updateHighlighter]);
 
   const subList = reducedMotion ? subListVariantsReduced : subListVariants;
   const item = reducedMotion ? itemVariantsReduced : itemVariants;
 
   return (
     <aside className="docs-sidebar" ref={sidebarRef}>
-      <div className="docs-sidebar-highlighter" ref={highlighterRef} aria-hidden="true" />
-      <div className="docs-sidebar-scroll" ref={scrollRef}>
+      <div className="docs-sidebar-scroll">
         {sections.map((section, i) => {
           const indexItem = section.items[0];
           const indexMatchesSection =
@@ -325,7 +181,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
             <div key={i} className="docs-sidebar-section">
               {headingItem ? (
                 <div
-                  className={`docs-nav-row is-section-heading${isHeadingActive ? ' is-active' : ''}`}
+                  className={`docs-sidebar-heading is-link${isHeadingActive ? ' is-active' : ''}`}
                 >
                   <DocsLink href={`/toolbox/${headingItem.slug}`} internal>
                     <span className="docs-nav-label">{section.title.toUpperCase()}</span>
@@ -388,12 +244,10 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
 
   // Click semantics on the row:
   //   - Foldout row → toggle this foldout (with accordion).
-  //   - Active leaf row → close the containing foldout. This is the
-  //     "I've made my choice, panel can go" gesture: clicking the
-  //     row of the page you're already on dismisses the foldout
-  //     that holds it. Leaves at depth-0 (no parentSlug) skip this.
+  //   - Active leaf row → close the containing foldout. "I've made my
+  //     choice, panel can go." Leaves at depth-0 (no parentSlug) skip.
   //   - Non-active leaf row → no toggle behavior; DocsLink handles
-  //     navigation on its own.
+  //     navigation.
   let onRowClick;
   if (hasChildren) {
     onRowClick = () => toggle(item.slug, siblingSlugs);
@@ -455,16 +309,4 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
       )}
     </motion.li>
   );
-}
-
-function collectAncestors(items, activeSlug, outSet, trail = []) {
-  for (const item of items) {
-    const here = [...trail, item.slug];
-    if (item.slug === activeSlug) {
-      for (const s of here) outSet.add(s);
-      return true;
-    }
-    if (item.children && collectAncestors(item.children, activeSlug, outSet, here)) return true;
-  }
-  return false;
 }

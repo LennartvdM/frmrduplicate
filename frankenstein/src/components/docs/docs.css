@@ -172,25 +172,54 @@
 .docs-sidebar-scroll::-webkit-scrollbar { display: none; }
 
 /* Each section is a closed glassy card floating on the videodeck.
-   Full white stroke on all four sides, fully rounded, with a slight
-   translucent fill + drop shadow that lifts it off the camo. The
-   heading sits inside at the top; nav rows live inside its padding,
-   so nothing has to "outcrop" past the card edge. */
+   The visible outline is drawn by an SVG (`SectionOutline` in
+   `DocsSidebar.jsx`) — the CSS `border` here exists only to keep
+   the section's box dimensions consistent with the previous
+   border-as-outline design. Border color is transparent so it
+   doesn't compete with the SVG; the SVG path can extend outside
+   the box (above/below) for the focus group's outward right
+   corners.
+   `border-radius` doesn't visually round anything any more (no
+   visible border to round) but staying at 18 keeps inset shadows
+   and clip-path math consistent. */
 .docs-sidebar-section {
   position: relative;
   padding: 6px 8px 10px;
   background: rgba(255, 255, 255, 0.08);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
-  border: 2px solid rgba(255, 255, 255, 0.95);
+  border: 2px solid transparent;
   border-radius: 18px;
   box-shadow:
     0 8px 22px rgba(0, 0, 0, 0.22),
     0 1px 0 rgba(255, 255, 255, 0.28) inset;
   transition:
     background-color 0.25s ease,
-    border-color 0.25s ease,
     box-shadow 0.25s ease;
+}
+
+/* SectionOutline SVGs cover the section's box plus a margin above
+   and below for the focus group's outward right corners. Two are
+   rendered per card; CSS picks which one is visible based on
+   focus-group state. */
+.docs-section-outline {
+  position: absolute;
+  top: -18px;
+  left: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 1;
+}
+.docs-section-outline-focus {
+  display: none;
+}
+.docs-sidebar-section:has(.docs-nav-row.is-active) > .docs-section-outline-inactive,
+.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) > .docs-section-outline-inactive {
+  display: none;
+}
+.docs-sidebar-section:has(.docs-nav-row.is-active) > .docs-section-outline-focus,
+.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) > .docs-section-outline-focus {
+  display: block;
 }
 
 /* Focus group — the section card containing the active page. The
@@ -218,13 +247,6 @@
   width: calc(100% + var(--docs-moat-width) - var(--docs-outline-width));
   padding-right: calc(8px + var(--docs-moat-width) - var(--docs-outline-width));
   background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 1);
-  border-right-color: transparent;
-  /* Square the right CSS corners so the SVG BridgeCorners can render
-     OUTWARD-bulging curves there — mirror of CSS's natural inward
-     rounding. Left corners keep the inherited 18 px radius. */
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
   box-shadow:
     0 14px 34px rgba(0, 0, 0, 0.32),
     inset 1px 0 0 rgba(255, 255, 255, 0.18),
@@ -232,28 +254,10 @@
     inset 0 -1px 0 rgba(255, 255, 255, 0.18);
   /* Clip the drop shadow at the bridge's right edge so it can't
      bleed past x=314 onto the cream ring or article surface. Other
-     sides pushed far out so the shadow still feathers normally. */
+     sides (and the moat above/below where outward corners render)
+     pushed far out so the shadow still feathers normally and the
+     SVG outline isn't clipped. */
   clip-path: inset(-100px 0 -100px -100px);
-}
-
-/* Outward curves at the bridge's right corners (BridgeCorners SVGs).
-   Hidden by default, shown only on the focus group via :has(). */
-.docs-bridge-corner {
-  position: absolute;
-  right: 0;
-  pointer-events: none;
-  z-index: 2;
-  display: none;
-}
-.docs-bridge-corner-top {
-  top: -18px;
-}
-.docs-bridge-corner-bottom {
-  bottom: -18px;
-}
-.docs-sidebar-section:has(.docs-nav-row.is-active) > .docs-bridge-corner,
-.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) > .docs-bridge-corner {
-  display: block;
 }
 
 

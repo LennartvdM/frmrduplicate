@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import DocsLink from './DocsLink';
 
@@ -202,30 +202,18 @@ export default function DocsSidebar({ sections, activeSlug }) {
           const isHeadingActive = headingItem && headingItem.slug === activeSlug;
 
           return (
-            <div key={i} className="docs-sidebar-section">
-              {headingItem ? (
-                <div
-                  className={`docs-sidebar-heading is-link${isHeadingActive ? ' is-active' : ''}`}
-                >
-                  <DocsLink href={`/toolbox/${headingItem.slug}`} internal>
-                    <span className="docs-nav-label">{section.title.toUpperCase()}</span>
-                  </DocsLink>
-                </div>
-              ) : (
-                <div className="docs-sidebar-heading">{section.title.toUpperCase()}</div>
-              )}
-              <NavList
-                items={remainingItems}
-                activeSlug={activeSlug}
-                depth={0}
-                parentSlug={null}
-                isOpen={isOpen}
-                toggle={toggle}
-                subListVariants={subList}
-                itemVariants={item}
-              />
-              <BridgeCorners />
-            </div>
+            <SectionCard
+              key={i}
+              section={section}
+              headingItem={headingItem}
+              remainingItems={remainingItems}
+              isHeadingActive={isHeadingActive}
+              activeSlug={activeSlug}
+              isOpen={isOpen}
+              toggle={toggle}
+              subListVariants={subList}
+              itemVariants={item}
+            />
           );
         })}
       </div>
@@ -334,66 +322,169 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
 }
 
 /**
- * Outward curves at the bridge's right corners. Mirror of the section
- * card's natural inward `border-radius: 18px` rounding — same radius,
- * same arc shape, but reflected across the section's top/bottom edges
- * so the corners bulge OUT into the moat above/below instead of IN
- * toward the section's interior.
+ * SectionCard — one section card in the sidebar. Owns its DOM ref,
+ * tracks its own rendered dimensions via ResizeObserver, and renders
+ * its entire outline as a single SVG path (`SectionOutline` below)
+ * computed from those dimensions. The CSS still handles fill /
+ * background-blur / shadows / focus-group highlight, but the
+ * *visible outline* is drawn by the SVG, not by `border` properties.
  *
- * Top corner geometry (bottom mirrors):
- *   SVG box: 18 × 18, positioned right: 0, top: -18 → covers
- *   (section_right - 18, -18) to (section_right, 0).
- *
- *   Path: M 0 18 L ... A 18 18 0 0 0 18 0
- *     - Start (0, 18) = (section_right - 18, 0) — on the bridge top
- *       stroke, where a CSS rounded corner would normally start
- *     - End (18, 0) = (section_right, -18) — at the section's right
- *       edge, 18 px above the section (where the outward curve
- *       reaches its vertical apex)
- *     - Arc center: SVG (0, 0) = (section_right - 18, -18) — mirror
- *       of where the CSS rounded corner's center would be (which
- *       would be at (section_right - 18, +18), inside the section)
- *     - sweep-flag = 0: tangent-continuous with the bridge stroke
- *       at the start (horizontal right), tangent vertical at the end
- *
- * The CSS `border-top-right-radius: 0` / `border-bottom-right-radius: 0`
- * overrides on the active section square the right CSS corners so
- * only the SVG's outward curves render there.
+ * Why the refactor: when the outline was a CSS border, attaching
+ * outward curves to the right corners required bolting an extra
+ * SVG on top, and the SVG arc and the CSS border ended up as two
+ * separate strokes that didn't share endpoints (the "fork"). With
+ * the entire outline as one SVG path, the rounded-left and
+ * outward-right corners are part of the same shape, sharing
+ * endpoints exactly.
  */
-function BridgeCorners() {
+function SectionCard({
+  section,
+  headingItem,
+  remainingItems,
+  isHeadingActive,
+  activeSlug,
+  isOpen,
+  toggle,
+  subListVariants,
+  itemVariants,
+}) {
+  const cardRef = useRef(null);
+  const [dims, setDims] = useState(null);
+
+  useLayoutEffect(() => {
+    if (!cardRef.current) return;
+    const el = cardRef.current;
+    const update = () => {
+      setDims({ width: el.offsetWidth, height: el.offsetHeight });
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={cardRef} className="docs-sidebar-section">
+      {headingItem ? (
+        <div
+          className={`docs-sidebar-heading is-link${isHeadingActive ? ' is-active' : ''}`}
+        >
+          <DocsLink href={`/toolbox/${headingItem.slug}`} internal>
+            <span className="docs-nav-label">{section.title.toUpperCase()}</span>
+          </DocsLink>
+        </div>
+      ) : (
+        <div className="docs-sidebar-heading">{section.title.toUpperCase()}</div>
+      )}
+      <NavList
+        items={remainingItems}
+        activeSlug={activeSlug}
+        depth={0}
+        parentSlug={null}
+        isOpen={isOpen}
+        toggle={toggle}
+        subListVariants={subListVariants}
+        itemVariants={itemVariants}
+      />
+      {dims && <SectionOutline width={dims.width} height={dims.height} />}
+    </div>
+  );
+}
+
+/**
+ * SectionOutline — renders the section card's visible outline as a
+ * single SVG path. Two paths are rendered (always — only one is
+ * visible at a time, picked by CSS via `:has(.docs-nav-row.is-active)`):
+ *
+ * 1. Inactive outline: a closed rounded rectangle, all four corners
+ *    rounded inward at RADIUS px (matching the original CSS look).
+ *
+ * 2. Focus outline: rounded LEFT corners (concave inward, same as
+ *    inactive) + outward RIGHT corners (convex outward, mirror of
+ *    the inward rounding reflected across the top/bottom edges).
+ *    The right side stays open — the path uses `M` (move) to jump
+ *    over the right edge, so there's no stroke connecting the
+ *    top-right and bottom-right curves vertically.
+ *
+ * The SVG box extends RADIUS px above and below the section so the
+ * outward-curving corners have room to render. `overflow: visible`
+ * is set on the parent's clip-path equivalent.
+ */
+function SectionOutline({ width, height }) {
   const RADIUS = 18;
   const STROKE_WIDTH = 2;
+
+  // Inactive: closed rounded rectangle going clockwise from top-left.
+  const inactivePath = [
+    `M ${RADIUS} 0`,
+    `L ${width - RADIUS} 0`,
+    `A ${RADIUS} ${RADIUS} 0 0 1 ${width} ${RADIUS}`,
+    `L ${width} ${height - RADIUS}`,
+    `A ${RADIUS} ${RADIUS} 0 0 1 ${width - RADIUS} ${height}`,
+    `L ${RADIUS} ${height}`,
+    `A ${RADIUS} ${RADIUS} 0 0 1 0 ${height - RADIUS}`,
+    `L 0 ${RADIUS}`,
+    `A ${RADIUS} ${RADIUS} 0 0 1 ${RADIUS} 0`,
+    'Z',
+  ].join(' ');
+
+  // Focus: rounded LEFT, outward RIGHT, no right side stroke.
+  // Going clockwise from top-left rounded corner end:
+  //   - Top stroke
+  //   - OUTWARD top-right curve to (width, -RADIUS) — bulges UP
+  //   - M jump over the open right side to (width, height + RADIUS)
+  //   - OUTWARD bottom-right curve back to (width - RADIUS, height)
+  //   - Bottom stroke
+  //   - Inward bottom-left curve
+  //   - Left stroke
+  //   - Inward top-left curve
+  // Two separate sub-paths joined by an M command — the SVG renders
+  // both but they're not connected by a stroke (the right side is
+  // visually open, exactly the desired behavior).
+  const focusPath = [
+    `M ${RADIUS} 0`,
+    `L ${width - RADIUS} 0`,
+    `A ${RADIUS} ${RADIUS} 0 0 0 ${width} ${-RADIUS}`,
+    `M ${width} ${height + RADIUS}`,
+    `A ${RADIUS} ${RADIUS} 0 0 0 ${width - RADIUS} ${height}`,
+    `L ${RADIUS} ${height}`,
+    `A ${RADIUS} ${RADIUS} 0 0 1 0 ${height - RADIUS}`,
+    `L 0 ${RADIUS}`,
+    `A ${RADIUS} ${RADIUS} 0 0 1 ${RADIUS} 0`,
+  ].join(' ');
+
+  // SVG covers the section box plus RADIUS px above/below so the
+  // outward curves have room to render.
+  const svgHeight = height + 2 * RADIUS;
 
   return (
     <>
       <svg
-        className="docs-bridge-corner docs-bridge-corner-top"
-        width={RADIUS}
-        height={RADIUS}
-        viewBox={`0 0 ${RADIUS} ${RADIUS}`}
+        className="docs-section-outline docs-section-outline-inactive"
+        width={width}
+        height={svgHeight}
+        viewBox={`0 ${-RADIUS} ${width} ${svgHeight}`}
         aria-hidden="true"
       >
         <path
-          d={`M 0 ${RADIUS} A ${RADIUS} ${RADIUS} 0 0 0 ${RADIUS} 0`}
-          stroke="white"
+          d={inactivePath}
+          stroke="rgba(255, 255, 255, 0.95)"
           strokeWidth={STROKE_WIDTH}
           fill="none"
-          strokeLinecap="round"
         />
       </svg>
       <svg
-        className="docs-bridge-corner docs-bridge-corner-bottom"
-        width={RADIUS}
-        height={RADIUS}
-        viewBox={`0 0 ${RADIUS} ${RADIUS}`}
+        className="docs-section-outline docs-section-outline-focus"
+        width={width}
+        height={svgHeight}
+        viewBox={`0 ${-RADIUS} ${width} ${svgHeight}`}
         aria-hidden="true"
       >
         <path
-          d={`M 0 0 A ${RADIUS} ${RADIUS} 0 0 1 ${RADIUS} ${RADIUS}`}
-          stroke="white"
+          d={focusPath}
+          stroke="rgba(255, 255, 255, 1)"
           strokeWidth={STROKE_WIDTH}
           fill="none"
-          strokeLinecap="round"
         />
       </svg>
     </>

@@ -146,15 +146,26 @@
   height: calc(100vh - var(--docs-top-offset) - 32px);
   font-size: 14px;
   color: var(--docs-text-light);
+  /* Lifts strokes (rendered as pseudo-elements on the sections inside)
+     above .docs-main's outward box-shadow ring so they don't get
+     covered when they reach the article card's cream halo. */
+  z-index: 1;
 }
+/* The scroll container's clip box extends 32px past its visual right
+   edge into the moat. CSS spec forces overflow-x to clip whenever
+   overflow-y is auto/scroll, so we can't simply allow horizontal
+   overflow — instead we make the *clip region itself* wider via a
+   matching negative right-margin + right-padding. Sections inside
+   sit on the left side (their natural width) and pseudo-element
+   strokes that extend across the moat now render inside the clip. */
 .docs-sidebar-scroll {
   height: 100%;
   display: flex;
   flex-direction: column;
   gap: 18px;
-  padding: 8px 4px 56px;
+  padding: 8px var(--docs-moat-width) 56px 4px;
+  margin-right: calc(-1 * var(--docs-moat-width));
   overflow-y: auto;
-  overflow-x: visible;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -194,6 +205,37 @@
     0 14px 34px rgba(0, 0, 0, 0.32),
     0 0 0 1px rgba(255, 255, 255, 0.18) inset,
     0 1px 0 rgba(255, 255, 255, 0.45) inset;
+}
+
+/* Connector strokes — when a section is the focus group, two
+   horizontal white stripes extend from its top and bottom borders
+   across the moat to meet the article card's left edge. Visually
+   "tabs" the navigation card into the article so the user can see
+   at a glance which section their current page belongs to.
+   Width is exactly the moat (32px) so the stroke ends flush with
+   the article card's outer box. The scroll container's clip box
+   has been extended by the same amount (see .docs-sidebar-scroll
+   negative right-margin) so these aren't cropped. */
+.docs-sidebar-section:has(.docs-nav-row.is-active)::before,
+.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active)::before,
+.docs-sidebar-section:has(.docs-nav-row.is-active)::after,
+.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active)::after {
+  content: '';
+  position: absolute;
+  left: 100%;
+  width: var(--docs-moat-width);
+  height: 2px;
+  background: rgba(255, 255, 255, 1);
+  pointer-events: none;
+  z-index: 2;
+}
+.docs-sidebar-section:has(.docs-nav-row.is-active)::before,
+.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active)::before {
+  top: -2px;
+}
+.docs-sidebar-section:has(.docs-nav-row.is-active)::after,
+.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active)::after {
+  bottom: -2px;
 }
 
 

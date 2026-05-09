@@ -3,28 +3,27 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import DocsLink from './DocsLink';
 
 /**
- * Docs sidebar — closed-card edition.
+ * Docs sidebar — open-on-active-path edition.
  *
  * Each top-level section renders as its own glassy, fully-rounded card
  * floating on the videodeck (see `.docs-sidebar-section` in docs.css).
  * Inside the card sits the section heading and a flat list of nav rows.
  *
- * Foldouts are click-only and start closed. There is no auto-open from
- * the active path: arriving on a deep page does NOT expand its parents.
- * The active leaf is identified by a per-row treatment (inside whatever
- * card it lives in); there is no sliding pill, no moat outcrop, and no
- * scroll-position math. If a parent is collapsed, the active leaf simply
- * isn't in the DOM — the in-article breadcrumb carries that orientation
- * (see DocsPage's `.docs-section-crumb`).
+ * Foldouts auto-expand on the ancestor path of the active page: arriving
+ * on a deep leaf opens every foldout above it so the active row is
+ * visible inside its section card. The active foldout's own row gets a
+ * navy inline outline (see `.docs-nav-row.is-foldout.is-active` in
+ * docs.css) and its children paint their own per-depth pills directly
+ * inside the section card — no separate "envelope" lift.
  *
  * Accordion: opening a foldout closes its same-level siblings. Closing
  * a foldout doesn't affect siblings.
  *
  * Click semantics:
  *   - Foldout row → toggle this foldout (with accordion).
- *   - Active leaf row → close its containing foldout (only when nested
- *     under one). "I've made my choice, panel can go."
- *   - Click outside the sidebar → close every open foldout.
+ *   - Leaf row → DocsLink handles navigation.
+ *   - Click outside the sidebar → close every open foldout *not* on the
+ *     active ancestor path (so the user's choice stays visible).
  */
 
 /**
@@ -104,10 +103,32 @@ const itemVariantsReduced = {
 export default function DocsSidebar({ sections, activeSlug }) {
   const reducedMotion = useReducedMotion();
 
-  // Single source of truth for foldout state: `userToggle.get(slug) === true`
-  // means open, anything else (missing or `false`) means closed. Default
-  // closed — no auto-open from active path.
-  const [userToggle, setUserToggle] = useState(() => new Map());
+  // Slugs of every foldout that is an ancestor of the active page.
+  // These auto-open on mount and re-open whenever activeSlug changes,
+  // and stay open through click-outside-sidebar (so the active row
+  // stays visible after the user dismisses other foldouts).
+  const activeAncestors = useMemo(
+    () => collectActiveAncestors(sections, activeSlug),
+    [sections, activeSlug]
+  );
+
+  // Foldout open state: `userToggle.get(slug) === true` means open. The
+  // initial map opens every ancestor of the active page; subsequent
+  // user clicks layer over it.
+  const [userToggle, setUserToggle] = useState(() => {
+    const map = new Map();
+    for (const slug of activeAncestors) map.set(slug, true);
+    return map;
+  });
+
+  // Re-open ancestors whenever the active page changes (route nav).
+  useEffect(() => {
+    setUserToggle((prev) => {
+      const next = new Map(prev);
+      for (const slug of activeAncestors) next.set(slug, true);
+      return next;
+    });
+  }, [activeAncestors]);
 
   const isOpen = useCallback(
     (slug) => userToggle.get(slug) === true,
@@ -138,18 +159,21 @@ export default function DocsSidebar({ sections, activeSlug }) {
 
   const sidebarRef = useRef(null);
 
-  // Click-outside-sidebar → close every open foldout.
+  // Click-outside-sidebar → close every open foldout *except* those on
+  // the active ancestor path, so the user's current page stays visible
+  // in its open section.
   useEffect(() => {
     const onDocClick = (e) => {
       const sidebar = sidebarRef.current;
       if (!sidebar) return;
       if (sidebar.contains(e.target)) return;
+      const keep = new Set(activeAncestors);
       setUserToggle((prev) => {
         if (prev.size === 0) return prev;
         let changed = false;
         const next = new Map(prev);
         for (const [slug, val] of prev) {
-          if (val === true) {
+          if (val === true && !keep.has(slug)) {
             next.set(slug, false);
             changed = true;
           }
@@ -159,7 +183,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
     };
     document.addEventListener('click', onDocClick);
     return () => document.removeEventListener('click', onDocClick);
-  }, []);
+  }, [activeAncestors]);
 
   const subList = reducedMotion ? subListVariantsReduced : subListVariants;
   const item = reducedMotion ? itemVariantsReduced : itemVariants;
@@ -244,15 +268,12 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
 
   // Click semantics on the row:
   //   - Foldout row → toggle this foldout (with accordion).
-  //   - Active leaf row → close the containing foldout. "I've made my
-  //     choice, panel can go." Leaves at depth-0 (no parentSlug) skip.
-  //   - Non-active leaf row → no toggle behavior; DocsLink handles
-  //     navigation.
+  //   - Leaf row → no toggle behavior; DocsLink handles navigation.
+  //     (The previous "active leaf closes parent" behavior was removed
+  //     so the foldout stays open showing siblings of the active page.)
   let onRowClick;
   if (hasChildren) {
     onRowClick = () => toggle(item.slug, siblingSlugs);
-  } else if (isActive && parentSlug) {
-    onRowClick = () => toggle(parentSlug);
   }
 
   return (
@@ -309,4 +330,26 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
       )}
     </motion.li>
   );
+}
+
+// Walk every section's items and collect the slugs of foldouts whose
+// subtree contains the active slug. Returns slugs in root-to-leaf order
+// so passing them to setUserToggle in iteration order is harmless.
+function collectActiveAncestors(sections, activeSlug) {
+  const out = [];
+  if (!activeSlug) return out;
+  const visit = (items, trail) => {
+    for (const item of items) {
+      if (item.slug === activeSlug) {
+        for (const slug of trail) out.push(slug);
+        return true;
+      }
+      if (item.children && item.children.length > 0) {
+        if (visit(item.children, [...trail, item.slug])) return true;
+      }
+    }
+    return false;
+  };
+  for (const section of sections) visit(section.items, []);
+  return out;
 }

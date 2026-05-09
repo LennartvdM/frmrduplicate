@@ -224,6 +224,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
                 subListVariants={subList}
                 itemVariants={item}
               />
+              <SectionConnector />
             </div>
           );
         })}
@@ -329,6 +330,61 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
         </AnimatePresence>
       )}
     </motion.li>
+  );
+}
+
+/**
+ * SVG bridge that hangs off the right edge of each section card.
+ * Hidden by default; the CSS in `docs.css` reveals it when the
+ * section card is the focus group (`:has(.docs-nav-row.is-active)`).
+ *
+ * Shape: two strokes that pick up where the section's top and bottom
+ * borders would have continued, run horizontally across the moat,
+ * then curve outward (away from each other) and into the article
+ * card's left edge. Drawn as actual SVG paths because the geometry
+ * is a continuation of the section's outline — pseudo-element
+ * rectangles can't curve.
+ *
+ * The stroke width (2) matches the section card's `border` so the
+ * transition between border and connector reads as one shape. The
+ * SVGs are sized to overflow into the moat area; the parent scroll
+ * container's clip box has been widened by the moat width (see
+ * `.docs-sidebar-scroll` margin/padding trick) to keep them visible.
+ */
+function SectionConnector() {
+  return (
+    <>
+      <svg
+        className="docs-connector docs-connector-top"
+        viewBox="0 0 36 14"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M 0,13 L 22,13 Q 32,13 32,3 Q 32,1 36,1"
+          stroke="rgba(255,255,255,1)"
+          strokeWidth="2"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+      <svg
+        className="docs-connector docs-connector-bottom"
+        viewBox="0 0 36 14"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M 0,1 L 22,1 Q 32,1 32,11 Q 32,13 36,13"
+          stroke="rgba(255,255,255,1)"
+          strokeWidth="2"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </>
   );
 }
 

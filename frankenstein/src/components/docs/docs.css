@@ -194,48 +194,52 @@
 }
 
 /* Focus group — the section card containing the active page. Brighter
-   border, warmer fill, and a more pronounced lift so the current
-   group reads at a glance. `:has()` keeps this purely structural — no
-   JS state needs to know which section is "active". */
+   border, warmer fill, and a more pronounced lift. The right side of
+   the rectangle "opens up": no right border, square right corners.
+   The opening is bridged by an SVG <SectionConnector/> rendered inside
+   the section (positioned absolutely at left: 100%) — its stroke picks
+   up exactly where the section's top and bottom borders end and runs
+   into the article card. */
 .docs-sidebar-section:has(.docs-nav-row.is-active),
 .docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) {
   background: rgba(255, 255, 255, 0.16);
   border-color: rgba(255, 255, 255, 1);
+  border-right-color: transparent;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   box-shadow:
     0 14px 34px rgba(0, 0, 0, 0.32),
     0 0 0 1px rgba(255, 255, 255, 0.18) inset,
     0 1px 0 rgba(255, 255, 255, 0.45) inset;
 }
 
-/* Connector strokes — when a section is the focus group, two
-   horizontal white stripes extend from its top and bottom borders
-   across the moat to meet the article card's left edge. Visually
-   "tabs" the navigation card into the article so the user can see
-   at a glance which section their current page belongs to.
-   Width is exactly the moat (32px) so the stroke ends flush with
-   the article card's outer box. The scroll container's clip box
-   has been extended by the same amount (see .docs-sidebar-scroll
-   negative right-margin) so these aren't cropped. */
-.docs-sidebar-section:has(.docs-nav-row.is-active)::before,
-.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active)::before,
-.docs-sidebar-section:has(.docs-nav-row.is-active)::after,
-.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active)::after {
-  content: '';
+/* SVG connector pieces — always rendered (cheap), shown only on the
+   focus group via :has(). Positioned at the section's right edge,
+   each SVG's stroke continues the section's border line outward and
+   curves into the article card. */
+.docs-connector {
   position: absolute;
   left: 100%;
-  width: var(--docs-moat-width);
-  height: 2px;
-  background: rgba(255, 255, 255, 1);
+  width: 36px;
+  height: 14px;
   pointer-events: none;
   z-index: 2;
+  display: none;
+  overflow: visible;
 }
-.docs-sidebar-section:has(.docs-nav-row.is-active)::before,
-.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active)::before {
-  top: -2px;
+.docs-connector-top {
+  /* Sit so the SVG's bottom row aligns with the section's top border:
+     -12 + 14 = 2 → bottom of SVG meets section's top border bottom edge.
+     The path's main horizontal stroke is at SVG y=13 (1px above bottom),
+     coinciding with the centre of the 2px border. */
+  top: -12px;
 }
-.docs-sidebar-section:has(.docs-nav-row.is-active)::after,
-.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active)::after {
-  bottom: -2px;
+.docs-connector-bottom {
+  bottom: -12px;
+}
+.docs-sidebar-section:has(.docs-nav-row.is-active) > .docs-connector,
+.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) > .docs-connector {
+  display: block;
 }
 
 

@@ -98,12 +98,11 @@
   column-gap: var(--docs-moat-width);
   max-width: 1280px;
   margin: calc(var(--docs-top-offset) + 32px) auto 64px;
-  /* Each section now renders as its own glassy card on top of the
-     camo backdrop, so the unified sidebar wash that used to live on
-     the shell goes away. The left half stays transparent — the
-     `.docs-sidebar-section` cards bring their own translucent fill.
-     The cream column on the right and the moat in between are
-     unchanged. */
+  /* Sidebar half stays fully transparent — the camo videodeck shows
+     through the section cards (which are pure outlines, no fill),
+     and the videodeck is already blurred upstream so we don't apply
+     a second pass here. Cream column on the right and the moat in
+     between are unchanged. */
   background: linear-gradient(
     to right,
     transparent 0,
@@ -111,11 +110,6 @@
     var(--docs-cream) calc(var(--docs-nav-width) + var(--docs-moat-width)),
     var(--docs-cream) 100%
   );
-  /* Blur only applies over the translucent strip — the solid cream half
-     hides its own backdrop — so this frosts the sidebar's videodeck
-     without costing anything on the reading surface. */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border-radius: var(--docs-radius);
   min-height: calc(100vh - var(--docs-top-offset) - 96px);
   /* Solid outline stroke + drop shadow. Replaces the old ::before +
@@ -207,9 +201,7 @@
   right: calc(var(--docs-nav-outcrop) * -1);
   top: 0;
   height: 0;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.85);
   /* Rounded hard on the right (for the outcrop cap that pokes into
      the moat), gentler on the left. Mirrors the 19/8/8/19 shape the
      vragenlijst `.mobile-highlighter` uses, flipped horizontally. */
@@ -255,38 +247,34 @@
    A 2px vertical gap between rows lets the sidebar strip (0.4 wash)
    show through between ribbons, so adjacent same-depth rows stay
    segmented rather than fusing into one long band. */
-/* Each section renders as its own glassy card. The card's fill is a
-   translucent dark green-teal that picks up the camo behind it via
-   backdrop-filter, so the cards read as frosted panels floating on
-   the videodeck rather than a single contiguous strip. Tabs inside
-   keep their cream pill style; the contrast against the dark card
-   actually reads cleaner than against the old 0.4 cream wash. */
+/* Each section is an outlined group: a white rounded stroke around
+   the section's heading + its rows, with NO fill behind it. The camo
+   videodeck shows through directly (it's already blurred upstream;
+   we don't add a second blur). Different sections may sit over
+   different parts of the videodeck, so any solid fill would clash
+   with whatever clip is playing — the outline is the structure. */
 .docs-sidebar-section {
   position: relative;
   margin: 0 0 14px;
-  padding: 8px 0 12px;
-  background: rgba(15, 45, 40, 0.42);
-  backdrop-filter: blur(14px) saturate(1.1);
-  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  padding: 4px 0 8px;
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
   border-radius: 14px;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 4px 14px rgba(0, 0, 0, 0.18);
 }
 .docs-sidebar-heading {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
   padding: 12px 20px 8px;
 }
 
 /* Section heading row: a clickable variant that links to the section's
-   index page. Same uppercase letter-spaced look as the plain heading,
-   but it's a live link. On the dark card the navy text vanishes, so
-   it's recolored to a near-white to read as a label that's also
-   subtly clickable. */
+   index page. Same uppercase letter-spaced look, just a live link.
+   Sits directly on the videodeck (no card fill), so it's white with
+   a subtle text-shadow for legibility. */
 .docs-nav-row.is-section-heading {
   background: transparent;
   margin-bottom: 4px;
@@ -297,7 +285,8 @@
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
   line-height: 1.4;
 }
 .docs-nav-row.is-section-heading:not(.is-active):hover a {

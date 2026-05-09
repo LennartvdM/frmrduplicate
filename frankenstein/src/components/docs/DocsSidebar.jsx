@@ -444,6 +444,13 @@ function SectionCard({
 function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   const RADIUS = 18;
   const STROKE_WIDTH = 2;
+  // For the first / last section's "into the corner top" extension:
+  // the article card has border-radius: 16 plus a 6 px box-shadow ring
+  // around it, so its visible top-left corner's *topmost point* sits
+  // at x = section_right + 22. Pushing the straight stroke that far
+  // ends it right at the article's rounded-corner apex — past the
+  // sidebar column, into the moat space above the article's curve.
+  const ARTICLE_CORNER_OFFSET = 22;
 
   // Where the top piece of the focus path ends (= where the right
   // side starts).
@@ -538,6 +545,23 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   // outward corners have room to render.
   const svgHeight = height + 2 * RADIUS;
 
+  // Extension stroke for the first/last section: a small horizontal
+  // segment from (width, 0) to (width + ARTICLE_CORNER_OFFSET, 0) at
+  // the top, mirrored at the bottom. Pushes the straight stroke past
+  // the section's right edge, into the moat space that sits above
+  // (or below) the article card's rounded corner — terminating at
+  // the article's corner apex. Renders inside the SVG via overflow:
+  // visible; the parent scroll container's clip box has been widened
+  // to accommodate it.
+  const extensionSegments = [];
+  if (skipTopOuter) {
+    extensionSegments.push(`M ${width} 0 L ${width + ARTICLE_CORNER_OFFSET} 0`);
+  }
+  if (skipBottomOuter) {
+    extensionSegments.push(`M ${width} ${height} L ${width + ARTICLE_CORNER_OFFSET} ${height}`);
+  }
+  const extensionPath = extensionSegments.length > 0 ? extensionSegments.join(' ') : null;
+
   // Focus fill matches the active section's CSS background so the
   // SVG-filled outward-corner regions read as the same surface as
   // the CSS-filled (and backdrop-blurred) rectangular body.
@@ -561,6 +585,14 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
           strokeWidth={STROKE_WIDTH}
           fill="none"
         />
+        {extensionPath && (
+          <path
+            d={extensionPath}
+            stroke="rgba(255, 255, 255, 0.95)"
+            strokeWidth={STROKE_WIDTH}
+            fill="none"
+          />
+        )}
       </svg>
       <svg
         className="docs-section-outline docs-section-outline-focus"
@@ -577,6 +609,14 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
           strokeWidth={STROKE_WIDTH}
           fill="none"
         />
+        {extensionPath && (
+          <path
+            d={extensionPath}
+            stroke="rgba(255, 255, 255, 1)"
+            strokeWidth={STROKE_WIDTH}
+            fill="none"
+          />
+        )}
       </svg>
     </>
   );

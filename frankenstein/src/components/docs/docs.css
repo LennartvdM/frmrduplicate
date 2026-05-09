@@ -176,9 +176,16 @@
      sidebar's top — and therefore flush with the article card's top
      edge, which matters for the first section's skipTopOuter logic
      (the corner is "skipped" precisely because the section meets the
-     article's rounded top-left corner zone). */
-  padding: 0 var(--docs-moat-width) 56px 4px;
-  margin-right: calc(-1 * var(--docs-moat-width));
+     article's rounded top-left corner zone).
+     The right padding/margin pair extends the clip box past the
+     sidebar column by `moat + radius + outline-width` (= 32 + 16 + 6
+     = 54). The extra `radius + outline-width` (= 22) is the "into
+     the corner top" extension — the first/last section's straight
+     stroke pushes 22 px past the section's right edge to terminate
+     at the article's rounded-corner apex, and that part needs to
+     be inside the scroll's clip box to render. */
+  padding: 0 calc(var(--docs-moat-width) + var(--docs-radius) + var(--docs-outline-width)) 56px 4px;
+  margin-right: calc(-1 * (var(--docs-moat-width) + var(--docs-radius) + var(--docs-outline-width)));
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;

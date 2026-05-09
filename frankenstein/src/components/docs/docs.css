@@ -196,6 +196,35 @@
     0 1px 0 rgba(255, 255, 255, 0.45) inset;
 }
 
+/* Connector strokes — when a section is the focus group, extend its
+   top and bottom border across the moat to the article card on the
+   right. The two horizontal stripes "tab" the navigation card into
+   the content card so the user can see at a glance which section
+   their current page belongs to.
+   Width: moat + small overlap so the stroke lands on the article
+   card's cream ring without leaving a gap. */
+.docs-sidebar-section:has(.docs-nav-row.is-active)::before,
+.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active)::before,
+.docs-sidebar-section:has(.docs-nav-row.is-active)::after,
+.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active)::after {
+  content: '';
+  position: absolute;
+  left: 100%;
+  width: calc(var(--docs-moat-width) + 8px);
+  height: 2px;
+  background: rgba(255, 255, 255, 1);
+  pointer-events: none;
+  z-index: 2;
+}
+.docs-sidebar-section:has(.docs-nav-row.is-active)::before,
+.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active)::before {
+  top: -2px;
+}
+.docs-sidebar-section:has(.docs-nav-row.is-active)::after,
+.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active)::after {
+  bottom: -2px;
+}
+
 /* Section heading lives at the top of the card. Two variants:
    - plain label (static)            → `.docs-sidebar-heading`
    - link to the section index page  → adds `.is-link` (and `.is-active`

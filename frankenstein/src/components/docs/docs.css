@@ -98,15 +98,15 @@
   column-gap: var(--docs-moat-width);
   max-width: 1280px;
   margin: calc(var(--docs-top-offset) + 32px) auto 64px;
-  /* Hard stops between the three fills at each column boundary. The
-     gradient is painted across the whole shell width (including the
-     gap region), so the middle transparent band lines up with the
-     column-gap and reads as the moat. */
+  /* Each section now renders as its own glassy card on top of the
+     camo backdrop, so the unified sidebar wash that used to live on
+     the shell goes away. The left half stays transparent — the
+     `.docs-sidebar-section` cards bring their own translucent fill.
+     The cream column on the right and the moat in between are
+     unchanged. */
   background: linear-gradient(
     to right,
-    rgba(250, 251, 252, 0.4) 0,
-    rgba(250, 251, 252, 0.4) var(--docs-nav-width),
-    transparent var(--docs-nav-width),
+    transparent 0,
     transparent calc(var(--docs-nav-width) + var(--docs-moat-width)),
     var(--docs-cream) calc(var(--docs-nav-width) + var(--docs-moat-width)),
     var(--docs-cream) 100%
@@ -255,46 +255,58 @@
    A 2px vertical gap between rows lets the sidebar strip (0.4 wash)
    show through between ribbons, so adjacent same-depth rows stay
    segmented rather than fusing into one long band. */
+/* Each section renders as its own glassy card. The card's fill is a
+   translucent dark green-teal that picks up the camo behind it via
+   backdrop-filter, so the cards read as frosted panels floating on
+   the videodeck rather than a single contiguous strip. Tabs inside
+   keep their cream pill style; the contrast against the dark card
+   actually reads cleaner than against the old 0.4 cream wash. */
 .docs-sidebar-section {
   position: relative;
-  margin: 0 0 18px;
+  margin: 0 0 14px;
+  padding: 8px 0 12px;
+  background: rgba(15, 45, 40, 0.42);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 4px 14px rgba(0, 0, 0, 0.18);
 }
 .docs-sidebar-heading {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--docs-navy);
-  padding: 12px 20px 6px;
+  color: rgba(255, 255, 255, 0.88);
+  padding: 12px 20px 8px;
 }
 
 /* Section heading row: a clickable variant that links to the section's
-   index page. Keeps the small uppercase letter-spaced look of the
-   plain .docs-sidebar-heading, but participates in nav-row plumbing so
-   the highlighter pill slides up onto it when the user is on that
-   section's index. The row itself stays background-less (no cream
-   ribbon — depth-0 selectors don't reach this row since it's not in a
-   .docs-nav-list). */
+   index page. Same uppercase letter-spaced look as the plain heading,
+   but it's a live link. On the dark card the navy text vanishes, so
+   it's recolored to a near-white to read as a label that's also
+   subtly clickable. */
 .docs-nav-row.is-section-heading {
   background: transparent;
   margin-bottom: 4px;
 }
 .docs-nav-row.is-section-heading a {
-  padding: 12px 20px 6px;
+  padding: 12px 20px 8px;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--docs-navy);
+  color: rgba(255, 255, 255, 0.88);
   line-height: 1.4;
 }
 .docs-nav-row.is-section-heading:not(.is-active):hover a {
-  color: var(--docs-accent);
+  color: #ffffff;
   transform: translateX(2px);
   transition: transform 0.15s ease-out, color 0.15s ease;
 }
 .docs-nav-row.is-section-heading.is-active a {
-  color: var(--docs-navy);
+  color: #ffffff;
   font-weight: 700;
   transform: translateX(-2px);
 }

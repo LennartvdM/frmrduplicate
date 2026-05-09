@@ -270,6 +270,19 @@
   padding-right: calc(8px + var(--docs-moat-width) - var(--docs-outline-width));
 }
 
+/* Match the CSS background's shape (which is rounded by border-radius)
+   to the SVG outline's shape so the fill and outline read as one
+   element. The SVG draws a straight stroke at the skipped corner
+   (top-right of first section, bottom-right of last section), so the
+   CSS box's matching corner must be square — otherwise the fill
+   curves inward where the outline goes straight. */
+.docs-sidebar-scroll > .docs-sidebar-section:first-child {
+  border-top-right-radius: 0;
+}
+.docs-sidebar-scroll > .docs-sidebar-section:last-child {
+  border-bottom-right-radius: 0;
+}
+
 .docs-sidebar-section:has(.docs-nav-row.is-active),
 .docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) {
   /* Stop at the article card's *visible* left edge — that's x=320
@@ -280,6 +293,15 @@
      the bridge ends. */
   width: calc(100% + var(--docs-moat-width) - var(--docs-outline-width));
   padding-right: calc(8px + var(--docs-moat-width) - var(--docs-outline-width));
+  /* Square the right CSS corners on the focus group too. The SVG
+     either skips them (first/last section, drawing a straight stroke
+     to the corner) or curves them outward (middle sections, drawing
+     an arc above/below the box). In either case the SVG fill claims
+     the rectangular corner area inside the box, so the CSS box
+     should match by being square — otherwise the fill curves inward
+     where the outline doesn't. */
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   /* CSS background fills the rectangular section body (with backdrop-
      blur — only works inside the box). The SVG SectionOutline-focus
      paints the outward-corner regions with a matching translucent

@@ -87,6 +87,10 @@
    surface under the main column. The outer frame is drawn as a
    solid box-shadow ring so it stays opaque over video even though
    the sidebar + moat areas behind it are see-through. */
+/* The outer shell is now a transparent layout container. The cream
+   card has moved onto .docs-main so the sidebar half is just a
+   column of freestanding section cards floating on the camo, with
+   nothing wrapping them. */
 .docs-shell {
   position: relative;
   display: grid;
@@ -98,28 +102,6 @@
   column-gap: var(--docs-moat-width);
   max-width: 1280px;
   margin: calc(var(--docs-top-offset) + 32px) auto 64px;
-  /* Sidebar half stays fully transparent — the camo videodeck shows
-     through the section cards (which are pure outlines, no fill),
-     and the videodeck is already blurred upstream so we don't apply
-     a second pass here. Cream column on the right and the moat in
-     between are unchanged. */
-  background: linear-gradient(
-    to right,
-    transparent 0,
-    transparent calc(var(--docs-nav-width) + var(--docs-moat-width)),
-    var(--docs-cream) calc(var(--docs-nav-width) + var(--docs-moat-width)),
-    var(--docs-cream) 100%
-  );
-  border-radius: var(--docs-radius);
-  min-height: calc(100vh - var(--docs-top-offset) - 96px);
-  /* Solid outline stroke + drop shadow. Replaces the old ::before +
-     mix-blend-mode: screen: that one painted a cream-filled rectangle
-     behind the whole card, which defeats the windowpane effect over
-     video. A box-shadow ring stays opaque and stays a ring. */
-  box-shadow:
-    0 0 0 var(--docs-outline-width) var(--docs-cream),
-    0 8px 32px rgba(var(--docs-navy-rgb), 0.18),
-    0 2px 8px rgba(var(--docs-navy-rgb), 0.12);
   isolation: isolate;
 }
 
@@ -128,24 +110,32 @@
   grid-template-columns: minmax(0, 1fr) var(--docs-rail-width);
   gap: 48px;
   padding: 32px 48px 80px;
+  /* Cream reading surface — the only "card" in the layout now. The
+     box-shadow is split: a 6px solid cream ring extends the cream
+     area at the edges (it was on .docs-shell before), and a soft
+     drop shadow lifts the card off the videodeck behind. */
+  background: var(--docs-cream);
+  border-radius: var(--docs-radius);
+  min-height: calc(100vh - var(--docs-top-offset) - 96px);
+  box-shadow:
+    0 0 0 var(--docs-outline-width) var(--docs-cream),
+    0 8px 32px rgba(var(--docs-navy-rgb), 0.18),
+    0 2px 8px rgba(var(--docs-navy-rgb), 0.12);
 }
 @media (max-width: 1100px) {
   .docs-main { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .docs-rail { display: none; }
 }
 @media (max-width: 768px) {
-  /* Mobile hides the sidebar, so the split gradient collapses to one
-     solid cream fill and the shell becomes a single-column card. */
+  /* Mobile hides the sidebar; the docs-main card already carries the
+     cream surface and the rounded outline, so the only adjustments
+     needed are tightening margins and softening the corner radius. */
   .docs-shell {
     grid-template-columns: 1fr;
     margin: calc(var(--docs-top-offset) + 16px) 12px 32px;
-    border-radius: 12px;
-    background: var(--docs-cream);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
   }
   .docs-sidebar { display: none; }
-  .docs-main { padding: 20px 20px 48px; }
+  .docs-main { padding: 20px 20px 48px; border-radius: 12px; }
 }
 
 /* -------- Sidebar ------------------------------------------------------ */

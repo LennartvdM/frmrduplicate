@@ -246,6 +246,11 @@
      the bridge ends. */
   width: calc(100% + var(--docs-moat-width) - var(--docs-outline-width));
   padding-right: calc(8px + var(--docs-moat-width) - var(--docs-outline-width));
+  /* CSS background fills the rectangular section body (with backdrop-
+     blur — only works inside the box). The SVG SectionOutline-focus
+     paints the outward-corner regions with a matching translucent
+     fill so the shape reads as one surface even though the corners
+     don't get backdrop-blur. */
   background: rgba(255, 255, 255, 0.16);
   box-shadow:
     0 14px 34px rgba(0, 0, 0, 0.32),

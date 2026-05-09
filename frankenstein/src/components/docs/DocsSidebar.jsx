@@ -213,6 +213,8 @@ export default function DocsSidebar({ sections, activeSlug }) {
               toggle={toggle}
               subListVariants={subList}
               itemVariants={item}
+              isFirstSection={i === 0}
+              isLastSection={i === sections.length - 1}
             />
           );
         })}
@@ -347,6 +349,8 @@ function SectionCard({
   toggle,
   subListVariants,
   itemVariants,
+  isFirstSection,
+  isLastSection,
 }) {
   const cardRef = useRef(null);
   const [dims, setDims] = useState(null);
@@ -386,35 +390,120 @@ function SectionCard({
         subListVariants={subListVariants}
         itemVariants={itemVariants}
       />
-      {dims && <SectionOutline width={dims.width} height={dims.height} />}
+      {dims && (
+        <SectionOutline
+          width={dims.width}
+          height={dims.height}
+          skipTopOuter={isFirstSection}
+          skipBottomOuter={isLastSection}
+        />
+      )}
     </div>
   );
 }
 
 /**
- * SectionOutline — renders the section card's visible outline as a
- * single SVG path. Two paths are rendered (always — only one is
- * visible at a time, picked by CSS via `:has(.docs-nav-row.is-active)`):
+ * SectionOutline — renders the section card's outline AND fill as
+ * SVG paths so they share the same shape exactly (no fork between
+ * a CSS border and a bolted-on overlay).
  *
- * 1. Inactive outline: a closed rounded rectangle, all four corners
- *    rounded inward at RADIUS px (matching the original CSS look).
+ * Two SVGs rendered per card; CSS picks which is visible by focus-
+ * group state via `:has(.docs-nav-row.is-active)`.
  *
- * 2. Focus outline: rounded LEFT corners (concave inward, same as
- *    inactive) + outward RIGHT corners (convex outward, mirror of
- *    the inward rounding reflected across the top/bottom edges).
- *    The right side stays open — the path uses `M` (move) to jump
- *    over the right edge, so there's no stroke connecting the
- *    top-right and bottom-right curves vertically.
+ * Skip flags handle the article-card-corner clash:
+ *   - First section's TOP-RIGHT outward corner would clash with the
+ *     article card's rounded top-left corner (two opposite roundings
+ *     meeting in the same area). With `skipTopOuter`, the top stroke
+ *     runs straight to (width, 0) with no outward curve — visually
+ *     reading as the section's top extending straight up into the
+ *     article's corner space without a competing roundness.
+ *   - Last section's BOTTOM-RIGHT outward corner mirrors via
+ *     `skipBottomOuter`.
  *
- * The SVG box extends RADIUS px above and below the section so the
- * outward-curving corners have room to render. `overflow: visible`
- * is set on the parent's clip-path equivalent.
+ * Path geometry (focus state, written clockwise from top-left):
+ *
+ *   Top-right:
+ *     - skipped: top stroke runs L (width, 0); no arc
+ *     - outward: top stroke runs to (width - R, 0), then arc to
+ *       (width, -R) — bulges up into the moat above
+ *
+ *   Open right side: stroke uses `M` (move) to jump from the top
+ *   piece's end to the bottom piece's start — no vertical stroke
+ *   connects them. The fill path uses `L` (straight line) instead
+ *   so the closed shape includes a virtual right edge for filling.
+ *
+ *   Bottom-right (mirror of top-right):
+ *     - skipped: bottom piece starts at (width, height); no arc
+ *     - outward: bottom piece starts at (width, height + R), arc
+ *       to (width - R, height)
+ *
+ *   The bottom-left and top-left corners always round inward at
+ *   RADIUS — they sit far from the article card's corners and have
+ *   no clash to resolve.
  */
-function SectionOutline({ width, height }) {
+function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   const RADIUS = 18;
   const STROKE_WIDTH = 2;
 
-  // Inactive: closed rounded rectangle going clockwise from top-left.
+  // Where the top piece of the focus path ends (= where the right
+  // side starts).
+  const topRightY = skipTopOuter ? 0 : -RADIUS;
+  // Where the bottom piece of the focus path starts.
+  const bottomRightY = skipBottomOuter ? height : height + RADIUS;
+
+  // Top half of the focus path (left rounded corner + top stroke +
+  // top-right outward-or-skipped corner). Ends at (width, topRightY).
+  const focusTop = skipTopOuter
+    ? [
+        `M ${RADIUS} 0`,
+        `L ${width} 0`,
+      ]
+    : [
+        `M ${RADIUS} 0`,
+        `L ${width - RADIUS} 0`,
+        `A ${RADIUS} ${RADIUS} 0 0 0 ${width} ${-RADIUS}`,
+      ];
+
+  // Bottom half of the focus path: starts at (width, bottomRightY),
+  // bottom-right outward-or-skipped corner, bottom stroke, rounded
+  // bottom-left, left stroke, rounded top-left back to (RADIUS, 0).
+  const focusBottomFromRight = skipBottomOuter
+    ? [
+        // Already at (width, height) thanks to the prior subpath jump.
+        `L ${RADIUS} ${height}`,
+      ]
+    : [
+        // Already at (width, height + RADIUS); arc back into the
+        // section's right edge at (width - RADIUS, height).
+        `A ${RADIUS} ${RADIUS} 0 0 0 ${width - RADIUS} ${height}`,
+        `L ${RADIUS} ${height}`,
+      ];
+
+  const focusBottomTail = [
+    `A ${RADIUS} ${RADIUS} 0 0 1 0 ${height - RADIUS}`,
+    `L 0 ${RADIUS}`,
+    `A ${RADIUS} ${RADIUS} 0 0 1 ${RADIUS} 0`,
+  ];
+
+  // Stroke path: open right side via `M` jump.
+  const focusStrokePath = [
+    ...focusTop,
+    `M ${width} ${bottomRightY}`,
+    ...focusBottomFromRight,
+    ...focusBottomTail,
+  ].join(' ');
+
+  // Fill path: same geometry but the right side is a straight line
+  // instead of an `M` jump, so the shape is closed and fillable.
+  const focusFillPath = [
+    ...focusTop,
+    `L ${width} ${bottomRightY}`,
+    ...focusBottomFromRight,
+    ...focusBottomTail,
+    'Z',
+  ].join(' ');
+
+  // Inactive: closed rounded rectangle, all four corners round inward.
   const inactivePath = [
     `M ${RADIUS} 0`,
     `L ${width - RADIUS} 0`,
@@ -428,34 +517,17 @@ function SectionOutline({ width, height }) {
     'Z',
   ].join(' ');
 
-  // Focus: rounded LEFT, outward RIGHT, no right side stroke.
-  // Going clockwise from top-left rounded corner end:
-  //   - Top stroke
-  //   - OUTWARD top-right curve to (width, -RADIUS) — bulges UP
-  //   - M jump over the open right side to (width, height + RADIUS)
-  //   - OUTWARD bottom-right curve back to (width - RADIUS, height)
-  //   - Bottom stroke
-  //   - Inward bottom-left curve
-  //   - Left stroke
-  //   - Inward top-left curve
-  // Two separate sub-paths joined by an M command — the SVG renders
-  // both but they're not connected by a stroke (the right side is
-  // visually open, exactly the desired behavior).
-  const focusPath = [
-    `M ${RADIUS} 0`,
-    `L ${width - RADIUS} 0`,
-    `A ${RADIUS} ${RADIUS} 0 0 0 ${width} ${-RADIUS}`,
-    `M ${width} ${height + RADIUS}`,
-    `A ${RADIUS} ${RADIUS} 0 0 0 ${width - RADIUS} ${height}`,
-    `L ${RADIUS} ${height}`,
-    `A ${RADIUS} ${RADIUS} 0 0 1 0 ${height - RADIUS}`,
-    `L 0 ${RADIUS}`,
-    `A ${RADIUS} ${RADIUS} 0 0 1 ${RADIUS} 0`,
-  ].join(' ');
-
-  // SVG covers the section box plus RADIUS px above/below so the
-  // outward curves have room to render.
+  // The SVG box covers the section + RADIUS px above and below so
+  // outward corners have room to render.
   const svgHeight = height + 2 * RADIUS;
+
+  // Focus fill matches the active section's CSS background so the
+  // SVG-filled outward-corner regions read as the same surface as
+  // the CSS-filled (and backdrop-blurred) rectangular body.
+  // Inactive sections don't get an SVG fill — the CSS background
+  // already covers their full rectangular shape and adding SVG fill
+  // would double-render it.
+  const FOCUS_FILL = 'rgba(255, 255, 255, 0.16)';
 
   return (
     <>
@@ -480,8 +552,10 @@ function SectionOutline({ width, height }) {
         viewBox={`0 ${-RADIUS} ${width} ${svgHeight}`}
         aria-hidden="true"
       >
+        {/* Fill goes first so the stroke renders on top. */}
+        <path d={focusFillPath} fill={FOCUS_FILL} stroke="none" />
         <path
-          d={focusPath}
+          d={focusStrokePath}
           stroke="rgba(255, 255, 255, 1)"
           strokeWidth={STROKE_WIDTH}
           fill="none"

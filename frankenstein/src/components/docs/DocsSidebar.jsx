@@ -338,6 +338,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
                 items={remainingItems}
                 activeSlug={activeSlug}
                 depth={0}
+                parentSlug={null}
                 isOpen={isOpen}
                 toggle={toggle}
                 subListVariants={subList}
@@ -351,7 +352,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
   );
 }
 
-function NavList({ items, activeSlug, depth, isOpen, toggle, subListVariants, itemVariants }) {
+function NavList({ items, activeSlug, depth, parentSlug, isOpen, toggle, subListVariants, itemVariants }) {
   // Accordion siblings = the slugs of the foldouts at this level.
   // Leaves don't contribute (they don't open/close), so we only
   // collect items with children.
@@ -368,6 +369,7 @@ function NavList({ items, activeSlug, depth, isOpen, toggle, subListVariants, it
           item={item}
           activeSlug={activeSlug}
           depth={depth}
+          parentSlug={parentSlug}
           isOpen={isOpen}
           toggle={toggle}
           siblingSlugs={siblingSlugs}
@@ -379,17 +381,25 @@ function NavList({ items, activeSlug, depth, isOpen, toggle, subListVariants, it
   );
 }
 
-function NavItem({ item, activeSlug, depth, isOpen, toggle, siblingSlugs, subListVariants, itemVariants }) {
+function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingSlugs, subListVariants, itemVariants }) {
   const isActive = item.slug === activeSlug;
   const hasChildren = item.children && item.children.length > 0;
   const isExpanded = hasChildren && isOpen(item.slug);
 
-  // Clicking the row toggles the foldout (in addition to whatever
-  // navigation DocsLink does). DocsLink calls preventDefault but
-  // doesn't stopPropagation, so a click on the title bubbles up to
-  // this onClick. The chevron has its own handler that stopsPropagation
-  // so it doesn't double-toggle.
-  const onRowClick = hasChildren ? () => toggle(item.slug, siblingSlugs) : undefined;
+  // Click semantics on the row:
+  //   - Foldout row → toggle this foldout (with accordion).
+  //   - Active leaf row → close the containing foldout. This is the
+  //     "I've made my choice, panel can go" gesture: clicking the
+  //     row of the page you're already on dismisses the foldout
+  //     that holds it. Leaves at depth-0 (no parentSlug) skip this.
+  //   - Non-active leaf row → no toggle behavior; DocsLink handles
+  //     navigation on its own.
+  let onRowClick;
+  if (hasChildren) {
+    onRowClick = () => toggle(item.slug, siblingSlugs);
+  } else if (isActive && parentSlug) {
+    onRowClick = () => toggle(parentSlug);
+  }
 
   return (
     <motion.li
@@ -433,6 +443,7 @@ function NavItem({ item, activeSlug, depth, isOpen, toggle, siblingSlugs, subLis
                 items={item.children}
                 activeSlug={activeSlug}
                 depth={depth + 1}
+                parentSlug={item.slug}
                 isOpen={isOpen}
                 toggle={toggle}
                 subListVariants={subListVariants}

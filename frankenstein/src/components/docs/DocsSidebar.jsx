@@ -224,7 +224,6 @@ export default function DocsSidebar({ sections, activeSlug }) {
                 subListVariants={subList}
                 itemVariants={item}
               />
-              <BridgeCorners />
             </div>
           );
         })}
@@ -330,69 +329,6 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
         </AnimatePresence>
       )}
     </motion.li>
-  );
-}
-
-/**
- * Outward curves at the bridge's right corners, rendered as real SVG
- * paths instead of CSS pseudo-elements. Hidden by default; CSS shows
- * them only when the section is the focus group via `:has()`.
- *
- * Top corner geometry (bottom mirrors):
- *   SVG box: RADIUS × RADIUS, positioned at right: 0, top: -RADIUS
- *   so its right edge aligns with the section's right edge (x=314)
- *   and it extends RADIUS px above the section into the moat space.
- *
- *   Path: 90° quarter-arc from (0, RADIUS) → (RADIUS, 0)
- *     - Start tangent: (1, 0) — horizontal right, continuing the
- *       bridge's top stroke direction
- *     - End tangent:   (0, -1) — vertical up, pointing into the moat
- *     - Arc center: SVG (0, 0) — the upper-left corner of the SVG box
- *     - Bulge through (12.7, 12.7) — toward the lower-right of the
- *       SVG, smoothly transitioning from horizontal to vertical
- *
- *   sweep-flag = 0 picks this arc. The opposite flag (= 1) gives a
- *   start tangent perpendicular to the stroke, which read as
- *   discontinuous / "dropped-in" / concave.
- */
-function BridgeCorners() {
-  const RADIUS = 18;
-  const STROKE_WIDTH = 2;
-  const SVG_SIZE = RADIUS;
-
-  return (
-    <>
-      <svg
-        className="docs-bridge-corner docs-bridge-corner-top"
-        width={SVG_SIZE}
-        height={SVG_SIZE}
-        viewBox={`0 0 ${SVG_SIZE} ${SVG_SIZE}`}
-        aria-hidden="true"
-      >
-        <path
-          d={`M 0 ${RADIUS} A ${RADIUS} ${RADIUS} 0 0 0 ${RADIUS} 0`}
-          stroke="white"
-          strokeWidth={STROKE_WIDTH}
-          fill="none"
-          strokeLinecap="round"
-        />
-      </svg>
-      <svg
-        className="docs-bridge-corner docs-bridge-corner-bottom"
-        width={SVG_SIZE}
-        height={SVG_SIZE}
-        viewBox={`0 0 ${SVG_SIZE} ${SVG_SIZE}`}
-        aria-hidden="true"
-      >
-        <path
-          d={`M 0 0 A ${RADIUS} ${RADIUS} 0 0 1 ${RADIUS} ${RADIUS}`}
-          stroke="white"
-          strokeWidth={STROKE_WIDTH}
-          fill="none"
-          strokeLinecap="round"
-        />
-      </svg>
-    </>
   );
 }
 

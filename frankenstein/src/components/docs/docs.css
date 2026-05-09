@@ -220,8 +220,11 @@
   background: rgba(255, 255, 255, 0.16);
   border-color: rgba(255, 255, 255, 1);
   border-right-color: transparent;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+  /* All four corners use the section's inherited 18 px border-radius —
+     right corners now match the left, so the active section reads as a
+     fully-rounded rectangle whose right side is simply open (no border,
+     no vertical stroke) onto the article. Earlier overrides that
+     squared the right corners are gone. */
   box-shadow:
     0 14px 34px rgba(0, 0, 0, 0.32),
     inset 1px 0 0 rgba(255, 255, 255, 0.18),
@@ -231,34 +234,6 @@
      bleed past x=314 onto the cream ring or article surface. Other
      sides pushed far out so the shadow still feathers normally. */
   clip-path: inset(-100px 0 -100px -100px);
-}
-
-/* Outward curves at the bridge's right corners. Real SVG elements
-   rendered by the BridgeCorners React component (see DocsSidebar.jsx)
-   — geometry is computed in JS so the path strings live in one place
-   alongside the named constants. Hidden by default; revealed only
-   when the parent section is the focus group via :has().
-   Positioning lives here in CSS:
-   - Top SVG: right: 0; top: -18px → its right edge aligns with the
-     section's right edge (x=314), extending 18 px into the moat
-     space above the bridge.
-   - Bottom SVG: same x, mirrored vertically. */
-.docs-bridge-corner {
-  position: absolute;
-  right: 0;
-  pointer-events: none;
-  z-index: 2;
-  display: none;
-}
-.docs-bridge-corner-top {
-  top: -18px;
-}
-.docs-bridge-corner-bottom {
-  bottom: -18px;
-}
-.docs-sidebar-section:has(.docs-nav-row.is-active) > .docs-bridge-corner,
-.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) > .docs-bridge-corner {
-  display: block;
 }
 
 

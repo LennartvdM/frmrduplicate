@@ -335,30 +335,25 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
 
 /**
  * Outward curves at the bridge's right corners, rendered as real SVG
- * paths instead of CSS pseudo-elements with inline-SVG backgrounds.
+ * paths instead of CSS pseudo-elements. Hidden by default; CSS shows
+ * them only when the section is the focus group via `:has()`.
  *
- * Hidden by default. CSS in `docs.css` shows the SVGs only when the
- * parent section is the focus group (`:has(.docs-nav-row.is-active)`).
+ * Top corner geometry (bottom mirrors):
+ *   SVG box: RADIUS × RADIUS, positioned at right: 0, top: -RADIUS
+ *   so its right edge aligns with the section's right edge (x=314)
+ *   and it extends RADIUS px above the section into the moat space.
  *
- * The geometry is computed in JS so all dimensions live in one place
- * and the path strings are derived from named constants — easier to
- * tweak than hand-rolled inline SVG paths.
+ *   Path: 90° quarter-arc from (0, RADIUS) → (RADIUS, 0)
+ *     - Start tangent: (1, 0) — horizontal right, continuing the
+ *       bridge's top stroke direction
+ *     - End tangent:   (0, -1) — vertical up, pointing into the moat
+ *     - Arc center: SVG (0, 0) — the upper-left corner of the SVG box
+ *     - Bulge through (12.7, 12.7) — toward the lower-right of the
+ *       SVG, smoothly transitioning from horizontal to vertical
  *
- * Coordinate system (per-corner SVG, top corner shown — bottom mirrors):
- *   - SVG box: RADIUS × RADIUS, positioned at right: 0, top: -RADIUS
- *     so its right edge aligns with the section's right edge (x=314)
- *     and it extends RADIUS px above the section into the moat space.
- *   - In SVG coords (origin top-left, y-down):
- *       (0, RADIUS)     = bridge top stroke at x=section_right - RADIUS
- *       (RADIUS, 0)     = above the section, at section's right edge
- *       (RADIUS, RADIUS)= the corner intersection point — arc center
- *   - Path: 90° quarter-arc from (0, RADIUS) → (RADIUS, 0), centered
- *     at (RADIUS, RADIUS), bulging through (RADIUS - RADIUS/√2,
- *     RADIUS - RADIUS/√2) ≈ (5.3, 5.3) — into the moat above the
- *     bridge, never past the section's right edge.
- *   - sweep-flag = 1 picks that arc (CCW math = visually CW in
- *     y-down). The opposite flag bulges through (12.7, 12.7) which
- *     would be the inward / "concave" arc.
+ *   sweep-flag = 0 picks this arc. The opposite flag (= 1) gives a
+ *   start tangent perpendicular to the stroke, which read as
+ *   discontinuous / "dropped-in" / concave.
  */
 function BridgeCorners() {
   const RADIUS = 18;
@@ -375,7 +370,7 @@ function BridgeCorners() {
         aria-hidden="true"
       >
         <path
-          d={`M 0 ${RADIUS} A ${RADIUS} ${RADIUS} 0 0 1 ${RADIUS} 0`}
+          d={`M 0 ${RADIUS} A ${RADIUS} ${RADIUS} 0 0 0 ${RADIUS} 0`}
           stroke="white"
           strokeWidth={STROKE_WIDTH}
           fill="none"
@@ -390,7 +385,7 @@ function BridgeCorners() {
         aria-hidden="true"
       >
         <path
-          d={`M 0 0 A ${RADIUS} ${RADIUS} 0 0 0 ${RADIUS} ${RADIUS}`}
+          d={`M 0 0 A ${RADIUS} ${RADIUS} 0 0 1 ${RADIUS} ${RADIUS}`}
           stroke="white"
           strokeWidth={STROKE_WIDTH}
           fill="none"

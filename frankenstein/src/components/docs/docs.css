@@ -234,15 +234,19 @@
 }
 
 /* Outward curves at the bridge's top-right and bottom-right corners.
-   18 px radius matches the section card's border-radius scale, so
-   the curves read as a continuation of the same outline language.
-   Each pseudo sits *inside* the section's right area (right: 0, so
-   the SVG's right edge aligns with the section's right edge at
-   x=314) and extends upward (or downward) into the moat space
-   above/below the bridge. The arcs bulge into that moat space —
-   never past x=314, so they don't intrude into the article card.
-   Tangent at the bridge edge is horizontal (continuing the bridge's
-   top/bottom stroke); tangent at the far end is vertical. */
+   Arc center is the *corner intersection* — where the bridge top
+   stroke (y=0) meets the article's visible left edge (x=314), and
+   mirrored at the bottom. From that center, the 18 px-radius arc
+   sweeps from one stroke direction to the other in a 90° quarter
+   that bulges OUTWARD away from the corner, into the moat above
+   (top arc) or below (bottom arc) the bridge.
+   Each pseudo is positioned at right: 0 so the SVG's right edge
+   aligns with the section's right edge (x=314); the arc center
+   sits at SVG (18, 18) for the top pseudo / (18, 0) for the bottom,
+   which corresponds to the corner intersection point.
+   sweep-flag picks the arc that bulges away from that center
+   (5.3, 5.3) for the top — into the upper-left moat — rather than
+   the inward-bulging alternative through (12.7, 12.7). */
 .docs-sidebar-section:has(.docs-nav-row.is-active)::before,
 .docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active)::before {
   content: '';
@@ -251,7 +255,7 @@
   height: 18px;
   right: 0;
   top: -18px;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'><path d='M 0,18 A 18 18 0 0 0 18,0' stroke='white' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'><path d='M 0,18 A 18 18 0 0 1 18,0' stroke='white' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");
   background-repeat: no-repeat;
   pointer-events: none;
   z-index: 2;
@@ -264,7 +268,7 @@
   height: 18px;
   right: 0;
   bottom: -18px;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'><path d='M 0,0 A 18 18 0 0 1 18,18' stroke='white' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'><path d='M 0,0 A 18 18 0 0 0 18,18' stroke='white' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");
   background-repeat: no-repeat;
   pointer-events: none;
   z-index: 2;

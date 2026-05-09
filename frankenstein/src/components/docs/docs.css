@@ -202,7 +202,11 @@
    same element. No second div, no pseudo-element, no SVG.
    Children's positioning is preserved by adding 32 px to the
    card's right padding, which keeps the content area at its
-   original width. */
+   original width.
+   Inset highlight shadows are split per-side: left, top, bottom
+   only — no right side — so the open right edge stays truly open
+   and doesn't draw a 1 px white line where the bridge meets the
+   article card. */
 .docs-sidebar-section:has(.docs-nav-row.is-active),
 .docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) {
   width: calc(100% + var(--docs-moat-width));
@@ -214,8 +218,9 @@
   border-bottom-right-radius: 0;
   box-shadow:
     0 14px 34px rgba(0, 0, 0, 0.32),
-    0 0 0 1px rgba(255, 255, 255, 0.18) inset,
-    0 1px 0 rgba(255, 255, 255, 0.45) inset;
+    inset 1px 0 0 rgba(255, 255, 255, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.18);
 }
 
 

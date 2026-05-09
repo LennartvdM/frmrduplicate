@@ -224,6 +224,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
                 subListVariants={subList}
                 itemVariants={item}
               />
+              <BridgeCorners />
             </div>
           );
         })}
@@ -329,6 +330,74 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
         </AnimatePresence>
       )}
     </motion.li>
+  );
+}
+
+/**
+ * Outward curves at the bridge's right corners, rendered as real SVG
+ * paths instead of CSS pseudo-elements with inline-SVG backgrounds.
+ *
+ * Hidden by default. CSS in `docs.css` shows the SVGs only when the
+ * parent section is the focus group (`:has(.docs-nav-row.is-active)`).
+ *
+ * The geometry is computed in JS so all dimensions live in one place
+ * and the path strings are derived from named constants — easier to
+ * tweak than hand-rolled inline SVG paths.
+ *
+ * Coordinate system (per-corner SVG, top corner shown — bottom mirrors):
+ *   - SVG box: RADIUS × RADIUS, positioned at right: 0, top: -RADIUS
+ *     so its right edge aligns with the section's right edge (x=314)
+ *     and it extends RADIUS px above the section into the moat space.
+ *   - In SVG coords (origin top-left, y-down):
+ *       (0, RADIUS)     = bridge top stroke at x=section_right - RADIUS
+ *       (RADIUS, 0)     = above the section, at section's right edge
+ *       (RADIUS, RADIUS)= the corner intersection point — arc center
+ *   - Path: 90° quarter-arc from (0, RADIUS) → (RADIUS, 0), centered
+ *     at (RADIUS, RADIUS), bulging through (RADIUS - RADIUS/√2,
+ *     RADIUS - RADIUS/√2) ≈ (5.3, 5.3) — into the moat above the
+ *     bridge, never past the section's right edge.
+ *   - sweep-flag = 1 picks that arc (CCW math = visually CW in
+ *     y-down). The opposite flag bulges through (12.7, 12.7) which
+ *     would be the inward / "concave" arc.
+ */
+function BridgeCorners() {
+  const RADIUS = 18;
+  const STROKE_WIDTH = 2;
+  const SVG_SIZE = RADIUS;
+
+  return (
+    <>
+      <svg
+        className="docs-bridge-corner docs-bridge-corner-top"
+        width={SVG_SIZE}
+        height={SVG_SIZE}
+        viewBox={`0 0 ${SVG_SIZE} ${SVG_SIZE}`}
+        aria-hidden="true"
+      >
+        <path
+          d={`M 0 ${RADIUS} A ${RADIUS} ${RADIUS} 0 0 1 ${RADIUS} 0`}
+          stroke="white"
+          strokeWidth={STROKE_WIDTH}
+          fill="none"
+          strokeLinecap="round"
+        />
+      </svg>
+      <svg
+        className="docs-bridge-corner docs-bridge-corner-bottom"
+        width={SVG_SIZE}
+        height={SVG_SIZE}
+        viewBox={`0 0 ${SVG_SIZE} ${SVG_SIZE}`}
+        aria-hidden="true"
+      >
+        <path
+          d={`M 0 0 A ${RADIUS} ${RADIUS} 0 0 0 ${RADIUS} ${RADIUS}`}
+          stroke="white"
+          strokeWidth={STROKE_WIDTH}
+          fill="none"
+          strokeLinecap="round"
+        />
+      </svg>
+    </>
   );
 }
 

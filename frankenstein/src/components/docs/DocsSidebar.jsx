@@ -352,16 +352,27 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
  * `.docs-sidebar-scroll` margin/padding trick) to keep them visible.
  */
 function SectionConnector() {
+  // 36 × 30 viewBox = moat width (32) + 4 px overlap into the article card,
+  // tall enough to host a 16 px-radius quarter-arc (matches the section
+  // card's 18 px border-radius scale, so the curves read in the same
+  // visual language as the rounded rectangle they're continuing from).
+  //
+  // Top path geometry:
+  //   M 0,29  start at section's right edge, on the top border centreline
+  //   L 8,29  short horizontal lead-in matching the section's border
+  //   A 16,16 ... 24,13   quarter-arc, 16 px radius, curving outward (up)
+  //   L 36,13 horizontal extension across the moat and 4 px into the
+  //           article card so the stroke visibly merges with it
   return (
     <>
       <svg
         className="docs-connector docs-connector-top"
-        viewBox="0 0 36 14"
+        viewBox="0 0 36 30"
         preserveAspectRatio="none"
         aria-hidden="true"
       >
         <path
-          d="M 0,13 L 22,13 Q 32,13 32,3 Q 32,1 36,1"
+          d="M 0,29 L 8,29 A 16,16 0 0 1 24,13 L 36,13"
           stroke="rgba(255,255,255,1)"
           strokeWidth="2"
           fill="none"
@@ -371,12 +382,12 @@ function SectionConnector() {
       </svg>
       <svg
         className="docs-connector docs-connector-bottom"
-        viewBox="0 0 36 14"
+        viewBox="0 0 36 30"
         preserveAspectRatio="none"
         aria-hidden="true"
       >
         <path
-          d="M 0,1 L 22,1 Q 32,1 32,11 Q 32,13 36,13"
+          d="M 0,1 L 8,1 A 16,16 0 0 0 24,17 L 36,17"
           stroke="rgba(255,255,255,1)"
           strokeWidth="2"
           fill="none"

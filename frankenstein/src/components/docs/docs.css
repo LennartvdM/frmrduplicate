@@ -215,27 +215,33 @@
 
 /* SVG connector pieces — always rendered (cheap), shown only on the
    focus group via :has(). Positioned at the section's right edge,
-   each SVG's stroke continues the section's border line outward and
-   curves into the article card. */
+   each SVG's stroke picks up where the section's border ends, runs
+   outward via a 16 px-radius quarter-arc, and extends into the
+   article card.
+   Sized 36 × 30 so the arc has room to round through 16 px of vertical
+   travel without distortion. The 30 px height places the curve apex
+   well above (or below) the section card; with overflow: visible the
+   path renders cleanly even where it leaves the SVG box. */
 .docs-connector {
   position: absolute;
   left: 100%;
   width: 36px;
-  height: 14px;
+  height: 30px;
   pointer-events: none;
   z-index: 2;
   display: none;
   overflow: visible;
 }
 .docs-connector-top {
-  /* Sit so the SVG's bottom row aligns with the section's top border:
-     -12 + 14 = 2 → bottom of SVG meets section's top border bottom edge.
-     The path's main horizontal stroke is at SVG y=13 (1px above bottom),
-     coinciding with the centre of the 2px border. */
-  top: -12px;
+  /* Place the SVG so its bottom edge lines up 2 px past the section's
+     top edge (overlapping the 2 px top border). The path's start
+     anchor at viewBox y = 29 then sits exactly on the centreline of
+     that border — no visible seam where the rendered border meets
+     the SVG stroke. */
+  top: -28px;
 }
 .docs-connector-bottom {
-  bottom: -12px;
+  bottom: -28px;
 }
 .docs-sidebar-section:has(.docs-nav-row.is-active) > .docs-connector,
 .docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) > .docs-connector {

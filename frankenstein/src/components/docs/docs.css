@@ -366,7 +366,20 @@
 /* Children rows inside the envelope: tighter vertical rhythm so the
    list reads as a compact group rather than spaced-out ribbons. */
 .docs-nav-item:has(> .docs-nav-row.is-foldout):has(.docs-nav-row.is-active) .docs-nav-list .docs-nav-row {
-  margin-bottom: 0;
+  margin-bottom: 2px;
+}
+
+/* Non-active children inside the envelope get a more visible navy-tinted
+   pill so they read as distinct ribbons against the envelope's solid
+   white card behind them. The depth-1 per-depth alpha (rgba 250/251/252,
+   0.7) is too close to the envelope's white to register visually. The
+   active leaf is excluded via :not so its solid white tile + shadow
+   (the depth-prefixed .is-active rule, 0,4,0) still wins. */
+.docs-nav-item:has(> .docs-nav-row.is-foldout):has(.docs-nav-row.is-active) .docs-nav-list .docs-nav-row:not(.is-active) {
+  background: rgba(var(--docs-navy-rgb), 0.05);
+}
+.docs-nav-item:has(> .docs-nav-row.is-foldout):has(.docs-nav-row.is-active) .docs-nav-list .docs-nav-row:not(.is-active):hover {
+  background: rgba(var(--docs-navy-rgb), 0.09);
 }
 
 /* Active label inside the envelope keeps its bold navy treatment from

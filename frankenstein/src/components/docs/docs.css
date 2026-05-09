@@ -146,6 +146,15 @@
   height: calc(100vh - var(--docs-top-offset) - 32px);
   font-size: 14px;
   color: var(--docs-text-light);
+  /* The article card has a 6 px cream box-shadow ring extending
+     above (and around) its box, so its *visible* top is 6 px above
+     its grid-cell top. Without this margin compensation, the sidebar
+     starts at its grid-cell top — exactly the article's box top —
+     leaving the first section 6 px below the article's visible top.
+     Lifting by --docs-outline-width brings the sidebar's top to the
+     article's visible top, satisfying the "flush" precondition the
+     first section's skipTopOuter logic was built around. */
+  margin-top: calc(-1 * var(--docs-outline-width));
   /* Lifts strokes (rendered as pseudo-elements on the sections inside)
      above .docs-main's outward box-shadow ring so they don't get
      covered when they reach the article card's cream halo. */

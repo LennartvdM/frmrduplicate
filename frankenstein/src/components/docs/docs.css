@@ -176,6 +176,24 @@
   box-shadow:
     0 8px 22px rgba(0, 0, 0, 0.22),
     0 1px 0 rgba(255, 255, 255, 0.28) inset;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+/* Focus group — the section card containing the active page. Brighter
+   border, warmer fill, and a more pronounced lift so the current
+   group reads at a glance. `:has()` keeps this purely structural — no
+   JS state needs to know which section is "active". */
+.docs-sidebar-section:has(.docs-nav-row.is-active),
+.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.32),
+    0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+    0 1px 0 rgba(255, 255, 255, 0.45) inset;
 }
 
 /* Section heading lives at the top of the card. Two variants:
@@ -207,6 +225,11 @@
 .docs-sidebar-heading.is-link.is-active a {
   color: #ffffff;
   font-weight: 700;
+}
+.docs-sidebar-section:has(.docs-nav-row.is-active) > .docs-sidebar-heading,
+.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) > .docs-sidebar-heading {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
 }
 .docs-nav-list { list-style: none; padding: 0; margin: 0; position: relative; }
 .docs-nav-depth-1,
@@ -268,15 +291,22 @@
   transition: transform 0.15s ease-out, color 0.15s ease;
 }
 
-/* Active row: the row itself paints the highlight (no sibling pill).
-   Solid white tile inside the card, bold label, with a slight lift. */
+/* Focus index item — active row. Solid white tile that visibly lifts
+   off the focus group card, with a navy-tinted shadow so the
+   elevation reads against the warm cream-on-glass surface behind it.
+   Depth-scoped overrides keep this winning specificity over the
+   per-depth tile alphas. */
 .docs-nav-row.is-active,
 .docs-nav-depth-0 > .docs-nav-item > .docs-nav-row.is-active,
 .docs-nav-depth-1 > .docs-nav-item > .docs-nav-row.is-active,
 .docs-nav-depth-2 > .docs-nav-item > .docs-nav-row.is-active,
 .docs-nav-depth-3 > .docs-nav-item > .docs-nav-row.is-active {
   background: #ffffff;
-  box-shadow: 0 2px 8px rgba(var(--docs-navy-rgb), 0.12);
+  box-shadow:
+    0 6px 18px rgba(var(--docs-navy-rgb), 0.24),
+    0 1px 3px rgba(var(--docs-navy-rgb), 0.14),
+    0 0 0 1px rgba(255, 255, 255, 0.6);
+  z-index: 1;
 }
 .docs-nav-row.is-active a {
   color: var(--docs-navy);

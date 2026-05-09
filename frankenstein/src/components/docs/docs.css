@@ -182,11 +182,6 @@
   width: calc(100% + var(--docs-nav-outcrop));
   overflow-y: auto;
   overflow-x: visible;
-  /* The hover-cascade handler (DocsSidebar.jsx) anchors the focused
-     foldout's row by adjusting scrollTop in lockstep with layout
-     changes — the browser's heuristic auto-anchor would pick a
-     different element and fight that, so opt out here. */
-  overflow-anchor: none;
   /* Hide the scrollbar so it doesn't float inside the moat. Content
      is still scrollable via wheel/touch/keyboard. */
   scrollbar-width: none;

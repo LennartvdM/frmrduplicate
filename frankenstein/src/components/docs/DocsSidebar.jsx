@@ -224,7 +224,6 @@ export default function DocsSidebar({ sections, activeSlug }) {
                 subListVariants={subList}
                 itemVariants={item}
               />
-              <SectionConnector />
             </div>
           );
         })}
@@ -331,25 +330,6 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
       )}
     </motion.li>
   );
-}
-
-/**
- * Bridge that hangs off the right edge of each section card. Hidden
- * by default; CSS reveals it when the section is the focus group.
- *
- * Geometry: a rectangular div spanning the moat width (32 px), with
- * `top: 0; bottom: 0` so its outer box matches the section card's
- * vertical extent exactly. The 2 px top and bottom borders sit at
- * the same y as the section card's top and bottom borders — same
- * thickness, same colour, same position — so the section's outline
- * reads as continuing straight across the moat without any seam.
- * Glass fill (rgba 255/255/255 0.16 + backdrop-blur) matches the
- * focus-group section's interior so the bridge's centre band is
- * visually part of the same translucent surface, not a separate
- * stripe over the videodeck.
- */
-function SectionConnector() {
-  return <div className="docs-section-bridge" aria-hidden="true" />;
 }
 
 // Walk every section's items and collect the slugs of foldouts whose

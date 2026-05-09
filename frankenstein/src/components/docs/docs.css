@@ -193,15 +193,20 @@
     box-shadow 0.25s ease;
 }
 
-/* Focus group — the section card containing the active page. Brighter
-   border, warmer fill, and a more pronounced lift. The right side of
-   the rectangle "opens up": no right border, square right corners.
-   The opening is bridged by an SVG <SectionConnector/> rendered inside
-   the section (positioned absolutely at left: 100%) — its stroke picks
-   up exactly where the section's top and bottom borders end and runs
-   into the article card. */
+/* Focus group — the section card containing the active page. The
+   card itself widens by the moat width and its right side opens up
+   (no right border, square right corners) so the card visually
+   plugs straight into the article card. The right 32 px of the
+   widened card IS the bridge — same border, same glass fill, same
+   backdrop-blur as the rest of the card because it's literally the
+   same element. No second div, no pseudo-element, no SVG.
+   Children's positioning is preserved by adding 32 px to the
+   card's right padding, which keeps the content area at its
+   original width. */
 .docs-sidebar-section:has(.docs-nav-row.is-active),
 .docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) {
+  width: calc(100% + var(--docs-moat-width));
+  padding-right: calc(8px + var(--docs-moat-width));
   background: rgba(255, 255, 255, 0.16);
   border-color: rgba(255, 255, 255, 1);
   border-right-color: transparent;
@@ -211,34 +216,6 @@
     0 14px 34px rgba(0, 0, 0, 0.32),
     0 0 0 1px rgba(255, 255, 255, 0.18) inset,
     0 1px 0 rgba(255, 255, 255, 0.45) inset;
-}
-
-/* Section bridge — a rectangular extension of the focus-group section
-   card that spans the moat to the article card. Geometrically just a
-   right-side continuation of the section card's box: same vertical
-   extent (top: 0; bottom: 0 → matches section height), same glass
-   fill, same top/bottom borders. No left or right border so it opens
-   into the section on one side and the article on the other.
-   Hidden by default; revealed only when the parent section is the
-   focus group via :has(). */
-.docs-section-bridge {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 100%;
-  width: var(--docs-moat-width);
-  background: rgba(255, 255, 255, 0.16);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  border-top: 2px solid rgba(255, 255, 255, 1);
-  border-bottom: 2px solid rgba(255, 255, 255, 1);
-  pointer-events: none;
-  z-index: 2;
-  display: none;
-}
-.docs-sidebar-section:has(.docs-nav-row.is-active) > .docs-section-bridge,
-.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) > .docs-section-bridge {
-  display: block;
 }
 
 

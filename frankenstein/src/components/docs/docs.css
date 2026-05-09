@@ -237,24 +237,40 @@
    A 2px vertical gap between rows lets the sidebar strip (0.4 wash)
    show through between ribbons, so adjacent same-depth rows stay
    segmented rather than fusing into one long band. */
-/* Each section is an outlined group: a bright white rounded stroke
-   around the section's heading + its rows, with NO fill behind it.
-   The camo videodeck shows through directly (it's already blurred
-   upstream; we don't add a second blur). The card's "presence" comes
-   from the stroke itself + a soft outer drop-shadow that lifts it
-   off the videodeck, plus a subtle inner top highlight that reads as
-   light catching the upper edge of the stroke. */
+/* Each section is a hood-shaped frame: a bright white stroke that
+   wraps the top + sides only — no horizontal stroke closes the
+   bottom. The side strokes hang slightly below the last row, and
+   each one ends in a small outward 90° stub (~12px) instead of
+   meeting at a corner. The camo videodeck shows through the open
+   bottom and through the visible portion of the gap to the next
+   card. No fill, no backdrop-filter blur. */
 .docs-sidebar-section {
   position: relative;
-  margin: 0 0 18px;
-  padding: 6px 0 14px;
+  margin: 0 0 24px;
+  padding: 6px 0 16px;
   background: transparent;
   border: 2px solid rgba(255, 255, 255, 0.95);
-  border-radius: 18px;
+  border-bottom: none;
+  border-radius: 18px 18px 0 0;
   box-shadow:
-    0 6px 22px rgba(0, 0, 0, 0.22),
+    0 4px 14px rgba(0, 0, 0, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
+/* Outward 90° feet at the bottom of each side stroke. Positioned
+   at bottom: 0 with negative left/right so they extend past the
+   card's edges by their own width. */
+.docs-sidebar-section::before,
+.docs-sidebar-section::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 12px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.95);
+  pointer-events: none;
+}
+.docs-sidebar-section::before { left: -12px; }
+.docs-sidebar-section::after { right: -12px; }
 .docs-sidebar-heading {
   font-size: 11px;
   font-weight: 700;

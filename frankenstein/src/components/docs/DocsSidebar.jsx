@@ -67,8 +67,10 @@ const HOVER_CLOSE_DELAY_MS = 700;
 // The intent gate. A `mouseenter` is treated as user intent only if a
 // real `mousemove` was seen within this window. A stationary cursor
 // receiving `mouseenter` purely because the row drifted into it —
-// during an open/close transition — gets rejected.
-const FRESH_MOVE_MS = 100;
+// during an open/close transition — gets rejected. 150ms gives a bit
+// of leniency for slow-cursor users without re-opening the
+// layout-shift loop.
+const FRESH_MOVE_MS = 150;
 
 const subListVariants = {
   open: {
@@ -393,6 +395,12 @@ export default function DocsSidebar({ sections, activeSlug }) {
       restoreRafIdRef.current = 0;
       restoringRef.current = false;
     }
+    // Stamp lastMoveAt so the first hover-enter inside the sidebar
+    // isn't intent-gated as stationary. The mousemove listener only
+    // fires once the cursor is over the inner scroller, so without
+    // this seed, an entry-and-immediately-hover during cleanup
+    // animations would be rejected.
+    lastMoveAtRef.current = performance.now();
     // Capture this entry's home scroll if we're starting fresh.
     if (animationCountRef.current === 0 && hoveredRef.current.size === 0) {
       sessionHomeRef.current = scrollRef.current?.scrollTop ?? 0;
@@ -679,6 +687,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
             <div key={i} className="docs-sidebar-section">
               {headingItem ? (
                 <div
+                  data-slug={headingItem.slug}
                   className={`docs-nav-row is-section-heading${isHeadingActive ? ' is-active' : ''}`}
                 >
                   <DocsLink href={`/toolbox/${headingItem.slug}`} internal>

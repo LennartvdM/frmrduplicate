@@ -250,6 +250,19 @@
    only — no right side — so the open right edge stays truly open
    and doesn't draw a 1 px white line where the bridge meets the
    article card. */
+/* The first and last sections in the sidebar are flush with the
+   article card's visible top / bottom edges. Their top / bottom
+   stroke needs to land *at* the article's visible left edge
+   (x = column_left + moat - outline-width), so the section's box
+   extends by `moat-width - outline-width` regardless of focus state.
+   When combined with skipTopOuter / skipBottomOuter on the matching
+   side, the SVG's straight stroke runs all the way to the article. */
+.docs-sidebar-scroll > .docs-sidebar-section:first-child,
+.docs-sidebar-scroll > .docs-sidebar-section:last-child {
+  width: calc(100% + var(--docs-moat-width) - var(--docs-outline-width));
+  padding-right: calc(8px + var(--docs-moat-width) - var(--docs-outline-width));
+}
+
 .docs-sidebar-section:has(.docs-nav-row.is-active),
 .docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) {
   /* Stop at the article card's *visible* left edge — that's x=320

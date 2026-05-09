@@ -503,13 +503,30 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
     'Z',
   ].join(' ');
 
-  // Inactive: closed rounded rectangle, all four corners round inward.
+  // Inactive: closed rounded rectangle. The top-right and bottom-right
+  // corners are skipped (squared, with a straight stroke to the
+  // section's right edge) when the matching skip flag is set, so the
+  // top stroke of the first section runs all the way to (width, 0)
+  // and the bottom stroke of the last section runs to (width, height).
+  // The CSS layer extends the first/last section's width so that
+  // (width, 0) / (width, height) lands at the article card's visible
+  // left edge — the straight stroke ends flush with the article.
+  const inactiveTopRight = skipTopOuter
+    ? [`L ${width} 0`]
+    : [
+        `L ${width - RADIUS} 0`,
+        `A ${RADIUS} ${RADIUS} 0 0 1 ${width} ${RADIUS}`,
+      ];
+  const inactiveBottomRight = skipBottomOuter
+    ? [`L ${width} ${height}`]
+    : [
+        `L ${width} ${height - RADIUS}`,
+        `A ${RADIUS} ${RADIUS} 0 0 1 ${width - RADIUS} ${height}`,
+      ];
   const inactivePath = [
     `M ${RADIUS} 0`,
-    `L ${width - RADIUS} 0`,
-    `A ${RADIUS} ${RADIUS} 0 0 1 ${width} ${RADIUS}`,
-    `L ${width} ${height - RADIUS}`,
-    `A ${RADIUS} ${RADIUS} 0 0 1 ${width - RADIUS} ${height}`,
+    ...inactiveTopRight,
+    ...inactiveBottomRight,
     `L ${RADIUS} ${height}`,
     `A ${RADIUS} ${RADIUS} 0 0 1 0 ${height - RADIUS}`,
     `L 0 ${RADIUS}`,

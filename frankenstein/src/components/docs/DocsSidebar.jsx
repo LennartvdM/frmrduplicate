@@ -355,14 +355,31 @@ function SectionCard({
   const cardRef = useRef(null);
   const [dims, setDims] = useState(null);
 
+  // Measure on every render (no deps) so we pick up width changes that
+  // come from CSS-driven `:has(.docs-nav-row.is-active)` toggles during
+  // SPA navigation. ResizeObserver alone proved unreliable for these
+  // — Chromium would skip the callback for some sections when the box
+  // shrank from focus-state width back to inactive width, leaving the
+  // SVG outline stuck at the focus-state width (the "third state" the
+  // section appeared to settle into after losing focus).
   useLayoutEffect(() => {
     if (!cardRef.current) return;
     const el = cardRef.current;
-    const update = () => {
-      setDims({ width: el.offsetWidth, height: el.offsetHeight });
-    };
-    update();
-    const observer = new ResizeObserver(update);
+    const w = el.offsetWidth;
+    const h = el.offsetHeight;
+    setDims((prev) => (prev && prev.width === w && prev.height === h ? prev : { width: w, height: h }));
+  });
+
+  // ResizeObserver still handles content-driven height changes that
+  // happen *outside* a React render (e.g., font load, image load).
+  useLayoutEffect(() => {
+    if (!cardRef.current) return;
+    const el = cardRef.current;
+    const observer = new ResizeObserver(() => {
+      const w = el.offsetWidth;
+      const h = el.offsetHeight;
+      setDims((prev) => (prev && prev.width === w && prev.height === h ? prev : { width: w, height: h }));
+    });
     observer.observe(el);
     return () => observer.disconnect();
   }, []);

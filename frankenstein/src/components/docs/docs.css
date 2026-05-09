@@ -317,6 +317,62 @@
   transition: transform 0.15s ease-out;
 }
 
+/* -------- Enveloping effect ------------------------------------------
+   When a foldout contains the active page (the foldout is the active
+   row itself, OR an expanded child of it is the active leaf), the
+   foldout's <li> wraps into one solid white envelope: the parent row
+   sits at the top, the children flow inside the same surface, and
+   nothing inside paints its own tile background. The result reads as
+   "the active group" — a single lifted card containing a section's
+   choice plus its sub-choices — instead of a stack of separate ribbons.
+
+   Powered by `:has()` — no JSX class for "envelope" to keep in sync.
+   The structural condition is simply: an <li> whose direct child is
+   a foldout row AND any descendant row is active. When a foldout is
+   collapsed and its parent isn't the active page, no descendants
+   render with `.is-active`, so the rule doesn't apply.
+
+   `padding: 4px` insets the rows from the envelope's rounded edge so
+   the rounded corners read cleanly without clipping row content. */
+.docs-nav-item:has(> .docs-nav-row.is-foldout):has(.docs-nav-row.is-active) {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 4px;
+  margin-bottom: 4px;
+  box-shadow:
+    0 10px 28px rgba(var(--docs-navy-rgb), 0.28),
+    0 2px 4px rgba(var(--docs-navy-rgb), 0.16),
+    0 0 0 1px rgba(255, 255, 255, 0.55);
+  position: relative;
+  z-index: 1;
+  transition:
+    background-color 0.25s ease,
+    box-shadow 0.25s ease,
+    padding 0.2s ease;
+}
+
+/* Inside the envelope, every row gives up its own background, shadow,
+   and stacking context so the envelope reads as one continuous tile
+   rather than a stack of competing surfaces. Specificity (0,6,0)
+   beats both the per-depth row alphas (0,3,0) and the active row's
+   depth-prefixed override (0,4,0). */
+.docs-nav-item:has(> .docs-nav-row.is-foldout):has(.docs-nav-row.is-active) .docs-nav-row {
+  background: transparent;
+  box-shadow: none;
+  z-index: auto;
+}
+
+/* Children rows inside the envelope: tighter vertical rhythm so the
+   list reads as a compact group rather than spaced-out ribbons. */
+.docs-nav-item:has(> .docs-nav-row.is-foldout):has(.docs-nav-row.is-active) .docs-nav-list .docs-nav-row {
+  margin-bottom: 0;
+}
+
+/* Active label inside the envelope keeps its bold navy treatment from
+   the focus index rule — the envelope already paints the surface, so
+   only the type-level emphasis is left to do here. */
+
+
 .docs-nav-chevron {
   display: inline-flex;
   align-items: center;

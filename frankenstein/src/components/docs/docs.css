@@ -351,12 +351,13 @@
     padding 0.2s ease;
 }
 
-/* Inside the envelope, every row gives up its own background, shadow,
-   and stacking context so the envelope reads as one continuous tile
-   rather than a stack of competing surfaces. Specificity (0,6,0)
-   beats both the per-depth row alphas (0,3,0) and the active row's
-   depth-prefixed override (0,4,0). */
-.docs-nav-item:has(> .docs-nav-row.is-foldout):has(.docs-nav-row.is-active) .docs-nav-row {
+/* Inside the envelope, only the foldout's *own* row gives up its
+   surface so the envelope's white card shows behind it. Descendant
+   leaves keep their per-depth pill alphas — sub-items (3.1 / 3.2 /
+   3.3) still read as distinct ribbons inside the group, not as one
+   merged blob. The active leaf still wins via its depth-prefixed
+   `.is-active` rule (0,4,0), painting the solid white tile on top. */
+.docs-nav-item:has(> .docs-nav-row.is-foldout):has(.docs-nav-row.is-active) > .docs-nav-row {
   background: transparent;
   box-shadow: none;
   z-index: auto;

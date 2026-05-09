@@ -374,15 +374,25 @@ export default function DocsSidebar({ sections, activeSlug }) {
     });
   }, [activeSlug, sections]);
 
-  // Poll until everything's settled, then restore.
+  // Poll until everything's settled. We deliberately do NOT animate
+  // scrollTop back to sessionHome here — that's what was breaking the
+  // lock continuity. The math: anchor comp keeps the active row at
+  // viewport y = V by maintaining scrollTop = O - V where O is the
+  // active row's content-offset. As O changes during a session,
+  // scrollTop tracks. By the end, scrollTop is exactly the value that
+  // keeps the active row at V given the new layout. Restoring to
+  // session-home scrollTop would force `scrollTop = O₀ - V` instead
+  // of `O₁ - V`, jumping the active row by `(O₁ - O₀)`. So we just
+  // stop and let scrollTop sit where comp left it — that IS the
+  // locked position.
   const tryRestore = useCallback(() => {
     if (animationCountRef.current > 0 || hoveredRef.current.size > 0) {
       restoreTimerRef.current = setTimeout(tryRestore, 80);
       return;
     }
     restoreTimerRef.current = null;
-    restoreScrollHome();
-  }, [restoreScrollHome]);
+    // (no restoreScrollHome — see comment above)
+  }, []);
 
   const onOuterEnter = useCallback(() => {
     // Cancel any pending or in-flight restore.

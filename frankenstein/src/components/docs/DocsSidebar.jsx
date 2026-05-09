@@ -224,6 +224,7 @@ export default function DocsSidebar({ sections, activeSlug }) {
                 subListVariants={subList}
                 itemVariants={item}
               />
+              <BridgeCorners />
             </div>
           );
         })}
@@ -329,6 +330,73 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
         </AnimatePresence>
       )}
     </motion.li>
+  );
+}
+
+/**
+ * Outward curves at the bridge's right corners. Mirror of the section
+ * card's natural inward `border-radius: 18px` rounding — same radius,
+ * same arc shape, but reflected across the section's top/bottom edges
+ * so the corners bulge OUT into the moat above/below instead of IN
+ * toward the section's interior.
+ *
+ * Top corner geometry (bottom mirrors):
+ *   SVG box: 18 × 18, positioned right: 0, top: -18 → covers
+ *   (section_right - 18, -18) to (section_right, 0).
+ *
+ *   Path: M 0 18 L ... A 18 18 0 0 0 18 0
+ *     - Start (0, 18) = (section_right - 18, 0) — on the bridge top
+ *       stroke, where a CSS rounded corner would normally start
+ *     - End (18, 0) = (section_right, -18) — at the section's right
+ *       edge, 18 px above the section (where the outward curve
+ *       reaches its vertical apex)
+ *     - Arc center: SVG (0, 0) = (section_right - 18, -18) — mirror
+ *       of where the CSS rounded corner's center would be (which
+ *       would be at (section_right - 18, +18), inside the section)
+ *     - sweep-flag = 0: tangent-continuous with the bridge stroke
+ *       at the start (horizontal right), tangent vertical at the end
+ *
+ * The CSS `border-top-right-radius: 0` / `border-bottom-right-radius: 0`
+ * overrides on the active section square the right CSS corners so
+ * only the SVG's outward curves render there.
+ */
+function BridgeCorners() {
+  const RADIUS = 18;
+  const STROKE_WIDTH = 2;
+
+  return (
+    <>
+      <svg
+        className="docs-bridge-corner docs-bridge-corner-top"
+        width={RADIUS}
+        height={RADIUS}
+        viewBox={`0 0 ${RADIUS} ${RADIUS}`}
+        aria-hidden="true"
+      >
+        <path
+          d={`M 0 ${RADIUS} A ${RADIUS} ${RADIUS} 0 0 0 ${RADIUS} 0`}
+          stroke="white"
+          strokeWidth={STROKE_WIDTH}
+          fill="none"
+          strokeLinecap="round"
+        />
+      </svg>
+      <svg
+        className="docs-bridge-corner docs-bridge-corner-bottom"
+        width={RADIUS}
+        height={RADIUS}
+        viewBox={`0 0 ${RADIUS} ${RADIUS}`}
+        aria-hidden="true"
+      >
+        <path
+          d={`M 0 0 A ${RADIUS} ${RADIUS} 0 0 1 ${RADIUS} ${RADIUS}`}
+          stroke="white"
+          strokeWidth={STROKE_WIDTH}
+          fill="none"
+          strokeLinecap="round"
+        />
+      </svg>
+    </>
   );
 }
 

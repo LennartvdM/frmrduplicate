@@ -213,38 +213,31 @@
     0 1px 0 rgba(255, 255, 255, 0.45) inset;
 }
 
-/* SVG connector pieces — always rendered (cheap), shown only on the
-   focus group via :has(). Positioned at the section's right edge,
-   each SVG's stroke picks up where the section's border ends, runs
-   outward via a 16 px-radius quarter-arc, and extends into the
-   article card.
-   Sized 36 × 30 so the arc has room to round through 16 px of vertical
-   travel without distortion. The 30 px height places the curve apex
-   well above (or below) the section card; with overflow: visible the
-   path renders cleanly even where it leaves the SVG box. */
-.docs-connector {
+/* Section bridge — a rectangular extension of the focus-group section
+   card that spans the moat to the article card. Geometrically just a
+   right-side continuation of the section card's box: same vertical
+   extent (top: 0; bottom: 0 → matches section height), same glass
+   fill, same top/bottom borders. No left or right border so it opens
+   into the section on one side and the article on the other.
+   Hidden by default; revealed only when the parent section is the
+   focus group via :has(). */
+.docs-section-bridge {
   position: absolute;
+  top: 0;
+  bottom: 0;
   left: 100%;
-  width: 36px;
-  height: 30px;
+  width: var(--docs-moat-width);
+  background: rgba(255, 255, 255, 0.16);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border-top: 2px solid rgba(255, 255, 255, 1);
+  border-bottom: 2px solid rgba(255, 255, 255, 1);
   pointer-events: none;
   z-index: 2;
   display: none;
-  overflow: visible;
 }
-.docs-connector-top {
-  /* Place the SVG so its bottom edge lines up 2 px past the section's
-     top edge (overlapping the 2 px top border). The path's start
-     anchor at viewBox y = 29 then sits exactly on the centreline of
-     that border — no visible seam where the rendered border meets
-     the SVG stroke. */
-  top: -28px;
-}
-.docs-connector-bottom {
-  bottom: -28px;
-}
-.docs-sidebar-section:has(.docs-nav-row.is-active) > .docs-connector,
-.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) > .docs-connector {
+.docs-sidebar-section:has(.docs-nav-row.is-active) > .docs-section-bridge,
+.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) > .docs-section-bridge {
   display: block;
 }
 

@@ -334,69 +334,22 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
 }
 
 /**
- * SVG bridge that hangs off the right edge of each section card.
- * Hidden by default; the CSS in `docs.css` reveals it when the
- * section card is the focus group (`:has(.docs-nav-row.is-active)`).
+ * Bridge that hangs off the right edge of each section card. Hidden
+ * by default; CSS reveals it when the section is the focus group.
  *
- * Shape: two strokes that pick up where the section's top and bottom
- * borders would have continued, run horizontally across the moat,
- * then curve outward (away from each other) and into the article
- * card's left edge. Drawn as actual SVG paths because the geometry
- * is a continuation of the section's outline — pseudo-element
- * rectangles can't curve.
- *
- * The stroke width (2) matches the section card's `border` so the
- * transition between border and connector reads as one shape. The
- * SVGs are sized to overflow into the moat area; the parent scroll
- * container's clip box has been widened by the moat width (see
- * `.docs-sidebar-scroll` margin/padding trick) to keep them visible.
+ * Geometry: a rectangular div spanning the moat width (32 px), with
+ * `top: 0; bottom: 0` so its outer box matches the section card's
+ * vertical extent exactly. The 2 px top and bottom borders sit at
+ * the same y as the section card's top and bottom borders — same
+ * thickness, same colour, same position — so the section's outline
+ * reads as continuing straight across the moat without any seam.
+ * Glass fill (rgba 255/255/255 0.16 + backdrop-blur) matches the
+ * focus-group section's interior so the bridge's centre band is
+ * visually part of the same translucent surface, not a separate
+ * stripe over the videodeck.
  */
 function SectionConnector() {
-  // 36 × 30 viewBox = moat width (32) + 4 px overlap into the article card,
-  // tall enough to host a 16 px-radius quarter-arc (matches the section
-  // card's 18 px border-radius scale, so the curves read in the same
-  // visual language as the rounded rectangle they're continuing from).
-  //
-  // Top path geometry:
-  //   M 0,29  start at section's right edge, on the top border centreline
-  //   L 8,29  short horizontal lead-in matching the section's border
-  //   A 16,16 ... 24,13   quarter-arc, 16 px radius, curving outward (up)
-  //   L 36,13 horizontal extension across the moat and 4 px into the
-  //           article card so the stroke visibly merges with it
-  return (
-    <>
-      <svg
-        className="docs-connector docs-connector-top"
-        viewBox="0 0 36 30"
-        preserveAspectRatio="none"
-        aria-hidden="true"
-      >
-        <path
-          d="M 0,29 L 8,29 A 16,16 0 0 1 24,13 L 36,13"
-          stroke="rgba(255,255,255,1)"
-          strokeWidth="2"
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-      <svg
-        className="docs-connector docs-connector-bottom"
-        viewBox="0 0 36 30"
-        preserveAspectRatio="none"
-        aria-hidden="true"
-      >
-        <path
-          d="M 0,1 L 8,1 A 16,16 0 0 0 24,17 L 36,17"
-          stroke="rgba(255,255,255,1)"
-          strokeWidth="2"
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </>
-  );
+  return <div className="docs-section-bridge" aria-hidden="true" />;
 }
 
 // Walk every section's items and collect the slugs of foldouts whose

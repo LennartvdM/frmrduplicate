@@ -291,12 +291,18 @@
     inset 1px 0 0 rgba(255, 255, 255, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.45),
     inset 0 -1px 0 rgba(255, 255, 255, 0.18);
-  /* Clip the drop shadow at the bridge's right edge so it can't
-     bleed past x=314 onto the cream ring or article surface. Other
-     sides (and the moat above/below where outward corners render)
-     pushed far out so the shadow still feathers normally and the
-     SVG outline isn't clipped. */
-  clip-path: inset(-100px 0 -100px -100px);
+  /* Clip the drop shadow on the right so it doesn't bleed too far
+     onto the article. The right inset is `-22px` (matches
+     ARTICLE_CORNER_OFFSET = --docs-radius + --docs-outline-width)
+     so the first/last section's "into the corner top" stroke
+     extension is INSIDE the clip and renders; otherwise it would
+     be cut off at the section's right edge.
+     Trade-off: ~17 px of drop-shadow blur now leaks onto the cream
+     ring and the upper-left corner of the article, but it's a soft
+     gradient and the cream surface absorbs it without much contrast.
+     Other sides pushed far out so the shadow still feathers
+     normally elsewhere. */
+  clip-path: inset(-100px calc(-1 * (var(--docs-radius) + var(--docs-outline-width))) -100px -100px);
 }
 
 

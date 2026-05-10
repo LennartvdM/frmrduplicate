@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import DocsLink from './DocsLink';
 import useTransitionNavigate from '../../hooks/useTransitionNavigate';
@@ -196,22 +197,8 @@ export default function DocsSidebar({ sections, activeSlug }) {
   const item = reducedMotion ? itemVariantsReduced : itemVariants;
 
   return (
-    <aside
-      className="docs-sidebar"
-      ref={sidebarRef}
-      // Lifts the sidebar's stacking context above the article (z-index: 1)
-      // so the active row can render its right-extending label on top of the
-      // cream/article instead of getting buried behind it.
-      style={{ zIndex: 100 }}
-    >
-      <div
-        className="docs-sidebar-scroll"
-        // Sidebar-scroll's CSS overflow: auto was clipping the active row's
-        // drop shadow on the right. Page-level vertical scrolling is handled
-        // by the outer `.docs-scroll`, so removing this overflow doesn't lose
-        // functionality — sidebar content just inherits the page's scroll.
-        style={{ overflow: 'visible' }}
-      >
+    <aside className="docs-sidebar" ref={sidebarRef}>
+      <div className="docs-sidebar-scroll">
         {sections.map((section, i) => {
           const indexItem = section.items[0];
           const indexMatchesSection =
@@ -281,8 +268,8 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
   // Track whether the foldout-children wrapper is mid-animation. We need
   // overflow: hidden during the height tween (otherwise the children show
   // outside the collapsing/expanding box), but overflow: visible once
-  // settled so an active row's drop shadow doesn't get clipped by the
-  // wrapper's edges.
+  // settled so the foldout's contents (including any portal'd-back active
+  // row placeholder) aren't unnecessarily clipped.
   const [foldoutSettled, setFoldoutSettled] = useState(true);
 
   // Click semantics on the row:
@@ -295,48 +282,94 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
     onRowClick = () => toggle(item.slug, siblingSlugs);
   }
 
+  // Portal the active row to document.body so it can render ABOVE the
+  // article (z-index: 1000) while everything else in the sidebar
+  // (section outlines, strips, inactive rows) stays in the sidebar's
+  // natural stacking context — under the article card. The original
+  // row stays in place as an invisible placeholder so the foldout's
+  // layout doesn't collapse.
+  const rowRef = useRef(null);
+  const [rowRect, setRowRect] = useState(null);
+
+  useLayoutEffect(() => {
+    if (!isActive || !rowRef.current) {
+      setRowRect(null);
+      return;
+    }
+    const el = rowRef.current;
+    const update = () => {
+      const r = el.getBoundingClientRect();
+      setRowRect({ x: r.x, y: r.y, w: r.width, h: r.height });
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    // capture=true so we catch scrolls on any ancestor (page, sidebar-scroll, etc.)
+    window.addEventListener('scroll', update, true);
+    window.addEventListener('resize', update);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', update, true);
+      window.removeEventListener('resize', update);
+    };
+  }, [isActive]);
+
+  const rowContent = (
+    <>
+      <DocsLink href={`/toolbox/${item.slug}`} internal>
+        <span className="docs-nav-label">{item.title}</span>
+      </DocsLink>
+      {hasChildren && (
+        <button
+          type="button"
+          aria-label={isExpanded ? 'Collapse' : 'Expand'}
+          aria-expanded={isExpanded}
+          className={`docs-nav-chevron${isExpanded ? ' is-open' : ''}`}
+          onClick={(e) => { e.stopPropagation(); toggle(item.slug, siblingSlugs); }}
+        >
+          <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+            <path d="M3 1 L7 5 L3 9" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      )}
+    </>
+  );
+
   return (
     <motion.li
       className="docs-nav-item"
       variants={itemVariants}
     >
       <div
+        ref={rowRef}
         data-slug={item.slug}
         className={`docs-nav-row${hasChildren ? ' is-foldout' : ''}${isActive ? ' is-active' : ''}`}
         onClick={onRowClick}
-        style={
-          isActive
-            ? {
-                // Active row reads as a label on the article: the box
-                // extends ~60 px past its natural right edge into the
-                // article column, with a drop shadow lifting it off
-                // the cream. Position: relative + z-index ensures the
-                // extension renders above other rows in the section.
-                width: 'calc(100% + 60px)',
-                position: 'relative',
-                zIndex: 1,
-                boxShadow: '0 6px 16px rgba(0, 0, 0, 0.18)',
-              }
-            : undefined
-        }
+        // When active, hide the in-place row (it's only here to hold layout
+        // space); the visible row is rendered via portal above the article.
+        style={isActive ? { visibility: 'hidden' } : undefined}
       >
-        <DocsLink href={`/toolbox/${item.slug}`} internal>
-          <span className="docs-nav-label">{item.title}</span>
-        </DocsLink>
-        {hasChildren && (
-          <button
-            type="button"
-            aria-label={isExpanded ? 'Collapse' : 'Expand'}
-            aria-expanded={isExpanded}
-            className={`docs-nav-chevron${isExpanded ? ' is-open' : ''}`}
-            onClick={(e) => { e.stopPropagation(); toggle(item.slug, siblingSlugs); }}
-          >
-            <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
-              <path d="M3 1 L7 5 L3 9" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        )}
+        {rowContent}
       </div>
+      {isActive && rowRect && typeof document !== 'undefined' &&
+        createPortal(
+          <div
+            className={`docs-nav-row${hasChildren ? ' is-foldout' : ''} is-active`}
+            onClick={onRowClick}
+            style={{
+              position: 'fixed',
+              left: rowRect.x,
+              top: rowRect.y,
+              width: rowRect.w + 60,
+              height: rowRect.h,
+              boxShadow: '0 6px 16px rgba(0, 0, 0, 0.18)',
+              zIndex: 1000,
+            }}
+          >
+            {rowContent}
+          </div>,
+          document.body,
+        )}
       {hasChildren && (
         <AnimatePresence initial={false}>
           {isExpanded && (

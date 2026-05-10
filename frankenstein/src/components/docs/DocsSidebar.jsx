@@ -686,6 +686,16 @@ function collectActiveAncestors(sections, activeSlug) {
     }
     return false;
   };
-  for (const section of sections) visit(section.items, []);
+  for (const section of sections) {
+    // Mirror the regrouping that render does. RECORD / REFLECT /
+    // REFINE are flat siblings in the data, but `regroupPhaseMarkers`
+    // turns them into foldouts that bucket the modules that follow
+    // them. Without this, RECORD looks childless to the walker — its
+    // own slug never enters the auto-open set, and clicking it
+    // navigates + opens but the reset effect immediately collapses
+    // it (the LEVEL 2 double-click case).
+    const items = regroupPhaseMarkers(section.items);
+    visit(items, []);
+  }
   return out;
 }

@@ -196,7 +196,14 @@ export default function DocsSidebar({ sections, activeSlug }) {
   const item = reducedMotion ? itemVariantsReduced : itemVariants;
 
   return (
-    <aside className="docs-sidebar" ref={sidebarRef}>
+    <aside
+      className="docs-sidebar"
+      ref={sidebarRef}
+      // Lifts the sidebar's stacking context above the article (z-index: 1)
+      // so the active row can render its right-extending label on top of the
+      // cream/article instead of getting buried behind it.
+      style={{ zIndex: 100 }}
+    >
       <div className="docs-sidebar-scroll">
         {sections.map((section, i) => {
           const indexItem = section.items[0];
@@ -283,6 +290,21 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
         data-slug={item.slug}
         className={`docs-nav-row${hasChildren ? ' is-foldout' : ''}${isActive ? ' is-active' : ''}`}
         onClick={onRowClick}
+        style={
+          isActive
+            ? {
+                // Active row reads as a label on the article: the box
+                // extends ~60 px past its natural right edge into the
+                // article column, with a drop shadow lifting it off
+                // the cream. Position: relative + z-index ensures the
+                // extension renders above other rows in the section.
+                width: 'calc(100% + 60px)',
+                position: 'relative',
+                zIndex: 1,
+                boxShadow: '0 6px 16px rgba(0, 0, 0, 0.18)',
+              }
+            : undefined
+        }
       >
         <DocsLink href={`/toolbox/${item.slug}`} internal>
           <span className="docs-nav-label">{item.title}</span>

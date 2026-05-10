@@ -196,8 +196,15 @@ export default function DocsSidebar({ sections, activeSlug }) {
   const item = reducedMotion ? itemVariantsReduced : itemVariants;
 
   return (
-    <aside className="docs-sidebar" ref={sidebarRef}>
-      <div className="docs-sidebar-scroll">
+    <aside
+      className="docs-sidebar"
+      ref={sidebarRef}
+      style={{ zIndex: 1000 }} // DEBUG: lift sidebar's stacking context above the article so SVG strips can render on top
+    >
+      <div
+        className="docs-sidebar-scroll"
+        style={{ overflow: 'visible' }} // DEBUG: stop clipping the strip overhangs that extend past the scroll container
+      >
         {sections.map((section, i) => {
           const indexItem = section.items[0];
           const indexMatchesSection =

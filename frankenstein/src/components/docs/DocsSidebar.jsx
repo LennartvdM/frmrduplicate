@@ -305,20 +305,52 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
       return;
     }
     const el = rowRef.current;
-    const update = () => {
-      const r = el.getBoundingClientRect();
-      setRowRect({ x: r.x, y: r.y, w: r.width, h: r.height });
+    // Debounce repeated triggers into one rAF tick so a burst of layout
+    // changes during a foldout animation collapses into a single update.
+    let rafId = 0;
+    const measure = () => {
+      rafId = 0;
+      if (!rowRef.current) return;
+      const r = rowRef.current.getBoundingClientRect();
+      setRowRect((prev) => {
+        if (
+          prev &&
+          prev.x === r.x &&
+          prev.y === r.y &&
+          prev.w === r.width &&
+          prev.h === r.height
+        ) {
+          return prev;
+        }
+        return { x: r.x, y: r.y, w: r.width, h: r.height };
+      });
     };
-    update();
-    const observer = new ResizeObserver(update);
+    const schedule = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(measure);
+    };
+
+    schedule();
+
+    // The placeholder's SIZE doesn't change when a sibling foldout opens —
+    // its POSITION does. Observing only the placeholder misses these shifts.
+    // Observe every ancestor up to <body> so any size change anywhere on the
+    // path triggers a re-measure (foldout heights, sidebar growth, etc.).
+    const observer = new ResizeObserver(schedule);
     observer.observe(el);
+    for (let ancestor = el.parentElement; ancestor && ancestor !== document.body; ancestor = ancestor.parentElement) {
+      observer.observe(ancestor);
+    }
+
     // capture=true so we catch scrolls on any ancestor (page, sidebar-scroll, etc.)
-    window.addEventListener('scroll', update, true);
-    window.addEventListener('resize', update);
+    window.addEventListener('scroll', schedule, true);
+    window.addEventListener('resize', schedule);
+
     return () => {
+      if (rafId) cancelAnimationFrame(rafId);
       observer.disconnect();
-      window.removeEventListener('scroll', update, true);
-      window.removeEventListener('resize', update);
+      window.removeEventListener('scroll', schedule, true);
+      window.removeEventListener('resize', schedule);
     };
   }, [isActive]);
 

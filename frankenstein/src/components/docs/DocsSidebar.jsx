@@ -557,13 +557,13 @@ function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBotto
   // user-space y=0 maps back to parent y=0 — without this, the
   // outline renders RADIUS pixels too high and the top stroke
   // appears clipped by the sidebar's scroll container.
-  // SVG sized to hold body + strip. Strip extends past the section
-  // box on the right by W_STRIP and above/below by 2*RADIUS (the
-  // S-curve's full y-displacement). The viewBox y-min of -RADIUS
-  // cancels the existing CSS top: -RADIUS positioning so user-space
-  // y=0 maps to the section box's actual top; with overflow:visible
-  // anything past viewBox still renders.
-  const svgWidth = width + W_STRIP;
+  // SVG sized to hold body + offset strip. Strip's left edge sits
+  // RADIUS past the section box (so the S-curve's second half is
+  // hidden behind the card), and strip width is W_STRIP, so total
+  // horizontal extension past the box is RADIUS + W_STRIP. Vertical
+  // extension is 2*RADIUS above and below for the S-curve / strip
+  // overhang. viewBox y-min cancels the existing CSS top:-RADIUS.
+  const svgWidth = width + RADIUS + W_STRIP;
   const svgHeight = height + 4 * RADIUS;
 
   const INACTIVE_FILL = 'rgba(255, 255, 255, 0.08)';
@@ -632,62 +632,59 @@ function roundedRectPath(w, h, r) {
   ].join(' ');
 }
 
-// Sideways-T outline (⊣) drawn as a SINGLE continuous path with
-// S-curve transitions at every body↔strip junction. All arcs share
-// the same radius r so the outline reads as a single rounded
-// language. Going CW from the body's top-left corner.
+// Sideways-T outline (⊣) drawn as a SINGLE continuous path. Each
+// body↔strip junction is an S-curve made of two 90° arcs back-to-
+// back with opposite curvature, but the S-curve is positioned so
+// only its FIRST half stays in front of the card; the second half
+// + the entire strip live behind the card. So at each visible
+// junction you see exactly ONE outward curve before the path tucks
+// under the card. All arcs share radius r; same as the inactive
+// sidebar groups.
 //
-//   - W_box   width of the section body box
-//   - H       height of the section box
-//   - r       common radius for every arc (outer convex AND
-//             S-curve halves)
-//   - W_strip width of the vertical strip on the right
-//   - flatTop  if true, body+strip share a continuous top edge at
-//              y = 0 (used for the first section so the strip
-//              doesn't sprout above the sidebar's top)
-//   - flatBottom mirror at the bottom (last section)
-//
-// The S-curve at the top junction goes:
-//   body top edge → 90° CCW arc curving UP → 90° CW arc curving
-//   back to RIGHT at y = -2r → strip top edge
-// Net direction unchanged (still RIGHT), net y-displacement -2r,
-// curvature reverses smoothly mid-S so there are no harsh cuts.
+// Top S-curve (junction shifted right by r vs a centered S):
+//   body top edge → arc-1 (CCW, RIGHT→UP) ends at (W_box, -r),
+//   right at the card's left edge — this is the only visible
+//   curve. Then arc-2 (CW, UP→RIGHT) ends at (W_box+r, -2r), which
+//   sits inside the cream/article and is masked. The strip's left
+//   edge starts another r further right, so the entire strip sits
+//   behind the card.
 function sCurveTPath(W_box, H, r, W_strip, flatTop, flatBottom) {
-  const W_total = W_box + W_strip;
+  // Strip starts r past W_box (shifted so arc-2 is hidden).
+  const stripLeft = W_box + r;
+  const stripRight = stripLeft + W_strip;
   const segments = [`M ${r} 0`];
 
   if (flatTop) {
-    // Body + strip share top edge at y = 0
-    segments.push(`L ${W_total - r} 0`);
-    segments.push(`A ${r} ${r} 0 0 1 ${W_total} ${r}`); // strip top-right convex
+    // First section: body + strip share continuous top edge at y=0.
+    segments.push(`L ${stripRight - r} 0`);
+    segments.push(`A ${r} ${r} 0 0 1 ${stripRight} ${r}`); // strip top-right convex
   } else {
-    // S-curve transitions body top (y=0) to strip top (y=-2r)
-    segments.push(`L ${W_box - 2 * r} 0`);
-    segments.push(`A ${r} ${r} 0 0 0 ${W_box - r} ${-r}`);   // S-curve arc 1: CCW, RIGHT → UP
-    segments.push(`A ${r} ${r} 0 0 1 ${W_box} ${-2 * r}`);   // S-curve arc 2: CW, UP → RIGHT
-    segments.push(`L ${W_total - r} ${-2 * r}`);             // strip top edge
-    segments.push(`A ${r} ${r} 0 0 1 ${W_total} ${-r}`);     // strip top-right convex
+    segments.push(`L ${W_box - r} 0`);                        // body top edge ends r before card
+    segments.push(`A ${r} ${r} 0 0 0 ${W_box} ${-r}`);        // arc-1: CCW RIGHT→UP — VISIBLE, ends AT card edge
+    segments.push(`A ${r} ${r} 0 0 1 ${W_box + r} ${-2 * r}`);// arc-2: CW UP→RIGHT — hidden behind card
+    segments.push(`L ${stripRight - r} ${-2 * r}`);           // strip top edge
+    segments.push(`A ${r} ${r} 0 0 1 ${stripRight} ${-r}`);   // strip top-right convex
   }
 
   // Strip right edge (down)
   const stripBotY = flatBottom ? H - r : H + r;
-  segments.push(`L ${W_total} ${stripBotY}`);
+  segments.push(`L ${stripRight} ${stripBotY}`);
 
   if (flatBottom) {
-    segments.push(`A ${r} ${r} 0 0 1 ${W_total - r} ${H}`); // strip bottom-right convex
-    segments.push(`L ${r} ${H}`);                            // continuous bottom edge body+strip
+    segments.push(`A ${r} ${r} 0 0 1 ${stripRight - r} ${H}`);
+    segments.push(`L ${r} ${H}`);
   } else {
-    segments.push(`A ${r} ${r} 0 0 1 ${W_total - r} ${H + 2 * r}`);  // strip bottom-right convex
-    segments.push(`L ${W_box} ${H + 2 * r}`);                         // strip bottom edge
-    segments.push(`A ${r} ${r} 0 0 1 ${W_box - r} ${H + r}`);         // S-curve arc 1: CW, LEFT → UP
-    segments.push(`A ${r} ${r} 0 0 0 ${W_box - 2 * r} ${H}`);         // S-curve arc 2: CCW, UP → LEFT
-    segments.push(`L ${r} ${H}`);                                     // body bottom edge
+    segments.push(`A ${r} ${r} 0 0 1 ${stripRight - r} ${H + 2 * r}`); // strip bottom-right convex
+    segments.push(`L ${stripLeft} ${H + 2 * r}`);                       // strip bottom edge
+    segments.push(`A ${r} ${r} 0 0 1 ${W_box} ${H + r}`);               // arc-1: CW LEFT→UP — hidden
+    segments.push(`A ${r} ${r} 0 0 0 ${W_box - r} ${H}`);               // arc-2: CCW UP→LEFT — VISIBLE
+    segments.push(`L ${r} ${H}`);                                       // body bottom edge
   }
 
-  // Body left side (always rounded)
-  segments.push(`A ${r} ${r} 0 0 1 0 ${H - r}`);  // body bottom-left convex
-  segments.push(`L 0 ${r}`);                       // body left edge
-  segments.push(`A ${r} ${r} 0 0 1 ${r} 0`);      // body top-left convex
+  // Body left side
+  segments.push(`A ${r} ${r} 0 0 1 0 ${H - r}`);
+  segments.push(`L 0 ${r}`);
+  segments.push(`A ${r} ${r} 0 0 1 ${r} 0`);
   segments.push('Z');
 
   return segments.join(' ');

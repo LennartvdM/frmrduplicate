@@ -220,8 +220,6 @@ export default function DocsSidebar({ sections, activeSlug }) {
               toggle={toggle}
               subListVariants={subList}
               itemVariants={item}
-              isFirstSection={i === 0}
-              isLastSection={i === sections.length - 1}
             />
           );
         })}
@@ -356,8 +354,6 @@ function SectionCard({
   toggle,
   subListVariants,
   itemVariants,
-  isFirstSection,
-  isLastSection,
 }) {
   const cardRef = useRef(null);
   const [dims, setDims] = useState(null);
@@ -434,14 +430,7 @@ function SectionCard({
         subListVariants={subListVariants}
         itemVariants={itemVariants}
       />
-      {dims && (
-        <SectionOutline
-          width={dims.width}
-          height={dims.height}
-          skipTopOuter={isFirstSection}
-          skipBottomOuter={isLastSection}
-        />
-      )}
+      {dims && <SectionOutline width={dims.width} height={dims.height} />}
     </div>
   );
 }
@@ -493,7 +482,7 @@ function SectionCard({
  *   RADIUS — they sit far from the article card's corners and have
  *   no clash to resolve.
  */
-function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
+function SectionOutline({ width, height }) {
   const RADIUS = 18;
   const STROKE_WIDTH = 2;
   // The article body's border-radius is 16 (var(--docs-radius)),
@@ -508,7 +497,7 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   // there's no visible "stop" at the boundary.
   const TUCK_OVERHANG = ARTICLE_OUTER_RADIUS;
   const reactId = useId();
-  const maskId = `docs-section-mask-${reactId.replace(/:/g, '')}`;
+  const idBase = `docs-section-${reactId.replace(/:/g, '')}`;
 
   // INACTIVE — every section is the same rounded rectangle. Single
   // path, used for both fill and stroke so they trace the exact
@@ -540,35 +529,30 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   // tucked portion without any of the visible end-cap fudging that
   // CSS z-index masking left behind.
 
-  // For the bump's stroke to lie ENTIRELY past the card boundary —
-  // not just half past it — the bump arc has to end past the section's
-  // right edge by at least half the stroke width. So the bump becomes
-  // a slightly elongated ellipse arc (rx = R + STROKE_WIDTH/2)
-  // ending at (width + STROKE_WIDTH/2, ±R) instead of a quarter
-  // circle ending at (width, ±R). The visible portion (x < width)
-  // is a clean curve cut off at the boundary, with the stroke's
-  // perpendicular extension fully inside the masked area.
+  // Bumps are slightly elongated ellipse arcs (rx = R + STROKE/2)
+  // ending past the section's right edge by half a stroke width,
+  // so the bump's full perpendicular at the corner sits inside the
+  // masked area. EVERY section — first, middle, last — gets the
+  // same rounded protrusion at top-right and bottom-right; if the
+  // card ever stops masking them they read as deliberate rounded
+  // tabs rather than straight stubs ending in mid-air.
   const BUMP_OVERSHOOT = STROKE_WIDTH / 2;
   const BUMP_RX = RADIUS + BUMP_OVERSHOOT;
 
-  const focusTopPiece = skipTopOuter
-    ? [`L ${width + TUCK_OVERHANG} 0`]
-    : [
-        `L ${width - RADIUS} 0`,
-        `A ${BUMP_RX} ${RADIUS} 0 0 0 ${width + BUMP_OVERSHOOT} ${-RADIUS}`,
-        `L ${width + TUCK_OVERHANG} ${-RADIUS}`,
-      ];
+  const focusTopPiece = [
+    `L ${width - RADIUS} 0`,
+    `A ${BUMP_RX} ${RADIUS} 0 0 0 ${width + BUMP_OVERSHOOT} ${-RADIUS}`,
+    `L ${width + TUCK_OVERHANG} ${-RADIUS}`,
+  ];
 
-  const focusBottomPiece = skipBottomOuter
-    ? [`L ${RADIUS} ${height}`]
-    : [
-        `L ${width + BUMP_OVERSHOOT} ${height + RADIUS}`,
-        `A ${BUMP_RX} ${RADIUS} 0 0 0 ${width - RADIUS} ${height}`,
-        `L ${RADIUS} ${height}`,
-      ];
+  const focusBottomPiece = [
+    `L ${width + BUMP_OVERSHOOT} ${height + RADIUS}`,
+    `A ${BUMP_RX} ${RADIUS} 0 0 0 ${width - RADIUS} ${height}`,
+    `L ${RADIUS} ${height}`,
+  ];
 
-  const topPieceEndY = skipTopOuter ? 0 : -RADIUS;
-  const bottomPieceStartY = skipBottomOuter ? height : height + RADIUS;
+  const topPieceEndY = -RADIUS;
+  const bottomPieceStartY = height + RADIUS;
   const RIGHT_EDGE_X = width + TUCK_OVERHANG;
 
   const focusLeftAndTopRound = [
@@ -599,97 +583,17 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
     ...focusLeftAndTopRound,
   ].join(' ');
 
-  // Two SVG masks because fill and stroke want different masking.
-  //
-  //   maskFillPath: the cream's actual painted shape, with rounded
-  //     corners for first/last sections. Where this is black (=
-  //     hidden), cream is painted. Outside it (e.g. the corner
-  //     triangle above cream's curve, or the moat above cream's
-  //     top) the fill is visible — that's the section's color
-  //     bleeding into the corner area, which is what the user
-  //     wanted from the "overhang fill".
-  //
-  //   maskStrokePath: a simple half-plane at x ≥ width — the card's
-  //     bounding box on its sidebar-facing side, ignoring rounded
-  //     corners. Where this is black, the stroke is hidden. So the
-  //     thick white outline at the overhang gets fully covered:
-  //     not just where cream paints, but also in the corner
-  //     triangle and the moat above cream's top — anywhere past
-  //     the section's right edge. The article's actual shape still
-  //     "shows through" via the fill, but the stroke is uniformly
-  //     ducked under the card.
-  //
-  // BIG is large enough to cover any practical viewport.
+  // Half-plane mask at x ≥ width. Everything on the article side of
+  // the section is hidden uniformly — bumps' tails, the right-side
+  // extension, and any stroke that intrudes past the section's
+  // right edge. The article's rounded corners are NOT traced here;
+  // we let the article paint over the masked region, and the fill
+  // path's contents stay visible only at x < width (i.e. inside
+  // the section's own column) regardless of the article's shape.
+  // The bumps for every section show up as rounded tabs at x < width
+  // — the only place the path produces visible paint.
   const BIG = 9999;
-  let maskFillPath;
-  if (skipTopOuter && skipBottomOuter) {
-    maskFillPath = [
-      `M ${width + ARTICLE_OUTER_RADIUS} 0`,
-      `L ${BIG} 0`,
-      `L ${BIG} ${height}`,
-      `L ${width + ARTICLE_OUTER_RADIUS} ${height}`,
-      `A ${ARTICLE_OUTER_RADIUS} ${ARTICLE_OUTER_RADIUS} 0 0 0 ${width} ${height - ARTICLE_OUTER_RADIUS}`,
-      `L ${width} ${ARTICLE_OUTER_RADIUS}`,
-      `A ${ARTICLE_OUTER_RADIUS} ${ARTICLE_OUTER_RADIUS} 0 0 1 ${width + ARTICLE_OUTER_RADIUS} 0`,
-      'Z',
-    ].join(' ');
-  } else if (skipTopOuter) {
-    maskFillPath = [
-      `M ${width + ARTICLE_OUTER_RADIUS} 0`,
-      `L ${BIG} 0`,
-      `L ${BIG} ${BIG}`,
-      `L ${width} ${BIG}`,
-      `L ${width} ${ARTICLE_OUTER_RADIUS}`,
-      `A ${ARTICLE_OUTER_RADIUS} ${ARTICLE_OUTER_RADIUS} 0 0 1 ${width + ARTICLE_OUTER_RADIUS} 0`,
-      'Z',
-    ].join(' ');
-  } else if (skipBottomOuter) {
-    maskFillPath = [
-      `M ${width} ${-BIG}`,
-      `L ${BIG} ${-BIG}`,
-      `L ${BIG} ${height}`,
-      `L ${width + ARTICLE_OUTER_RADIUS} ${height}`,
-      `A ${ARTICLE_OUTER_RADIUS} ${ARTICLE_OUTER_RADIUS} 0 0 0 ${width} ${height - ARTICLE_OUTER_RADIUS}`,
-      `L ${width} ${-BIG}`,
-      'Z',
-    ].join(' ');
-  } else {
-    maskFillPath = `M ${width} ${-BIG} L ${BIG} ${-BIG} L ${BIG} ${BIG} L ${width} ${BIG} Z`;
-  }
-  // Stroke mask: half-plane at x ≥ width, but with the corner
-  // triangle(s) carved out as evenodd holes for first/last sections.
-  // The triangle is the wedge between the section's right edge, the
-  // section's top/bottom, and the cream curve — outside the cream's
-  // painted area but on the "sidebar side" of the article. Without
-  // the holes, the overhang's outline gets clipped at the section's
-  // right edge before reaching the corner. With the holes, the
-  // outline is visible across the corner triangle, while the moat
-  // above the card and the cream surface itself stay masked, so
-  // the visible top of the stroke lands flush at y=0 (cream's outer
-  // top) and stops where the cream curve takes over.
-  const maskStrokePath = [
-    `M ${width} ${-BIG}`,
-    `L ${BIG} ${-BIG}`,
-    `L ${BIG} ${BIG}`,
-    `L ${width} ${BIG}`,
-    'Z',
-    ...(skipTopOuter
-      ? [
-          `M ${width} 0`,
-          `L ${width + ARTICLE_OUTER_RADIUS} 0`,
-          `A ${ARTICLE_OUTER_RADIUS} ${ARTICLE_OUTER_RADIUS} 0 0 0 ${width} ${ARTICLE_OUTER_RADIUS}`,
-          'Z',
-        ]
-      : []),
-    ...(skipBottomOuter
-      ? [
-          `M ${width} ${height}`,
-          `L ${width} ${height - ARTICLE_OUTER_RADIUS}`,
-          `A ${ARTICLE_OUTER_RADIUS} ${ARTICLE_OUTER_RADIUS} 0 0 0 ${width + ARTICLE_OUTER_RADIUS} ${height}`,
-          'Z',
-        ]
-      : []),
-  ].join(' ');
+  const maskShapePath = `M ${width} ${-BIG} L ${BIG} ${-BIG} L ${BIG} ${BIG} L ${width} ${BIG} Z`;
 
   // SVG element covers the section + RADIUS px above/below for the
   // outward bump arcs and ARTICLE_OUTER_RADIUS on the right so the
@@ -722,23 +626,32 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   return (
     <>
       <svg className="docs-section-outline docs-section-outline-inactive" {...svgProps}>
-        <path
-          d={inactivePath}
-          fill={INACTIVE_FILL}
-          stroke={INACTIVE_FILL}
-          strokeWidth={STROKE_WIDTH}
-        />
+        <defs>
+          {/* Inner-aligned stroke: the stroke path is rendered at
+              double the visible width, then clipped to the inside
+              of the closed path. Only the inner half is left, so
+              the visible stroke's outer edge sits exactly on the
+              section's CSS box edge instead of straddling it. The
+              section's top stroke can then be lined up flush with
+              the article's cream surface by aligning the section's
+              CSS top with the cream's outer top. */}
+          <clipPath id={`${idBase}-inactive-clip`}>
+            <path d={inactivePath} />
+          </clipPath>
+        </defs>
+        <path d={inactivePath} fill={INACTIVE_FILL} stroke="none" />
         <path
           d={inactivePath}
           stroke={INACTIVE_STROKE}
-          strokeWidth={STROKE_WIDTH}
+          strokeWidth={STROKE_WIDTH * 2}
           fill="none"
+          clipPath={`url(#${idBase}-inactive-clip)`}
         />
       </svg>
       <svg className="docs-section-outline docs-section-outline-focus" {...svgProps}>
         <defs>
           <mask
-            id={`${maskId}-fill`}
+            id={`${idBase}-mask`}
             maskUnits="userSpaceOnUse"
             x={-BIG}
             y={-BIG}
@@ -746,32 +659,25 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
             height={2 * BIG}
           >
             <rect x={-BIG} y={-BIG} width={2 * BIG} height={2 * BIG} fill="white" />
-            <path d={maskFillPath} fill="black" />
+            <path d={maskShapePath} fill="black" />
           </mask>
-          <mask
-            id={`${maskId}-stroke`}
-            maskUnits="userSpaceOnUse"
-            x={-BIG}
-            y={-BIG}
-            width={2 * BIG}
-            height={2 * BIG}
-          >
-            <rect x={-BIG} y={-BIG} width={2 * BIG} height={2 * BIG} fill="white" />
-            <path d={maskStrokePath} fill="black" fillRule="evenodd" />
-          </mask>
+          <clipPath id={`${idBase}-focus-clip`}>
+            <path d={focusFillPath} />
+          </clipPath>
         </defs>
         <path
           d={focusFillPath}
           fill={FOCUS_FILL}
           stroke="none"
-          mask={`url(#${maskId}-fill)`}
+          mask={`url(#${idBase}-mask)`}
         />
         <path
           d={focusStrokePath}
           stroke={FOCUS_STROKE}
-          strokeWidth={STROKE_WIDTH}
+          strokeWidth={STROKE_WIDTH * 2}
           fill="none"
-          mask={`url(#${maskId}-stroke)`}
+          clipPath={`url(#${idBase}-focus-clip)`}
+          mask={`url(#${idBase}-mask)`}
         />
       </svg>
     </>

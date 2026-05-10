@@ -518,8 +518,9 @@ function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBotto
   // section box top and bottom (see STRIP_OVERHANG); those overhang
   // portions are normally hidden by the article but they're drawn
   // cleanly so they still read as a coherent shape if a scroll
-  // briefly exposes them.
-  const W_STRIP = 32;
+  // briefly exposes them. Must be ≥ 2*RADIUS so the strip's rounded
+  // top and bottom corners have room to meet without overlapping.
+  const W_STRIP = 2 * RADIUS;
   const W_body = Math.max(2 * RADIUS, width - W_STRIP);
 
   // How far the strip extends past the section box at top and

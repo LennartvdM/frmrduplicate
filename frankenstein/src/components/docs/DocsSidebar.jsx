@@ -437,6 +437,7 @@ function SectionCard({
       ref={cardRef}
       className={`docs-sidebar-section${headingItem ? ' is-clickable' : ''}`}
       onClick={onCardClick}
+      style={{ zIndex: 1000 }} // DEBUG: lift entire section above article so SVG is fully visible
     >
       {headingItem ? (
         <div

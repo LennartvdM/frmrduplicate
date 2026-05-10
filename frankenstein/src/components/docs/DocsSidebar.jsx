@@ -433,7 +433,15 @@ function SectionCard({
  * Two SVGs rendered per card; CSS picks which is visible by focus-
  * group state via `:has(.docs-nav-row.is-active)`.
  *
- * Skip flags handle the article-card-corner clash:
+ * The `skipTopOuter` / `skipBottomOuter` props ONLY affect the focus
+ * state. In the inactive state every section renders the same
+ * rounded rectangle regardless of position — first / middle / last
+ * blocks all look identical when untapped. The "push into the
+ * article corner" treatment (straight stroke + extension) is part
+ * of how the focus group connects to the article card and is not a
+ * property the inactive state should carry.
+ *
+ * Skip flags handle the article-card-corner clash in the focus state:
  *   - First section's TOP-RIGHT outward corner would clash with the
  *     article card's rounded top-left corner (two opposite roundings
  *     meeting in the same area). With `skipTopOuter`, the top stroke
@@ -533,30 +541,18 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
     'Z',
   ].join(' ');
 
-  // Inactive: closed rounded rectangle. The top-right and bottom-right
-  // corners are skipped (squared, with a straight stroke to the
-  // section's right edge) when the matching skip flag is set, so the
-  // top stroke of the first section runs all the way to (width, 0)
-  // and the bottom stroke of the last section runs to (width, height).
-  // The CSS layer extends the first/last section's width so that
-  // (width, 0) / (width, height) lands at the article card's visible
-  // left edge — the straight stroke ends flush with the article.
-  const inactiveTopRight = skipTopOuter
-    ? [`L ${width} 0`]
-    : [
-        `L ${width - RADIUS} 0`,
-        `A ${RADIUS} ${RADIUS} 0 0 1 ${width} ${RADIUS}`,
-      ];
-  const inactiveBottomRight = skipBottomOuter
-    ? [`L ${width} ${height}`]
-    : [
-        `L ${width} ${height - RADIUS}`,
-        `A ${RADIUS} ${RADIUS} 0 0 1 ${width - RADIUS} ${height}`,
-      ];
+  // Inactive: identical for every section regardless of position.
+  // First / middle / last all render the same rounded rectangle when
+  // they're not the active focus group — there are only two visual
+  // states (inactive rounded-rect, active focus-shape), and the
+  // first/last "push into the article corner" treatment belongs only
+  // to the active state.
   const inactivePath = [
     `M ${RADIUS} 0`,
-    ...inactiveTopRight,
-    ...inactiveBottomRight,
+    `L ${width - RADIUS} 0`,
+    `A ${RADIUS} ${RADIUS} 0 0 1 ${width} ${RADIUS}`,
+    `L ${width} ${height - RADIUS}`,
+    `A ${RADIUS} ${RADIUS} 0 0 1 ${width - RADIUS} ${height}`,
     `L ${RADIUS} ${height}`,
     `A ${RADIUS} ${RADIUS} 0 0 1 0 ${height - RADIUS}`,
     `L 0 ${RADIUS}`,
@@ -614,14 +610,6 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
           strokeWidth={STROKE_WIDTH}
           fill="none"
         />
-        {extensionPath && (
-          <path
-            d={extensionPath}
-            stroke="rgba(255, 255, 255, 0.95)"
-            strokeWidth={STROKE_WIDTH}
-            fill="none"
-          />
-        )}
       </svg>
       <svg
         className="docs-section-outline docs-section-outline-focus"

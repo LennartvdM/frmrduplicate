@@ -496,14 +496,21 @@ function SectionCard({
 function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   const RADIUS = 18;
   const STROKE_WIDTH = 2;
-  // How far the section's top / bottom edge extends past the
-  // section's right edge for first / last sections, so its stroke
-  // tucks under the article's cream surface (which is z-indexed
-  // above the sidebar). The card masks the part that overlaps it,
-  // and any visible spillover (e.g. into the article's corner
-  // triangle) reads as the section continuing under the card
-  // rather than abruptly stopping mid-air.
-  const TUCK_OVERHANG = STROKE_WIDTH;
+  // The article card's box-shadow lays a 6 px cream ring around its
+  // body (var(--docs-outline-width) = 6). The bridge therefore
+  // extends past the section's right edge by exactly that 6 px so
+  // it lands on the article body's left edge — past the cream ring,
+  // at the body itself. (The active section's CSS already widens
+  // the section by `moat - outline-width` so the section's right
+  // is at the cream's outer left; this overhang carries it through
+  // the ring.)
+  const ARTICLE_OUTLINE = 6;
+  // The article body's border-radius is 16 (var(--docs-radius)),
+  // so the cream surface's effective outer radius is 16 + 6 = 22.
+  // The top / bottom horizontal extension stops at the cream curve's
+  // apex — `width + 22` past the section's left.
+  const ARTICLE_OUTER_RADIUS = 22;
+  const TUCK_OVERHANG = ARTICLE_OUTLINE;
 
   // INACTIVE — every section is the same rounded rectangle. Single
   // path, used for both fill and stroke so they trace the exact
@@ -584,11 +591,28 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
     ...focusLeftAndTopRound,
   ].join(' ');
 
+  // Top / bottom extension — its own special element. A horizontal
+  // stroke from where the bridge ends (at `width + TUCK_OVERHANG` =
+  // article body's left edge) out to the cream curve's apex
+  // (`width + ARTICLE_OUTER_RADIUS`). The article is z-indexed
+  // above the sidebar, so where this stroke overlaps the cream
+  // surface it's masked; the visible part reads as the sidebar's
+  // outline continuing past the section into the corner area
+  // before being absorbed by the card.
+  const topExtensionPath = skipTopOuter
+    ? `M ${width + TUCK_OVERHANG} 0 L ${width + ARTICLE_OUTER_RADIUS} 0`
+    : null;
+  const bottomExtensionPath = skipBottomOuter
+    ? `M ${width + TUCK_OVERHANG} ${height} L ${width + ARTICLE_OUTER_RADIUS} ${height}`
+    : null;
+
   // SVG element covers the section + RADIUS px above/below for the
-  // outward bump arcs and TUCK_OVERHANG on the right for the
-  // first / last section's tuck-under extension.
+  // outward bump arcs and ARTICLE_OUTER_RADIUS on the right so the
+  // extension stroke fits inside the SVG's viewport. Anything past
+  // that (the stroke's end-cap half-width) renders via the SVG's
+  // overflow: visible.
   const svgHeight = height + 2 * RADIUS;
-  const svgWidth = width + TUCK_OVERHANG;
+  const svgWidth = width + ARTICLE_OUTER_RADIUS;
 
   const INACTIVE_FILL = 'rgba(255, 255, 255, 0.08)';
   const FOCUS_FILL = 'rgba(255, 255, 255, 0.16)';
@@ -640,6 +664,22 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
           strokeWidth={STROKE_WIDTH}
           fill="none"
         />
+        {topExtensionPath && (
+          <path
+            d={topExtensionPath}
+            stroke={FOCUS_STROKE}
+            strokeWidth={STROKE_WIDTH}
+            fill="none"
+          />
+        )}
+        {bottomExtensionPath && (
+          <path
+            d={bottomExtensionPath}
+            stroke={FOCUS_STROKE}
+            strokeWidth={STROKE_WIDTH}
+            fill="none"
+          />
+        )}
       </svg>
     </>
   );

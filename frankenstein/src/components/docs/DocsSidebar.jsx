@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import DocsLink from './DocsLink';
+import useTransitionNavigate from '../../hooks/useTransitionNavigate';
 
 /**
  * Docs sidebar — open-on-active-path edition.
@@ -360,6 +361,18 @@ function SectionCard({
 }) {
   const cardRef = useRef(null);
   const [dims, setDims] = useState(null);
+  const transitionNavigate = useTransitionNavigate();
+
+  // Whole-card hitbox: clicking anywhere on the section card that
+  // isn't a row / link / button navigates to the section's heading
+  // page. A small UX courtesy so a stray click in the padding lands
+  // on something sensible rather than feeling like dead space. No-op
+  // if the section has no heading link (no index page to land on).
+  const onCardClick = useCallback((e) => {
+    if (!headingItem) return;
+    if (e.target.closest('a, button, .docs-nav-row')) return;
+    transitionNavigate(`/toolbox/${headingItem.slug}`);
+  }, [headingItem, transitionNavigate]);
 
   // Measure on every render (no deps) so we pick up width changes that
   // come from CSS-driven `:has(.docs-nav-row.is-active)` toggles during
@@ -391,7 +404,11 @@ function SectionCard({
   }, []);
 
   return (
-    <div ref={cardRef} className="docs-sidebar-section">
+    <div
+      ref={cardRef}
+      className={`docs-sidebar-section${headingItem ? ' is-clickable' : ''}`}
+      onClick={onCardClick}
+    >
       {headingItem ? (
         <div
           className={`docs-sidebar-heading is-link${isHeadingActive ? ' is-active' : ''}`}

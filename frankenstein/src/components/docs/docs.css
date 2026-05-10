@@ -218,6 +218,13 @@
     background-color 0.25s ease,
     box-shadow 0.25s ease;
 }
+/* Whole-card hitbox: clicking anywhere on a section that has a
+   heading link navigates to that heading's page. The cursor signals
+   that the padding is a click target. Inner rows / chevrons keep
+   their own cursor styles. */
+.docs-sidebar-section.is-clickable {
+  cursor: pointer;
+}
 
 /* SectionOutline SVGs cover the section's box plus a margin above
    and below for the focus group's outward right corners. Two are

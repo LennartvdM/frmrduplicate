@@ -114,17 +114,23 @@ export default function DocsSidebar({ sections, activeSlug }) {
 
   // Foldout open state: `userToggle.get(slug) === true` means open. The
   // initial map opens every ancestor of the active page; subsequent
-  // user clicks layer over it.
+  // user clicks within the active section layer over it.
   const [userToggle, setUserToggle] = useState(() => {
     const map = new Map();
     for (const slug of activeAncestors) map.set(slug, true);
     return map;
   });
 
-  // Re-open ancestors whenever the active page changes (route nav).
+  // Reset to the freshly-loaded state on every route change: only the
+  // active ancestors stay open. Foldouts the user manually opened in
+  // OTHER sections (or in this section before navigating away) collapse
+  // — there are only three group states (first / middle / last), and
+  // each section should look identical to a cold load of the current
+  // page. Without this reset, sections would carry stale "third state"
+  // expansion across navigation.
   useEffect(() => {
-    setUserToggle((prev) => {
-      const next = new Map(prev);
+    setUserToggle(() => {
+      const next = new Map();
       for (const slug of activeAncestors) next.set(slug, true);
       return next;
     });

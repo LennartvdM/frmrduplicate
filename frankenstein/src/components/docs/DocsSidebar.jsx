@@ -500,30 +500,31 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
     'Z',
   ].join(' ');
 
-  // FOCUS — each non-skipped corner becomes a 180° arc, a complete
-  // half-circle centered on the section's corner point that bulges
-  // out through (width, ±R) and rounds back to (width + R, 0) at
-  // the top or (width - R, height) at the bottom. The visible
-  // portion at x < width is a clean quarter circle; the rounding-
-  // back half sits past the section's right edge where the half-
-  // plane mask hides it, so if the card ever stops masking it the
-  // protrusion reads as a generous rounded tab.
+  // FOCUS — two corner geometries:
   //
-  // Skip flags suppress the tab when there's nowhere to put it:
-  //   - skipTopOuter (first section): cream's outer top is at the
-  //     section's top, so a top tab would float above the card.
-  //     The top-right corner becomes a normal concave rounded
-  //     corner like the rest of the section's box.
+  //   - skipTopOuter (first section): the top edge is a straight
+  //     line that runs past the section's right edge to the
+  //     article corner's apex (width + 22, 0), then the path
+  //     curves down along the cream's rounded corner to
+  //     (width, ARTICLE_OUTER_RADIUS). The straight extension
+  //     and the cream-curve trace both sit in the masked half-
+  //     plane (x ≥ width), so visually the top reads as a clean
+  //     straight line that disappears under the card. No corner
+  //     curve at the top-right.
+  //
   //   - skipBottomOuter (last section): mirror at the bottom edge.
   //
-  // Right edge is at x = width + R when both bumps are tabs, at
-  // x = width when both are skipped, and diagonal in mixed cases.
-  // The right side is masked anyway (x ≥ width) so the diagonal
-  // doesn't surface visually.
+  //   - otherwise: a 180° arc — a complete half-circle centered
+  //     on the section's corner point that bulges out through
+  //     (width, ±R) and rounds back to (width + R, 0) or
+  //     (width - R, height). The visible portion at x < width is
+  //     a clean quarter circle; the rounding-back half sits
+  //     under the card, ready to read as a generous rounded tab
+  //     if it ever surfaces.
   const focusTopPiece = skipTopOuter
     ? [
-        `L ${width - RADIUS} 0`,
-        `A ${RADIUS} ${RADIUS} 0 0 1 ${width} ${RADIUS}`,
+        `L ${width + ARTICLE_OUTER_RADIUS} 0`,
+        `A ${ARTICLE_OUTER_RADIUS} ${ARTICLE_OUTER_RADIUS} 0 0 0 ${width} ${ARTICLE_OUTER_RADIUS}`,
       ]
     : [
         `L ${width - RADIUS} 0`,
@@ -532,7 +533,7 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
 
   const focusBottomPiece = skipBottomOuter
     ? [
-        `A ${RADIUS} ${RADIUS} 0 0 1 ${width - RADIUS} ${height}`,
+        `A ${ARTICLE_OUTER_RADIUS} ${ARTICLE_OUTER_RADIUS} 0 0 0 ${width + ARTICLE_OUTER_RADIUS} ${height}`,
         `L ${RADIUS} ${height}`,
       ]
     : [
@@ -541,9 +542,9 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
       ];
 
   const topPieceEndX = skipTopOuter ? width : width + RADIUS;
-  const topPieceEndY = skipTopOuter ? RADIUS : 0;
+  const topPieceEndY = skipTopOuter ? ARTICLE_OUTER_RADIUS : 0;
   const bottomPieceStartX = skipBottomOuter ? width : width + RADIUS;
-  const bottomPieceStartY = skipBottomOuter ? height - RADIUS : height;
+  const bottomPieceStartY = skipBottomOuter ? height - ARTICLE_OUTER_RADIUS : height;
 
   const focusLeftAndTopRound = [
     `A ${RADIUS} ${RADIUS} 0 0 1 0 ${height - RADIUS}`,

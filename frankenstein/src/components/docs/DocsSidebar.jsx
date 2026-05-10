@@ -552,15 +552,36 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
     ...focusBottomTail,
   ].join(' ');
 
-  // Fill path: same geometry but the right side is a straight line
-  // instead of an `M` jump, so the shape is closed and fillable.
-  const focusFillPath = [
-    ...focusTop,
-    `L ${width} ${bottomRightY}`,
-    ...focusBottomFromRight,
-    ...focusBottomTail,
-    'Z',
-  ].join(' ');
+  // Fill paths cover ONLY the bump regions outside the section's box
+  // — the small triangular slivers between the box's right corner
+  // and the outward arc. The CSS background fills the rectangular
+  // body separately, so painting it again here would compound the
+  // alpha (0.16 + 0.16 → ~0.29) and make the body look more opaque
+  // than the bumps. With one fill per region the whole shape reads
+  // as a single uniform translucent surface.
+  // The arc sweep flag flips between the two bumps because we trace
+  // them clockwise from the box edge: the top bump's arc returns
+  // to the start going down-and-left (sweep=1, mirroring the outline
+  // arc which goes up-and-right with sweep=0), and the bottom bump's
+  // arc continues in the same direction as the outline arc.
+  const topBumpFillPath = !skipTopOuter
+    ? [
+        `M ${width - RADIUS} 0`,
+        `L ${width} 0`,
+        `L ${width} ${-RADIUS}`,
+        `A ${RADIUS} ${RADIUS} 0 0 1 ${width - RADIUS} 0`,
+        'Z',
+      ].join(' ')
+    : null;
+  const bottomBumpFillPath = !skipBottomOuter
+    ? [
+        `M ${width - RADIUS} ${height}`,
+        `L ${width} ${height}`,
+        `L ${width} ${height + RADIUS}`,
+        `A ${RADIUS} ${RADIUS} 0 0 0 ${width - RADIUS} ${height}`,
+        'Z',
+      ].join(' ')
+    : null;
 
   // Inactive: identical for every section regardless of position.
   // First / middle / last all render the same rounded rectangle when
@@ -608,13 +629,14 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   }
   const extensionPath = extensionSegments.length > 0 ? extensionSegments.join(' ') : null;
 
-  // Focus fill matches the active section's CSS background so the
-  // SVG-filled outward-corner regions read as the same surface as
-  // the CSS-filled (and backdrop-blurred) rectangular body.
-  // Inactive sections don't get an SVG fill — the CSS background
-  // already covers their full rectangular shape and adding SVG fill
-  // would double-render it.
-  const FOCUS_FILL = 'rgba(255, 255, 255, 0.16)';
+  // Bump fill matches the active section's CSS background so the
+  // outward-corner regions read as the same surface as the CSS-
+  // filled body. The bumps don't get backdrop-filter blur since
+  // they're SVG-painted, but they're small enough that the
+  // difference is hard to notice and the alternative (clip-path on
+  // the section to include the bumps) would clip the SVG extension
+  // stroke for the first/last cards.
+  const BUMP_FILL = 'rgba(255, 255, 255, 0.16)';
 
   return (
     <>
@@ -639,8 +661,16 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
         viewBox={`0 ${-RADIUS} ${svgWidth} ${svgHeight}`}
         aria-hidden="true"
       >
-        {/* Fill goes first so the stroke renders on top. */}
-        <path d={focusFillPath} fill={FOCUS_FILL} stroke="none" />
+        {/* Bump fills go first so the stroke renders on top. Only
+            the regions outside the box are filled here — the body
+            is filled by the section's CSS background, so painting
+            it again would double its opacity. */}
+        {topBumpFillPath && (
+          <path d={topBumpFillPath} fill={BUMP_FILL} stroke="none" />
+        )}
+        {bottomBumpFillPath && (
+          <path d={bottomBumpFillPath} fill={BUMP_FILL} stroke="none" />
+        )}
         <path
           d={focusStrokePath}
           stroke="rgba(255, 255, 255, 1)"

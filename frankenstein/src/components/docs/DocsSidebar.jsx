@@ -496,11 +496,12 @@ function SectionCard({
 function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   const RADIUS = 18;
   const STROKE_WIDTH = 2;
-  // The article card's visible top-left corner apex sits 22 px past
-  // the section's right edge (border-radius 16 + 6 px outline ring).
-  // The focus group's first / last section pushes a straight stroke
-  // out to that apex.
-  const ARTICLE_CORNER_OFFSET = 22;
+  // The article body has border-radius 16 plus a 6 px box-shadow
+  // cream ring, so the visible cream surface effectively rounds at
+  // radius 22. For first / last sections, the focus shape wraps
+  // around this cream curve so the section's color reads as
+  // continuous through the article corner.
+  const ARTICLE_OUTER_RADIUS = 22;
 
   // INACTIVE — every section is the same rounded rectangle. Single
   // path, used for both fill and stroke so they trace the exact
@@ -522,77 +523,85 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   // rounded corner. Both fill and stroke come from the same
   // geometry: the fill uses this path as-is, and the stroke uses
   // the same path with one M (move) jump on the right side so the
-  // bridge edge has no visible stroke. Because the fill and stroke
-  // are derived from one path, they're guaranteed to match.
+  // bridge edge has no visible stroke.
   //
   // Right side handles three cases per corner:
-  //   - skipTopOuter (first section): straight to (width, 0), no bump
-  //   - skipBottomOuter (last section): straight at (width, height), no bump
-  //   - otherwise: outward bump (arc curving up/down past the box)
-  //
-  // The fill's "right edge" is a virtual straight line from the top
-  // piece's end to the bottom piece's start — never visibly stroked
-  // because the stroke path inserts an M there to break the stroke
-  // subpath.
-  const topPieceEndY = skipTopOuter ? 0 : -RADIUS;
-  const bottomPieceStartY = skipBottomOuter ? height : height + RADIUS;
+  //   - skipTopOuter (first section): top edge runs to (width, 0),
+  //     extends 22 px past the section, then arcs DOWN-LEFT along
+  //     the cream curve back to (width, ARTICLE_OUTER_RADIUS). The
+  //     wedge between the section's right edge and the cream curve
+  //     gets filled — the section visually wraps around the
+  //     article's top-left rounded corner.
+  //   - skipBottomOuter (last section): mirror of the above. The
+  //     bottom piece arcs from (width, height - ARTICLE_OUTER_RADIUS)
+  //     down-right along the cream curve to (width + 22, height),
+  //     then continues left along the section's bottom — extending
+  //     22 px past the section's right edge.
+  //   - otherwise: outward bump (arc curving 18 px past the box).
 
-  const topPiece = skipTopOuter
-    ? [`L ${width} 0`]
+  const focusTopPiece = skipTopOuter
+    ? [
+        `L ${width} 0`,
+        `L ${width + ARTICLE_OUTER_RADIUS} 0`,
+        `A ${ARTICLE_OUTER_RADIUS} ${ARTICLE_OUTER_RADIUS} 0 0 0 ${width} ${ARTICLE_OUTER_RADIUS}`,
+      ]
     : [
         `L ${width - RADIUS} 0`,
         `A ${RADIUS} ${RADIUS} 0 0 0 ${width} ${-RADIUS}`,
       ];
 
-  const bottomPiece = skipBottomOuter
-    ? []
-    : [`A ${RADIUS} ${RADIUS} 0 0 0 ${width - RADIUS} ${height}`];
+  const focusBottomPiece = skipBottomOuter
+    ? [
+        `A ${ARTICLE_OUTER_RADIUS} ${ARTICLE_OUTER_RADIUS} 0 0 0 ${width + ARTICLE_OUTER_RADIUS} ${height}`,
+        `L ${RADIUS} ${height}`,
+      ]
+    : [
+        `A ${RADIUS} ${RADIUS} 0 0 0 ${width - RADIUS} ${height}`,
+        `L ${RADIUS} ${height}`,
+      ];
 
-  const leftAndBottom = [
-    `L ${RADIUS} ${height}`,
+  // Where the right edge starts (= where the top piece ends) and
+  // where it stops (= where the bottom piece starts).
+  const bottomPieceStartY = skipBottomOuter
+    ? height - ARTICLE_OUTER_RADIUS
+    : height + RADIUS;
+
+  const focusLeftAndTopRound = [
     `A ${RADIUS} ${RADIUS} 0 0 1 0 ${height - RADIUS}`,
     `L 0 ${RADIUS}`,
     `A ${RADIUS} ${RADIUS} 0 0 1 ${RADIUS} 0`,
   ];
 
-  // Fill: closed path. Right side is a straight L command — included
-  // in the fill area but the stroke path overrides it with M.
+  // Fill: closed path. The right side is a straight L command —
+  // included in the fill area but overridden by the stroke path
+  // with an M jump so the bridge edge stays unstroked.
   const focusFillPath = [
     `M ${RADIUS} 0`,
-    ...topPiece,
+    ...focusTopPiece,
     `L ${width} ${bottomPieceStartY}`,
-    ...bottomPiece,
-    ...leftAndBottom,
+    ...focusBottomPiece,
+    ...focusLeftAndTopRound,
     'Z',
   ].join(' ');
 
   // Stroke: same shape, but the right side is an M jump so the
-  // stroke breaks at the bridge.
+  // stroke breaks at the bridge. The cream curve and the bottom
+  // edge extension (when first / last) are PART of this stroke —
+  // no separate extension path needed.
   const focusStrokePath = [
     `M ${RADIUS} 0`,
-    ...topPiece,
+    ...focusTopPiece,
     `M ${width} ${bottomPieceStartY}`,
-    ...bottomPiece,
-    ...leftAndBottom,
+    ...focusBottomPiece,
+    ...focusLeftAndTopRound,
   ].join(' ');
 
-  // Extension stroke for first / last sections in focus state: a
-  // thin horizontal stroke pushing 22 px past the section's right
-  // edge into the moat, terminating at the article corner apex.
-  const extensionSegments = [];
-  if (skipTopOuter) {
-    extensionSegments.push(`M ${width} 0 L ${width + ARTICLE_CORNER_OFFSET} 0`);
-  }
-  if (skipBottomOuter) {
-    extensionSegments.push(`M ${width} ${height} L ${width + ARTICLE_CORNER_OFFSET} ${height}`);
-  }
-  const extensionPath = extensionSegments.length > 0 ? extensionSegments.join(' ') : null;
-
   // SVG element covers the section + RADIUS px above/below for the
-  // bump arcs and ARTICLE_CORNER_OFFSET on the right for the
-  // extension stroke.
+  // outward bump arcs (middle sections in focus state), and
+  // ARTICLE_OUTER_RADIUS on the right for the cream-corner wrap
+  // (first / last sections in focus state).
   const svgHeight = height + 2 * RADIUS;
-  const svgWidth = width + ARTICLE_CORNER_OFFSET;
+  const svgWidth = width + ARTICLE_OUTER_RADIUS;
 
   const INACTIVE_FILL = 'rgba(255, 255, 255, 0.08)';
   const FOCUS_FILL = 'rgba(255, 255, 255, 0.16)';
@@ -644,14 +653,6 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
           strokeWidth={STROKE_WIDTH}
           fill="none"
         />
-        {extensionPath && (
-          <path
-            d={extensionPath}
-            stroke={FOCUS_STROKE}
-            strokeWidth={STROKE_WIDTH}
-            fill="none"
-          />
-        )}
       </svg>
     </>
   );

@@ -192,78 +192,39 @@
 }
 .docs-sidebar-scroll::-webkit-scrollbar { display: none; }
 
-/* Each section is a closed glassy card floating on the videodeck.
-   The visible outline is drawn by an SVG (`SectionOutline` in
-   `DocsSidebar.jsx`) — the CSS `border` here exists only to keep
-   the section's box dimensions consistent with the previous
-   border-as-outline design. Border color is transparent so it
-   doesn't compete with the SVG; the SVG path can extend outside
-   the box (above/below) for the focus group's outward right
-   corners.
-   `border-radius` doesn't visually round anything any more (no
-   visible border to round) but staying at 18 keeps inset shadows
-   and clip-path math consistent. */
+/* The section is a transparent positional wrapper. The entire
+   visible card — fill, stroke, drop shadow — is painted by a single
+   SVG (`SectionOutline` in `DocsSidebar.jsx`) so the fill geometry
+   and outline geometry are guaranteed to match: they come from the
+   same path. No CSS background, border, border-radius, or
+   box-shadow on the section itself — those would each be a separate
+   shape source competing with the SVG and re-introducing the
+   compound-fill artefacts.
+   z-index: 0 establishes a stacking context so the SVG can sit at
+   z-index: -1 (behind the heading + nav rows) without slipping
+   behind the section's own siblings. */
 .docs-sidebar-section {
   position: relative;
+  z-index: 0;
   padding: 6px 8px 10px;
-  /* DEBUG: yellow body so we can see exactly where the CSS background
-     paints vs. where the SVG bump fill paints. Production was
-     rgba(255, 255, 255, 0.08). */
-  background: rgba(255, 255, 0, 0.5);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  border: 2px solid transparent;
-  border-radius: 18px;
-  /* Drop shadow lives on ::before below so the active focus card
-     can clip it tighter on the right (no bleed onto the article)
-     without affecting the SVG outline's extension stroke. The inset
-     highlight stays on the section itself — inset shadows can't
-     come from a same-shape pseudo overlay. */
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.28) inset;
-  transition:
-    background-color 0.25s ease,
-    box-shadow 0.25s ease;
 }
-/* Drop-shadow layer. Same shape as the section (inherits border-
-   radius), positioned on top of the section's background but with
-   its own clip-path so the active focus card can clip the shadow
-   without clipping the SVG sibling. pointer-events: none so the
-   whole-card hitbox click handler still receives clicks. */
-.docs-sidebar-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
-  transition: box-shadow 0.25s ease, clip-path 0.25s ease;
-}
-/* Whole-card hitbox: clicking anywhere on a section that has a
-   heading link navigates to that heading's page. The cursor signals
-   that the padding is a click target. Inner rows / chevrons keep
-   their own cursor styles. */
+/* Whole-card hitbox cursor (the click handler is in JSX). */
 .docs-sidebar-section.is-clickable {
   cursor: pointer;
 }
 
-/* SectionOutline SVGs cover the section's box plus a margin above
-   and below for the focus group's outward right corners. Two are
-   rendered per card; CSS picks which one is visible based on
-   focus-group state.
-   The -20 / -2 offset compensates for the section's 2 px transparent
-   border: `position: absolute` is from the parent's padding-box (inside
-   the border), but the path uses offsetWidth / offsetHeight which
-   include the border. Without this shift the path drew 2 px down and
-   2 px right of the section's actual outer edge — visible against the
-   debug yellow body as a misalignment. */
+/* SectionOutline covers the section's box plus RADIUS px above and
+   below for the focus state's outward bumps, plus 22 px on the
+   right for the first / last section's extension stroke into the
+   article corner. Two SVGs render per card; CSS picks which is
+   visible based on focus-group state. */
 .docs-section-outline {
   position: absolute;
-  top: -20px;
-  left: -2px;
+  top: -18px;
+  left: 0;
   pointer-events: none;
   overflow: visible;
-  z-index: 1;
+  z-index: -1;
 }
 .docs-section-outline-focus {
   display: none;
@@ -277,61 +238,14 @@
   display: block;
 }
 
-/* Focus group — the section card containing the active page. The
-   card itself widens by the moat width and its right side opens up
-   (no right border, square right corners) so the card visually
-   plugs straight into the article card. The right 32 px of the
-   widened card IS the bridge — same border, same glass fill, same
-   backdrop-blur as the rest of the card because it's literally the
-   same element. No second div, no pseudo-element, no SVG.
-   Children's positioning is preserved by adding 32 px to the
-   card's right padding, which keeps the content area at its
-   original width.
-   Inset highlight shadows are split per-side: left, top, bottom
-   only — no right side — so the open right edge stays truly open
-   and doesn't draw a 1 px white line where the bridge meets the
-   article card. */
+/* Focus group — the section containing the active page extends
+   into the moat so the SVG outline can land at the article card's
+   visible left edge. The padding-right grows by the same amount so
+   the rows don't shift when the section widens. */
 .docs-sidebar-section:has(.docs-nav-row.is-active),
 .docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active) {
-  /* Stop at the article card's *visible* left edge — that's x=320
-     minus the 6 px outline-width box-shadow ring on .docs-main, which
-     extends the article's cream surface 6 px outward into the moat.
-     So the section extends by moat-width - outline-width, not the
-     full moat-width, and the cream ring stays visible right where
-     the bridge ends. */
   width: calc(100% + var(--docs-moat-width) - var(--docs-outline-width));
   padding-right: calc(8px + var(--docs-moat-width) - var(--docs-outline-width));
-  /* Square the right CSS corners on the focus group too. The SVG
-     either skips them (first/last section, drawing a straight stroke
-     to the corner) or curves them outward (middle sections, drawing
-     an arc above/below the box). In either case the SVG fill claims
-     the rectangular corner area inside the box, so the CSS box
-     should match by being square — otherwise the fill curves inward
-     where the outline doesn't. */
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  /* CSS background fills the rectangular section body (with backdrop-
-     blur — only works inside the box). The SVG SectionOutline-focus
-     paints the outward-corner regions with a matching translucent
-     fill so the shape reads as one surface even though the corners
-     don't get backdrop-blur. */
-  /* DEBUG: yellow body for the active card too. Production was
-     rgba(255, 255, 255, 0.16). */
-  background: rgba(255, 255, 0, 0.7);
-  box-shadow:
-    inset 1px 0 0 rgba(255, 255, 255, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.18);
-}
-
-/* Active focus card's drop shadow: bigger than inactive, AND clipped
-   at the section's right edge so the shadow can't extend past it onto
-   the article's cream surface. The SVG outline extension stroke is on
-   a sibling element with its own bounds so it isn't affected. */
-.docs-sidebar-section:has(.docs-nav-row.is-active)::before,
-.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active)::before {
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
-  clip-path: inset(-100px 0 -100px -100px);
 }
 
 

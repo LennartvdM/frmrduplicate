@@ -496,99 +496,15 @@ function SectionCard({
 function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   const RADIUS = 18;
   const STROKE_WIDTH = 2;
-  // For the first / last section's "into the corner top" extension:
-  // the article card has border-radius: 16 plus a 6 px box-shadow ring
-  // around it, so its visible top-left corner's *topmost point* sits
-  // at x = section_right + 22. Pushing the straight stroke that far
-  // ends it right at the article's rounded-corner apex — past the
-  // sidebar column, into the moat space above the article's curve.
+  // The article card's visible top-left corner apex sits 22 px past
+  // the section's right edge (border-radius 16 + 6 px outline ring).
+  // The focus group's first / last section pushes a straight stroke
+  // out to that apex.
   const ARTICLE_CORNER_OFFSET = 22;
 
-  // Where the top piece of the focus path ends (= where the right
-  // side starts).
-  const topRightY = skipTopOuter ? 0 : -RADIUS;
-  // Where the bottom piece of the focus path starts.
-  const bottomRightY = skipBottomOuter ? height : height + RADIUS;
-
-  // Top half of the focus path (left rounded corner + top stroke +
-  // top-right outward-or-skipped corner). Ends at (width, topRightY).
-  const focusTop = skipTopOuter
-    ? [
-        `M ${RADIUS} 0`,
-        `L ${width} 0`,
-      ]
-    : [
-        `M ${RADIUS} 0`,
-        `L ${width - RADIUS} 0`,
-        `A ${RADIUS} ${RADIUS} 0 0 0 ${width} ${-RADIUS}`,
-      ];
-
-  // Bottom half of the focus path: starts at (width, bottomRightY),
-  // bottom-right outward-or-skipped corner, bottom stroke, rounded
-  // bottom-left, left stroke, rounded top-left back to (RADIUS, 0).
-  const focusBottomFromRight = skipBottomOuter
-    ? [
-        // Already at (width, height) thanks to the prior subpath jump.
-        `L ${RADIUS} ${height}`,
-      ]
-    : [
-        // Already at (width, height + RADIUS); arc back into the
-        // section's right edge at (width - RADIUS, height).
-        `A ${RADIUS} ${RADIUS} 0 0 0 ${width - RADIUS} ${height}`,
-        `L ${RADIUS} ${height}`,
-      ];
-
-  const focusBottomTail = [
-    `A ${RADIUS} ${RADIUS} 0 0 1 0 ${height - RADIUS}`,
-    `L 0 ${RADIUS}`,
-    `A ${RADIUS} ${RADIUS} 0 0 1 ${RADIUS} 0`,
-  ];
-
-  // Stroke path: open right side via `M` jump.
-  const focusStrokePath = [
-    ...focusTop,
-    `M ${width} ${bottomRightY}`,
-    ...focusBottomFromRight,
-    ...focusBottomTail,
-  ].join(' ');
-
-  // Fill paths cover ONLY the bump regions outside the section's box
-  // — the small triangular slivers between the box's right corner
-  // and the outward arc. The CSS background fills the rectangular
-  // body separately, so painting it again here would compound the
-  // alpha (0.16 + 0.16 → ~0.29) and make the body look more opaque
-  // than the bumps. With one fill per region the whole shape reads
-  // as a single uniform translucent surface.
-  // The arc sweep flag flips between the two bumps because we trace
-  // them clockwise from the box edge: the top bump's arc returns
-  // to the start going down-and-left (sweep=1, mirroring the outline
-  // arc which goes up-and-right with sweep=0), and the bottom bump's
-  // arc continues in the same direction as the outline arc.
-  const topBumpFillPath = !skipTopOuter
-    ? [
-        `M ${width - RADIUS} 0`,
-        `L ${width} 0`,
-        `L ${width} ${-RADIUS}`,
-        `A ${RADIUS} ${RADIUS} 0 0 1 ${width - RADIUS} 0`,
-        'Z',
-      ].join(' ')
-    : null;
-  const bottomBumpFillPath = !skipBottomOuter
-    ? [
-        `M ${width - RADIUS} ${height}`,
-        `L ${width} ${height}`,
-        `L ${width} ${height + RADIUS}`,
-        `A ${RADIUS} ${RADIUS} 0 0 0 ${width - RADIUS} ${height}`,
-        'Z',
-      ].join(' ')
-    : null;
-
-  // Inactive: identical for every section regardless of position.
-  // First / middle / last all render the same rounded rectangle when
-  // they're not the active focus group — there are only two visual
-  // states (inactive rounded-rect, active focus-shape), and the
-  // first/last "push into the article corner" treatment belongs only
-  // to the active state.
+  // INACTIVE — every section is the same rounded rectangle. Single
+  // path, used for both fill and stroke so they trace the exact
+  // same shape.
   const inactivePath = [
     `M ${RADIUS} 0`,
     `L ${width - RADIUS} 0`,
@@ -602,24 +518,67 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
     'Z',
   ].join(' ');
 
-  // The SVG box covers the section + RADIUS px above and below so
-  // outward corners have room to render. Width is also extended by
-  // ARTICLE_CORNER_OFFSET on the right so the first/last section's
-  // "into the corner top" extension is INSIDE the SVG's viewport
-  // (not relying on overflow: visible to escape it). The empty area
-  // on the right when no extension applies is harmless — the SVG is
-  // pointer-events: none and renders nothing there.
-  const svgHeight = height + 2 * RADIUS;
-  const svgWidth = width + ARTICLE_CORNER_OFFSET;
+  // FOCUS — single closed path traced clockwise from the top-left
+  // rounded corner. Both fill and stroke come from the same
+  // geometry: the fill uses this path as-is, and the stroke uses
+  // the same path with one M (move) jump on the right side so the
+  // bridge edge has no visible stroke. Because the fill and stroke
+  // are derived from one path, they're guaranteed to match.
+  //
+  // Right side handles three cases per corner:
+  //   - skipTopOuter (first section): straight to (width, 0), no bump
+  //   - skipBottomOuter (last section): straight at (width, height), no bump
+  //   - otherwise: outward bump (arc curving up/down past the box)
+  //
+  // The fill's "right edge" is a virtual straight line from the top
+  // piece's end to the bottom piece's start — never visibly stroked
+  // because the stroke path inserts an M there to break the stroke
+  // subpath.
+  const topPieceEndY = skipTopOuter ? 0 : -RADIUS;
+  const bottomPieceStartY = skipBottomOuter ? height : height + RADIUS;
 
-  // Extension stroke for the first/last section: a small horizontal
-  // segment from (width, 0) to (width + ARTICLE_CORNER_OFFSET, 0) at
-  // the top, mirrored at the bottom. Pushes the straight stroke past
-  // the section's right edge, into the moat space that sits above
-  // (or below) the article card's rounded corner — terminating at
-  // the article's corner apex. Renders inside the SVG via overflow:
-  // visible; the parent scroll container's clip box has been widened
-  // to accommodate it.
+  const topPiece = skipTopOuter
+    ? [`L ${width} 0`]
+    : [
+        `L ${width - RADIUS} 0`,
+        `A ${RADIUS} ${RADIUS} 0 0 0 ${width} ${-RADIUS}`,
+      ];
+
+  const bottomPiece = skipBottomOuter
+    ? []
+    : [`A ${RADIUS} ${RADIUS} 0 0 0 ${width - RADIUS} ${height}`];
+
+  const leftAndBottom = [
+    `L ${RADIUS} ${height}`,
+    `A ${RADIUS} ${RADIUS} 0 0 1 0 ${height - RADIUS}`,
+    `L 0 ${RADIUS}`,
+    `A ${RADIUS} ${RADIUS} 0 0 1 ${RADIUS} 0`,
+  ];
+
+  // Fill: closed path. Right side is a straight L command — included
+  // in the fill area but the stroke path overrides it with M.
+  const focusFillPath = [
+    `M ${RADIUS} 0`,
+    ...topPiece,
+    `L ${width} ${bottomPieceStartY}`,
+    ...bottomPiece,
+    ...leftAndBottom,
+    'Z',
+  ].join(' ');
+
+  // Stroke: same shape, but the right side is an M jump so the
+  // stroke breaks at the bridge.
+  const focusStrokePath = [
+    `M ${RADIUS} 0`,
+    ...topPiece,
+    `M ${width} ${bottomPieceStartY}`,
+    ...bottomPiece,
+    ...leftAndBottom,
+  ].join(' ');
+
+  // Extension stroke for first / last sections in focus state: a
+  // thin horizontal stroke pushing 22 px past the section's right
+  // edge into the moat, terminating at the article corner apex.
   const extensionSegments = [];
   if (skipTopOuter) {
     extensionSegments.push(`M ${width} 0 L ${width + ARTICLE_CORNER_OFFSET} 0`);
@@ -629,62 +588,35 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   }
   const extensionPath = extensionSegments.length > 0 ? extensionSegments.join(' ') : null;
 
-  // DEBUG: bump fill yellow so we can see exactly where SVG paints
-  // vs. where the CSS background paints (also yellow but at a
-  // different alpha + with backdrop-blur). Production color was
-  // rgba(255, 255, 255, 0.16).
-  const BUMP_FILL = 'rgba(255, 255, 0, 0.5)';
-  // DEBUG: strokes hot pink so the outline geometry stands out
-  // against the yellow fill. Production was rgba(255, 255, 255, 0.95)
-  // / rgba(255, 255, 255, 1).
+  // SVG element covers the section + RADIUS px above/below for the
+  // bump arcs and ARTICLE_CORNER_OFFSET on the right for the
+  // extension stroke.
+  const svgHeight = height + 2 * RADIUS;
+  const svgWidth = width + ARTICLE_CORNER_OFFSET;
+
+  // DEBUG colors — yellow fill, hot pink stroke. Production fill
+  // was rgba(255, 255, 255, 0.16) and stroke rgba(255, 255, 255, ~1).
+  const FILL_COLOR = 'rgba(255, 255, 0, 0.7)';
   const STROKE_COLOR = 'rgb(255, 0, 200)';
+
+  const svgProps = {
+    width: svgWidth,
+    height: svgHeight,
+    viewBox: `0 ${-RADIUS} ${svgWidth} ${svgHeight}`,
+    'aria-hidden': true,
+  };
 
   return (
     <>
-      <svg
-        className="docs-section-outline docs-section-outline-inactive"
-        width={svgWidth}
-        height={svgHeight}
-        viewBox={`0 ${-RADIUS} ${svgWidth} ${svgHeight}`}
-        aria-hidden="true"
-      >
-        <path
-          d={inactivePath}
-          stroke={STROKE_COLOR}
-          strokeWidth={STROKE_WIDTH}
-          fill="none"
-        />
+      <svg className="docs-section-outline docs-section-outline-inactive" {...svgProps}>
+        <path d={inactivePath} fill={FILL_COLOR} stroke="none" />
+        <path d={inactivePath} stroke={STROKE_COLOR} strokeWidth={STROKE_WIDTH} fill="none" />
       </svg>
-      <svg
-        className="docs-section-outline docs-section-outline-focus"
-        width={svgWidth}
-        height={svgHeight}
-        viewBox={`0 ${-RADIUS} ${svgWidth} ${svgHeight}`}
-        aria-hidden="true"
-      >
-        {/* Bump fills go first so the stroke renders on top. Only
-            the regions outside the box are filled here — the body
-            is filled by the section's CSS background, so painting
-            it again would double its opacity. */}
-        {topBumpFillPath && (
-          <path d={topBumpFillPath} fill={BUMP_FILL} stroke="none" />
-        )}
-        {bottomBumpFillPath && (
-          <path d={bottomBumpFillPath} fill={BUMP_FILL} stroke="none" />
-        )}
-        <path
-          d={focusStrokePath}
-          stroke={STROKE_COLOR}
-          strokeWidth={STROKE_WIDTH}
-          fill="none"
-        />
+      <svg className="docs-section-outline docs-section-outline-focus" {...svgProps}>
+        <path d={focusFillPath} fill={FILL_COLOR} stroke="none" />
+        <path d={focusStrokePath} stroke={STROKE_COLOR} strokeWidth={STROKE_WIDTH} fill="none" />
         {extensionPath && (
-          <path
-            d={extensionPath}
-            stroke={STROKE_COLOR}
-            strokeWidth={STROKE_WIDTH}
-            fill="none"
-          />
+          <path d={extensionPath} stroke={STROKE_COLOR} strokeWidth={STROKE_WIDTH} fill="none" />
         )}
       </svg>
     </>

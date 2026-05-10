@@ -271,6 +271,13 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
   const hasChildren = item.children && item.children.length > 0;
   const isExpanded = hasChildren && isOpen(item.slug);
 
+  // Track whether the foldout-children wrapper is mid-animation. We need
+  // overflow: hidden during the height tween (otherwise the children show
+  // outside the collapsing/expanding box), but overflow: visible once
+  // settled so an active row's drop shadow doesn't get clipped by the
+  // wrapper's edges.
+  const [foldoutSettled, setFoldoutSettled] = useState(true);
+
   // Click semantics on the row:
   //   - Foldout row → toggle this foldout (with accordion).
   //   - Leaf row → no toggle behavior; DocsLink handles navigation.
@@ -332,7 +339,9 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
               initial="closed"
               animate="open"
               exit="closed"
-              style={{ overflow: 'hidden', paddingLeft: '4%' }}
+              onAnimationStart={() => setFoldoutSettled(false)}
+              onAnimationComplete={() => setFoldoutSettled(true)}
+              style={{ overflow: foldoutSettled ? 'visible' : 'hidden', paddingLeft: '4%' }}
             >
               <NavList
                 items={item.children}

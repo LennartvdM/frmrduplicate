@@ -374,23 +374,27 @@ function SectionCard({
     transitionNavigate(`/toolbox/${headingItem.slug}`);
   }, [headingItem, transitionNavigate]);
 
-  // Measure on every render (no deps) so we pick up width changes that
-  // come from CSS-driven `:has(.docs-nav-row.is-active)` toggles during
-  // SPA navigation. ResizeObserver alone proved unreliable for these
-  // — Chromium would skip the callback for some sections when the box
-  // shrank from focus-state width back to inactive width, leaving the
-  // SVG outline stuck at the focus-state width (the "third state" the
-  // section appeared to settle into after losing focus).
+  // Re-measure when activeSlug changes. The CSS `:has(.docs-nav-row.is-active)`
+  // selector drives width changes that ResizeObserver alone proved
+  // unreliable for (some sections wouldn't fire the callback when the
+  // box shrank from focus-state width back to inactive width). Running
+  // this only on activeSlug change avoids a re-render loop during
+  // framer-motion height animations: a no-deps useLayoutEffect would
+  // re-measure on every commit, and the height oscillates between
+  // commits while a foldout is animating, so the equality guard would
+  // fail and setDims would queue another render until React bails with
+  // error #185.
   useLayoutEffect(() => {
     if (!cardRef.current) return;
     const el = cardRef.current;
     const w = el.offsetWidth;
     const h = el.offsetHeight;
     setDims((prev) => (prev && prev.width === w && prev.height === h ? prev : { width: w, height: h }));
-  });
+  }, [activeSlug]);
 
-  // ResizeObserver still handles content-driven height changes that
-  // happen *outside* a React render (e.g., font load, image load).
+  // ResizeObserver handles all the *non-render-triggered* size changes:
+  // foldout-open animations, font load, image load. These happen
+  // outside of React's render cycle so they don't risk looping.
   useLayoutEffect(() => {
     if (!cardRef.current) return;
     const el = cardRef.current;

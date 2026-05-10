@@ -521,37 +521,35 @@ function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBotto
   const RADIUS = 18;
   const STROKE_WIDTH = 2;
 
-  // Active section is two SEPARATE rounded-rect paths, both with
-  // all convex outer corners — no concave fillets:
-  //   1. BODY  — a rounded rect at the section box; its right
-  //      corners curve outward into the card area and disappear
-  //      behind the cream + article body.
-  //   2. STRIP — a thinner rounded rect positioned to the right of
-  //      the body, extending past the section box top and bottom
-  //      by STRIP_OVERHANG. Lives entirely behind the card; only
-  //      surfaces if a scroll briefly exposes it.
-  // Drawn as two paths means each shape keeps its own all-convex
-  // perimeter; we don't have to fudge a union with inward fillets.
+  // Active section is a SINGLE closed path — a sideways T (⊣) where
+  // the body↔strip junctions use S-curve transitions instead of
+  // straight 90° corners. Each S-curve is two back-to-back 90° arcs
+  // with opposite curvature: the path enters the junction along the
+  // body's top edge going RIGHT, curves UP for 90°, reverses
+  // curvature to curve back into the RIGHT direction at a higher y,
+  // and continues along the strip's top edge. Same logic mirrored
+  // at every other junction. No segment ends in a curvature
+  // discontinuity ("harsh cut"); every 90° arc is followed by
+  // either another 90° arc (forming an S back to neutral) or, at
+  // the body's outer corners, a tangent-continuous straight edge.
+  // All arcs use the same radius RADIUS.
+  //
+  // Geometry:
+  //   - body  occupies x ∈ [0, W_box], y ∈ [0, H]
+  //   - strip occupies x ∈ [W_box, W_box + W_strip],
+  //                   y ∈ [-2R, H + 2R]   (or [0, H+2R] / [-2R, H]
+  //                   when first/last)
+  //   - W_strip = 2*RADIUS so the strip's caps are exact semicircles
   const W_STRIP = 2 * RADIUS;
-  const STRIP_OVERHANG = 50;
 
-  // First section: strip's top stays flat (no outward rounding at
-  // the very top of the sidebar). Last section: bottom flat.
+  // First section: top is flat (body+strip share a continuous top
+  // edge at y=0, no S-curve at the top junction). Last section:
+  // mirror at the bottom.
   const flatTop = skipTopOuter;
   const flatBottom = skipBottomOuter;
 
   const inactivePath = roundedRectPath(width, height, RADIUS);
-
-  const bodyPath = roundedRectPath(width, height, RADIUS);
-  const stripPath = stripRectPath(
-    width,
-    width + W_STRIP,
-    -STRIP_OVERHANG,
-    height + STRIP_OVERHANG,
-    RADIUS,
-    flatTop,
-    flatBottom,
-  );
+  const activePath = sCurveTPath(width, height, RADIUS, W_STRIP, flatTop, flatBottom);
 
   // SVG element is positioned by CSS at `top: -RADIUS` (existing
   // infrastructure for older bump geometries that needed headroom
@@ -559,13 +557,14 @@ function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBotto
   // user-space y=0 maps back to parent y=0 — without this, the
   // outline renders RADIUS pixels too high and the top stroke
   // appears clipped by the sidebar's scroll container.
-  // SVG sized to comfortably hold both the body (within the section
-  // box) and the strip (which extends past the box on the right by
-  // W_STRIP and above/below by STRIP_OVERHANG). The viewBox y-min of
-  // -RADIUS cancels the existing CSS top: -RADIUS positioning so
-  // user-space y=0 maps back to the section box's actual top.
+  // SVG sized to hold body + strip. Strip extends past the section
+  // box on the right by W_STRIP and above/below by 2*RADIUS (the
+  // S-curve's full y-displacement). The viewBox y-min of -RADIUS
+  // cancels the existing CSS top: -RADIUS positioning so user-space
+  // y=0 maps to the section box's actual top; with overflow:visible
+  // anything past viewBox still renders.
   const svgWidth = width + W_STRIP;
-  const svgHeight = height + 2 * RADIUS;
+  const svgHeight = height + 4 * RADIUS;
 
   const INACTIVE_FILL = 'rgba(255, 255, 255, 0.08)';
   const FOCUS_FILL = 'rgba(255, 255, 255, 0.16)';
@@ -600,29 +599,14 @@ function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBotto
         />
       </svg>
       <svg className="docs-section-outline docs-section-outline-focus" {...svgProps}>
-        {/* Strip first so the body sits in front of it; their fills
-            simply union and the body covers the strip's left-edge
-            stroke where they overlap horizontally. */}
         <path
-          d={stripPath}
+          d={activePath}
           fill={FOCUS_FILL}
           stroke={FOCUS_FILL}
           strokeWidth={STROKE_WIDTH}
         />
         <path
-          d={stripPath}
-          stroke={FOCUS_STROKE}
-          strokeWidth={STROKE_WIDTH}
-          fill="none"
-        />
-        <path
-          d={bodyPath}
-          fill={FOCUS_FILL}
-          stroke={FOCUS_FILL}
-          strokeWidth={STROKE_WIDTH}
-        />
-        <path
-          d={bodyPath}
+          d={activePath}
           stroke={FOCUS_STROKE}
           strokeWidth={STROKE_WIDTH}
           fill="none"
@@ -648,43 +632,64 @@ function roundedRectPath(w, h, r) {
   ].join(' ');
 }
 
-// Strip rectangle for the active section's hidden vertical bar.
-// Drawn as a self-contained closed path; rendered behind the body.
-// All four corners are convex outward, except top corners are flat
-// when flatTop=true and bottom corners are flat when flatBottom=true
-// (so the strip terminates flush with the sidebar's top/bottom edge
-// rather than rounding outward into nothing).
-function stripRectPath(left, right, top, bottom, r, flatTop, flatBottom) {
-  const segments = [`M ${left + (flatTop ? 0 : r)} ${top}`];
-  // Top edge to top-right corner
+// Sideways-T outline (⊣) drawn as a SINGLE continuous path with
+// S-curve transitions at every body↔strip junction. All arcs share
+// the same radius r so the outline reads as a single rounded
+// language. Going CW from the body's top-left corner.
+//
+//   - W_box   width of the section body box
+//   - H       height of the section box
+//   - r       common radius for every arc (outer convex AND
+//             S-curve halves)
+//   - W_strip width of the vertical strip on the right
+//   - flatTop  if true, body+strip share a continuous top edge at
+//              y = 0 (used for the first section so the strip
+//              doesn't sprout above the sidebar's top)
+//   - flatBottom mirror at the bottom (last section)
+//
+// The S-curve at the top junction goes:
+//   body top edge → 90° CCW arc curving UP → 90° CW arc curving
+//   back to RIGHT at y = -2r → strip top edge
+// Net direction unchanged (still RIGHT), net y-displacement -2r,
+// curvature reverses smoothly mid-S so there are no harsh cuts.
+function sCurveTPath(W_box, H, r, W_strip, flatTop, flatBottom) {
+  const W_total = W_box + W_strip;
+  const segments = [`M ${r} 0`];
+
   if (flatTop) {
-    segments.push(`L ${right} ${top}`);
+    // Body + strip share top edge at y = 0
+    segments.push(`L ${W_total - r} 0`);
+    segments.push(`A ${r} ${r} 0 0 1 ${W_total} ${r}`); // strip top-right convex
   } else {
-    segments.push(`L ${right - r} ${top}`);
-    segments.push(`A ${r} ${r} 0 0 1 ${right} ${top + r}`);
+    // S-curve transitions body top (y=0) to strip top (y=-2r)
+    segments.push(`L ${W_box - 2 * r} 0`);
+    segments.push(`A ${r} ${r} 0 0 0 ${W_box - r} ${-r}`);   // S-curve arc 1: CCW, RIGHT → UP
+    segments.push(`A ${r} ${r} 0 0 1 ${W_box} ${-2 * r}`);   // S-curve arc 2: CW, UP → RIGHT
+    segments.push(`L ${W_total - r} ${-2 * r}`);             // strip top edge
+    segments.push(`A ${r} ${r} 0 0 1 ${W_total} ${-r}`);     // strip top-right convex
   }
-  // Right edge to bottom-right corner
+
+  // Strip right edge (down)
+  const stripBotY = flatBottom ? H - r : H + r;
+  segments.push(`L ${W_total} ${stripBotY}`);
+
   if (flatBottom) {
-    segments.push(`L ${right} ${bottom}`);
+    segments.push(`A ${r} ${r} 0 0 1 ${W_total - r} ${H}`); // strip bottom-right convex
+    segments.push(`L ${r} ${H}`);                            // continuous bottom edge body+strip
   } else {
-    segments.push(`L ${right} ${bottom - r}`);
-    segments.push(`A ${r} ${r} 0 0 1 ${right - r} ${bottom}`);
+    segments.push(`A ${r} ${r} 0 0 1 ${W_total - r} ${H + 2 * r}`);  // strip bottom-right convex
+    segments.push(`L ${W_box} ${H + 2 * r}`);                         // strip bottom edge
+    segments.push(`A ${r} ${r} 0 0 1 ${W_box - r} ${H + r}`);         // S-curve arc 1: CW, LEFT → UP
+    segments.push(`A ${r} ${r} 0 0 0 ${W_box - 2 * r} ${H}`);         // S-curve arc 2: CCW, UP → LEFT
+    segments.push(`L ${r} ${H}`);                                     // body bottom edge
   }
-  // Bottom edge to bottom-left corner
-  if (flatBottom) {
-    segments.push(`L ${left} ${bottom}`);
-  } else {
-    segments.push(`L ${left + r} ${bottom}`);
-    segments.push(`A ${r} ${r} 0 0 1 ${left} ${bottom - r}`);
-  }
-  // Left edge to top-left corner
-  if (flatTop) {
-    segments.push(`L ${left} ${top}`);
-  } else {
-    segments.push(`L ${left} ${top + r}`);
-    segments.push(`A ${r} ${r} 0 0 1 ${left + r} ${top}`);
-  }
+
+  // Body left side (always rounded)
+  segments.push(`A ${r} ${r} 0 0 1 0 ${H - r}`);  // body bottom-left convex
+  segments.push(`L 0 ${r}`);                       // body left edge
+  segments.push(`A ${r} ${r} 0 0 1 ${r} 0`);      // body top-left convex
   segments.push('Z');
+
   return segments.join(' ');
 }
 

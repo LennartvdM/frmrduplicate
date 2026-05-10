@@ -437,7 +437,6 @@ function SectionCard({
       ref={cardRef}
       className={`docs-sidebar-section${headingItem ? ' is-clickable' : ''}`}
       onClick={onCardClick}
-      style={{ outline: '1px solid lime' }} // DEBUG: container card box
     >
       {headingItem ? (
         <div

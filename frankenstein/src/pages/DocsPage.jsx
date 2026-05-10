@@ -71,7 +71,7 @@ export default function DocsPage() {
       <div className="docs-shell">
         <DocsSidebar sections={navSections} activeSlug={slug} />
 
-        <main className="docs-main" style={{ outline: '2px solid lime' }}>
+        <main className="docs-main">
           <article className="docs-article">
             {sectionCrumb && (
               <div className="docs-section-crumb">{sectionCrumb.toUpperCase()}</div>

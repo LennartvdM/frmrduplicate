@@ -196,15 +196,8 @@ export default function DocsSidebar({ sections, activeSlug }) {
   const item = reducedMotion ? itemVariantsReduced : itemVariants;
 
   return (
-    <aside
-      className="docs-sidebar"
-      ref={sidebarRef}
-      style={{ zIndex: 1000 }} // DEBUG: lift sidebar's stacking context above the article so SVG strips can render on top
-    >
-      <div
-        className="docs-sidebar-scroll"
-        style={{ overflow: 'visible' }} // DEBUG: stop clipping the strip overhangs that extend past the scroll container
-      >
+    <aside className="docs-sidebar" ref={sidebarRef}>
+      <div className="docs-sidebar-scroll">
         {sections.map((section, i) => {
           const indexItem = section.items[0];
           const indexMatchesSection =
@@ -444,7 +437,6 @@ function SectionCard({
       ref={cardRef}
       className={`docs-sidebar-section${headingItem ? ' is-clickable' : ''}`}
       onClick={onCardClick}
-      style={{ zIndex: 1000 }} // DEBUG: lift entire section above article so SVG is fully visible
     >
       {headingItem ? (
         <div
@@ -568,18 +560,14 @@ function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBotto
 
   const INACTIVE_FILL = 'rgba(255, 255, 255, 0.08)';
   const FOCUS_FILL = 'rgba(255, 255, 255, 0.16)';
-  // DEBUG: outline strokes painted red and lifted above the
-  // container's contents so the geometry is clearly visible against
-  // whatever sits inside the section card.
-  const INACTIVE_STROKE = 'red';
-  const FOCUS_STROKE = 'red';
+  const INACTIVE_STROKE = 'rgba(255, 255, 255, 0.95)';
+  const FOCUS_STROKE = 'rgba(255, 255, 255, 1)';
 
   const svgProps = {
     width: svgWidth,
     height: svgHeight,
     viewBox: `0 ${-RADIUS} ${svgWidth} ${svgHeight}`,
     'aria-hidden': true,
-    style: { zIndex: 10 }, // DEBUG: lift SVG above section content
   };
 
   return (

@@ -250,11 +250,17 @@
 /* SectionOutline SVGs cover the section's box plus a margin above
    and below for the focus group's outward right corners. Two are
    rendered per card; CSS picks which one is visible based on
-   focus-group state. */
+   focus-group state.
+   The -20 / -2 offset compensates for the section's 2 px transparent
+   border: `position: absolute` is from the parent's padding-box (inside
+   the border), but the path uses offsetWidth / offsetHeight which
+   include the border. Without this shift the path drew 2 px down and
+   2 px right of the section's actual outer edge — visible against the
+   debug yellow body as a misalignment. */
 .docs-section-outline {
   position: absolute;
-  top: -18px;
-  left: 0;
+  top: -20px;
+  left: -2px;
   pointer-events: none;
   overflow: visible;
   z-index: 1;

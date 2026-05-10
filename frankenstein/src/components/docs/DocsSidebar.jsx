@@ -513,43 +513,29 @@ function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBotto
   const RADIUS = 18;
   const STROKE_WIDTH = 2;
 
-  // Body inset from the box's right edge in the active state. Sized
-  // so the recess reads as a clear step rather than a near-flush
-  // dimple — the convex outer corner of the extension and the
-  // concave inner corner of the body sit 2*RADIUS apart in x with
-  // a visible horizontal ledge between them.
-  const BODY_INSET = 70;
+  // Width of the vertical strip that runs along the article's left
+  // edge "under" the article body. The strip extends past the
+  // section box top and bottom (see STRIP_OVERHANG); those overhang
+  // portions are normally hidden by the article but they're drawn
+  // cleanly so they still read as a coherent shape if a scroll
+  // briefly exposes them.
+  const W_STRIP = 32;
+  const W_body = Math.max(2 * RADIUS, width - W_STRIP);
 
-  // Smallest extension height that fits the convex+concave step.
-  const MIN_EXT = 2 * RADIUS;
+  // How far the strip extends past the section box at top and
+  // bottom. Big enough that the strip reads as a real bar with a
+  // rounded cap on each end rather than a flush stub.
+  const STRIP_OVERHANG = 50;
 
-  const W_ext = width;
-  const W_body = Math.max(2 * RADIUS, width - BODY_INSET);
-
-  // Resolve adaptive extension heights (measured from heading and
-  // last row). Clamp so the geometry stays valid even when the
-  // measurements aren't ready or the section is very short.
-  const fallbackExt = 3 * RADIUS;
-  const topH = Math.max(MIN_EXT, Math.min(height - MIN_EXT, topExt ?? fallbackExt));
-  const botH = Math.max(MIN_EXT, Math.min(height - topH, botExt ?? fallbackExt));
-
-  // Which extensions reach the article?
-  //   first section  → only TOP
-  //   last section   → only BOTTOM
-  //   middle section → BOTH (barbell)
-  const hasTop = !skipBottomOuter; // every section except the last
-  const hasBot = !skipTopOuter;    // every section except the first
+  // First section's strip terminates flat at the section's top
+  // (no outward rounding at the very top of the sidebar). Last
+  // section's strip terminates flat at the bottom. Middle sections
+  // get rounded caps on both ends.
+  const flatTop = skipTopOuter;
+  const flatBottom = skipBottomOuter;
 
   const inactivePath = roundedRectPath(width, height, RADIUS);
-
-  let activePath;
-  if (hasTop && hasBot) {
-    activePath = barbellPath(W_ext, W_body, height, topH, botH, RADIUS);
-  } else if (hasTop) {
-    activePath = topExtensionOnlyPath(W_ext, W_body, height, topH, RADIUS);
-  } else {
-    activePath = bottomExtensionOnlyPath(W_ext, W_body, height, botH, RADIUS);
-  }
+  const activePath = sidewaysTPath(width, W_body, height, STRIP_OVERHANG, RADIUS, flatTop, flatBottom);
 
   // SVG element is positioned by CSS at `top: -RADIUS` (existing
   // infrastructure for older bump geometries that needed headroom
@@ -626,73 +612,67 @@ function roundedRectPath(w, h, r) {
   ].join(' ');
 }
 
-// Active middle section — extensions at top AND bottom, recessed
-// body band in the middle. Going CW from the top-left corner. Each
-// step has an L command for the horizontal ledge between the
-// extension's convex outer corner and the body's concave inner
-// corner — without it, SVG asks the browser to fit one radius-r arc
-// across a chord wider than 2r and we get fudged geometry.
-function barbellPath(W_ext, W_body, h, topH, botH, r) {
-  return [
-    `M ${r} 0`,
-    `L ${W_ext - r} 0`,
-    `A ${r} ${r} 0 0 1 ${W_ext} ${r}`,                  // top-right convex
-    `L ${W_ext} ${topH - r}`,
-    `A ${r} ${r} 0 0 1 ${W_ext - r} ${topH}`,           // bottom-right of top ext (DOWN→LEFT)
-    `L ${W_body + r} ${topH}`,                          // ledge of top step
-    `A ${r} ${r} 0 0 0 ${W_body} ${topH + r}`,          // inner concave step into body (LEFT→DOWN)
-    `L ${W_body} ${h - botH - r}`,
-    `A ${r} ${r} 0 0 0 ${W_body + r} ${h - botH}`,      // inner concave step out of body (DOWN→RIGHT)
-    `L ${W_ext - r} ${h - botH}`,                       // ledge of bottom step
-    `A ${r} ${r} 0 0 1 ${W_ext} ${h - botH + r}`,       // top-right of bottom ext (RIGHT→DOWN)
-    `L ${W_ext} ${h - r}`,
-    `A ${r} ${r} 0 0 1 ${W_ext - r} ${h}`,              // bottom-right convex
-    `L ${r} ${h}`,
-    `A ${r} ${r} 0 0 1 0 ${h - r}`,                     // bottom-left convex
-    `L 0 ${r}`,
-    `A ${r} ${r} 0 0 1 ${r} 0`,                         // top-left convex
-    'Z',
-  ].join(' ');
-}
+// Active section as a sideways T (⊣):
+//   - horizontal body extending LEFT from the middle of a thin
+//     vertical strip on the right
+//   - strip runs the full section height plus an overhang at top
+//     and bottom that lives "under" the article body
+//   - body↔strip junctions are CONCAVE fillets (the only inward
+//     corners); every other corner is OUTWARD-rounded
+//   - first section keeps the strip's top FLAT (no rounding at the
+//     very top of the sidebar); last section keeps the strip's
+//     bottom flat
+//
+// Going clockwise starting at the body's top-left corner.
+function sidewaysTPath(W, W_body, H, O, R, flatTop, flatBottom) {
+  const top_y = -O;
+  const bot_y = H + O;
 
-// Active first section — only the TOP extension reaches the article;
-// below it the body sits at the recessed width through to the bottom.
-function topExtensionOnlyPath(W_ext, W_body, h, topH, r) {
-  return [
-    `M ${r} 0`,
-    `L ${W_ext - r} 0`,
-    `A ${r} ${r} 0 0 1 ${W_ext} ${r}`,                  // top-right convex
-    `L ${W_ext} ${topH - r}`,
-    `A ${r} ${r} 0 0 1 ${W_ext - r} ${topH}`,           // bottom-right of top ext
-    `L ${W_body + r} ${topH}`,                          // ledge of step
-    `A ${r} ${r} 0 0 0 ${W_body} ${topH + r}`,          // inner concave step into body
-    `L ${W_body} ${h - r}`,
-    `A ${r} ${r} 0 0 1 ${W_body - r} ${h}`,             // bottom-right of body convex
-    `L ${r} ${h}`,
-    `A ${r} ${r} 0 0 1 0 ${h - r}`,                     // bottom-left convex
-    `L 0 ${r}`,
-    `A ${r} ${r} 0 0 1 ${r} 0`,                         // top-left convex
-    'Z',
-  ].join(' ');
-}
+  const stripTop = flatTop
+    ? [
+        // Strip's left edge above body, straight up to a sharp corner
+        `L ${W_body} ${top_y}`,
+        // Flat top edge across to the article side
+        `L ${W} ${top_y}`,
+      ]
+    : [
+        `L ${W_body} ${top_y + R}`,                    // strip's left edge above body
+        `A ${R} ${R} 0 0 1 ${W_body + R} ${top_y}`,    // strip top-left convex
+        `L ${W - R} ${top_y}`,                         // strip top edge
+        `A ${R} ${R} 0 0 1 ${W} ${top_y + R}`,         // strip top-right convex
+      ];
 
-// Active last section — only the BOTTOM extension reaches the
-// article; above it the body sits at the recessed width.
-function bottomExtensionOnlyPath(W_ext, W_body, h, botH, r) {
+  const stripBottom = flatBottom
+    ? [
+        // Strip's right edge straight down to flat bottom
+        `L ${W} ${bot_y}`,
+        // Flat bottom edge back across
+        `L ${W_body} ${bot_y}`,
+      ]
+    : [
+        `L ${W} ${bot_y - R}`,                         // strip right edge
+        `A ${R} ${R} 0 0 1 ${W - R} ${bot_y}`,         // strip bottom-right convex
+        `L ${W_body + R} ${bot_y}`,                    // strip bottom edge
+        `A ${R} ${R} 0 0 1 ${W_body} ${bot_y - R}`,    // strip bottom-left convex
+      ];
+
+  // For flatTop, we exit at (W, top_y) heading DOWN; the next
+  // segment is the strip's right edge picked up by stripBottom.
+  // For rounded top, we exit at (W, top_y + R) heading DOWN.
+  // Either way, stripBottom continues from where stripTop left off
+  // with an L to the right edge endpoint.
   return [
-    `M ${r} 0`,
-    `L ${W_body - r} 0`,
-    `A ${r} ${r} 0 0 1 ${W_body} ${r}`,                 // top-right of body convex
-    `L ${W_body} ${h - botH - r}`,
-    `A ${r} ${r} 0 0 0 ${W_body + r} ${h - botH}`,      // inner concave step out of body
-    `L ${W_ext - r} ${h - botH}`,                       // ledge of step
-    `A ${r} ${r} 0 0 1 ${W_ext} ${h - botH + r}`,       // top-right of bottom ext
-    `L ${W_ext} ${h - r}`,
-    `A ${r} ${r} 0 0 1 ${W_ext - r} ${h}`,              // bottom-right convex
-    `L ${r} ${h}`,
-    `A ${r} ${r} 0 0 1 0 ${h - r}`,                     // bottom-left convex
-    `L 0 ${r}`,
-    `A ${r} ${r} 0 0 1 ${r} 0`,                         // top-left convex
+    `M ${R} 0`,
+    `L ${W_body - R} 0`,                               // body top edge
+    `A ${R} ${R} 0 0 0 ${W_body} ${-R}`,               // concave: body↔strip junction (top side)
+    ...stripTop,
+    ...stripBottom,
+    `L ${W_body} ${H + R}`,                            // strip's left edge below body
+    `A ${R} ${R} 0 0 0 ${W_body - R} ${H}`,            // concave: body↔strip junction (bottom side)
+    `L ${R} ${H}`,                                     // body bottom edge
+    `A ${R} ${R} 0 0 1 0 ${H - R}`,                    // body bottom-left convex
+    `L 0 ${R}`,                                        // body left edge
+    `A ${R} ${R} 0 0 1 ${R} 0`,                        // body top-left convex
     'Z',
   ].join(' ');
 }

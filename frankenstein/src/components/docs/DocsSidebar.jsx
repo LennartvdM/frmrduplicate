@@ -204,7 +204,14 @@ export default function DocsSidebar({ sections, activeSlug }) {
       // cream/article instead of getting buried behind it.
       style={{ zIndex: 100 }}
     >
-      <div className="docs-sidebar-scroll">
+      <div
+        className="docs-sidebar-scroll"
+        // Sidebar-scroll's CSS overflow: auto was clipping the active row's
+        // drop shadow on the right. Page-level vertical scrolling is handled
+        // by the outer `.docs-scroll`, so removing this overflow doesn't lose
+        // functionality — sidebar content just inherits the page's scroll.
+        style={{ overflow: 'visible' }}
+      >
         {sections.map((section, i) => {
           const indexItem = section.items[0];
           const indexMatchesSection =

@@ -310,7 +310,7 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
               initial="closed"
               animate="open"
               exit="closed"
-              style={{ overflow: 'hidden', paddingLeft: '10%' }}
+              style={{ overflow: 'hidden', paddingLeft: '4%' }}
             >
               <NavList
                 items={item.children}

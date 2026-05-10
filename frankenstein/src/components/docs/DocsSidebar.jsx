@@ -661,8 +661,13 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
 }
 
 // Walk every section's items and collect the slugs of foldouts whose
-// subtree contains the active slug. Returns slugs in root-to-leaf order
-// so passing them to setUserToggle in iteration order is harmless.
+// subtree contains the active slug. Includes the active slug itself
+// if it's a foldout (some pages are both a navigable destination AND
+// a foldout — without this, clicking such a row would navigate and
+// open the foldout in one render, then the activeAncestors reset
+// effect would immediately close it again, requiring a second click
+// to re-open). Returns slugs in root-to-leaf order so passing them
+// to setUserToggle in iteration order is harmless.
 function collectActiveAncestors(sections, activeSlug) {
   const out = [];
   if (!activeSlug) return out;
@@ -670,6 +675,9 @@ function collectActiveAncestors(sections, activeSlug) {
     for (const item of items) {
       if (item.slug === activeSlug) {
         for (const slug of trail) out.push(slug);
+        if (item.children && item.children.length > 0) {
+          out.push(item.slug);
+        }
         return true;
       }
       if (item.children && item.children.length > 0) {

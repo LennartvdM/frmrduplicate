@@ -513,12 +513,12 @@ function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBotto
   const RADIUS = 18;
   const STROKE_WIDTH = 2;
 
-  // Body inset from the box's right edge in the active state.
-  // The active box grows by `--docs-moat-width - --docs-outline-width`
-  // = 32 - 6 = 26px. Insetting by 2*RADIUS = 36 keeps the corner
-  // geometry clean (R_outer + R_inner = 2R = 36 leaves a 0px ledge
-  // between convex-out and concave-in arcs at the step).
-  const BODY_INSET = 2 * RADIUS;
+  // Body inset from the box's right edge in the active state. Sized
+  // so the recess reads as a clear step rather than a near-flush
+  // dimple — the convex outer corner of the extension and the
+  // concave inner corner of the body sit 2*RADIUS apart in x with
+  // a visible horizontal ledge between them.
+  const BODY_INSET = 70;
 
   // Smallest extension height that fits the convex+concave step.
   const MIN_EXT = 2 * RADIUS;
@@ -551,10 +551,14 @@ function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBotto
     activePath = bottomExtensionOnlyPath(W_ext, W_body, height, botH, RADIUS);
   }
 
-  // SVG covers the section box exactly — both inactive and active
-  // paths stay within (0,0)..(width,height).
+  // SVG element is positioned by CSS at `top: -RADIUS` (existing
+  // infrastructure for older bump geometries that needed headroom
+  // above the section box). The viewBox here cancels that offset so
+  // user-space y=0 maps back to parent y=0 — without this, the
+  // outline renders RADIUS pixels too high and the top stroke
+  // appears clipped by the sidebar's scroll container.
   const svgWidth = width;
-  const svgHeight = height;
+  const svgHeight = height + 2 * RADIUS;
 
   const INACTIVE_FILL = 'rgba(255, 255, 255, 0.08)';
   const FOCUS_FILL = 'rgba(255, 255, 255, 0.16)';
@@ -564,7 +568,7 @@ function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBotto
   const svgProps = {
     width: svgWidth,
     height: svgHeight,
-    viewBox: `0 0 ${svgWidth} ${svgHeight}`,
+    viewBox: `0 ${-RADIUS} ${svgWidth} ${svgHeight}`,
     'aria-hidden': true,
   };
 
@@ -619,7 +623,11 @@ function roundedRectPath(w, h, r) {
 }
 
 // Active middle section — extensions at top AND bottom, recessed
-// body band in the middle. Going CW from the top-left corner.
+// body band in the middle. Going CW from the top-left corner. Each
+// step has an L command for the horizontal ledge between the
+// extension's convex outer corner and the body's concave inner
+// corner — without it, SVG asks the browser to fit one radius-r arc
+// across a chord wider than 2r and we get fudged geometry.
 function barbellPath(W_ext, W_body, h, topH, botH, r) {
   return [
     `M ${r} 0`,
@@ -627,9 +635,11 @@ function barbellPath(W_ext, W_body, h, topH, botH, r) {
     `A ${r} ${r} 0 0 1 ${W_ext} ${r}`,                  // top-right convex
     `L ${W_ext} ${topH - r}`,
     `A ${r} ${r} 0 0 1 ${W_ext - r} ${topH}`,           // bottom-right of top ext (DOWN→LEFT)
+    `L ${W_body + r} ${topH}`,                          // ledge of top step
     `A ${r} ${r} 0 0 0 ${W_body} ${topH + r}`,          // inner concave step into body (LEFT→DOWN)
     `L ${W_body} ${h - botH - r}`,
     `A ${r} ${r} 0 0 0 ${W_body + r} ${h - botH}`,      // inner concave step out of body (DOWN→RIGHT)
+    `L ${W_ext - r} ${h - botH}`,                       // ledge of bottom step
     `A ${r} ${r} 0 0 1 ${W_ext} ${h - botH + r}`,       // top-right of bottom ext (RIGHT→DOWN)
     `L ${W_ext} ${h - r}`,
     `A ${r} ${r} 0 0 1 ${W_ext - r} ${h}`,              // bottom-right convex
@@ -650,6 +660,7 @@ function topExtensionOnlyPath(W_ext, W_body, h, topH, r) {
     `A ${r} ${r} 0 0 1 ${W_ext} ${r}`,                  // top-right convex
     `L ${W_ext} ${topH - r}`,
     `A ${r} ${r} 0 0 1 ${W_ext - r} ${topH}`,           // bottom-right of top ext
+    `L ${W_body + r} ${topH}`,                          // ledge of step
     `A ${r} ${r} 0 0 0 ${W_body} ${topH + r}`,          // inner concave step into body
     `L ${W_body} ${h - r}`,
     `A ${r} ${r} 0 0 1 ${W_body - r} ${h}`,             // bottom-right of body convex
@@ -670,6 +681,7 @@ function bottomExtensionOnlyPath(W_ext, W_body, h, botH, r) {
     `A ${r} ${r} 0 0 1 ${W_body} ${r}`,                 // top-right of body convex
     `L ${W_body} ${h - botH - r}`,
     `A ${r} ${r} 0 0 0 ${W_body + r} ${h - botH}`,      // inner concave step out of body
+    `L ${W_ext - r} ${h - botH}`,                       // ledge of step
     `A ${r} ${r} 0 0 1 ${W_ext} ${h - botH + r}`,       // top-right of bottom ext
     `L ${W_ext} ${h - r}`,
     `A ${r} ${r} 0 0 1 ${W_ext - r} ${h}`,              // bottom-right convex

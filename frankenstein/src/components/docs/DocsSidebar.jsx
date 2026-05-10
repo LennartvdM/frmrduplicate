@@ -513,30 +513,37 @@ function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBotto
   const RADIUS = 18;
   const STROKE_WIDTH = 2;
 
-  // Width of the vertical strip that runs along the article's left
-  // edge "under" the article body. The strip extends past the
-  // section box top and bottom (see STRIP_OVERHANG); those overhang
-  // portions are normally hidden by the article but they're drawn
-  // cleanly so they still read as a coherent shape if a scroll
-  // briefly exposes them. Must be ≥ 2*RADIUS so the strip's rounded
-  // top and bottom corners have room to meet without overlapping.
+  // Active section is two SEPARATE rounded-rect paths, both with
+  // all convex outer corners — no concave fillets:
+  //   1. BODY  — a rounded rect at the section box; its right
+  //      corners curve outward into the card area and disappear
+  //      behind the cream + article body.
+  //   2. STRIP — a thinner rounded rect positioned to the right of
+  //      the body, extending past the section box top and bottom
+  //      by STRIP_OVERHANG. Lives entirely behind the card; only
+  //      surfaces if a scroll briefly exposes it.
+  // Drawn as two paths means each shape keeps its own all-convex
+  // perimeter; we don't have to fudge a union with inward fillets.
   const W_STRIP = 2 * RADIUS;
-  const W_body = Math.max(2 * RADIUS, width - W_STRIP);
-
-  // How far the strip extends past the section box at top and
-  // bottom. Big enough that the strip reads as a real bar with a
-  // rounded cap on each end rather than a flush stub.
   const STRIP_OVERHANG = 50;
 
-  // First section's strip terminates flat at the section's top
-  // (no outward rounding at the very top of the sidebar). Last
-  // section's strip terminates flat at the bottom. Middle sections
-  // get rounded caps on both ends.
+  // First section: strip's top stays flat (no outward rounding at
+  // the very top of the sidebar). Last section: bottom flat.
   const flatTop = skipTopOuter;
   const flatBottom = skipBottomOuter;
 
   const inactivePath = roundedRectPath(width, height, RADIUS);
-  const activePath = sidewaysTPath(width, W_body, height, STRIP_OVERHANG, RADIUS, flatTop, flatBottom);
+
+  const bodyPath = roundedRectPath(width, height, RADIUS);
+  const stripPath = stripRectPath(
+    width,
+    width + W_STRIP,
+    -STRIP_OVERHANG,
+    height + STRIP_OVERHANG,
+    RADIUS,
+    flatTop,
+    flatBottom,
+  );
 
   // SVG element is positioned by CSS at `top: -RADIUS` (existing
   // infrastructure for older bump geometries that needed headroom
@@ -544,7 +551,12 @@ function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBotto
   // user-space y=0 maps back to parent y=0 — without this, the
   // outline renders RADIUS pixels too high and the top stroke
   // appears clipped by the sidebar's scroll container.
-  const svgWidth = width;
+  // SVG sized to comfortably hold both the body (within the section
+  // box) and the strip (which extends past the box on the right by
+  // W_STRIP and above/below by STRIP_OVERHANG). The viewBox y-min of
+  // -RADIUS cancels the existing CSS top: -RADIUS positioning so
+  // user-space y=0 maps back to the section box's actual top.
+  const svgWidth = width + W_STRIP;
   const svgHeight = height + 2 * RADIUS;
 
   const INACTIVE_FILL = 'rgba(255, 255, 255, 0.08)';
@@ -580,14 +592,29 @@ function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBotto
         />
       </svg>
       <svg className="docs-section-outline docs-section-outline-focus" {...svgProps}>
+        {/* Strip first so the body sits in front of it; their fills
+            simply union and the body covers the strip's left-edge
+            stroke where they overlap horizontally. */}
         <path
-          d={activePath}
+          d={stripPath}
           fill={FOCUS_FILL}
           stroke={FOCUS_FILL}
           strokeWidth={STROKE_WIDTH}
         />
         <path
-          d={activePath}
+          d={stripPath}
+          stroke={FOCUS_STROKE}
+          strokeWidth={STROKE_WIDTH}
+          fill="none"
+        />
+        <path
+          d={bodyPath}
+          fill={FOCUS_FILL}
+          stroke={FOCUS_FILL}
+          strokeWidth={STROKE_WIDTH}
+        />
+        <path
+          d={bodyPath}
           stroke={FOCUS_STROKE}
           strokeWidth={STROKE_WIDTH}
           fill="none"
@@ -613,69 +640,44 @@ function roundedRectPath(w, h, r) {
   ].join(' ');
 }
 
-// Active section as a sideways T (⊣):
-//   - horizontal body extending LEFT from the middle of a thin
-//     vertical strip on the right
-//   - strip runs the full section height plus an overhang at top
-//     and bottom that lives "under" the article body
-//   - body↔strip junctions are CONCAVE fillets (the only inward
-//     corners); every other corner is OUTWARD-rounded
-//   - first section keeps the strip's top FLAT (no rounding at the
-//     very top of the sidebar); last section keeps the strip's
-//     bottom flat
-//
-// Going clockwise starting at the body's top-left corner.
-function sidewaysTPath(W, W_body, H, O, R, flatTop, flatBottom) {
-  const top_y = -O;
-  const bot_y = H + O;
-
-  const stripTop = flatTop
-    ? [
-        // Strip's left edge above body, straight up to a sharp corner
-        `L ${W_body} ${top_y}`,
-        // Flat top edge across to the article side
-        `L ${W} ${top_y}`,
-      ]
-    : [
-        `L ${W_body} ${top_y + R}`,                    // strip's left edge above body
-        `A ${R} ${R} 0 0 1 ${W_body + R} ${top_y}`,    // strip top-left convex
-        `L ${W - R} ${top_y}`,                         // strip top edge
-        `A ${R} ${R} 0 0 1 ${W} ${top_y + R}`,         // strip top-right convex
-      ];
-
-  const stripBottom = flatBottom
-    ? [
-        // Strip's right edge straight down to flat bottom
-        `L ${W} ${bot_y}`,
-        // Flat bottom edge back across
-        `L ${W_body} ${bot_y}`,
-      ]
-    : [
-        `L ${W} ${bot_y - R}`,                         // strip right edge
-        `A ${R} ${R} 0 0 1 ${W - R} ${bot_y}`,         // strip bottom-right convex
-        `L ${W_body + R} ${bot_y}`,                    // strip bottom edge
-        `A ${R} ${R} 0 0 1 ${W_body} ${bot_y - R}`,    // strip bottom-left convex
-      ];
-
-  // For flatTop, we exit at (W, top_y) heading DOWN; the next
-  // segment is the strip's right edge picked up by stripBottom.
-  // For rounded top, we exit at (W, top_y + R) heading DOWN.
-  // Either way, stripBottom continues from where stripTop left off
-  // with an L to the right edge endpoint.
-  return [
-    `M ${R} 0`,
-    `L ${W_body - R} 0`,                               // body top edge
-    `A ${R} ${R} 0 0 0 ${W_body} ${-R}`,               // concave: body↔strip junction (top side)
-    ...stripTop,
-    ...stripBottom,
-    `L ${W_body} ${H + R}`,                            // strip's left edge below body
-    `A ${R} ${R} 0 0 0 ${W_body - R} ${H}`,            // concave: body↔strip junction (bottom side)
-    `L ${R} ${H}`,                                     // body bottom edge
-    `A ${R} ${R} 0 0 1 0 ${H - R}`,                    // body bottom-left convex
-    `L 0 ${R}`,                                        // body left edge
-    `A ${R} ${R} 0 0 1 ${R} 0`,                        // body top-left convex
-    'Z',
-  ].join(' ');
+// Strip rectangle for the active section's hidden vertical bar.
+// Drawn as a self-contained closed path; rendered behind the body.
+// All four corners are convex outward, except top corners are flat
+// when flatTop=true and bottom corners are flat when flatBottom=true
+// (so the strip terminates flush with the sidebar's top/bottom edge
+// rather than rounding outward into nothing).
+function stripRectPath(left, right, top, bottom, r, flatTop, flatBottom) {
+  const segments = [`M ${left + (flatTop ? 0 : r)} ${top}`];
+  // Top edge to top-right corner
+  if (flatTop) {
+    segments.push(`L ${right} ${top}`);
+  } else {
+    segments.push(`L ${right - r} ${top}`);
+    segments.push(`A ${r} ${r} 0 0 1 ${right} ${top + r}`);
+  }
+  // Right edge to bottom-right corner
+  if (flatBottom) {
+    segments.push(`L ${right} ${bottom}`);
+  } else {
+    segments.push(`L ${right} ${bottom - r}`);
+    segments.push(`A ${r} ${r} 0 0 1 ${right - r} ${bottom}`);
+  }
+  // Bottom edge to bottom-left corner
+  if (flatBottom) {
+    segments.push(`L ${left} ${bottom}`);
+  } else {
+    segments.push(`L ${left + r} ${bottom}`);
+    segments.push(`A ${r} ${r} 0 0 1 ${left} ${bottom - r}`);
+  }
+  // Left edge to top-left corner
+  if (flatTop) {
+    segments.push(`L ${left} ${top}`);
+  } else {
+    segments.push(`L ${left} ${top + r}`);
+    segments.push(`A ${r} ${r} 0 0 1 ${left + r} ${top}`);
+  }
+  segments.push('Z');
+  return segments.join(' ');
 }
 
 // Walk every section's items and collect the slugs of foldouts whose

@@ -101,6 +101,15 @@
 }
 
 .docs-main {
+  position: relative;
+  /* Article card sits on top of the sidebar in the stacking order so
+     its cream surface masks any sidebar paint that overlaps it. The
+     sidebar's section outlines can extend slightly past the section
+     box (tuck-overhang on first / last cards, outward bumps on
+     middle cards) without us having to precisely trace the article's
+     rounded corner — wherever they overlap the article they're
+     simply covered. */
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1fr) var(--docs-rail-width);
   gap: 48px;
@@ -155,10 +164,13 @@
      article's visible top, satisfying the "flush" precondition the
      first section's skipTopOuter logic was built around. */
   margin-top: calc(-1 * var(--docs-outline-width));
-  /* Lifts strokes (rendered as pseudo-elements on the sections inside)
-     above .docs-main's outward box-shadow ring so they don't get
-     covered when they reach the article card's cream halo. */
-  z-index: 1;
+  /* Sidebar sits BEHIND .docs-main so the article's cream surface
+     masks any sidebar paint that runs past the section box (the
+     focus card's tuck-overhang on its right edge for first / last
+     sections, the bumps on middle sections). We don't have to
+     trace the article's rounded corner — the article paints over
+     anything that intrudes. */
+  z-index: 0;
 }
 /* The scroll container's clip box extends 32px past its visual right
    edge into the moat. CSS spec forces overflow-x to clip whenever

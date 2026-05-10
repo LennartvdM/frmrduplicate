@@ -496,12 +496,14 @@ function SectionCard({
 function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   const RADIUS = 18;
   const STROKE_WIDTH = 2;
-  // The article body has border-radius 16 plus a 6 px box-shadow
-  // cream ring, so the visible cream surface effectively rounds at
-  // radius 22. For first / last sections, the focus shape wraps
-  // around this cream curve so the section's color reads as
-  // continuous through the article corner.
-  const ARTICLE_OUTER_RADIUS = 22;
+  // How far the section's top / bottom edge extends past the
+  // section's right edge for first / last sections, so its stroke
+  // tucks under the article's cream surface (which is z-indexed
+  // above the sidebar). The card masks the part that overlaps it,
+  // and any visible spillover (e.g. into the article's corner
+  // triangle) reads as the section continuing under the card
+  // rather than abruptly stopping mid-air.
+  const TUCK_OVERHANG = STROKE_WIDTH;
 
   // INACTIVE — every section is the same rounded rectangle. Single
   // path, used for both fill and stroke so they trace the exact
@@ -520,51 +522,39 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   ].join(' ');
 
   // FOCUS — single closed path traced clockwise from the top-left
-  // rounded corner. Both fill and stroke come from the same
-  // geometry: the fill uses this path as-is, and the stroke uses
-  // the same path with one M (move) jump on the right side so the
-  // bridge edge has no visible stroke.
-  //
-  // Right side handles three cases per corner:
-  //   - skipTopOuter (first section): top edge runs to (width, 0),
-  //     extends 22 px past the section, then arcs DOWN-LEFT along
-  //     the cream curve back to (width, ARTICLE_OUTER_RADIUS). The
-  //     wedge between the section's right edge and the cream curve
-  //     gets filled — the section visually wraps around the
-  //     article's top-left rounded corner.
-  //   - skipBottomOuter (last section): mirror of the above. The
-  //     bottom piece arcs from (width, height - ARTICLE_OUTER_RADIUS)
-  //     down-right along the cream curve to (width + 22, height),
-  //     then continues left along the section's bottom — extending
-  //     22 px past the section's right edge.
+  // rounded corner. Right side handles three cases:
+  //   - skipTopOuter (first section): top edge runs straight to
+  //     (width + TUCK_OVERHANG, 0). The extension tucks under the
+  //     article card, which is z-indexed above the sidebar and
+  //     masks anything that overlaps it.
+  //   - skipBottomOuter (last section): mirror at the bottom edge.
   //   - otherwise: outward bump (arc curving 18 px past the box).
+  // The article's rounded corner is no longer traced explicitly —
+  // we let the article's own cream surface define that boundary
+  // by sitting on top.
 
   const focusTopPiece = skipTopOuter
-    ? [
-        `L ${width} 0`,
-        `L ${width + ARTICLE_OUTER_RADIUS} 0`,
-        `A ${ARTICLE_OUTER_RADIUS} ${ARTICLE_OUTER_RADIUS} 0 0 0 ${width} ${ARTICLE_OUTER_RADIUS}`,
-      ]
+    ? [`L ${width + TUCK_OVERHANG} 0`]
     : [
         `L ${width - RADIUS} 0`,
         `A ${RADIUS} ${RADIUS} 0 0 0 ${width} ${-RADIUS}`,
       ];
 
   const focusBottomPiece = skipBottomOuter
-    ? [
-        `A ${ARTICLE_OUTER_RADIUS} ${ARTICLE_OUTER_RADIUS} 0 0 0 ${width + ARTICLE_OUTER_RADIUS} ${height}`,
-        `L ${RADIUS} ${height}`,
-      ]
+    ? [`L ${RADIUS} ${height}`]
     : [
         `A ${RADIUS} ${RADIUS} 0 0 0 ${width - RADIUS} ${height}`,
         `L ${RADIUS} ${height}`,
       ];
 
   // Where the right edge starts (= where the top piece ends) and
-  // where it stops (= where the bottom piece starts).
-  const bottomPieceStartY = skipBottomOuter
-    ? height - ARTICLE_OUTER_RADIUS
-    : height + RADIUS;
+  // where it stops (= where the bottom piece starts). For first /
+  // last sections, the right edge is also tucked under the card by
+  // TUCK_OVERHANG so the stroke doesn't visibly stop mid-air.
+  const topPieceEndY = skipTopOuter ? 0 : -RADIUS;
+  const topPieceEndX = skipTopOuter ? width + TUCK_OVERHANG : width;
+  const bottomPieceStartY = skipBottomOuter ? height : height + RADIUS;
+  const bottomPieceStartX = skipBottomOuter ? width + TUCK_OVERHANG : width;
 
   const focusLeftAndTopRound = [
     `A ${RADIUS} ${RADIUS} 0 0 1 0 ${height - RADIUS}`,
@@ -578,30 +568,27 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   const focusFillPath = [
     `M ${RADIUS} 0`,
     ...focusTopPiece,
-    `L ${width} ${bottomPieceStartY}`,
+    `L ${bottomPieceStartX} ${bottomPieceStartY}`,
     ...focusBottomPiece,
     ...focusLeftAndTopRound,
     'Z',
   ].join(' ');
 
   // Stroke: same shape, but the right side is an M jump so the
-  // stroke breaks at the bridge. The cream curve and the bottom
-  // edge extension (when first / last) are PART of this stroke —
-  // no separate extension path needed.
+  // stroke breaks at the bridge.
   const focusStrokePath = [
     `M ${RADIUS} 0`,
     ...focusTopPiece,
-    `M ${width} ${bottomPieceStartY}`,
+    `M ${bottomPieceStartX} ${bottomPieceStartY}`,
     ...focusBottomPiece,
     ...focusLeftAndTopRound,
   ].join(' ');
 
   // SVG element covers the section + RADIUS px above/below for the
-  // outward bump arcs (middle sections in focus state), and
-  // ARTICLE_OUTER_RADIUS on the right for the cream-corner wrap
-  // (first / last sections in focus state).
+  // outward bump arcs and TUCK_OVERHANG on the right for the
+  // first / last section's tuck-under extension.
   const svgHeight = height + 2 * RADIUS;
-  const svgWidth = width + ARTICLE_OUTER_RADIUS;
+  const svgWidth = width + TUCK_OVERHANG;
 
   const INACTIVE_FILL = 'rgba(255, 255, 255, 0.08)';
   const FOCUS_FILL = 'rgba(255, 255, 255, 0.16)';

@@ -198,7 +198,15 @@ export default function DocsSidebar({ sections, activeSlug }) {
 
   return (
     <aside className="docs-sidebar" ref={sidebarRef}>
-      <div className="docs-sidebar-scroll">
+      <div
+        className="docs-sidebar-scroll"
+        // CSS sets overflow: auto here, which clips the section outline's
+        // SVG path where it extends past the section box (strip + S-curves
+        // sit at x > section.right and y < 0 / y > section.height). Override
+        // to visible so those curves render fully. Page-level vertical
+        // scrolling continues to work via the outer `.docs-scroll`.
+        style={{ overflow: 'visible' }}
+      >
         {sections.map((section, i) => {
           const indexItem = section.items[0];
           const indexMatchesSection =

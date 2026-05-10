@@ -437,6 +437,7 @@ function SectionCard({
       ref={cardRef}
       className={`docs-sidebar-section${headingItem ? ' is-clickable' : ''}`}
       onClick={onCardClick}
+      style={{ outline: '1px solid lime' }} // DEBUG: container card box
     >
       {headingItem ? (
         <div
@@ -562,14 +563,18 @@ function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBotto
 
   const INACTIVE_FILL = 'rgba(255, 255, 255, 0.08)';
   const FOCUS_FILL = 'rgba(255, 255, 255, 0.16)';
-  const INACTIVE_STROKE = 'rgba(255, 255, 255, 0.95)';
-  const FOCUS_STROKE = 'rgba(255, 255, 255, 1)';
+  // DEBUG: outline strokes painted red and lifted above the
+  // container's contents so the geometry is clearly visible against
+  // whatever sits inside the section card.
+  const INACTIVE_STROKE = 'red';
+  const FOCUS_STROKE = 'red';
 
   const svgProps = {
     width: svgWidth,
     height: svgHeight,
     viewBox: `0 ${-RADIUS} ${svgWidth} ${svgHeight}`,
     'aria-hidden': true,
+    style: { zIndex: 10 }, // DEBUG: lift SVG above section content
   };
 
   return (

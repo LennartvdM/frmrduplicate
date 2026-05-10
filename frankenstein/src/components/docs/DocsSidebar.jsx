@@ -540,19 +540,30 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   // tucked portion without any of the visible end-cap fudging that
   // CSS z-index masking left behind.
 
+  // For the bump's stroke to lie ENTIRELY past the card boundary —
+  // not just half past it — the bump arc has to end past the section's
+  // right edge by at least half the stroke width. So the bump becomes
+  // a slightly elongated ellipse arc (rx = R + STROKE_WIDTH/2)
+  // ending at (width + STROKE_WIDTH/2, ±R) instead of a quarter
+  // circle ending at (width, ±R). The visible portion (x < width)
+  // is a clean curve cut off at the boundary, with the stroke's
+  // perpendicular extension fully inside the masked area.
+  const BUMP_OVERSHOOT = STROKE_WIDTH / 2;
+  const BUMP_RX = RADIUS + BUMP_OVERSHOOT;
+
   const focusTopPiece = skipTopOuter
     ? [`L ${width + TUCK_OVERHANG} 0`]
     : [
         `L ${width - RADIUS} 0`,
-        `A ${RADIUS} ${RADIUS} 0 0 0 ${width} ${-RADIUS}`,
+        `A ${BUMP_RX} ${RADIUS} 0 0 0 ${width + BUMP_OVERSHOOT} ${-RADIUS}`,
         `L ${width + TUCK_OVERHANG} ${-RADIUS}`,
       ];
 
   const focusBottomPiece = skipBottomOuter
     ? [`L ${RADIUS} ${height}`]
     : [
-        `L ${width} ${height + RADIUS}`,
-        `A ${RADIUS} ${RADIUS} 0 0 0 ${width - RADIUS} ${height}`,
+        `L ${width + BUMP_OVERSHOOT} ${height + RADIUS}`,
+        `A ${BUMP_RX} ${RADIUS} 0 0 0 ${width - RADIUS} ${height}`,
         `L ${RADIUS} ${height}`,
       ];
 
@@ -588,29 +599,31 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
     ...focusLeftAndTopRound,
   ].join(' ');
 
-  // SVG mask carved from the article's exact shape — solving the
-  // "tuck under the card" problem at the SVG level instead of CSS
-  // z-index. The mask is white everywhere by default; the article's
-  // painted shape (in section's local coords) is filled black, so
-  // anything in the focus group rendered inside that shape is
-  // hidden.
+  // Two SVG masks because fill and stroke want different masking.
   //
-  // Per first/middle/last status:
-  //   - first section: cream's rounded TOP-LEFT corner sits within
-  //     the SVG's viewbox, so the mask carves a rounded-corner shape
-  //     starting at the cream curve's apex (width + 22, 0) running
-  //     right and down.
-  //   - last section: mirror at the bottom — rounded BOTTOM-LEFT
-  //     corner.
-  //   - middle: cream's straight left edge at x = width is in range,
-  //     and both rounded corners are far outside the section's y
-  //     range, so the mask is just a half-plane at x ≥ width.
+  //   maskFillPath: the cream's actual painted shape, with rounded
+  //     corners for first/last sections. Where this is black (=
+  //     hidden), cream is painted. Outside it (e.g. the corner
+  //     triangle above cream's curve, or the moat above cream's
+  //     top) the fill is visible — that's the section's color
+  //     bleeding into the corner area, which is what the user
+  //     wanted from the "overhang fill".
+  //
+  //   maskStrokePath: a simple half-plane at x ≥ width — the card's
+  //     bounding box on its sidebar-facing side, ignoring rounded
+  //     corners. Where this is black, the stroke is hidden. So the
+  //     thick white outline at the overhang gets fully covered:
+  //     not just where cream paints, but also in the corner
+  //     triangle and the moat above cream's top — anywhere past
+  //     the section's right edge. The article's actual shape still
+  //     "shows through" via the fill, but the stroke is uniformly
+  //     ducked under the card.
   //
   // BIG is large enough to cover any practical viewport.
   const BIG = 9999;
-  let articleMaskPath;
+  let maskFillPath;
   if (skipTopOuter && skipBottomOuter) {
-    articleMaskPath = [
+    maskFillPath = [
       `M ${width + ARTICLE_OUTER_RADIUS} 0`,
       `L ${BIG} 0`,
       `L ${BIG} ${height}`,
@@ -621,7 +634,7 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
       'Z',
     ].join(' ');
   } else if (skipTopOuter) {
-    articleMaskPath = [
+    maskFillPath = [
       `M ${width + ARTICLE_OUTER_RADIUS} 0`,
       `L ${BIG} 0`,
       `L ${BIG} ${BIG}`,
@@ -631,7 +644,7 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
       'Z',
     ].join(' ');
   } else if (skipBottomOuter) {
-    articleMaskPath = [
+    maskFillPath = [
       `M ${width} ${-BIG}`,
       `L ${BIG} ${-BIG}`,
       `L ${BIG} ${height}`,
@@ -641,8 +654,9 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
       'Z',
     ].join(' ');
   } else {
-    articleMaskPath = `M ${width} ${-BIG} L ${BIG} ${-BIG} L ${BIG} ${BIG} L ${width} ${BIG} Z`;
+    maskFillPath = `M ${width} ${-BIG} L ${BIG} ${-BIG} L ${BIG} ${BIG} L ${width} ${BIG} Z`;
   }
+  const maskStrokePath = `M ${width} ${-BIG} L ${BIG} ${-BIG} L ${BIG} ${BIG} L ${width} ${BIG} Z`;
 
   // SVG element covers the section + RADIUS px above/below for the
   // outward bump arcs and ARTICLE_OUTER_RADIUS on the right so the
@@ -691,7 +705,7 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
       <svg className="docs-section-outline docs-section-outline-focus" {...svgProps}>
         <defs>
           <mask
-            id={maskId}
+            id={`${maskId}-fill`}
             maskUnits="userSpaceOnUse"
             x={-BIG}
             y={-BIG}
@@ -699,23 +713,34 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
             height={2 * BIG}
           >
             <rect x={-BIG} y={-BIG} width={2 * BIG} height={2 * BIG} fill="white" />
-            <path d={articleMaskPath} fill="black" />
+            <path d={maskFillPath} fill="black" />
+          </mask>
+          <mask
+            id={`${maskId}-stroke`}
+            maskUnits="userSpaceOnUse"
+            x={-BIG}
+            y={-BIG}
+            width={2 * BIG}
+            height={2 * BIG}
+          >
+            <rect x={-BIG} y={-BIG} width={2 * BIG} height={2 * BIG} fill="white" />
+            <path d={maskStrokePath} fill="black" />
           </mask>
         </defs>
-        <g mask={`url(#${maskId})`}>
-          <path
-            d={focusFillPath}
-            fill={FOCUS_FILL}
-            stroke={FOCUS_FILL}
-            strokeWidth={STROKE_WIDTH}
-          />
-          <path
-            d={focusStrokePath}
-            stroke={FOCUS_STROKE}
-            strokeWidth={STROKE_WIDTH}
-            fill="none"
-          />
-        </g>
+        <path
+          d={focusFillPath}
+          fill={FOCUS_FILL}
+          stroke={FOCUS_FILL}
+          strokeWidth={STROKE_WIDTH}
+          mask={`url(#${maskId}-fill)`}
+        />
+        <path
+          d={focusStrokePath}
+          stroke={FOCUS_STROKE}
+          strokeWidth={STROKE_WIDTH}
+          fill="none"
+          mask={`url(#${maskId}-stroke)`}
+        />
       </svg>
     </>
   );

@@ -656,7 +656,40 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   } else {
     maskFillPath = `M ${width} ${-BIG} L ${BIG} ${-BIG} L ${BIG} ${BIG} L ${width} ${BIG} Z`;
   }
-  const maskStrokePath = `M ${width} ${-BIG} L ${BIG} ${-BIG} L ${BIG} ${BIG} L ${width} ${BIG} Z`;
+  // Stroke mask: half-plane at x ≥ width, but with the corner
+  // triangle(s) carved out as evenodd holes for first/last sections.
+  // The triangle is the wedge between the section's right edge, the
+  // section's top/bottom, and the cream curve — outside the cream's
+  // painted area but on the "sidebar side" of the article. Without
+  // the holes, the overhang's outline gets clipped at the section's
+  // right edge before reaching the corner. With the holes, the
+  // outline is visible across the corner triangle, while the moat
+  // above the card and the cream surface itself stay masked, so
+  // the visible top of the stroke lands flush at y=0 (cream's outer
+  // top) and stops where the cream curve takes over.
+  const maskStrokePath = [
+    `M ${width} ${-BIG}`,
+    `L ${BIG} ${-BIG}`,
+    `L ${BIG} ${BIG}`,
+    `L ${width} ${BIG}`,
+    'Z',
+    ...(skipTopOuter
+      ? [
+          `M ${width} 0`,
+          `L ${width + ARTICLE_OUTER_RADIUS} 0`,
+          `A ${ARTICLE_OUTER_RADIUS} ${ARTICLE_OUTER_RADIUS} 0 0 0 ${width} ${ARTICLE_OUTER_RADIUS}`,
+          'Z',
+        ]
+      : []),
+    ...(skipBottomOuter
+      ? [
+          `M ${width} ${height}`,
+          `L ${width} ${height - ARTICLE_OUTER_RADIUS}`,
+          `A ${ARTICLE_OUTER_RADIUS} ${ARTICLE_OUTER_RADIUS} 0 0 0 ${width + ARTICLE_OUTER_RADIUS} ${height}`,
+          'Z',
+        ]
+      : []),
+  ].join(' ');
 
   // SVG element covers the section + RADIUS px above/below for the
   // outward bump arcs and ARTICLE_OUTER_RADIUS on the right so the
@@ -724,14 +757,13 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
             height={2 * BIG}
           >
             <rect x={-BIG} y={-BIG} width={2 * BIG} height={2 * BIG} fill="white" />
-            <path d={maskStrokePath} fill="black" />
+            <path d={maskStrokePath} fill="black" fillRule="evenodd" />
           </mask>
         </defs>
         <path
           d={focusFillPath}
           fill={FOCUS_FILL}
-          stroke={FOCUS_FILL}
-          strokeWidth={STROKE_WIDTH}
+          stroke="none"
           mask={`url(#${maskId}-fill)`}
         />
         <path

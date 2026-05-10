@@ -594,10 +594,19 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   const svgHeight = height + 2 * RADIUS;
   const svgWidth = width + ARTICLE_CORNER_OFFSET;
 
-  // DEBUG colors — yellow fill, hot pink stroke. Production fill
-  // was rgba(255, 255, 255, 0.16) and stroke rgba(255, 255, 255, ~1).
-  const FILL_COLOR = 'rgba(255, 255, 0, 0.7)';
-  const STROKE_COLOR = 'rgb(255, 0, 200)';
+  const INACTIVE_FILL = 'rgba(255, 255, 255, 0.08)';
+  const FOCUS_FILL = 'rgba(255, 255, 255, 0.16)';
+  const INACTIVE_STROKE = 'rgba(255, 255, 255, 0.95)';
+  const FOCUS_STROKE = 'rgba(255, 255, 255, 1)';
+
+  // The fill paths get a same-color stroke at the same width as the
+  // visible outline. The visible outline is center-aligned (half
+  // inside the path, half outside), so without this halo the path's
+  // outer 1 px would be stroke painted directly on the deck — the
+  // fill wouldn't reach the visible outer edge. Stroking the fill
+  // path with the fill color extends the painted fill area outward
+  // by half the stroke width, so when the visible stroke renders on
+  // top there's fill underneath all of it.
 
   const svgProps = {
     width: svgWidth,
@@ -609,14 +618,39 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   return (
     <>
       <svg className="docs-section-outline docs-section-outline-inactive" {...svgProps}>
-        <path d={inactivePath} fill={FILL_COLOR} stroke="none" />
-        <path d={inactivePath} stroke={STROKE_COLOR} strokeWidth={STROKE_WIDTH} fill="none" />
+        <path
+          d={inactivePath}
+          fill={INACTIVE_FILL}
+          stroke={INACTIVE_FILL}
+          strokeWidth={STROKE_WIDTH}
+        />
+        <path
+          d={inactivePath}
+          stroke={INACTIVE_STROKE}
+          strokeWidth={STROKE_WIDTH}
+          fill="none"
+        />
       </svg>
       <svg className="docs-section-outline docs-section-outline-focus" {...svgProps}>
-        <path d={focusFillPath} fill={FILL_COLOR} stroke="none" />
-        <path d={focusStrokePath} stroke={STROKE_COLOR} strokeWidth={STROKE_WIDTH} fill="none" />
+        <path
+          d={focusFillPath}
+          fill={FOCUS_FILL}
+          stroke={FOCUS_FILL}
+          strokeWidth={STROKE_WIDTH}
+        />
+        <path
+          d={focusStrokePath}
+          stroke={FOCUS_STROKE}
+          strokeWidth={STROKE_WIDTH}
+          fill="none"
+        />
         {extensionPath && (
-          <path d={extensionPath} stroke={STROKE_COLOR} strokeWidth={STROKE_WIDTH} fill="none" />
+          <path
+            d={extensionPath}
+            stroke={FOCUS_STROKE}
+            strokeWidth={STROKE_WIDTH}
+            fill="none"
+          />
         )}
       </svg>
     </>

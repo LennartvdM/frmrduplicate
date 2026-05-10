@@ -172,19 +172,22 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
-  /* padding-top is 0 so the first section's top is flush with the
-     sidebar's top — and therefore flush with the article card's top
-     edge, which matters for the first section's skipTopOuter logic
-     (the corner is "skipped" precisely because the section meets the
-     article's rounded top-left corner zone).
-     The right padding/margin pair extends the clip box past the
-     sidebar column by `moat + radius + outline-width` (= 32 + 16 + 6
-     = 54). The extra `radius + outline-width` (= 22) is the "into
-     the corner top" extension — the first/last section's straight
-     stroke pushes 22 px past the section's right edge to terminate
-     at the article's rounded-corner apex, and that part needs to
-     be inside the scroll's clip box to render. */
-  padding: 0 calc(var(--docs-moat-width) + var(--docs-radius) + var(--docs-outline-width)) 56px 4px;
+  /* Padding/margin pairs extend the scroll's clip box on every side
+     past the sidebar column without shifting the visual position of
+     the children inside.
+     Top: padding-top 18 + margin-top -18 gives the SVG outline 18 px
+     of room above the first section so its top half (the focus
+     state's outward bumps for middle/last sections, plus the
+     center-aligned stroke's outer 1 px halo for every section) can
+     render without being clipped by the scroll's overflow.
+     Right: padding-right 54 + margin-right -54 gives the SVG room
+     for the first/last section's "into the corner" extension stroke
+     (22 px past the section) plus space for the focus card's outward
+     right corners (32 px = moat width).
+     The first section's top still lands at the sidebar's outer top
+     because the negative top margin cancels the positive padding. */
+  padding: 18px calc(var(--docs-moat-width) + var(--docs-radius) + var(--docs-outline-width)) 56px 4px;
+  margin-top: -18px;
   margin-right: calc(-1 * (var(--docs-moat-width) + var(--docs-radius) + var(--docs-outline-width)));
   overflow-y: auto;
   scrollbar-width: none;

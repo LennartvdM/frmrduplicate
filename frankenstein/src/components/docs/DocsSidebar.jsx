@@ -512,6 +512,13 @@ function sameLayout(a, b) {
 function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBottomOuter }) {
   const RADIUS = 18;
   const STROKE_WIDTH = 2;
+  // SVG strokes are centered on the path by default — half the
+  // stroke sits outside the path's geometric bounds, half inside.
+  // Inset every path coordinate by STROKE_WIDTH / 2 so the stroke's
+  // OUTER edge lands flush with the section box (an "inner" stroke
+  // simulation), instead of bleeding 1 px past the top/left/bottom
+  // edges where the cream + article were already painted.
+  const STROKE_INSET = STROKE_WIDTH / 2;
 
   // Active section is a SINGLE closed path — a sideways T (⊣) where
   // the body↔strip junctions use S-curve transitions instead of
@@ -540,8 +547,8 @@ function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBotto
   const flatTop = skipTopOuter;
   const flatBottom = skipBottomOuter;
 
-  const inactivePath = roundedRectPath(width, height, RADIUS);
-  const activePath = sCurveTPath(width, height, RADIUS, W_STRIP, flatTop, flatBottom);
+  const inactivePath = roundedRectPath(width, height, RADIUS, STROKE_INSET);
+  const activePath = sCurveTPath(width, height, RADIUS, W_STRIP, flatTop, flatBottom, STROKE_INSET);
 
   // SVG element is positioned by CSS at `top: -RADIUS` (existing
   // infrastructure for older bump geometries that needed headroom
@@ -604,18 +611,21 @@ function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBotto
   );
 }
 
-// Plain rounded rectangle — used by inactive sections.
-function roundedRectPath(w, h, r) {
+// Plain rounded rectangle — used by inactive sections. The path is
+// inset by `inset` on every side so a centered stroke renders flush
+// with the section box instead of bleeding past it.
+function roundedRectPath(w, h, r, inset = 0) {
+  const i = inset;
   return [
-    `M ${r} 0`,
-    `L ${w - r} 0`,
-    `A ${r} ${r} 0 0 1 ${w} ${r}`,
-    `L ${w} ${h - r}`,
-    `A ${r} ${r} 0 0 1 ${w - r} ${h}`,
-    `L ${r} ${h}`,
-    `A ${r} ${r} 0 0 1 0 ${h - r}`,
-    `L 0 ${r}`,
-    `A ${r} ${r} 0 0 1 ${r} 0`,
+    `M ${r + i} ${i}`,
+    `L ${w - r - i} ${i}`,
+    `A ${r} ${r} 0 0 1 ${w - i} ${r + i}`,
+    `L ${w - i} ${h - r - i}`,
+    `A ${r} ${r} 0 0 1 ${w - r - i} ${h - i}`,
+    `L ${r + i} ${h - i}`,
+    `A ${r} ${r} 0 0 1 ${i} ${h - r - i}`,
+    `L ${i} ${r + i}`,
+    `A ${r} ${r} 0 0 1 ${r + i} ${i}`,
     'Z',
   ].join(' ');
 }
@@ -636,43 +646,42 @@ function roundedRectPath(w, h, r) {
 //   sits inside the cream/article and is masked. The strip's left
 //   edge starts another r further right, so the entire strip sits
 //   behind the card.
-function sCurveTPath(W_box, H, r, W_strip, flatTop, flatBottom) {
+function sCurveTPath(W_box, H, r, W_strip, flatTop, flatBottom, inset = 0) {
+  const i = inset;
   // Strip starts r past W_box (shifted so arc-2 is hidden).
   const stripLeft = W_box + r;
   const stripRight = stripLeft + W_strip;
-  const segments = [`M ${r} 0`];
+  const segments = [`M ${r + i} ${i}`];
 
   if (flatTop) {
-    // First section: body + strip share continuous top edge at y=0.
-    segments.push(`L ${stripRight - r} 0`);
-    segments.push(`A ${r} ${r} 0 0 1 ${stripRight} ${r}`); // strip top-right convex
+    segments.push(`L ${stripRight - r} ${i}`);
+    segments.push(`A ${r} ${r} 0 0 1 ${stripRight - i} ${r + i}`);
   } else {
-    segments.push(`L ${W_box - r} 0`);                        // body top edge ends r before card
-    segments.push(`A ${r} ${r} 0 0 0 ${W_box} ${-r}`);        // arc-1: CCW RIGHT→UP — VISIBLE, ends AT card edge
-    segments.push(`A ${r} ${r} 0 0 1 ${W_box + r} ${-2 * r}`);// arc-2: CW UP→RIGHT — hidden behind card
-    segments.push(`L ${stripRight - r} ${-2 * r}`);           // strip top edge
-    segments.push(`A ${r} ${r} 0 0 1 ${stripRight} ${-r}`);   // strip top-right convex
+    segments.push(`L ${W_box - r} ${i}`);
+    segments.push(`A ${r} ${r} 0 0 0 ${W_box} ${-r + i}`);
+    segments.push(`A ${r} ${r} 0 0 1 ${W_box + r} ${-2 * r + i}`);
+    segments.push(`L ${stripRight - r} ${-2 * r + i}`);
+    segments.push(`A ${r} ${r} 0 0 1 ${stripRight - i} ${-r + i}`);
   }
 
-  // Strip right edge (down)
-  const stripBotY = flatBottom ? H - r : H + r;
-  segments.push(`L ${stripRight} ${stripBotY}`);
+  // Strip right edge (down) — right edge inset so its (hidden) stroke is consistent.
+  const stripBotY = flatBottom ? H - r - i : H + r - i;
+  segments.push(`L ${stripRight - i} ${stripBotY}`);
 
   if (flatBottom) {
-    segments.push(`A ${r} ${r} 0 0 1 ${stripRight - r} ${H}`);
-    segments.push(`L ${r} ${H}`);
+    segments.push(`A ${r} ${r} 0 0 1 ${stripRight - r} ${H - i}`);
+    segments.push(`L ${r + i} ${H - i}`);
   } else {
-    segments.push(`A ${r} ${r} 0 0 1 ${stripRight - r} ${H + 2 * r}`); // strip bottom-right convex
-    segments.push(`L ${stripLeft} ${H + 2 * r}`);                       // strip bottom edge
-    segments.push(`A ${r} ${r} 0 0 1 ${W_box} ${H + r}`);               // arc-1: CW LEFT→UP — hidden
-    segments.push(`A ${r} ${r} 0 0 0 ${W_box - r} ${H}`);               // arc-2: CCW UP→LEFT — VISIBLE
-    segments.push(`L ${r} ${H}`);                                       // body bottom edge
+    segments.push(`A ${r} ${r} 0 0 1 ${stripRight - r} ${H + 2 * r - i}`);
+    segments.push(`L ${stripLeft} ${H + 2 * r - i}`);
+    segments.push(`A ${r} ${r} 0 0 1 ${W_box} ${H + r - i}`);
+    segments.push(`A ${r} ${r} 0 0 0 ${W_box - r} ${H - i}`);
+    segments.push(`L ${r + i} ${H - i}`);
   }
 
-  // Body left side
-  segments.push(`A ${r} ${r} 0 0 1 0 ${H - r}`);
-  segments.push(`L 0 ${r}`);
-  segments.push(`A ${r} ${r} 0 0 1 ${r} 0`);
+  segments.push(`A ${r} ${r} 0 0 1 ${i} ${H - r - i}`);
+  segments.push(`L ${i} ${r + i}`);
+  segments.push(`A ${r} ${r} 0 0 1 ${r + i} ${i}`);
   segments.push('Z');
 
   return segments.join(' ');

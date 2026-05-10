@@ -206,7 +206,10 @@
 .docs-sidebar-section {
   position: relative;
   padding: 6px 8px 10px;
-  background: rgba(255, 255, 255, 0.08);
+  /* DEBUG: yellow body so we can see exactly where the CSS background
+     paints vs. where the SVG bump fill paints. Production was
+     rgba(255, 255, 255, 0.08). */
+  background: rgba(255, 255, 0, 0.5);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   border: 2px solid transparent;
@@ -306,7 +309,9 @@
      paints the outward-corner regions with a matching translucent
      fill so the shape reads as one surface even though the corners
      don't get backdrop-blur. */
-  background: rgba(255, 255, 255, 0.16);
+  /* DEBUG: yellow body for the active card too. Production was
+     rgba(255, 255, 255, 0.16). */
+  background: rgba(255, 255, 0, 0.7);
   box-shadow:
     inset 1px 0 0 rgba(255, 255, 255, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.45),

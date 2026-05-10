@@ -629,14 +629,15 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   }
   const extensionPath = extensionSegments.length > 0 ? extensionSegments.join(' ') : null;
 
-  // Bump fill matches the active section's CSS background so the
-  // outward-corner regions read as the same surface as the CSS-
-  // filled body. The bumps don't get backdrop-filter blur since
-  // they're SVG-painted, but they're small enough that the
-  // difference is hard to notice and the alternative (clip-path on
-  // the section to include the bumps) would clip the SVG extension
-  // stroke for the first/last cards.
-  const BUMP_FILL = 'rgba(255, 255, 255, 0.16)';
+  // DEBUG: bump fill yellow so we can see exactly where SVG paints
+  // vs. where the CSS background paints (also yellow but at a
+  // different alpha + with backdrop-blur). Production color was
+  // rgba(255, 255, 255, 0.16).
+  const BUMP_FILL = 'rgba(255, 255, 0, 0.5)';
+  // DEBUG: strokes hot pink so the outline geometry stands out
+  // against the yellow fill. Production was rgba(255, 255, 255, 0.95)
+  // / rgba(255, 255, 255, 1).
+  const STROKE_COLOR = 'rgb(255, 0, 200)';
 
   return (
     <>
@@ -649,7 +650,7 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
       >
         <path
           d={inactivePath}
-          stroke="rgba(255, 255, 255, 0.95)"
+          stroke={STROKE_COLOR}
           strokeWidth={STROKE_WIDTH}
           fill="none"
         />
@@ -673,14 +674,14 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
         )}
         <path
           d={focusStrokePath}
-          stroke="rgba(255, 255, 255, 1)"
+          stroke={STROKE_COLOR}
           strokeWidth={STROKE_WIDTH}
           fill="none"
         />
         {extensionPath && (
           <path
             d={extensionPath}
-            stroke="rgba(255, 255, 255, 1)"
+            stroke={STROKE_COLOR}
             strokeWidth={STROKE_WIDTH}
             fill="none"
           />

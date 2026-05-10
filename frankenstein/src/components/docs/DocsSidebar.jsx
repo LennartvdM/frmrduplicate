@@ -360,7 +360,7 @@ function SectionCard({
   isLastSection,
 }) {
   const cardRef = useRef(null);
-  const [dims, setDims] = useState(null);
+  const [layout, setLayout] = useState(null);
   const transitionNavigate = useTransitionNavigate();
 
   // Whole-card hitbox: clicking anywhere on the section card that
@@ -374,6 +374,33 @@ function SectionCard({
     transitionNavigate(`/toolbox/${headingItem.slug}`);
   }, [headingItem, transitionNavigate]);
 
+  // Measure the card's box AND the heading / last-row positions in
+  // one shot so the active outline knows how tall its top and bottom
+  // extensions should be — the top extension wraps the heading, the
+  // bottom extension wraps the last visible row, and the recessed
+  // body in between matches whatever space remains.
+  const measure = useCallback(() => {
+    const card = cardRef.current;
+    if (!card) return null;
+    const w = card.offsetWidth;
+    const h = card.offsetHeight;
+    const cardRect = card.getBoundingClientRect();
+    const heading = card.querySelector('.docs-sidebar-heading');
+    const rows = card.querySelectorAll('.docs-nav-row');
+    const lastRow = rows.length ? rows[rows.length - 1] : null;
+    let topExt = null;
+    let botExt = null;
+    if (heading) {
+      const r = heading.getBoundingClientRect();
+      topExt = Math.max(0, r.bottom - cardRect.top);
+    }
+    if (lastRow) {
+      const r = lastRow.getBoundingClientRect();
+      botExt = Math.max(0, cardRect.bottom - r.top);
+    }
+    return { width: w, height: h, topExt, botExt };
+  }, []);
+
   // Re-measure when activeSlug changes. The CSS `:has(.docs-nav-row.is-active)`
   // selector drives width changes that ResizeObserver alone proved
   // unreliable for (some sections wouldn't fire the callback when the
@@ -382,15 +409,13 @@ function SectionCard({
   // framer-motion height animations: a no-deps useLayoutEffect would
   // re-measure on every commit, and the height oscillates between
   // commits while a foldout is animating, so the equality guard would
-  // fail and setDims would queue another render until React bails with
-  // error #185.
+  // fail and setLayout would queue another render until React bails
+  // with error #185.
   useLayoutEffect(() => {
-    if (!cardRef.current) return;
-    const el = cardRef.current;
-    const w = el.offsetWidth;
-    const h = el.offsetHeight;
-    setDims((prev) => (prev && prev.width === w && prev.height === h ? prev : { width: w, height: h }));
-  }, [activeSlug]);
+    const next = measure();
+    if (!next) return;
+    setLayout((prev) => (sameLayout(prev, next) ? prev : next));
+  }, [activeSlug, measure]);
 
   // ResizeObserver handles all the *non-render-triggered* size changes:
   // foldout-open animations, font load, image load. These happen
@@ -399,13 +424,13 @@ function SectionCard({
     if (!cardRef.current) return;
     const el = cardRef.current;
     const observer = new ResizeObserver(() => {
-      const w = el.offsetWidth;
-      const h = el.offsetHeight;
-      setDims((prev) => (prev && prev.width === w && prev.height === h ? prev : { width: w, height: h }));
+      const next = measure();
+      if (!next) return;
+      setLayout((prev) => (sameLayout(prev, next) ? prev : next));
     });
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [measure]);
 
   return (
     <div
@@ -434,10 +459,12 @@ function SectionCard({
         subListVariants={subListVariants}
         itemVariants={itemVariants}
       />
-      {dims && (
+      {layout && (
         <SectionOutline
-          width={dims.width}
-          height={dims.height}
+          width={layout.width}
+          height={layout.height}
+          topExt={layout.topExt}
+          botExt={layout.botExt}
           skipTopOuter={isFirstSection}
           skipBottomOuter={isLastSection}
         />
@@ -446,169 +473,98 @@ function SectionCard({
   );
 }
 
+function sameLayout(a, b) {
+  if (!a || !b) return false;
+  return (
+    a.width === b.width &&
+    a.height === b.height &&
+    a.topExt === b.topExt &&
+    a.botExt === b.botExt
+  );
+}
+
 /**
  * SectionOutline — renders the section card's outline AND fill as
- * SVG paths so they share the same shape exactly (no fork between
- * a CSS border and a bolted-on overlay).
+ * SVG paths.
  *
  * Two SVGs rendered per card; CSS picks which is visible by focus-
- * group state via `:has(.docs-nav-row.is-active)`.
+ * group state via `:has(.docs-nav-row.is-active)`. (The CSS toggle
+ * is existing infrastructure; this component never edits CSS.)
  *
- * In the inactive state every section is a plain rounded rectangle.
- * In the focus state every section — first / middle / last alike —
- * grows two outward bumps at top-right and bottom-right. Each bump
- * is a 180° arc (a half-circle) centered on the section's corner
- * point, bulging through (width, ±R) and rounding back to
- * (width + R, 0) at top or (width - R, height) at bottom. The
- * SVG mask hides the half of the bump that sits past x = width;
- * the visible portion at x < width is a clean quarter circle. The
- * "rounded back" half lives under the card, ready to read as a
- * deliberate generous rounded tab if the card ever stops masking it.
+ * Inactive sections are a plain rounded rectangle at the box's
+ * natural width.
  *
- * Open right side: stroke uses `M` (move) to jump from the top
- * piece's end to the bottom piece's start — no vertical stroke
- * connects them. The fill path uses `L` (straight line) instead
- * so the closed shape includes a virtual right edge for filling.
+ * Active sections paint a tangent-continuous "L" or barbell:
+ *   - The TOP extension (height = topExt, wraps the heading)
+ *     reaches the box's full width on the right so the section
+ *     meets the article's left edge.
+ *   - The BOTTOM extension (height = botExt, wraps the last row)
+ *     does the same at the bottom.
+ *   - In between, the body recesses by BODY_INSET, with concave
+ *     fillet corners at each step (no sharp turns).
+ *   - First section: only TOP extension (no bottom extension).
+ *   - Last section: only BOTTOM extension.
+ *   - Middle: both extensions, recessed band in the middle.
  *
- * The bottom-left and top-left corners always round inward at
- * RADIUS.
+ * All corners — outer convex and inner concave — use the same
+ * RADIUS so the rounded language reads consistently.
  */
-function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
+function SectionOutline({ width, height, topExt, botExt, skipTopOuter, skipBottomOuter }) {
   const RADIUS = 18;
   const STROKE_WIDTH = 2;
-  // The article body's border-radius is 16 (var(--docs-radius)),
-  // plus the 6 px box-shadow cream ring (var(--docs-outline-width))
-  // gives the cream surface an effective outer radius of 22 — the
-  // SVG width budget below.
-  const ARTICLE_OUTER_RADIUS = 22;
-  const reactId = useId();
-  const maskId = `docs-section-mask-${reactId.replace(/:/g, '')}`;
 
-  // INACTIVE — every section is the same rounded rectangle. Single
-  // path, used for both fill and stroke so they trace the exact
-  // same shape.
-  const inactivePath = [
-    `M ${RADIUS} 0`,
-    `L ${width - RADIUS} 0`,
-    `A ${RADIUS} ${RADIUS} 0 0 1 ${width} ${RADIUS}`,
-    `L ${width} ${height - RADIUS}`,
-    `A ${RADIUS} ${RADIUS} 0 0 1 ${width - RADIUS} ${height}`,
-    `L ${RADIUS} ${height}`,
-    `A ${RADIUS} ${RADIUS} 0 0 1 0 ${height - RADIUS}`,
-    `L 0 ${RADIUS}`,
-    `A ${RADIUS} ${RADIUS} 0 0 1 ${RADIUS} 0`,
-    'Z',
-  ].join(' ');
+  // Body inset from the box's right edge in the active state.
+  // The active box grows by `--docs-moat-width - --docs-outline-width`
+  // = 32 - 6 = 26px. Insetting by 2*RADIUS = 36 keeps the corner
+  // geometry clean (R_outer + R_inner = 2R = 36 leaves a 0px ledge
+  // between convex-out and concave-in arcs at the step).
+  const BODY_INSET = 2 * RADIUS;
 
-  // FOCUS — two corner geometries:
-  //
-  //   - skipTopOuter (first section): the top edge is a straight
-  //     line that runs past the section's right edge to the
-  //     article corner's apex (width + 22, 0), then the path
-  //     curves down along the cream's rounded corner to
-  //     (width, ARTICLE_OUTER_RADIUS). The straight extension
-  //     and the cream-curve trace both sit in the masked half-
-  //     plane (x ≥ width), so visually the top reads as a clean
-  //     straight line that disappears under the card. No corner
-  //     curve at the top-right.
-  //
-  //   - skipBottomOuter (last section): mirror at the bottom edge.
-  //
-  //   - otherwise: a 180° arc — a complete half-circle centered
-  //     on the section's corner point that bulges out through
-  //     (width, ±R) and rounds back to (width + R, 0) or
-  //     (width - R, height). The visible portion at x < width is
-  //     a clean quarter circle; the rounding-back half sits
-  //     under the card, ready to read as a generous rounded tab
-  //     if it ever surfaces.
-  const focusTopPiece = skipTopOuter
-    ? [
-        `L ${width + ARTICLE_OUTER_RADIUS} 0`,
-        `A ${ARTICLE_OUTER_RADIUS} ${ARTICLE_OUTER_RADIUS} 0 0 0 ${width} ${ARTICLE_OUTER_RADIUS}`,
-      ]
-    : [
-        `L ${width - RADIUS} 0`,
-        `A ${RADIUS} ${RADIUS} 0 1 1 ${width + RADIUS} 0`,
-      ];
+  // Smallest extension height that fits the convex+concave step.
+  const MIN_EXT = 2 * RADIUS;
 
-  const focusBottomPiece = skipBottomOuter
-    ? [
-        `A ${ARTICLE_OUTER_RADIUS} ${ARTICLE_OUTER_RADIUS} 0 0 0 ${width + ARTICLE_OUTER_RADIUS} ${height}`,
-        `L ${RADIUS} ${height}`,
-      ]
-    : [
-        `A ${RADIUS} ${RADIUS} 0 1 1 ${width - RADIUS} ${height}`,
-        `L ${RADIUS} ${height}`,
-      ];
+  const W_ext = width;
+  const W_body = Math.max(2 * RADIUS, width - BODY_INSET);
 
-  const topPieceEndX = skipTopOuter ? width : width + RADIUS;
-  const topPieceEndY = skipTopOuter ? ARTICLE_OUTER_RADIUS : 0;
-  const bottomPieceStartX = skipBottomOuter ? width : width + RADIUS;
-  const bottomPieceStartY = skipBottomOuter ? height - ARTICLE_OUTER_RADIUS : height;
+  // Resolve adaptive extension heights (measured from heading and
+  // last row). Clamp so the geometry stays valid even when the
+  // measurements aren't ready or the section is very short.
+  const fallbackExt = 3 * RADIUS;
+  const topH = Math.max(MIN_EXT, Math.min(height - MIN_EXT, topExt ?? fallbackExt));
+  const botH = Math.max(MIN_EXT, Math.min(height - topH, botExt ?? fallbackExt));
 
-  const focusLeftAndTopRound = [
-    `A ${RADIUS} ${RADIUS} 0 0 1 0 ${height - RADIUS}`,
-    `L 0 ${RADIUS}`,
-    `A ${RADIUS} ${RADIUS} 0 0 1 ${RADIUS} 0`,
-  ];
+  // Which extensions reach the article?
+  //   first section  → only TOP
+  //   last section   → only BOTTOM
+  //   middle section → BOTH (barbell)
+  const hasTop = !skipBottomOuter; // every section except the last
+  const hasBot = !skipTopOuter;    // every section except the first
 
-  // Fill: closed path. The right side is a straight L command —
-  // included in the fill area but overridden by the stroke path
-  // with an M jump so the bridge edge stays unstroked.
-  const focusFillPath = [
-    `M ${RADIUS} 0`,
-    ...focusTopPiece,
-    `L ${bottomPieceStartX} ${bottomPieceStartY}`,
-    ...focusBottomPiece,
-    ...focusLeftAndTopRound,
-    'Z',
-  ].join(' ');
+  const inactivePath = roundedRectPath(width, height, RADIUS);
 
-  // Stroke: same shape, but the right side is an M jump so the
-  // stroke breaks at the bridge.
-  const focusStrokePath = [
-    `M ${RADIUS} 0`,
-    ...focusTopPiece,
-    `M ${bottomPieceStartX} ${bottomPieceStartY}`,
-    ...focusBottomPiece,
-    ...focusLeftAndTopRound,
-  ].join(' ');
+  let activePath;
+  if (hasTop && hasBot) {
+    activePath = barbellPath(W_ext, W_body, height, topH, botH, RADIUS);
+  } else if (hasTop) {
+    activePath = topExtensionOnlyPath(W_ext, W_body, height, topH, RADIUS);
+  } else {
+    activePath = bottomExtensionOnlyPath(W_ext, W_body, height, botH, RADIUS);
+  }
 
-  // Half-plane mask at x ≥ width. Each bump is a full half-circle
-  // (180° arc) bulging through (width, ±R) and rounding back. The
-  // visible portion at x < width is the LEFT quarter of the bump;
-  // the right quarter (the rounding-back part) sits past the
-  // section's right edge where the mask hides it. If the article
-  // ever stops painting over that area, the full half-circle reads
-  // as a generous rounded tab, not a stub.
-  const BIG = 9999;
-  const maskShapePath = `M ${width} ${-BIG} L ${BIG} ${-BIG} L ${BIG} ${BIG} L ${width} ${BIG} Z`;
-
-  // SVG element covers the section + RADIUS px above/below for the
-  // outward bump arcs and ARTICLE_OUTER_RADIUS on the right so the
-  // tucked path fits inside the SVG's viewport. Anything past that
-  // (the stroke's end-cap half-width) renders via overflow: visible.
-  const svgHeight = height + 2 * RADIUS;
-  const svgWidth = width + ARTICLE_OUTER_RADIUS;
+  // SVG covers the section box exactly — both inactive and active
+  // paths stay within (0,0)..(width,height).
+  const svgWidth = width;
+  const svgHeight = height;
 
   const INACTIVE_FILL = 'rgba(255, 255, 255, 0.08)';
   const FOCUS_FILL = 'rgba(255, 255, 255, 0.16)';
   const INACTIVE_STROKE = 'rgba(255, 255, 255, 0.95)';
   const FOCUS_STROKE = 'rgba(255, 255, 255, 1)';
 
-  // The fill paths get a same-color stroke at the same width as the
-  // visible outline. The visible outline is center-aligned (half
-  // inside the path, half outside), so without this halo the path's
-  // outer 1 px would be stroke painted directly on the deck — the
-  // fill wouldn't reach the visible outer edge. Stroking the fill
-  // path with the fill color extends the painted fill area outward
-  // by half the stroke width, so when the visible stroke renders on
-  // top there's fill underneath all of it.
-
   const svgProps = {
     width: svgWidth,
     height: svgHeight,
-    viewBox: `0 ${-RADIUS} ${svgWidth} ${svgHeight}`,
+    viewBox: `0 0 ${svgWidth} ${svgHeight}`,
     'aria-hidden': true,
   };
 
@@ -629,35 +585,100 @@ function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
         />
       </svg>
       <svg className="docs-section-outline docs-section-outline-focus" {...svgProps}>
-        <defs>
-          <mask
-            id={`${maskId}-mask`}
-            maskUnits="userSpaceOnUse"
-            x={-BIG}
-            y={-BIG}
-            width={2 * BIG}
-            height={2 * BIG}
-          >
-            <rect x={-BIG} y={-BIG} width={2 * BIG} height={2 * BIG} fill="white" />
-            <path d={maskShapePath} fill="black" />
-          </mask>
-        </defs>
         <path
-          d={focusFillPath}
+          d={activePath}
           fill={FOCUS_FILL}
-          stroke="none"
-          mask={`url(#${maskId}-mask)`}
+          stroke={FOCUS_FILL}
+          strokeWidth={STROKE_WIDTH}
         />
         <path
-          d={focusStrokePath}
+          d={activePath}
           stroke={FOCUS_STROKE}
           strokeWidth={STROKE_WIDTH}
           fill="none"
-          mask={`url(#${maskId}-mask)`}
         />
       </svg>
     </>
   );
+}
+
+// Plain rounded rectangle — used by inactive sections.
+function roundedRectPath(w, h, r) {
+  return [
+    `M ${r} 0`,
+    `L ${w - r} 0`,
+    `A ${r} ${r} 0 0 1 ${w} ${r}`,
+    `L ${w} ${h - r}`,
+    `A ${r} ${r} 0 0 1 ${w - r} ${h}`,
+    `L ${r} ${h}`,
+    `A ${r} ${r} 0 0 1 0 ${h - r}`,
+    `L 0 ${r}`,
+    `A ${r} ${r} 0 0 1 ${r} 0`,
+    'Z',
+  ].join(' ');
+}
+
+// Active middle section — extensions at top AND bottom, recessed
+// body band in the middle. Going CW from the top-left corner.
+function barbellPath(W_ext, W_body, h, topH, botH, r) {
+  return [
+    `M ${r} 0`,
+    `L ${W_ext - r} 0`,
+    `A ${r} ${r} 0 0 1 ${W_ext} ${r}`,                  // top-right convex
+    `L ${W_ext} ${topH - r}`,
+    `A ${r} ${r} 0 0 1 ${W_ext - r} ${topH}`,           // bottom-right of top ext (DOWN→LEFT)
+    `A ${r} ${r} 0 0 0 ${W_body} ${topH + r}`,          // inner concave step into body (LEFT→DOWN)
+    `L ${W_body} ${h - botH - r}`,
+    `A ${r} ${r} 0 0 0 ${W_body + r} ${h - botH}`,      // inner concave step out of body (DOWN→RIGHT)
+    `A ${r} ${r} 0 0 1 ${W_ext} ${h - botH + r}`,       // top-right of bottom ext (RIGHT→DOWN)
+    `L ${W_ext} ${h - r}`,
+    `A ${r} ${r} 0 0 1 ${W_ext - r} ${h}`,              // bottom-right convex
+    `L ${r} ${h}`,
+    `A ${r} ${r} 0 0 1 0 ${h - r}`,                     // bottom-left convex
+    `L 0 ${r}`,
+    `A ${r} ${r} 0 0 1 ${r} 0`,                         // top-left convex
+    'Z',
+  ].join(' ');
+}
+
+// Active first section — only the TOP extension reaches the article;
+// below it the body sits at the recessed width through to the bottom.
+function topExtensionOnlyPath(W_ext, W_body, h, topH, r) {
+  return [
+    `M ${r} 0`,
+    `L ${W_ext - r} 0`,
+    `A ${r} ${r} 0 0 1 ${W_ext} ${r}`,                  // top-right convex
+    `L ${W_ext} ${topH - r}`,
+    `A ${r} ${r} 0 0 1 ${W_ext - r} ${topH}`,           // bottom-right of top ext
+    `A ${r} ${r} 0 0 0 ${W_body} ${topH + r}`,          // inner concave step into body
+    `L ${W_body} ${h - r}`,
+    `A ${r} ${r} 0 0 1 ${W_body - r} ${h}`,             // bottom-right of body convex
+    `L ${r} ${h}`,
+    `A ${r} ${r} 0 0 1 0 ${h - r}`,                     // bottom-left convex
+    `L 0 ${r}`,
+    `A ${r} ${r} 0 0 1 ${r} 0`,                         // top-left convex
+    'Z',
+  ].join(' ');
+}
+
+// Active last section — only the BOTTOM extension reaches the
+// article; above it the body sits at the recessed width.
+function bottomExtensionOnlyPath(W_ext, W_body, h, botH, r) {
+  return [
+    `M ${r} 0`,
+    `L ${W_body - r} 0`,
+    `A ${r} ${r} 0 0 1 ${W_body} ${r}`,                 // top-right of body convex
+    `L ${W_body} ${h - botH - r}`,
+    `A ${r} ${r} 0 0 0 ${W_body + r} ${h - botH}`,      // inner concave step out of body
+    `A ${r} ${r} 0 0 1 ${W_ext} ${h - botH + r}`,       // top-right of bottom ext
+    `L ${W_ext} ${h - r}`,
+    `A ${r} ${r} 0 0 1 ${W_ext - r} ${h}`,              // bottom-right convex
+    `L ${r} ${h}`,
+    `A ${r} ${r} 0 0 1 0 ${h - r}`,                     // bottom-left convex
+    `L 0 ${r}`,
+    `A ${r} ${r} 0 0 1 ${r} 0`,                         // top-left convex
+    'Z',
+  ].join(' ');
 }
 
 // Walk every section's items and collect the slugs of foldouts whose

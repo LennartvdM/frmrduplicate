@@ -220,6 +220,8 @@ export default function DocsSidebar({ sections, activeSlug }) {
               toggle={toggle}
               subListVariants={subList}
               itemVariants={item}
+              isFirstSection={i === 0}
+              isLastSection={i === sections.length - 1}
             />
           );
         })}
@@ -354,6 +356,8 @@ function SectionCard({
   toggle,
   subListVariants,
   itemVariants,
+  isFirstSection,
+  isLastSection,
 }) {
   const cardRef = useRef(null);
   const [dims, setDims] = useState(null);
@@ -430,7 +434,14 @@ function SectionCard({
         subListVariants={subListVariants}
         itemVariants={itemVariants}
       />
-      {dims && <SectionOutline width={dims.width} height={dims.height} />}
+      {dims && (
+        <SectionOutline
+          width={dims.width}
+          height={dims.height}
+          skipTopOuter={isFirstSection}
+          skipBottomOuter={isLastSection}
+        />
+      )}
     </div>
   );
 }
@@ -462,7 +473,7 @@ function SectionCard({
  * The bottom-left and top-left corners always round inward at
  * RADIUS.
  */
-function SectionOutline({ width, height }) {
+function SectionOutline({ width, height, skipTopOuter, skipBottomOuter }) {
   const RADIUS = 18;
   const STROKE_WIDTH = 2;
   // The article body's border-radius is 16 (var(--docs-radius)),
@@ -489,28 +500,50 @@ function SectionOutline({ width, height }) {
     'Z',
   ].join(' ');
 
-  // FOCUS — each bump is a 180° arc — a complete half-circle centered on the
-  // section's corner point, bulging outward through (width, ±R) and
-  // rounding back to (width + R, 0) (or (width - R, height) at the
-  // bottom). The visible portion (x < width) is the same quarter
-  // circle as before; the half tucked under the card is the second
-  // quarter, so if the card ever stops masking it the protrusion
-  // reads as a deliberate generous rounded tab rather than a stub
-  // ending in mid-air. All sections — first / middle / last — get
-  // the same shape.
-  const focusTopPiece = [
-    `L ${width - RADIUS} 0`,
-    `A ${RADIUS} ${RADIUS} 0 1 1 ${width + RADIUS} 0`,
-  ];
+  // FOCUS — each non-skipped corner becomes a 180° arc, a complete
+  // half-circle centered on the section's corner point that bulges
+  // out through (width, ±R) and rounds back to (width + R, 0) at
+  // the top or (width - R, height) at the bottom. The visible
+  // portion at x < width is a clean quarter circle; the rounding-
+  // back half sits past the section's right edge where the half-
+  // plane mask hides it, so if the card ever stops masking it the
+  // protrusion reads as a generous rounded tab.
+  //
+  // Skip flags suppress the tab when there's nowhere to put it:
+  //   - skipTopOuter (first section): cream's outer top is at the
+  //     section's top, so a top tab would float above the card.
+  //     The top-right corner becomes a normal concave rounded
+  //     corner like the rest of the section's box.
+  //   - skipBottomOuter (last section): mirror at the bottom edge.
+  //
+  // Right edge is at x = width + R when both bumps are tabs, at
+  // x = width when both are skipped, and diagonal in mixed cases.
+  // The right side is masked anyway (x ≥ width) so the diagonal
+  // doesn't surface visually.
+  const focusTopPiece = skipTopOuter
+    ? [
+        `L ${width - RADIUS} 0`,
+        `A ${RADIUS} ${RADIUS} 0 0 1 ${width} ${RADIUS}`,
+      ]
+    : [
+        `L ${width - RADIUS} 0`,
+        `A ${RADIUS} ${RADIUS} 0 1 1 ${width + RADIUS} 0`,
+      ];
 
-  const focusBottomPiece = [
-    `A ${RADIUS} ${RADIUS} 0 1 1 ${width - RADIUS} ${height}`,
-    `L ${RADIUS} ${height}`,
-  ];
+  const focusBottomPiece = skipBottomOuter
+    ? [
+        `A ${RADIUS} ${RADIUS} 0 0 1 ${width - RADIUS} ${height}`,
+        `L ${RADIUS} ${height}`,
+      ]
+    : [
+        `A ${RADIUS} ${RADIUS} 0 1 1 ${width - RADIUS} ${height}`,
+        `L ${RADIUS} ${height}`,
+      ];
 
-  const topPieceEndY = 0;
-  const bottomPieceStartY = height;
-  const RIGHT_EDGE_X = width + RADIUS;
+  const topPieceEndX = skipTopOuter ? width : width + RADIUS;
+  const topPieceEndY = skipTopOuter ? RADIUS : 0;
+  const bottomPieceStartX = skipBottomOuter ? width : width + RADIUS;
+  const bottomPieceStartY = skipBottomOuter ? height - RADIUS : height;
 
   const focusLeftAndTopRound = [
     `A ${RADIUS} ${RADIUS} 0 0 1 0 ${height - RADIUS}`,
@@ -524,7 +557,7 @@ function SectionOutline({ width, height }) {
   const focusFillPath = [
     `M ${RADIUS} 0`,
     ...focusTopPiece,
-    `L ${RIGHT_EDGE_X} ${bottomPieceStartY}`,
+    `L ${bottomPieceStartX} ${bottomPieceStartY}`,
     ...focusBottomPiece,
     ...focusLeftAndTopRound,
     'Z',
@@ -535,7 +568,7 @@ function SectionOutline({ width, height }) {
   const focusStrokePath = [
     `M ${RADIUS} 0`,
     ...focusTopPiece,
-    `M ${RIGHT_EDGE_X} ${bottomPieceStartY}`,
+    `M ${bottomPieceStartX} ${bottomPieceStartY}`,
     ...focusBottomPiece,
     ...focusLeftAndTopRound,
   ].join(' ');

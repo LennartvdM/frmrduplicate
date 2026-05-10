@@ -211,12 +211,30 @@
   backdrop-filter: blur(6px);
   border: 2px solid transparent;
   border-radius: 18px;
+  /* Drop shadow lives on ::before below so the active focus card
+     can clip it tighter on the right (no bleed onto the article)
+     without affecting the SVG outline's extension stroke. The inset
+     highlight stays on the section itself — inset shadows can't
+     come from a same-shape pseudo overlay. */
   box-shadow:
-    0 8px 22px rgba(0, 0, 0, 0.22),
     0 1px 0 rgba(255, 255, 255, 0.28) inset;
   transition:
     background-color 0.25s ease,
     box-shadow 0.25s ease;
+}
+/* Drop-shadow layer. Same shape as the section (inherits border-
+   radius), positioned on top of the section's background but with
+   its own clip-path so the active focus card can clip the shadow
+   without clipping the SVG sibling. pointer-events: none so the
+   whole-card hitbox click handler still receives clicks. */
+.docs-sidebar-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+  transition: box-shadow 0.25s ease, clip-path 0.25s ease;
 }
 /* Whole-card hitbox: clicking anywhere on a section that has a
    heading link navigates to that heading's page. The cursor signals
@@ -290,22 +308,19 @@
      don't get backdrop-blur. */
   background: rgba(255, 255, 255, 0.16);
   box-shadow:
-    0 14px 34px rgba(0, 0, 0, 0.32),
     inset 1px 0 0 rgba(255, 255, 255, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.45),
     inset 0 -1px 0 rgba(255, 255, 255, 0.18);
-  /* Clip the drop shadow on the right so it doesn't bleed too far
-     onto the article. The right inset is `-22px` (matches
-     ARTICLE_CORNER_OFFSET = --docs-radius + --docs-outline-width)
-     so the first/last section's "into the corner top" stroke
-     extension is INSIDE the clip and renders; otherwise it would
-     be cut off at the section's right edge.
-     Trade-off: ~17 px of drop-shadow blur now leaks onto the cream
-     ring and the upper-left corner of the article, but it's a soft
-     gradient and the cream surface absorbs it without much contrast.
-     Other sides pushed far out so the shadow still feathers
-     normally elsewhere. */
-  clip-path: inset(-100px calc(-1 * (var(--docs-radius) + var(--docs-outline-width))) -100px -100px);
+}
+
+/* Active focus card's drop shadow: bigger than inactive, AND clipped
+   at the section's right edge so the shadow can't extend past it onto
+   the article's cream surface. The SVG outline extension stroke is on
+   a sibling element with its own bounds so it isn't affected. */
+.docs-sidebar-section:has(.docs-nav-row.is-active)::before,
+.docs-sidebar-section:has(.docs-sidebar-heading.is-link.is-active)::before {
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
+  clip-path: inset(-100px 0 -100px -100px);
 }
 
 

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Upload og-preview.png · Neoflix</title>
+    <title>Generate og-preview.png · Neoflix</title>
     <style>
       :root {
         --bg: #0e3a45;
@@ -117,8 +117,8 @@
   <body>
     <div class="wrap">
       <header>
-        <h1>Upload og-preview.png</h1>
-        <div class="sub">dev-only · writes to <code>public/og-preview.png</code></div>
+        <h1>Generate og-preview.png</h1>
+        <div class="sub">renders a 1200×630 PNG you can download and commit</div>
       </header>
 
       <div class="card">
@@ -154,15 +154,15 @@
 
         <div class="actions">
           <button class="secondary" id="clear" type="button">Clear</button>
-          <button class="primary" id="upload" type="button" disabled>Upload</button>
+          <button class="primary" id="upload" type="button" disabled>Download PNG</button>
         </div>
 
         <div class="status" id="status"></div>
       </div>
 
       <div class="note">
-        After upload, the file lives at <code>frankenstein/public/og-preview.png</code>.
-        Commit it so it ships with the next deploy. Re-run the upload anytime to replace it.
+        Save the downloaded file to <code>frankenstein/public/og-preview.png</code> and
+        commit it so it ships with the next deploy.
       </div>
     </div>
 
@@ -303,7 +303,7 @@
       uploadBtn.addEventListener('click', async () => {
         if (!currentImage) return;
         uploadBtn.disabled = true;
-        setStatus('ok', 'Uploading…');
+        setStatus('ok', 'Preparing download…');
         try {
           let blob;
           if (fitSel.value === 'raw' && currentFile && currentFile.type === 'image/png') {
@@ -313,18 +313,17 @@
               canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/png');
             });
           }
-          const res = await fetch('/__upload-og', {
-            method: 'POST',
-            headers: { 'Content-Type': 'image/png' },
-            body: blob,
-          });
-          const data = await res.json().catch(() => ({}));
-          if (!res.ok || !data.ok) {
-            throw new Error(data.error || ('HTTP ' + res.status));
-          }
-          setStatus('ok', 'Saved ' + data.bytes + ' bytes to public/og-preview.png. Don’t forget to commit it.');
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'og-preview.png';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+          setStatus('ok', 'Downloaded ' + blob.size + ' bytes. Save it to frankenstein/public/og-preview.png and commit.');
         } catch (err) {
-          setStatus('err', 'Upload failed: ' + (err && err.message || err));
+          setStatus('err', 'Download failed: ' + (err && err.message || err));
         } finally {
           uploadBtn.disabled = false;
         }

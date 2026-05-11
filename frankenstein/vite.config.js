@@ -46,7 +46,10 @@ export default defineConfig({
     minify: 'terser',
     sourcemap: false,
     rollupOptions: {
-      input: { main: './index.html' },
+      input: {
+        main: './index.html',
+        ogUpload: './og-upload.html',
+      },
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],

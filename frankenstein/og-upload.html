@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload og-preview.png · Neoflix</title>
+    <style>
+      :root {
+        --bg: #0e3a45;
+        --panel: #f5efe6;
+        --ink: #0c2540;
+        --muted: #5a6b7a;
+        --accent: #56c6c9;
+        --accent-ink: #073e44;
+        --danger: #b3261e;
+        --ok: #1f7a3d;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; }
+      body {
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        background: radial-gradient(circle at 20% 20%, #14525e 0%, var(--bg) 60%);
+        color: #fff;
+        min-height: 100vh;
+        padding: 32px 24px 64px;
+      }
+      .wrap { max-width: 880px; margin: 0 auto; }
+      header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; }
+      h1 { font-size: 20px; margin: 0; font-weight: 600; letter-spacing: -0.01em; }
+      header .sub { color: rgba(255,255,255,0.65); font-size: 13px; }
+      .card {
+        background: var(--panel);
+        color: var(--ink);
+        border-radius: 14px;
+        padding: 24px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      }
+      .row { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+      .drop {
+        border: 2px dashed rgba(12,37,64,0.25);
+        border-radius: 12px;
+        padding: 28px;
+        text-align: center;
+        cursor: pointer;
+        transition: border-color .15s ease, background .15s ease;
+      }
+      .drop.is-drag { border-color: var(--accent); background: rgba(86,198,201,0.12); }
+      .drop strong { display: block; font-size: 15px; margin-bottom: 4px; }
+      .drop span { color: var(--muted); font-size: 13px; }
+      input[type=file] { display: none; }
+      .preview-wrap {
+        margin-top: 20px;
+        background: #0c2540;
+        border-radius: 10px;
+        padding: 12px;
+        display: flex;
+        justify-content: center;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        aspect-ratio: 1200 / 630;
+        background: #fff;
+        border-radius: 6px;
+      }
+      .controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+        margin-top: 16px;
+      }
+      label.field { display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: var(--muted); }
+      label.field span { font-weight: 500; }
+      select, button {
+        font: inherit;
+        padding: 9px 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(12,37,64,0.15);
+        background: #fff;
+        color: var(--ink);
+      }
+      button.primary {
+        background: var(--accent);
+        color: var(--accent-ink);
+        border-color: transparent;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button.primary:disabled { opacity: 0.5; cursor: not-allowed; }
+      button.secondary {
+        background: transparent;
+        border-color: rgba(12,37,64,0.2);
+        cursor: pointer;
+      }
+      .actions { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
+      .status {
+        margin-top: 14px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-size: 13px;
+        display: none;
+      }
+      .status.show { display: block; }
+      .status.ok { background: rgba(31,122,61,0.12); color: var(--ok); }
+      .status.err { background: rgba(179,38,30,0.10); color: var(--danger); }
+      .note {
+        color: rgba(255,255,255,0.7);
+        font-size: 12px;
+        margin-top: 14px;
+        line-height: 1.5;
+      }
+      code { background: rgba(255,255,255,0.1); padding: 1px 6px; border-radius: 4px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>Upload og-preview.png</h1>
+        <div class="sub">dev-only · writes to <code>public/og-preview.png</code></div>
+      </header>
+
+      <div class="card">
+        <label class="drop" id="drop" for="file">
+          <strong>Drop an image here, or click to pick</strong>
+          <span>PNG / JPG / WebP — any size. Will be rendered onto a 1200×630 canvas.</span>
+        </label>
+        <input id="file" type="file" accept="image/*" />
+
+        <div class="preview-wrap">
+          <canvas id="canvas" width="1200" height="630"></canvas>
+        </div>
+
+        <div class="controls">
+          <label class="field">
+            <span>Fit</span>
+            <select id="fit">
+              <option value="cover">Cover (crop to fill)</option>
+              <option value="contain-light">Contain (white letterbox)</option>
+              <option value="contain-dark">Contain (dark letterbox)</option>
+              <option value="raw">Upload as-is (no resize)</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Cover position</span>
+            <select id="pos">
+              <option value="center">Center</option>
+              <option value="top">Top</option>
+              <option value="bottom">Bottom</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button class="secondary" id="clear" type="button">Clear</button>
+          <button class="primary" id="upload" type="button" disabled>Upload</button>
+        </div>
+
+        <div class="status" id="status"></div>
+      </div>
+
+      <div class="note">
+        After upload, the file lives at <code>frankenstein/public/og-preview.png</code>.
+        Commit it so it ships with the next deploy. Re-run the upload anytime to replace it.
+      </div>
+    </div>
+
+    <script>
+      const fileInput = document.getElementById('file');
+      const drop = document.getElementById('drop');
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      const fitSel = document.getElementById('fit');
+      const posSel = document.getElementById('pos');
+      const uploadBtn = document.getElementById('upload');
+      const clearBtn = document.getElementById('clear');
+      const statusEl = document.getElementById('status');
+
+      let currentImage = null;
+      let currentFile = null;
+
+      function setStatus(kind, text) {
+        statusEl.className = 'status show ' + kind;
+        statusEl.textContent = text;
+      }
+      function clearStatus() {
+        statusEl.className = 'status';
+        statusEl.textContent = '';
+      }
+
+      function paintEmpty() {
+        ctx.fillStyle = '#f1efe8';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#9aa5b1';
+        ctx.font = '500 22px Inter, system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('1200 × 630 preview', canvas.width / 2, canvas.height / 2);
+      }
+      paintEmpty();
+
+      function render() {
+        if (!currentImage) { paintEmpty(); return; }
+        const fit = fitSel.value;
+        const pos = posSel.value;
+        const W = canvas.width, H = canvas.height;
+        const iw = currentImage.naturalWidth, ih = currentImage.naturalHeight;
+
+        if (fit === 'raw') {
+          canvas.width = iw;
+          canvas.height = ih;
+          ctx.clearRect(0, 0, iw, ih);
+          ctx.drawImage(currentImage, 0, 0);
+          return;
+        }
+
+        canvas.width = 1200;
+        canvas.height = 630;
+
+        if (fit === 'cover') {
+          const scale = Math.max(W / iw, H / ih);
+          const dw = iw * scale, dh = ih * scale;
+          const dx = (W - dw) / 2;
+          let dy;
+          if (pos === 'top') dy = 0;
+          else if (pos === 'bottom') dy = H - dh;
+          else dy = (H - dh) / 2;
+          ctx.fillStyle = '#000';
+          ctx.fillRect(0, 0, W, H);
+          ctx.drawImage(currentImage, dx, dy, dw, dh);
+        } else {
+          const scale = Math.min(W / iw, H / ih);
+          const dw = iw * scale, dh = ih * scale;
+          const dx = (W - dw) / 2;
+          const dy = (H - dh) / 2;
+          ctx.fillStyle = fit === 'contain-dark' ? '#0e3a45' : '#ffffff';
+          ctx.fillRect(0, 0, W, H);
+          ctx.drawImage(currentImage, dx, dy, dw, dh);
+        }
+      }
+
+      function loadFile(file) {
+        if (!file || !file.type.startsWith('image/')) {
+          setStatus('err', 'Please choose an image file.');
+          return;
+        }
+        clearStatus();
+        currentFile = file;
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+          currentImage = img;
+          uploadBtn.disabled = false;
+          render();
+        };
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          setStatus('err', 'Could not decode that image.');
+        };
+        img.src = url;
+      }
+
+      fileInput.addEventListener('change', (e) => {
+        const f = e.target.files && e.target.files[0];
+        if (f) loadFile(f);
+      });
+
+      ;['dragenter', 'dragover'].forEach(ev => {
+        drop.addEventListener(ev, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          drop.classList.add('is-drag');
+        });
+      });
+      ;['dragleave', 'drop'].forEach(ev => {
+        drop.addEventListener(ev, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          drop.classList.remove('is-drag');
+        });
+      });
+      drop.addEventListener('drop', (e) => {
+        const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+        if (f) loadFile(f);
+      });
+
+      fitSel.addEventListener('change', render);
+      posSel.addEventListener('change', render);
+
+      clearBtn.addEventListener('click', () => {
+        currentImage = null;
+        currentFile = null;
+        fileInput.value = '';
+        uploadBtn.disabled = true;
+        clearStatus();
+        canvas.width = 1200;
+        canvas.height = 630;
+        paintEmpty();
+      });
+
+      uploadBtn.addEventListener('click', async () => {
+        if (!currentImage) return;
+        uploadBtn.disabled = true;
+        setStatus('ok', 'Uploading…');
+        try {
+          let blob;
+          if (fitSel.value === 'raw' && currentFile && currentFile.type === 'image/png') {
+            blob = currentFile;
+          } else {
+            blob = await new Promise((resolve, reject) => {
+              canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/png');
+            });
+          }
+          const res = await fetch('/__upload-og', {
+            method: 'POST',
+            headers: { 'Content-Type': 'image/png' },
+            body: blob,
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.ok) {
+            throw new Error(data.error || ('HTTP ' + res.status));
+          }
+          setStatus('ok', 'Saved ' + data.bytes + ' bytes to public/og-preview.png. Don’t forget to commit it.');
+        } catch (err) {
+          setStatus('err', 'Upload failed: ' + (err && err.message || err));
+        } finally {
+          uploadBtn.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>

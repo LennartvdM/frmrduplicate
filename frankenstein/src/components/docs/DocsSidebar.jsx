@@ -404,9 +404,33 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
               height: rowRect.h,
               boxShadow: '0 6px 16px rgba(0, 0, 0, 0.18)',
               zIndex: 1000,
+              // Right side is a full semi-circle so the row reads as a
+              // pill-tab-style page guide instead of a plain rectangle.
+              borderTopRightRadius: rowRect.h / 2,
+              borderBottomRightRadius: rowRect.h / 2,
             }}
           >
-            {rowContent}
+            <DocsLink href={`/toolbox/${item.slug}`} internal>
+              <span className="docs-nav-label">{item.title}</span>
+            </DocsLink>
+            {/* The teal dot sits centered inside the right-side semi-circle
+                and reads as a "you are here" page marker. It replaces the
+                chevron on the portal'd label — toggling via row click still
+                works for foldout headers. */}
+            <span
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                right: (rowRect.h - 8) / 2,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                backgroundColor: '#56c6c9',
+                pointerEvents: 'none',
+              }}
+            />
           </div>,
           document.body,
         )}

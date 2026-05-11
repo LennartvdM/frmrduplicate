@@ -402,7 +402,7 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
               top: rowRect.y,
               width: rowRect.w + 60,
               height: rowRect.h,
-              boxShadow: '0 6px 16px rgba(0, 0, 0, 0.18)',
+              boxShadow: '0 10px 24px rgba(0, 0, 0, 0.35)',
               zIndex: 1000,
               // Right side is a full semi-circle so the row reads as a
               // pill-tab-style page guide instead of a plain rectangle.

@@ -272,6 +272,7 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
   const isActive = item.slug === activeSlug;
   const hasChildren = item.children && item.children.length > 0;
   const isExpanded = hasChildren && isOpen(item.slug);
+  const transitionNavigate = useTransitionNavigate();
 
   // Track whether the foldout-children wrapper is mid-animation. We need
   // overflow: hidden during the height tween (otherwise the children show
@@ -281,13 +282,19 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
   const [foldoutSettled, setFoldoutSettled] = useState(true);
 
   // Click semantics on the row:
-  //   - Foldout row → toggle this foldout (with accordion).
-  //   - Leaf row → no toggle behavior; DocsLink handles navigation.
-  //     (The previous "active leaf closes parent" behavior was removed
-  //     so the foldout stays open showing siblings of the active page.)
+  //   - Foldout row → toggle this foldout (with accordion) AND navigate
+  //     to its index page so it picks up the focus/active state. Without
+  //     the explicit navigate here, clicking the row's padding (anywhere
+  //     outside the DocsLink itself) opened the foldout but never moved
+  //     the URL, leaving the row stuck in its inactive style.
+  //   - Leaf row → no toggle behavior; DocsLink handles navigation when
+  //     the link text is clicked.
   let onRowClick;
   if (hasChildren) {
-    onRowClick = () => toggle(item.slug, siblingSlugs);
+    onRowClick = () => {
+      toggle(item.slug, siblingSlugs);
+      transitionNavigate(`/toolbox/${item.slug}`);
+    };
   }
 
   // Portal the active row to document.body so it can render ABOVE the

@@ -63,12 +63,12 @@ const HOME_CELLS = [
   // The intro paints its own white card over this cell, so its camo is
   // only seen for the ~frame the React-driven backdrop lags the native
   // scroll during the snap into medical — it flashes as a band above the
-  // medical deck. Matching medical's teal makes that band blend.
-  { kind: 'camo', camo: '#2596be' },
-  // medical-v2's footage is teal-toned, so its camo matches: the fill
+  // medical deck. Matching medical's fill makes that band blend.
+  { kind: 'camo', camo: '#739780' },
+  // medical-v2's footage is a muted green, so its camo matches: the fill
   // that shows while the slower blur drags in behind the route slide
-  // blends instead of flashing the engine green.
-  { kind: 'video', targetKey: 'medical-v2', camo: '#2596be' },
+  // blends instead of flashing the dark default.
+  { kind: 'video', targetKey: 'medical-v2', camo: '#739780' },
   { kind: 'video', targetKey: 'medical-v3' },
   { kind: 'camo' },
   { kind: 'camo' },

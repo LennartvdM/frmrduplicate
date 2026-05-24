@@ -23,6 +23,7 @@ const VimeoSection = ({ inView }) => {
   const isMobile = width < 600;
 
   const dropRef = useRef(null);
+  const iframeRef = useRef(null);
   // Captured once so a resize never re-runs the sim mid-rest.
   const halfWidthRef = useRef(
     typeof window !== 'undefined' ? Math.max(160, Math.round(window.innerWidth * 0.33)) : 320
@@ -35,6 +36,18 @@ const VimeoSection = ({ inView }) => {
     const id = setTimeout(() => setArmed(true), 60);
     return () => clearTimeout(id);
   }, [inView, armed]);
+
+  // Pause the reel when the slide scrolls out of view so it doesn't keep
+  // playing behind another slide. Talks to the Vimeo player's postMessage
+  // API directly (no SDK): by the time playback matters the iframe has
+  // loaded and is listening; on a not-yet-loaded iframe this is a no-op.
+  useEffect(() => {
+    if (inView) return;
+    iframeRef.current?.contentWindow?.postMessage(
+      JSON.stringify({ method: 'pause' }),
+      'https://player.vimeo.com'
+    );
+  }, [inView]);
 
   useDropPhysics(dropRef, {
     enabled: armed,
@@ -81,6 +94,7 @@ const VimeoSection = ({ inView }) => {
         }}
       >
         <iframe
+          ref={iframeRef}
           title="vimeo-player"
           src={VIMEO_SRC}
           loading="lazy"

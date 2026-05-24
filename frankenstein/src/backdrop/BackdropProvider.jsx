@@ -26,10 +26,11 @@ import { BackdropContext } from './context';
  * RouteSlider.
  *
  * Three render modes keyed by pathname:
- *   1. Home  — 4-cell y-stack, translated by homeScrollProgress.
+ *   1. Home  — 5-cell y-stack, translated by homeScrollProgress.
  *              Intro is camo; medical V2/V3 read their topIdx from
- *              targets['medical-v2'] / targets['medical-v3']; the
- *              worldmap slide is camo (it paints its own background).
+ *              targets['medical-v2'] / targets['medical-v3']; the vimeo
+ *              reel and worldmap slides are camo (they paint their own
+ *              backgrounds).
  *   2. Blog  — one cell backed by the union blog deck; topIdx from
  *              targets['blog'].
  *   3. Other — single camo cell (toolbox, unknown routes).
@@ -54,13 +55,15 @@ function pageIdForPath(pathname) {
 }
 
 // Home y-stack layout — must match Home.jsx's sections array order.
-// Home is 4 sections: intro (camo) + two medical variants (video) +
-// worldmap (camo). The worldmap slide paints its own gradient + SVG,
-// so its cell is a camo fill behind it (the video decks stay idle).
+// Home is 5 sections: intro (camo) + two medical variants (video) + the
+// vimeo reel (camo) + worldmap (camo). Intro, reel and worldmap each paint
+// their own opaque background, so their cells are camo fills behind them
+// (the video decks stay idle).
 const HOME_CELLS = [
   { kind: 'camo' },
   { kind: 'video', targetKey: 'medical-v2' },
   { kind: 'video', targetKey: 'medical-v3' },
+  { kind: 'camo' },
   { kind: 'camo' },
 ];
 
@@ -178,9 +181,9 @@ function BackdropRenderer({ state }) {
 }
 
 /**
- * Home: 4-cell y-stack. Translates with the Home scroll-snap
+ * Home: 5-cell y-stack. Translates with the Home scroll-snap
  * container's progress (published by ScrollSnap through
- * useHomeScrollProgress). Intro and worldmap are camo; the two
+ * useHomeScrollProgress). Intro, reel and worldmap are camo; the two
  * medical variants read their topIdx from published targets.
  *
  * Decode budget during a vertical slide: floor(progress) and

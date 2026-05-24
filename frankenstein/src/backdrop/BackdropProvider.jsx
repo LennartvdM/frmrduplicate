@@ -61,7 +61,10 @@ function pageIdForPath(pathname) {
 // (the video decks stay idle).
 const HOME_CELLS = [
   { kind: 'camo' },
-  { kind: 'video', targetKey: 'medical-v2' },
+  // medical-v2's footage is teal-toned, so its camo matches: the fill
+  // that shows while the slower blur drags in behind the route slide
+  // blends instead of flashing the engine green.
+  { kind: 'video', targetKey: 'medical-v2', camo: '#2596be' },
   { kind: 'video', targetKey: 'medical-v3' },
   { kind: 'camo' },
   { kind: 'camo' },
@@ -212,7 +215,7 @@ function HomeBackdrop({ state }) {
               className="absolute inset-0"
               style={{ transform: `translateY(${offset}%)` }}
             >
-              <BackdropCell kind="camo" decodeState="idle" />
+              <BackdropCell kind="camo" camo={cell.camo} decodeState="idle" />
             </div>
           );
         }
@@ -234,6 +237,7 @@ function HomeBackdrop({ state }) {
               kind="video"
               deck={deck}
               topIdx={topIdx}
+              camo={cell.camo}
               decodeState={onScreen ? 'active' : 'idle'}
             />
           </div>

@@ -5,6 +5,9 @@ import Footer from '../components/Footer';
 
 // Eagerly load the intro section for fast initial paint
 import IntroSection from '../components/sections/IntroSection';
+// Vimeo slide is light (one lazy iframe) and shares the intro's drop hook,
+// so load it eagerly — a Suspense fallback would flash dark on its pale fill.
+import VimeoSection from '../components/sections/VimeoSection';
 
 // Lazy load heavy sections to reduce initial bundle
 const MedicalSectionV2 = lazy(() => import('../components/sections/MedicalSectionV2'));
@@ -25,6 +28,7 @@ const sections = [
   { name: 'intro', component: IntroSection },
   { name: 'two', component: LazyMedicalV2 },
   { name: 'three', component: LazyMedicalV3 },
+  { name: 'reel', component: VimeoSection },
   { name: 'worldmap', component: LazyWorldMap },
 ];
 

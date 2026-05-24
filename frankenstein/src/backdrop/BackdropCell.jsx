@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { camoForVideo } from './decks';
 
 /**
  * One backdrop cell — either a video deck or a camo fill.
@@ -128,6 +129,10 @@ function VideoDeck({ deck, topIdx, decodeState, fadeDuration, style }) {
               transition: `opacity ${fadeDuration}s cubic-bezier(0.4,0,0.2,1)`,
               willChange: 'opacity',
               transform: 'scale(1.06)',
+              // Per-card camo shows through until this video paints a
+              // frame, so a slide that isn't decoded yet never flashes
+              // the engine green when its average tone differs.
+              backgroundColor: camoForVideo(src),
               // Lower idx (higher in deck) sits on top.
               zIndex: deck.length - idx,
             }}

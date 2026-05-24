@@ -94,7 +94,7 @@ function VideoDeck({ deck, topIdx, decodeState, fadeDuration, style }) {
   return (
     <div
       className="absolute inset-0 overflow-hidden"
-      style={{ backgroundColor: '#1c3424', ...style }}
+      style={{ backgroundColor: camoForVideo(deck[topIdx]), ...style }}
     >
       {deck.map((src, idx) => {
         const isTop = idx === topIdx;

@@ -60,7 +60,11 @@ function pageIdForPath(pathname) {
 // their own opaque background, so their cells are camo fills behind them
 // (the video decks stay idle).
 const HOME_CELLS = [
-  { kind: 'camo' },
+  // The intro paints its own white card over this cell, so its camo is
+  // only seen for the ~frame the React-driven backdrop lags the native
+  // scroll during the snap into medical — it flashes as a band above the
+  // medical deck. Matching medical's teal makes that band blend.
+  { kind: 'camo', camo: '#2596be' },
   // medical-v2's footage is teal-toned, so its camo matches: the fill
   // that shows while the slower blur drags in behind the route slide
   // blends instead of flashing the engine green.

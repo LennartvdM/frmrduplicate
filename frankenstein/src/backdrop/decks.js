@@ -22,20 +22,6 @@ import { assetUrl } from '../utils/assetUrl';
 export const MEDICAL_V2_DECK = VARIANTS.v2.blurVideos.map((b) => b.video);
 export const MEDICAL_V3_DECK = VARIANTS.v3.blurVideos.map((b) => b.video);
 
-// Per-video camo fill — the colour a backdrop card paints behind itself
-// until its video decodes a frame, so a not-yet-loaded slide never
-// flashes black. It should approximate each video's average tone. Cards
-// default to the engine green; only videos whose average is far enough
-// off to flash against it need an override.
-const CAMO_DEFAULT = '#1c3424';
-const VIDEO_CAMO = {
-  [assetUrl('/videos/blurcoordination.mp4')]: '#2596be',
-};
-
-export function camoForVideo(src) {
-  return VIDEO_CAMO[src] || CAMO_DEFAULT;
-}
-
 // Union of every video the blog cell might show, deduplicated but
 // order-preserving. The cell mounts this once and crossfades within it.
 export const BLOG_DECK = Array.from(

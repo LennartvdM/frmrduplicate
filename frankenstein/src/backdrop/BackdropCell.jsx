@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { camoForVideo } from './decks';
 
 /**
  * One backdrop cell — either a video deck or a camo fill.
@@ -34,13 +33,18 @@ export default function BackdropCell({
                            // slide. A fade reads well at durations
                            // that would feel sluggish as spatial motion,
                            // so it's allowed to linger past the slide.
+  camo = '#1c3424',        // solid fill behind the deck, ~the average
+                           // tone of this section's video. The blur loads
+                           // slower than the route slide, so this band
+                           // drags in behind it — matching the video lets
+                           // it blend instead of flashing.
   style,                   // positioning/transform from parent
 }) {
   if (kind === 'camo') {
     return (
       <div
         className="absolute inset-0"
-        style={{ backgroundColor: '#1c3424', ...style }}
+        style={{ backgroundColor: camo, ...style }}
         aria-hidden="true"
       />
     );
@@ -52,12 +56,13 @@ export default function BackdropCell({
       topIdx={topIdx}
       decodeState={decodeState}
       fadeDuration={fadeDuration}
+      camo={camo}
       style={style}
     />
   );
 }
 
-function VideoDeck({ deck, topIdx, decodeState, fadeDuration, style }) {
+function VideoDeck({ deck, topIdx, decodeState, fadeDuration, camo, style }) {
   const videoRefs = useRef([]);
   const [deckLoaded, setDeckLoaded] = useState(false);
 
@@ -94,7 +99,7 @@ function VideoDeck({ deck, topIdx, decodeState, fadeDuration, style }) {
   return (
     <div
       className="absolute inset-0 overflow-hidden"
-      style={{ backgroundColor: camoForVideo(deck[topIdx]), ...style }}
+      style={{ backgroundColor: camo, ...style }}
     >
       {deck.map((src, idx) => {
         const isTop = idx === topIdx;
@@ -129,10 +134,9 @@ function VideoDeck({ deck, topIdx, decodeState, fadeDuration, style }) {
               transition: `opacity ${fadeDuration}s cubic-bezier(0.4,0,0.2,1)`,
               willChange: 'opacity',
               transform: 'scale(1.06)',
-              // Per-card camo shows through until this video paints a
-              // frame, so a slide that isn't decoded yet never flashes
-              // the engine green when its average tone differs.
-              backgroundColor: camoForVideo(src),
+              // Same fill as the container so a card that hasn't decoded
+              // yet never flashes a different tone over the band.
+              backgroundColor: camo,
               // Lower idx (higher in deck) sits on top.
               zIndex: deck.length - idx,
             }}

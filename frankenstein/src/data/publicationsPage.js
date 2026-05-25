@@ -20,7 +20,9 @@ We considered that other departments could adopt our Neoflix approach as well. I
 
 We encourage you to use Neoflix to take time, to pause and consider how each action and decision affects patients. This guide invites healthcare providers to join a movement back to the heart of healthcare, where each procedure is an opportunity to learn and provide compassionate and competent care.
 
-Let's embark on this journey together, improving one step and one patient at a time. — Veerle`,
+Let's embark on this journey together, improving one step and one patient at a time.
+
+<span>- Veerle</span>`,
   },
   {
     id: 'narrative',

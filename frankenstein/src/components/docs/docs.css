@@ -123,12 +123,15 @@
   --card-r: var(--docs-radius);
   --docs-edge-dot-r: 13px;
   --docs-edge-dot-inset: calc(var(--docs-rail-width) + 48px);
-  /* Marker centre, in the ::before box (which is --docs-outline-width
-     larger on every side). x: on the divider. y: one third of the
-     radius above the card's top edge, so a third of the circle sits
-     buried below it. */
+  /* Fraction of the circle's diameter that sits below the top edge —
+     the knob for "buried this much". */
+  --docs-edge-dot-sink: 0.333;
+  /* Marker centre, in the ::before box (which sits --docs-outline-width
+     beyond the card on every side). x: on the divider. y: positioned so
+     --docs-edge-dot-sink of the diameter pokes below the top edge. */
   --docs-edge-dot-cx: calc(var(--docs-edge-dot-inset) + var(--docs-outline-width));
-  --docs-edge-dot-cy: calc(var(--docs-outline-width) - var(--docs-edge-dot-r) / 3);
+  --docs-edge-dot-cy: calc(
+    var(--docs-outline-width) + var(--docs-edge-dot-r) * (2 * var(--docs-edge-dot-sink) - 1));
   /* The cream surface + its former 6px cream ring now live on ::before
      so a circular mask can punch a hole through them (revealing the
      videodeck) without clipping the card's shadow. Only the soft drop

@@ -84,25 +84,35 @@ export default function Footer() {
           className="mt-10 pt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
           style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}
         >
-          <p className="text-[13px] leading-5 text-white/70">© 2024 Neoflix</p>
-
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 text-[13px] leading-5 text-white/70">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 sm:gap-6 text-[13px] leading-5 text-white/70">
             <a
-              href="mailto:lennartvandermolen@gmail.com"
+              href="https://neoflix.care/contact"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-white underline-offset-2 hover:underline transition-colors"
             >
-              Developed by <strong>Lennart vd Molen</strong>
+              © 2024 Neoflix
             </a>
             <a
-              href="https://www.knaw.nl/fondsen-en-prijzen/knaw-van-walree-fonds"
+              href="mailto:info@neoflix.care"
+              className="hover:text-white underline-offset-2 hover:underline transition-colors"
+            >
+              Created by <strong>Veerle Heesters</strong>
+            </a>
+            <a
+              href="https://www.knaw.nl/en/funds-and-prizes/knaw-van-walree-fund"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-white underline-offset-2 hover:underline transition-colors"
             >
               <span style={{ fontWeight: 400 }}>Supported by the </span>
               <span style={{ fontWeight: 900 }}>KNAW Van Walree Fund</span>
+            </a>
+            <a
+              href="mailto:lennartvandermolen@gmail.com"
+              className="hover:text-white underline-offset-2 hover:underline transition-colors"
+            >
+              Developed by <strong>Lennart vd Molen</strong>
             </a>
           </div>
 

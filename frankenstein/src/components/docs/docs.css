@@ -128,10 +128,14 @@
   --docs-edge-dot-sink: 0.333;
   /* Marker centre, in the ::before box (which sits --docs-outline-width
      beyond the card on every side). x: on the divider. y: positioned so
-     --docs-edge-dot-sink of the diameter pokes below the top edge. */
+     --docs-edge-dot-sink of the diameter pokes below the *visible* top
+     edge. That visible edge is the outer edge of the 6px cream stroke,
+     which is exactly the ::before box top = the mask's origin — so y is
+     measured straight from there with no outline term. (Adding one would
+     sink the circle a stroke-width deeper than it looks, since the mask
+     bites through both the surface and the stroke above it.) */
   --docs-edge-dot-cx: calc(var(--docs-edge-dot-inset) + var(--docs-outline-width));
-  --docs-edge-dot-cy: calc(
-    var(--docs-outline-width) + var(--docs-edge-dot-r) * (2 * var(--docs-edge-dot-sink) - 1));
+  --docs-edge-dot-cy: calc(var(--docs-edge-dot-r) * (2 * var(--docs-edge-dot-sink) - 1));
   /* The cream surface + its former 6px cream ring now live on ::before
      so a circular mask can punch a hole through them (revealing the
      videodeck) without clipping the card's shadow. Only the soft drop

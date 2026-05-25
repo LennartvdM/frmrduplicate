@@ -63,14 +63,14 @@ export default function Footer() {
 
           <div className="flex gap-14">
             <div>
-              <div className={headingClass}>Products</div>
+              <div className={headingClass}>Project</div>
               <ul className="space-y-2">
                 <li><a href="/" onClick={handleNav('/')} className={linkClass}>Home</a></li>
                 <li><a href="/neoflix" onClick={handleNav('/neoflix')} className={linkClass}>Neoflix</a></li>
               </ul>
             </div>
             <div>
-              <div className={headingClass}>Resources</div>
+              <div className={headingClass}>Materials</div>
               <ul className="space-y-2">
                 <li><a href="/publications" onClick={handleNav('/publications')} className={linkClass}>Publications</a></li>
                 <li><a href="/toolbox" onClick={handleNav('/toolbox')} className={linkClass}>Toolbox</a></li>

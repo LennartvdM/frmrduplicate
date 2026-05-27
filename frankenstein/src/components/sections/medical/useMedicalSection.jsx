@@ -6,6 +6,31 @@ import { useThrottleWithTrailing } from '../../../hooks/useDebounce';
 import { visibilityReducer, measurementsReducer, interactionReducer } from './MedicalSection.reducers';
 import { VARIANTS } from './MedicalSection.data';
 
+// True when the primary pointer can hover and is fine (a mouse or trackpad),
+// regardless of whether the screen also accepts touch. This separates a
+// touch-screen laptop / docked 2-in-1 from a coarse-pointer tablet or phone.
+// Reactive so docking or undocking a keyboard re-evaluates the layout.
+function useHasFinePointer() {
+  const query = '(hover: hover) and (pointer: fine)';
+  const [fine, setFine] = useState(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return false;
+    return window.matchMedia(query).matches;
+  });
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return undefined;
+    const mq = window.matchMedia(query);
+    const onChange = () => setFine(mq.matches);
+    onChange();
+    if (mq.addEventListener) mq.addEventListener('change', onChange);
+    else if (mq.addListener) mq.addListener(onChange);
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener('change', onChange);
+      else if (mq.removeListener) mq.removeListener(onChange);
+    };
+  }, []);
+  return fine;
+}
+
 export function useMedicalSection({ inView, variant = 'v2' }) {
   // Memoize config to prevent unnecessary recalculations
   const config = useMemo(() => VARIANTS[variant] || VARIANTS.v2, [variant]);
@@ -108,7 +133,7 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
   const {
     mode: layoutMode,
     isDesktop,
-    isMobile,
+    isMobile: rawIsMobile,
     isTabletPortrait,
     isTabletLandscape,
     isTablet,
@@ -116,12 +141,23 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
     isTouchDevice,
   } = useTabletLayout();
 
+  // A 2-in-1 (e.g. a Surface Pro) docked as a laptop exposes a fine, hovering
+  // pointer — its trackpad — even though the screen is also touch-capable.
+  // useTabletLayout keys off touch alone, so such devices land in the
+  // landscape-tablet path: a 0.7-scaled desktop layout whose caption text and
+  // column width aren't scaled to match, which makes the headlines wrap and
+  // overflow. Treat a fine + hover pointer as a desktop regardless of touch.
+  // Detaching the keyboard flips the pointer back to coarse, restoring the
+  // tablet layout.
+  const hasFinePointer = useHasFinePointer();
+
   // Layout modes:
   // - Portrait tablet: vertical stack layout (simplified)
   // - Landscape tablet: horizontal desktop-like layout with touch handlers
   // - Desktop: horizontal layout with hover handlers
-  const isTabletLayout = isTabletPortrait; // Only portrait uses vertical tablet layout
-  const isLandscapeTablet = isTabletLandscape; // Landscape uses desktop layout with touch
+  const isMobile = rawIsMobile && !hasFinePointer;
+  const isTabletLayout = isTabletPortrait && !hasFinePointer; // Only portrait uses vertical tablet layout
+  const isLandscapeTablet = isTabletLandscape && !hasFinePointer; // Landscape uses desktop layout with touch
 
   const isVideoLeft = orientation === 'video-left';
 

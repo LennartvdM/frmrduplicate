@@ -83,6 +83,10 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
 
   // Remaining individual state (frequently updated or independent)
   const [currentVideo, setCurrentVideo] = useState(0);
+  // Real readiness signal from the carousel: its videos can actually play.
+  // Interaction is gated on this rather than just hoping a fixed timer ran long
+  // enough for them to load.
+  const [videosReady, setVideosReady] = useState(false);
   const [barKey, setBarKey] = useState(0);
   const [outlineFullOpacity, setOutlineFullOpacity] = useState(false);
   const [highlightOutlineFullOpacity, setHighlightOutlineFullOpacity] = useState(false);
@@ -108,7 +112,11 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
     captionTop, headerHeight, videoTop,
     collectionTop, videoAndCaptionTop, navbarHeight,
   } = measurements;
-  const { isPaused, hoveredIndex, videoHover, interactionsEnabled } = interaction;
+  const { isPaused, hoveredIndex, videoHover, interactionsEnabled: revealInteractionsEnabled } = interaction;
+  // The entrance ceremony flips revealInteractionsEnabled once the reveal has
+  // played; the exported flag also requires the videos to actually be ready, so
+  // we never hand the user a carousel whose footage hasn't loaded yet.
+  const interactionsEnabled = revealInteractionsEnabled && videosReady;
 
   // Derived/computed values after all state declarations
   const safeVideoHover = interactionsEnabled && videoHover;
@@ -328,6 +336,8 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
       setCurrentVideo(0);
       dispatchInteraction({ type: 'RESET' });
       setBarKey(0);
+      // Re-arm the readiness gate so the next entrance waits for its own load.
+      setVideosReady(false);
     }
   }, [sectionState]);
 
@@ -550,6 +560,10 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
     dispatchInteraction({ type: 'SET_VIDEO_HOVER', payload: hover });
   }, []);
 
+  // The carousel calls this once its videos can actually play. Stable identity
+  // so it doesn't retrigger the carousel's effects.
+  const handleCarouselReady = useCallback(() => setVideosReady(true), []);
+
   return {
     // config
     blurVideos, headlines, mainVideos, CookieCutterBand, orientation, sectionId, header, sectionTargets,
@@ -581,5 +595,6 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
     handleTabletCarouselChange, handleTabletPauseChange, handleTabletBarSelect,
     tabletCaptions, handleLandscapeTabletCaptionClick, handleLandscapeTabletTouchStart, handleLandscapeTabletTouchEnd,
     handleVideoHover,
+    onCarouselReady: handleCarouselReady,
   };
 }

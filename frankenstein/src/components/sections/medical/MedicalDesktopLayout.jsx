@@ -64,6 +64,7 @@ export default function MedicalDesktopLayout({
   handleHoverEnd,
   handleBarEnd,
   handleVideoHover,
+  onCarouselReady,
   handleTabletCarouselChange,
   handleLandscapeTabletCaptionClick,
   handleLandscapeTabletTouchStart,
@@ -340,6 +341,7 @@ export default function MedicalDesktopLayout({
             >
               <MedicalCarousel
                 current={currentVideo}
+                onReady={onCarouselReady}
                 hoveredIndex={safeHoveredIndex}
                 isActive={safeHoveredIndex === currentVideo || isPaused}
                 videoHover={safeVideoHover}

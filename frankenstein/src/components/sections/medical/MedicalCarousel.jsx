@@ -1,5 +1,4 @@
-import React, { useRef, useEffect, useCallback, memo } from "react";
-import { useThrottleWithTrailing } from "../../../hooks/useDebounce";
+import React, { useRef, useEffect, memo } from "react";
 import { assetUrl } from "../../../utils/assetUrl";
 
 const AUTOPLAY_MS = 6600; // 6.6 seconds
@@ -36,8 +35,7 @@ DO NOT "fix" this to crossfade between A and B.
 The stacking is intentional to avoid ugly transitions.
 */
 
-const MedicalCarousel = memo(function MedicalCarousel({ current, setVideoCenter, hoveredIndex, isActive, videoHover, setVideoHover, interactionsEnabled, videos, enableTouchNavigation, onTouchChange, sectionActive = true, onCarouselClick }) {
-  const videoContainerRef = useRef(null);
+const MedicalCarousel = memo(function MedicalCarousel({ current, hoveredIndex, isActive, videoHover, setVideoHover, interactionsEnabled, videos, enableTouchNavigation, onTouchChange, sectionActive = true, onCarouselClick }) {
   const videoRefs = useRef([null, null, null]);
   const [deckLoaded, setDeckLoaded] = React.useState(false);
 
@@ -63,30 +61,6 @@ const MedicalCarousel = memo(function MedicalCarousel({ current, setVideoCenter,
       }
     });
   }, [current, deckLoaded, sectionActive]);
-
-  // Throttled center update to reduce resize/scroll handler frequency
-  const updateCenter = useCallback(() => {
-    if (videoContainerRef.current) {
-      const rect = videoContainerRef.current.getBoundingClientRect();
-      const newCenter = {
-        x: rect.left + rect.width / 2 + window.scrollX,
-        y: rect.top + rect.height / 2 + window.scrollY,
-      };
-      setVideoCenter && setVideoCenter(newCenter);
-    }
-  }, [setVideoCenter]);
-
-  const throttledUpdateCenter = useThrottleWithTrailing(updateCenter, 100);
-
-  useEffect(() => {
-    updateCenter();
-    window.addEventListener("resize", throttledUpdateCenter);
-    window.addEventListener("scroll", throttledUpdateCenter, { passive: true });
-    return () => {
-      window.removeEventListener("resize", throttledUpdateCenter);
-      window.removeEventListener("scroll", throttledUpdateCenter);
-    };
-  }, [updateCenter, throttledUpdateCenter]);
 
   return (
     <div 

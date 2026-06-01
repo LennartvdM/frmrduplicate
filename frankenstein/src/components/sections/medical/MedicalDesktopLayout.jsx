@@ -31,7 +31,6 @@ export default function MedicalDesktopLayout({
   interactionsEnabled,
   // state
   currentVideo,
-  setVideoCenter,
   barKey,
   outlineFullOpacity,
   highlightOutlineFullOpacity,
@@ -76,8 +75,20 @@ export default function MedicalDesktopLayout({
   const lineCircle2Ref = useRef(null);
   const lineRafRef = useRef(null);
 
-  // Sync mask circles on the horizontal line with SectionDotNav arrow buttons
+  // Sync mask circles on the horizontal line with SectionDotNav arrow buttons.
+  // The line and its punch-out circles only exist in the DOM while this desktop
+  // section is on-screen (sectionState not idle/cleaned) and not in a tablet
+  // layout. Outside that window lineRef is null, so a free-running rAF would
+  // just burn a frame every tick forcing layout — and with both V2 and V3
+  // mounted at once that's two perpetual loops. Gate the loop on the same
+  // condition that renders the line: behaviour is identical whenever the line
+  // is actually visible, and it stops entirely when it isn't.
   useEffect(() => {
+    const lineRendered =
+      sectionState !== 'idle' && sectionState !== 'cleaned' &&
+      !isTabletLayout && !isLandscapeTablet;
+    if (!lineRendered) return undefined;
+
     const refs = [lineCircle1Ref, lineCircle2Ref];
     const update = () => {
       const svg = lineRef.current;
@@ -102,7 +113,7 @@ export default function MedicalDesktopLayout({
     };
     lineRafRef.current = requestAnimationFrame(update);
     return () => { if (lineRafRef.current) cancelAnimationFrame(lineRafRef.current); };
-  }, []);
+  }, [sectionState, isTabletLayout, isLandscapeTablet]);
 
   return (
     <div
@@ -329,7 +340,6 @@ export default function MedicalDesktopLayout({
             >
               <MedicalCarousel
                 current={currentVideo}
-                setVideoCenter={setVideoCenter}
                 hoveredIndex={safeHoveredIndex}
                 isActive={safeHoveredIndex === currentVideo || isPaused}
                 videoHover={safeVideoHover}

@@ -70,10 +70,7 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
     videoTop: '0px',
     collectionTop: '60px',
     videoAndCaptionTop: '0px',
-    biteRect: { x: 0, y: 0, width: 0, height: 0, rx: 0 },
     navbarHeight: 60,
-    highlighterLeftPx: 0,
-    highlighterWidthPx: 0,
   });
 
   // Interaction state (paused, hover states)
@@ -86,7 +83,6 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
 
   // Remaining individual state (frequently updated or independent)
   const [currentVideo, setCurrentVideo] = useState(0);
-  const [videoCenter, setVideoCenter] = useState({ x: 0, y: 0 });
   const [barKey, setBarKey] = useState(0);
   const [outlineFullOpacity, setOutlineFullOpacity] = useState(false);
   const [highlightOutlineFullOpacity, setHighlightOutlineFullOpacity] = useState(false);
@@ -110,8 +106,7 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
   const { header: headerVisible, video: videoVisible, captions: captionsVisible } = visibility;
   const {
     captionTop, headerHeight, videoTop,
-    collectionTop, videoAndCaptionTop, biteRect, navbarHeight,
-    highlighterLeftPx, highlighterWidthPx
+    collectionTop, videoAndCaptionTop, navbarHeight,
   } = measurements;
   const { isPaused, hoveredIndex, videoHover, interactionsEnabled } = interaction;
 
@@ -246,25 +241,12 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
 
   // Consolidated layout measurements - single throttled handler for all resize/scroll updates
   const updateLayoutMeasurements = useCallback(() => {
-    // Navbar height
+    // Navbar height. This is the only layout value that feeds rendered
+    // output here, and it only changes on resize — never during a scroll —
+    // so the handler below listens for resize only.
     const nav = document.querySelector('nav');
     const h = nav ? (nav.getBoundingClientRect().height || 60) : 60;
     dispatchMeasurements({ type: 'SET_NAVBAR_HEIGHT', payload: h });
-
-    // Video container rect
-    if (videoContainerRef.current) {
-      const rect = videoContainerRef.current.getBoundingClientRect();
-      dispatchMeasurements({
-        type: 'SET_BITE_RECT',
-        payload: {
-          x: rect.left + window.scrollX,
-          y: rect.top + window.scrollY,
-          width: rect.width,
-          height: rect.height,
-          rx: 16
-        }
-      });
-    }
   }, []);
 
   const throttledLayoutUpdate = useThrottleWithTrailing(updateLayoutMeasurements, 100);
@@ -273,10 +255,8 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
   useEffect(() => {
     updateLayoutMeasurements();
     window.addEventListener('resize', throttledLayoutUpdate);
-    window.addEventListener('scroll', throttledLayoutUpdate, { passive: true });
     return () => {
       window.removeEventListener('resize', throttledLayoutUpdate);
-      window.removeEventListener('scroll', throttledLayoutUpdate);
     };
   }, [sectionState, updateLayoutMeasurements, throttledLayoutUpdate]);
 
@@ -579,12 +559,11 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
     headerVisible, videoVisible, captionsVisible,
     // measurements
     captionTop, headerHeight, videoTop,
-    collectionTop, videoAndCaptionTop, biteRect, navbarHeight,
-    highlighterLeftPx, highlighterWidthPx,
+    collectionTop, videoAndCaptionTop, navbarHeight,
     // interaction
     isPaused, hoveredIndex, videoHover, interactionsEnabled,
     // individual state
-    currentVideo, videoCenter, setVideoCenter, barKey, outlineFullOpacity, highlightOutlineFullOpacity, disableTransitions,
+    currentVideo, barKey, outlineFullOpacity, highlightOutlineFullOpacity, disableTransitions,
     // refs
     rowRefs, captionsRef, videoContainerRef, rightCaptionsRef,
     headerRef, videoAnchorRef, captionRef, contentAnchorRef, shadedFrameRef, captionButtonRefs,

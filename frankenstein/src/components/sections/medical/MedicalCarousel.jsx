@@ -35,7 +35,7 @@ DO NOT "fix" this to crossfade between A and B.
 The stacking is intentional to avoid ugly transitions.
 */
 
-const MedicalCarousel = memo(function MedicalCarousel({ current, hoveredIndex, isActive, videoHover, setVideoHover, interactionsEnabled, videos, enableTouchNavigation, onTouchChange, sectionActive = true, onCarouselClick }) {
+const MedicalCarousel = memo(function MedicalCarousel({ current, hoveredIndex, isActive, videoHover, setVideoHover, interactionsEnabled, videos, enableTouchNavigation, onTouchChange, sectionActive = true, onCarouselClick, onReady }) {
   const videoRefs = useRef([null, null, null]);
   const [deckLoaded, setDeckLoaded] = React.useState(false);
 
@@ -61,6 +61,37 @@ const MedicalCarousel = memo(function MedicalCarousel({ current, hoveredIndex, i
       }
     });
   }, [current, deckLoaded, sectionActive]);
+
+  // Real readiness signal. The parent gates interaction on this instead of a
+  // fixed timer that just hopes the footage finished loading. Each clip reports
+  // when it can show a frame (or errors); once all three are settled we tell the
+  // parent the carousel is genuinely ready.
+  const onReadyFiredRef = useRef(false);
+  const readyIdxRef = useRef(new Set());
+  const markReady = (idx) => {
+    if (onReadyFiredRef.current) return;
+    readyIdxRef.current.add(idx);
+    if (readyIdxRef.current.has(0) && readyIdxRef.current.has(1) && readyIdxRef.current.has(2)) {
+      onReadyFiredRef.current = true;
+      onReady?.();
+    }
+  };
+
+  useEffect(() => {
+    // Count clips already buffered before these handlers attached (cache, or a
+    // fast re-mount when scrolling back to the section).
+    videoRefs.current.forEach((v, idx) => {
+      if (v && v.readyState >= 2) markReady(idx); // HAVE_CURRENT_DATA = first frame
+    });
+    // Failsafe: never leave interaction wedged off if a load event never lands.
+    const failsafe = setTimeout(() => {
+      if (!onReadyFiredRef.current) {
+        onReadyFiredRef.current = true;
+        onReady?.();
+      }
+    }, 15000);
+    return () => clearTimeout(failsafe);
+  }, []);
 
   return (
     <div 
@@ -101,6 +132,8 @@ const MedicalCarousel = memo(function MedicalCarousel({ current, hoveredIndex, i
           tabIndex="-1"
           aria-hidden="true"
           draggable="false"
+          onLoadedData={() => markReady(2)}
+          onError={() => markReady(2)}
           style={{
             outline: 'none',
             transition: 'outline 0.2s',
@@ -152,6 +185,8 @@ const MedicalCarousel = memo(function MedicalCarousel({ current, hoveredIndex, i
               tabIndex="-1"
               aria-hidden="true"
               draggable="false"
+              onLoadedData={() => markReady(i)}
+              onError={() => markReady(i)}
               style={{
                 outline: 'none',
                 transition: 'outline 0.2s',

@@ -9,6 +9,7 @@ export default function HeroScrollCue({ onClick }) {
   const rS0 = useRef(null);
   const rS1 = useRef(null);
   const rafId = useRef(null);
+  const rootRef = useRef(null);
 
   useEffect(() => {
     const handleSubtitle = () => {
@@ -58,8 +59,32 @@ export default function HeroScrollCue({ onClick }) {
       rafId.current = requestAnimationFrame(update);
     };
 
-    rafId.current = requestAnimationFrame(update);
-    return () => { if (rafId.current) cancelAnimationFrame(rafId.current); };
+    // The cue sits at the top of the scroll container; once it scrolls out of
+    // view there's nothing to see, so pause the loop entirely instead of
+    // running it for the life of the page. performance.now() drives the phase,
+    // so it resumes seamlessly when the cue scrolls back into view.
+    const start = () => {
+      if (rafId.current == null) rafId.current = requestAnimationFrame(update);
+    };
+    const stop = () => {
+      if (rafId.current != null) {
+        cancelAnimationFrame(rafId.current);
+        rafId.current = null;
+      }
+    };
+
+    const root = rootRef.current;
+    if (!root || typeof IntersectionObserver === 'undefined') {
+      start();
+      return () => stop();
+    }
+
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) start();
+      else stop();
+    });
+    io.observe(root);
+    return () => { io.disconnect(); stop(); };
   }, []);
 
   const tall = "M25,4 L10,20 L10,55 L72,115 Q80,125 88,115 L150,55 L150,20 L135,4 Q132,0 128,0 L28,0 Q25,0 25,4Z";
@@ -67,6 +92,7 @@ export default function HeroScrollCue({ onClick }) {
 
   return (
     <div
+      ref={rootRef}
       className="absolute left-1/2 cursor-pointer z-20 pointer-events-auto"
       onClick={onClick}
       role="button"

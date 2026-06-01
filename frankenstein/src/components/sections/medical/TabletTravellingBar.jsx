@@ -22,8 +22,11 @@ const TabletTravellingBar = memo(function TabletTravellingBar({ captions, curren
   const circle2Ref = useRef(null);
   const rafRef = useRef(null);
 
-  // Continuously sync mask circles with SectionDotNav button positions
+  // Sync mask circles with SectionDotNav button positions. Only runs while the
+  // section is on-screen (shouldTransition); off-screen the bar isn't visible,
+  // so a free-running rAF forcing layout every frame would be wasted work.
   useEffect(() => {
+    if (!shouldTransition) return undefined;
     const refs = [circle1Ref, circle2Ref];
     const update = () => {
       const el = highlighterRef.current;
@@ -44,7 +47,7 @@ const TabletTravellingBar = memo(function TabletTravellingBar({ captions, curren
     };
     rafRef.current = requestAnimationFrame(update);
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
-  }, []);
+  }, [shouldTransition]);
 
   return (
     <div

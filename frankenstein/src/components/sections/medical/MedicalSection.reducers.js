@@ -31,12 +31,8 @@ export const measurementsReducer = (state, action) => {
       return { ...state, collectionTop: action.payload };
     case 'SET_VIDEO_AND_CAPTION_TOP':
       return { ...state, videoAndCaptionTop: action.payload };
-    case 'SET_BITE_RECT':
-      return { ...state, biteRect: action.payload };
     case 'SET_NAVBAR_HEIGHT':
       return { ...state, navbarHeight: action.payload };
-    case 'SET_HIGHLIGHTER':
-      return { ...state, highlighterLeftPx: action.payload.left, highlighterWidthPx: action.payload.width };
     default:
       return state;
   }

@@ -14,13 +14,17 @@ import useTransitionNavigate from '../../../hooks/useTransitionNavigate';
  * see chunk-5swt4qjj.mjs. When the flag is true, scheduled variant
  * advances no-op, freezing the map on its current variant.
  *
- * City markers are tagged by the compiled Framer output with
- * `data-framer-name="<City>"` + `data-highlight="true"`. We catch
- * pointerdown/up/click in the capture phase on the wrapper, swallow the
- * gesture before Framer Motion's onTap zoom fires, and slide-route into
- * the matching toolbox page via useTransitionNavigate. A click on the
- * map's "own" city (currentCity) or on background fires onActivate
- * instead of navigating — used by the embed to start autocycling.
+ * The map drives a two-step interaction. Tapping a legend entry
+ * ("NICU <City>", tagged `data-framer-name="<City>"`) is left untouched
+ * so Framer Motion's own onTap pans the camera to that city — a "slide"
+ * in the autocycle rotation, all baked into the map component. The on-map
+ * pin that surfaces there (`data-framer-name="Marker<City>"`) is the
+ * actual toolbox link: we catch its pointerdown/up/click in the capture
+ * phase on the wrapper, swallow the gesture before Framer reacts, and
+ * slide-route into the matching toolbox page via useTransitionNavigate.
+ * A non-legend tap on the embed's own marker or on the map background
+ * fires onActivate instead of navigating — used by the embed to resume
+ * autocycling.
  */
 
 export const CITY_SLUGS = {
@@ -75,6 +79,22 @@ function findCityFromEvent(event) {
   while (el) {
     const city = cityFromName(el.getAttribute('data-framer-name') || '');
     if (city) return city;
+    const parent = el.parentElement;
+    el = parent ? parent.closest('[data-framer-name]') : null;
+  }
+  return null;
+}
+
+// Like findCityFromEvent but only matches the on-map pins
+// ("Marker<City>"), walking the full ancestor chain so a tap on the pin's
+// inner label still resolves to its marker. Legend buttons, floating
+// labels and the map background all return null — those are left for
+// Framer's native onTap (which pans the camera) to handle.
+function findMarkerCityFromEvent(event) {
+  let el = event.target?.closest?.('[data-framer-name]');
+  while (el) {
+    const name = el.getAttribute('data-framer-name') || '';
+    if (/^marker/i.test(name)) return cityFromName(name);
     const parent = el.parentElement;
     el = parent ? parent.closest('[data-framer-name]') : null;
   }
@@ -138,23 +158,29 @@ export default function WorldMap({
     const node = mountRef.current;
     if (!node) return undefined;
 
+    // Only swallow gestures on the on-map markers. Legend taps must reach
+    // Framer Motion's native onTap so it pans the camera to that city —
+    // the "slide" transition baked into the map component.
     const swallow = (event) => {
-      if (findCityFromEvent(event)) {
+      if (findMarkerCityFromEvent(event)) {
         event.stopPropagation();
       }
     };
 
     const handleClick = (event) => {
-      const city = findCityFromEvent(event);
-      if (city && city !== currentCityRef.current) {
+      // The on-map marker is the toolbox link.
+      const markerCity = findMarkerCityFromEvent(event);
+      if (markerCity && markerCity !== currentCityRef.current) {
         event.preventDefault();
         event.stopPropagation();
-        navigateRef.current(`/toolbox/${CITY_SLUGS[city]}`);
+        navigateRef.current(`/toolbox/${CITY_SLUGS[markerCity]}`);
         return;
       }
-      // Same-city marker click or background click while paused →
-      // hand off to the embed so it can resume autocycling.
-      if (pausedRef.current && onActivateRef.current) {
+      // A legend tap falls through untouched so Framer pans the camera.
+      // The embed resumes autocycling on any non-legend tap: its own
+      // marker (markerCity === currentCity) or the map background.
+      const isLegendTap = !markerCity && Boolean(findCityFromEvent(event));
+      if (!isLegendTap && pausedRef.current && onActivateRef.current) {
         event.preventDefault();
         event.stopPropagation();
         onActivateRef.current();

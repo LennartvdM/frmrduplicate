@@ -106,7 +106,7 @@ export default function Footer() {
               className="hover:text-white underline-offset-2 hover:underline transition-colors"
             >
               <span style={{ fontWeight: 400 }}>Supported by the </span>
-              <span style={{ fontWeight: 900 }}>KNAW Van Walree Fund</span>
+              <span style={{ fontWeight: 700 }}>KNAW Van Walree Fund</span>
             </a>
             <a
               href="mailto:lennartvandermolen@gmail.com"
@@ -120,13 +120,13 @@ export default function Footer() {
             type="button"
             onClick={scrollTop}
             aria-label="Back to top"
-            className="self-start md:self-auto flex items-center justify-center transition-colors hover:bg-black/80"
+            className="self-start md:self-auto flex items-center justify-center transition-colors hover:bg-[rgba(21,37,54,0.78)]"
             style={{
               width: 44,
               height: 44,
-              borderRadius: 32,
-              backgroundColor: 'rgba(0, 0, 0, 0.6)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: 9999,
+              backgroundColor: 'rgba(21, 37, 54, 0.55)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
               color: 'white',
             }}
           >

@@ -93,7 +93,7 @@
     opacity 0.15s ease,
     transform 0.22s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(var(--sb-text-rgb), 0.10);
 }
 
 .sb-highlighter.active {
@@ -114,7 +114,7 @@
 /* Hover scale when active item is hovered */
 .sb-sidebar:has(.sb-item.active:hover) .sb-highlighter.highlighter-item {
   transform: scale(1.015);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 16px rgba(var(--sb-text-rgb), 0.18);
   transition:
     top 0.22s cubic-bezier(0.4, 0, 0.2, 1),
     height 0.22s cubic-bezier(0.4, 0, 0.2, 1),
@@ -255,9 +255,9 @@
   scroll-margin-top: 96px;
   margin-bottom: 2rem;
   border-radius: 0 16px 16px 0;
-  border: 1px solid #e7dfd7;
+  border: 1px solid rgba(var(--sb-muted-rgb), 0.45);
   border-left: none;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 3px rgba(var(--sb-text-rgb), 0.10);
   padding: 1.5rem 2rem;
   background: linear-gradient(135deg, rgba(250, 250, 249, 0.92), rgba(253, 244, 255, 0.92));
 }
@@ -273,7 +273,7 @@
   transform: translateX(calc(-1 * (var(--sb-sidebar-width) + 2.5rem)));
   background: inherit;
   border-radius: 16px 0 0 16px;
-  border: 1px solid #e7dfd7;
+  border: 1px solid rgba(var(--sb-muted-rgb), 0.45);
   border-right: none;
   z-index: -1;
   pointer-events: none;
@@ -528,7 +528,7 @@
   /* Section card — no outcrop on mobile */
   .sb-section-card {
     border-radius: 16px;
-    border-left: 1px solid #e7dfd7;
+    border-left: 1px solid rgba(var(--sb-muted-rgb), 0.45);
     margin: 0 0.5rem 1.5rem;
   }
 

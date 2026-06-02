@@ -354,7 +354,7 @@ export default function BlogPage({ sections, scrollTo }) {
                       {numberPart}
                     </span>
                   )}
-                  <span style={{ fontWeight: 800, fontSize: 40 }}>
+                  <span style={{ fontWeight: 700, fontSize: 40 }}>
                     {titlePart}
                   </span>
                 </h2>
@@ -465,7 +465,7 @@ function TitleCard({ card }) {
         overflow: 'hidden',
         marginBottom: 18,
         maxWidth: 600,
-        boxShadow: '0 1px 2px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.04)',
+        boxShadow: '0 1px 2px rgba(28,54,100,0.12), inset 0 0 0 1px rgba(255,255,255,0.06)',
         transition: 'transform 0.2s ease, box-shadow 0.2s ease',
       }}
       onMouseEnter={(e) => {
@@ -476,7 +476,7 @@ function TitleCard({ card }) {
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'translateY(0)';
         e.currentTarget.style.boxShadow =
-          '0 1px 2px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.04)';
+          '0 1px 2px rgba(28,54,100,0.12), inset 0 0 0 1px rgba(255,255,255,0.06)';
       }}
     >
       <div

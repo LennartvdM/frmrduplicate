@@ -207,7 +207,7 @@ export default function Navbar() {
   }, [location.pathname, location.hash, isMobile]);
 
   return (
-    <nav ref={navRef} data-app-navbar className="fixed inset-x-0 top-0 z-40 bg-white border-b border-[#e7dfd7] flex items-center justify-between shadow-[0_2px_2px_0_rgba(0,0,0,0.08)]" style={{height: 60}}>
+    <nav ref={navRef} data-app-navbar className="fixed inset-x-0 top-0 z-40 bg-white flex items-center justify-between" style={{ height: 60, borderBottom: '1px solid rgba(17, 17, 98, 0.08)', boxShadow: '0 1px 2px rgba(17, 17, 98, 0.05), 0 2px 8px -2px rgba(17, 17, 98, 0.06)' }}>
       {/* Logo */}
       <div className="flex items-center h-full pl-6 pr-4">
         <FaviconLogo onClick={() => {
@@ -300,9 +300,9 @@ export default function Navbar() {
                 <a
                   href={link.to}
                   onClick={(e) => handleNavClick(e, link.to, link.section)}
-                  className={`relative z-30 flex items-center justify-center rounded-full transition-colors duration-150 transform-gpu
-                    hover:scale-105 focus:scale-105 transition-transform duration-240
-                    ${active ? 'text-white font-bold' : isToolbox ? 'text-white font-semibold' : 'text-[#232324] font-semibold'}
+                  className={`relative z-30 flex items-center justify-center rounded-full transform-gpu transition duration-200 ease-out
+                    hover:scale-105 focus:scale-105
+                    ${active ? 'text-white' : isToolbox ? 'text-white' : 'text-[#232324]'}
                     ${isToolbox && !active ? 'bg-[#232324]' : ''}
                   `}
                   style={{

@@ -16,7 +16,7 @@ export default function Embed({ url, children }) {
         display: 'block',
         margin: '20px 0',
         padding: '16px 18px',
-        border: '1px solid #e4e8ee',
+        border: '1px solid rgba(17, 17, 98, 0.08)',
         borderRadius: 10,
         background: 'white',
         textDecoration: 'none',
@@ -28,7 +28,7 @@ export default function Embed({ url, children }) {
         e.currentTarget.style.boxShadow = '0 2px 8px rgba(14, 28, 49, 0.05)';
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = '#e4e8ee';
+        e.currentTarget.style.borderColor = 'rgba(17, 17, 98, 0.08)';
         e.currentTarget.style.boxShadow = 'none';
       }}
     >

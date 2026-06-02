@@ -9,13 +9,13 @@ export default function Tabs({ children }) {
   if (tabs.length === 0) return null;
 
   return (
-    <div className="docs-tabs" style={{ margin: '20px 0', border: '1px solid #e4e8ee', borderRadius: 10, overflow: 'hidden' }}>
+    <div className="docs-tabs" style={{ margin: '20px 0', border: '1px solid rgba(17, 17, 98, 0.08)', borderRadius: 10, overflow: 'hidden' }}>
       <div
         role="tablist"
         style={{
           display: 'flex',
           gap: 0,
-          borderBottom: '1px solid #e4e8ee',
+          borderBottom: '1px solid rgba(17, 17, 98, 0.08)',
           background: '#f7f9fc',
           overflowX: 'auto',
         }}

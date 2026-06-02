@@ -56,7 +56,7 @@ export default function ContentSection({
           className="mb-6 not-prose"
           style={{
             fontFamily: 'Inter, sans-serif',
-            fontWeight: 900,
+            fontWeight: 700,
             fontSize: '40px',
             color: '#383437',
             letterSpacing: '-0.01em',

@@ -110,8 +110,8 @@ export default function BlogPage({ sections, scrollTo }) {
     const body = document.body;
     const prevH = html.style.backgroundColor;
     const prevB = body.style.backgroundColor;
-    html.style.backgroundColor = '#f5f9fc';
-    body.style.backgroundColor = '#f5f9fc';
+    html.style.backgroundColor = 'var(--cool-page)';
+    body.style.backgroundColor = 'var(--cool-page)';
     return () => {
       html.style.backgroundColor = prevH;
       body.style.backgroundColor = prevB;

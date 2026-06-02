@@ -24,7 +24,7 @@ function AppShell() {
   // the whole page (navbar included) behind a snapshot during each
   // nav, which produced dead-click windows on persistent chrome.
   return (
-    <div className={`min-h-screen ${isNeoflix || isPublications || isContact || isToolbox ? '' : 'bg-[#F5F9FC]'}`}>
+    <div className={`min-h-screen ${isNeoflix || isPublications || isContact || isToolbox ? '' : 'bg-[var(--cool-page)]'}`}>
       <Navbar />
       <BackdropProvider>
         <RouteSlider>

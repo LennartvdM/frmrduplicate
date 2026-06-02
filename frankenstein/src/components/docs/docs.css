@@ -19,10 +19,10 @@
   --docs-navy-dark: #07072f;
   --docs-navy-rgb: 17, 17, 98;
 
-  --docs-sand: #e1e9f4;
-  --docs-sand-light: #f1f4f8;
+  --docs-sand: var(--cool-sunken);
+  --docs-sand-light: var(--cool-subtle);
   --docs-cream: #f8f5f2;
-  --docs-surface: #fafbfc;
+  --docs-surface: var(--cool-card);
 
   --docs-text: #1d1d30;
   --docs-text-light: #3c3c5d;

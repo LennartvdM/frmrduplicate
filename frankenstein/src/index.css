@@ -4,6 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Cold neutral ramp — the one set of cool off-white surfaces. Anchored on
+   #f5f9fc (the front-page intro surface), so every rung sits a few points
+   apart and nothing shifts much. Light surfaces map onto these four; the
+   docs tokens reference them too. */
+:root {
+  --cool-card:   #ffffff; /* raised cards & reading surfaces       */
+  --cool-page:   #f5f9fc; /* page & section backgrounds (canonical) */
+  --cool-subtle: #edf2f8; /* subtle fills: code, chips, tabs, hovers */
+  --cool-sunken: #e2e9f3; /* wells, table headers, deeper fills     */
+}
+
 /* Loading bar animation */
 @keyframes grow {
   from { width: 0; }

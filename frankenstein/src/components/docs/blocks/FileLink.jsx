@@ -31,7 +31,7 @@ export default function FileLink({ src, name }) {
           width: 34,
           height: 34,
           borderRadius: 6,
-          background: '#f1f5f9',
+          background: 'var(--cool-subtle)',
           color: '#0e1c31',
           display: 'inline-flex',
           alignItems: 'center',

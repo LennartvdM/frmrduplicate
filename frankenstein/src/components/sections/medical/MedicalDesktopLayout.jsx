@@ -265,7 +265,7 @@ export default function MedicalDesktopLayout({
               mixBlendMode: 'screen'
             }}>
               <CookieCutterBand
-                bandColor="#f0f4f6"
+                bandColor="#edf2f8"
                 bandHeight={bandHeight}
                 bandWidth={bandWidth}
               />

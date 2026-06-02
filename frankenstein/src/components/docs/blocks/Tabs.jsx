@@ -16,7 +16,7 @@ export default function Tabs({ children }) {
           display: 'flex',
           gap: 0,
           borderBottom: '1px solid rgba(17, 17, 98, 0.08)',
-          background: '#f7f9fc',
+          background: 'var(--cool-subtle)',
           overflowX: 'auto',
         }}
       >

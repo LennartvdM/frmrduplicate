@@ -434,7 +434,7 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
                 width: 8,
                 height: 8,
                 borderRadius: '50%',
-                backgroundColor: '#56c6c9',
+                backgroundColor: '#48c1c4',
                 boxShadow: '0 2px 4px rgba(0, 0, 0, 0.35)',
                 pointerEvents: 'none',
               }}

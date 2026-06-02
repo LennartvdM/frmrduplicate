@@ -37,7 +37,7 @@ export default function Footer() {
       className="w-full"
       style={{
         background:
-          'linear-gradient(180deg, rgb(114, 194, 194) 0%, rgb(21, 37, 54) 100%)',
+          'linear-gradient(180deg, rgb(72, 193, 196) 0%, rgb(21, 37, 54) 100%)',
         fontFamily: '"Inter", sans-serif',
         // Snap point: footer's bottom aligns to viewport bottom. Combined
         // with mandatory snap on the scroll container, scrolling past slide 4

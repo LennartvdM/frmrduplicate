@@ -95,10 +95,10 @@ export default function MedicalTabletLayout({
             <AutoFitHeading
               lines={[
                 header.line1suffix ? (
-                  <span key="combined-line">{header.line1}{header.line1suffix}<span style={{ color: '#3fd1c7' }}>{header.line2highlight}</span>{header.line2suffix}</span>
+                  <span key="combined-line">{header.line1}{header.line1suffix}<span style={{ color: '#48c1c4' }}>{header.line2highlight}</span>{header.line2suffix}</span>
                 ) : header.line1,
                 header.line1suffix ? header.line3 : (
-                  <span key="highlight-line">{header.line2prefix}<span style={{ color: '#3fd1c7' }}>{header.line2highlight}</span>{header.line2suffix}</span>
+                  <span key="highlight-line">{header.line2prefix}<span style={{ color: '#48c1c4' }}>{header.line2highlight}</span>{header.line2suffix}</span>
                 ),
                 header.line1suffix ? header.line4 : header.line3
               ].filter(Boolean)}

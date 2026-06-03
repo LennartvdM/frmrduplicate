@@ -255,7 +255,7 @@ export default function Navbar() {
                   left: 0,
                   borderRadius: '9999px',
                   background: '#d1d5db',
-                  boxShadow: '0 0 0 1px var(--edge)',
+                  boxShadow: '0 0 0 1px var(--edge-3)',
                   zIndex: 1,
                   pointerEvents: 'none',
                   margin: 'auto 0',
@@ -304,7 +304,7 @@ export default function Navbar() {
                   className={`relative z-30 flex items-center justify-center rounded-full transform-gpu transition duration-200 ease-out
                     hover:scale-105 focus:scale-105
                     ${active ? 'text-white' : isToolbox ? 'text-white' : 'text-[#232324]'}
-                    ${isToolbox && !active ? 'bg-[#232324]' : ''}
+                    ${isToolbox && !active ? 'bg-[#232324] ring-1 ring-white/20' : ''}
                   `}
                   style={{
                     pointerEvents: 'auto',

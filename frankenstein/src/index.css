@@ -18,12 +18,15 @@
      shared by the blog drawer and the toolbox reading surface. */
   --cream: #f8f5f2;
 
-  /* Edge language — every element with its own fill gets a full 1px outline;
-     the nesting of those outlined boxes IS the hierarchy. Tuned to read
-     clearly, not whisper. Full boxes only — no top-only highlight. */
-  --edge:        rgba(28, 54, 100, 0.16);  /* outline on light surfaces      */
-  --edge-strong: rgba(28, 54, 100, 0.26);  /* heavier / top-level containers */
-  --edge-light:  rgba(255, 255, 255, 0.18); /* outline on dark / over-video   */
+  /* Outline hierarchy — fill ⇒ a full 1px outline, weighted by containment
+     tier so the nesting reads: T1 outer panels ▸ T2 cards ▸ T3 controls.
+     Cool (navy) on cool surfaces; the *-d variants are for dark / over-video;
+     the warm blog uses its own --sb-muted family at matching weights. */
+  --edge-1:  rgba(28, 54, 100, 0.20);  /* T1 panels / top-level containers */
+  --edge-2:  rgba(28, 54, 100, 0.12);  /* T2 cards / blocks                */
+  --edge-3:  rgba(28, 54, 100, 0.09);  /* T3 controls / chips / pills      */
+  --edge-1d: rgba(255, 255, 255, 0.24); /* T1 over dark / video            */
+  --edge-2d: rgba(255, 255, 255, 0.16); /* T2 over dark / video            */
 }
 
 /* Loading bar animation */

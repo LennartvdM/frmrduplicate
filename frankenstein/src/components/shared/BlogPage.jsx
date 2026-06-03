@@ -488,7 +488,7 @@ function TitleCard({ card }) {
           width: 140,
           height: 140,
           borderRadius: '50%',
-          border: '1px solid rgba(114, 194, 194, 0.18)',
+          border: '1px solid rgba(72, 193, 196, 0.18)',
           pointerEvents: 'none',
         }}
       />
@@ -501,7 +501,7 @@ function TitleCard({ card }) {
           width: 70,
           height: 70,
           borderRadius: '50%',
-          border: '1px solid rgba(114, 194, 194, 0.12)',
+          border: '1px solid rgba(72, 193, 196, 0.12)',
           pointerEvents: 'none',
         }}
       />

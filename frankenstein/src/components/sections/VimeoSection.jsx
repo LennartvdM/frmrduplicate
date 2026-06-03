@@ -90,7 +90,7 @@ const VimeoSection = ({ inView }) => {
           borderRadius: 14,
           overflow: 'hidden',
           backgroundColor: '#000',
-          boxShadow: '0 30px 70px -28px rgba(28, 54, 100, 0.45)',
+          boxShadow: '0 0 0 1px var(--edge), 0 30px 70px -28px rgba(28, 54, 100, 0.45)',
         }}
       >
         <iframe

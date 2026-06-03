@@ -653,7 +653,7 @@ function InlineVideo({ src }) {
     return () => io.disconnect();
   }, []);
   return (
-    <div style={{ maxWidth: 600, margin: '24px 0', borderRadius: 12, overflow: 'hidden', boxShadow: '0 4px 18px rgba(0,0,0,0.10)' }}>
+    <div style={{ maxWidth: 600, margin: '24px 0', borderRadius: 12, overflow: 'hidden', boxShadow: '0 4px 18px rgba(28,54,100,0.12)' }}>
       <video
         ref={ref}
         src={src}

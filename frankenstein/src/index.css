@@ -17,6 +17,14 @@
   /* The one warm paper — kept warm on purpose (warm paper, cool ink),
      shared by the blog drawer and the toolbox reading surface. */
   --cream: #f8f5f2;
+
+  /* Refined edge language — hairlines for *contained* surfaces (cards, media,
+     inputs). Used selectively, as hierarchy: contained / interactive things
+     get an edge; body text and full-bleed sections stay edgeless. */
+  --edge:        rgba(28, 54, 100, 0.10);  /* hairline on light surfaces     */
+  --edge-strong: rgba(28, 54, 100, 0.16);  /* emphasis / dividers            */
+  --edge-light:  rgba(255, 255, 255, 0.14); /* hairline on dark media         */
+  --edge-sheen:  rgba(255, 255, 255, 0.55); /* top inner highlight (lit edge) */
 }
 
 /* Loading bar animation */

@@ -4,6 +4,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Cold neutral ramp — the one set of cool off-white surfaces. Anchored on
+   #f5f9fc (the front-page intro surface), so every rung sits a few points
+   apart and nothing shifts much. Light surfaces map onto these four; the
+   docs tokens reference them too. */
+:root {
+  --cool-card:   #ffffff; /* raised cards & reading surfaces       */
+  --cool-page:   #f5f9fc; /* page & section backgrounds (canonical) */
+  --cool-subtle: #edf2f8; /* subtle fills: code, chips, tabs, hovers */
+  --cool-sunken: #e2e9f3; /* wells, table headers, deeper fills     */
+
+  /* The one warm paper — kept warm on purpose (warm paper, cool ink),
+     shared by the blog drawer and the toolbox reading surface. */
+  --cream: #f8f5f2;
+}
+
 /* Loading bar animation */
 @keyframes grow {
   from { width: 0; }
@@ -54,6 +69,17 @@ body::-webkit-scrollbar { display: none; }
   height: 0 !important;
   display: none !important;
 }
+
+/* Global type refinement — consistent glyph smoothing, and no orphaned or
+   ragged line breaks in headings and body copy. (Deliberately no
+   text-rendering: optimizeLegibility — it can shift glyph rendering and
+   regress more than it helps.) */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1, h2, h3, h4 { text-wrap: balance; }
+p { text-wrap: pretty; }
 
 .gantry-band {
   width: 700px;

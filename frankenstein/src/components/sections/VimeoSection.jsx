@@ -6,7 +6,7 @@ import { useTabletLayout } from '../../hooks/useTabletLayout';
 const VIMEO_SRC = 'https://player.vimeo.com/video/1031329353?h=055dbf5101';
 
 // Same fill as the intro slide so the canvas around the player matches it.
-const INTRO_FILL = 'linear-gradient(to top, #FFFFFF, #F5F9FC)';
+const INTRO_FILL = 'linear-gradient(to top, #ffffff, var(--cool-page))';
 
 // Drop tuning — same rigid-body sim as the intro logo, dialed down: a
 // near-straight fall with one soft bounce and almost no tilt, so it reads

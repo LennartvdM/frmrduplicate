@@ -110,8 +110,8 @@ export default function BlogPage({ sections, scrollTo }) {
     const body = document.body;
     const prevH = html.style.backgroundColor;
     const prevB = body.style.backgroundColor;
-    html.style.backgroundColor = '#f5f9fc';
-    body.style.backgroundColor = '#f5f9fc';
+    html.style.backgroundColor = 'var(--cool-page)';
+    body.style.backgroundColor = 'var(--cool-page)';
     return () => {
       html.style.backgroundColor = prevH;
       body.style.backgroundColor = prevB;
@@ -354,7 +354,7 @@ export default function BlogPage({ sections, scrollTo }) {
                       {numberPart}
                     </span>
                   )}
-                  <span style={{ fontWeight: 800, fontSize: 40 }}>
+                  <span style={{ fontWeight: 700, fontSize: 40 }}>
                     {titlePart}
                   </span>
                 </h2>
@@ -422,7 +422,7 @@ export default function BlogPage({ sections, scrollTo }) {
         .blog-body p { margin: 0 0 1.35em 0; }
         .blog-body p:last-child { margin-bottom: 0; }
         .blog-body a { color: #529c9c; text-decoration: underline; text-underline-offset: 2px; transition: color 0.2s; }
-        .blog-body a:hover { color: #72c2c2; }
+        .blog-body a:hover { color: #48c1c4; }
         .blog-body strong { font-weight: 700; color: #383437; }
         .blog-body em { font-style: italic; }
         .blog-body h2 {
@@ -437,7 +437,7 @@ export default function BlogPage({ sections, scrollTo }) {
         .blog-body ul, .blog-body ol { padding-left: 1.4em; margin: 0 0 1.35em; }
         .blog-body ul li { margin-bottom: 12px; }
         .blog-body ol li { margin-bottom: 12px; }
-        .blog-body ul li::marker { color: #72c2c2; }
+        .blog-body ul li::marker { color: #48c1c4; }
         .blog-body hr {
           border: 0; border-top: 1px solid rgba(56, 52, 55, 0.12);
           margin: 32px 0;
@@ -465,7 +465,7 @@ function TitleCard({ card }) {
         overflow: 'hidden',
         marginBottom: 18,
         maxWidth: 600,
-        boxShadow: '0 1px 2px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.04)',
+        boxShadow: '0 1px 2px rgba(28,54,100,0.12), inset 0 0 0 1px rgba(255,255,255,0.06)',
         transition: 'transform 0.2s ease, box-shadow 0.2s ease',
       }}
       onMouseEnter={(e) => {
@@ -476,7 +476,7 @@ function TitleCard({ card }) {
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'translateY(0)';
         e.currentTarget.style.boxShadow =
-          '0 1px 2px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.04)';
+          '0 1px 2px rgba(28,54,100,0.12), inset 0 0 0 1px rgba(255,255,255,0.06)';
       }}
     >
       <div
@@ -561,7 +561,7 @@ function CitationCard({ text }) {
         padding: '14px 18px 14px 22px',
         marginBottom: 18,
         maxWidth: 600,
-        borderLeft: '3px solid #72c2c2',
+        borderLeft: '3px solid #48c1c4',
         fontFamily: 'Inter, sans-serif',
         fontWeight: 500,
         fontStyle: 'italic',

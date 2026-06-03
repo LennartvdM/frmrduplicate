@@ -127,7 +127,7 @@ export default function MedicalMobileLayout({
           >
             <span>{header.line1}</span>
             {header.line1suffix ? <span>{header.line1suffix}</span> : <br />}
-            <span style={{ color: '#3fd1c7' }}>{header.line2highlight}</span>
+            <span style={{ color: '#48c1c4' }}>{header.line2highlight}</span>
             <span>{header.line2suffix}</span>
             <br />
             <span>{header.line3}</span>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 export default function MirroredCookieCutterBand({ 
-  bandColor = "#f0f4f6", 
+  bandColor = "#edf2f8",
   bandHeight = 320,
   bandWidth = 900  // Can be overridden but defaults to same as original
 }) {

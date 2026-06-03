@@ -174,7 +174,7 @@ export default function MedicalDesktopLayout({
               ) : (
                 <br />
               )}
-              <span style={{ opacity: headerVisible ? 1 : 0, color: '#3fd1c7', transition: shouldTransition ? 'opacity 1.2s ease 0.6s' : 'none' }}>{header.line2highlight}</span>
+              <span style={{ opacity: headerVisible ? 1 : 0, color: '#48c1c4', transition: shouldTransition ? 'opacity 1.2s ease 0.6s' : 'none' }}>{header.line2highlight}</span>
               <span style={{ opacity: headerVisible ? 1 : 0, transition: shouldTransition ? 'opacity 1.2s ease 0.6s' : 'none' }}>{header.line2suffix}</span>
               <br />
               <span style={{ opacity: headerVisible ? 1 : 0, transition: shouldTransition ? 'opacity 1.2s ease 0.6s' : 'none' }}>{header.line3}</span>
@@ -265,7 +265,7 @@ export default function MedicalDesktopLayout({
               mixBlendMode: 'screen'
             }}>
               <CookieCutterBand
-                bandColor="#f0f4f6"
+                bandColor="#edf2f8"
                 bandHeight={bandHeight}
                 bandWidth={bandWidth}
               />
@@ -654,7 +654,7 @@ export default function MedicalDesktopLayout({
               style={{
                 transition: shouldTransition ? 'opacity 2.25s ease 1.125s' : 'none',
                 opacity: headerVisible ? 1 : 0,
-                color: '#3fd1c7'
+                color: '#48c1c4'
               }}
             >
               {header.line2highlight}

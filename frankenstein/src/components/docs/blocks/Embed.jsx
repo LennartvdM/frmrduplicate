@@ -24,7 +24,7 @@ export default function Embed({ url, children }) {
         transition: 'border-color 0.2s, box-shadow 0.2s',
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = '#6ea8ff';
+        e.currentTarget.style.borderColor = '#529c9c';
         e.currentTarget.style.boxShadow = '0 2px 8px rgba(14, 28, 49, 0.05)';
       }}
       onMouseLeave={(e) => {
@@ -32,7 +32,7 @@ export default function Embed({ url, children }) {
         e.currentTarget.style.boxShadow = 'none';
       }}
     >
-      <div style={{ fontSize: 12, color: '#6ea8ff', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 4 }}>
+      <div style={{ fontSize: 12, color: '#2c7d74', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 4 }}>
         {host || 'External link'}
       </div>
       <div style={{ fontSize: 14, color: '#0e1c31', wordBreak: 'break-all' }}>{url}</div>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const STYLES = {
-  info:    { bg: '#eef4ff', border: '#6ea8ff', fg: '#0e1c31', icon: 'i' },
+  info:    { bg: '#e6f2f1', border: '#529c9c', fg: '#0e1c31', icon: 'i' },
   success: { bg: '#ecfaf0', border: '#5cc48a', fg: '#0e1c31', icon: '✓' },
   warning: { bg: '#fff7e6', border: '#e0a24a', fg: '#0e1c31', icon: '!' },
   danger:  { bg: '#fdecec', border: '#d46a6a', fg: '#0e1c31', icon: '!' },

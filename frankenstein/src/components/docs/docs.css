@@ -6,14 +6,15 @@
    Imported from pages/DocsPage.jsx so it only loads on /toolbox routes.
    ---------------------------------------------------------------------- */
 
-/* Palette — mirrors vragenlijst/css/styles.css design tokens.
-   Variable names that read as warm colors (salmon, terracotta) are
-   historical — actual values are cold blue / deep navy. */
+/* Palette — the toolbox's own design tokens (originally ported from the
+   vragenlijst project). The salmon/terracotta variable names are historical;
+   the accent is the brand teal (#529c9c, deepened to #2c7d74 for legible
+   text), not GitBook blue. */
 :root {
-  --docs-salmon: #8caef4;
-  --docs-salmon-light: #c5d6f8;
-  --docs-salmon-dark: #467ded;
-  --docs-salmon-rgb: 140, 174, 244;
+  --docs-salmon: #529c9c;
+  --docs-salmon-light: #cfe6e4;
+  --docs-salmon-dark: #2c7d74;
+  --docs-salmon-rgb: 82, 156, 156;
 
   --docs-navy: #111162;
   --docs-navy-dark: #07072f;
@@ -29,8 +30,8 @@
   --docs-text-muted: #7a7a96;
 
   --docs-accent: var(--docs-salmon-dark);
-  --docs-accent-hover: #2f66d9;
-  --docs-accent-soft: #e6eeff;
+  --docs-accent-hover: #1f5f58;
+  --docs-accent-soft: #e6f2f1;
 
   --docs-terracotta: #d27b4b;
 
@@ -466,7 +467,7 @@
   font-weight: 700;
   letter-spacing: 1.2px;
   text-transform: uppercase;
-  color: var(--docs-terracotta);
+  color: var(--docs-accent);
   margin-bottom: 10px;
 }
 .docs-title {

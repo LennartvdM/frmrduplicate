@@ -104,7 +104,13 @@ export default function RouteSlider({ children }) {
           style={{
             position: 'absolute',
             inset: 0,
-            willChange: 'transform',
+            // Only promote to a compositor layer DURING the slide. Leaving
+            // will-change:transform on permanently kept the entire page's
+            // content subtree composited at rest, which drops subpixel/
+            // ClearType anti-aliasing and renders all text faintly soft —
+            // a site-wide "veiled" look. Releasing it to `auto` when idle
+            // lets text re-render crisp.
+            willChange: isSliding ? 'transform' : 'auto',
           }}
         >
           {rendered}

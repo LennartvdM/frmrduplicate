@@ -255,6 +255,7 @@ export default function Navbar() {
                   left: 0,
                   borderRadius: '9999px',
                   background: '#d1d5db',
+                  boxShadow: '0 0 0 1px var(--edge)',
                   zIndex: 1,
                   pointerEvents: 'none',
                   margin: 'auto 0',
@@ -288,7 +289,7 @@ export default function Navbar() {
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.18, ease: 'easeOut' }}
                       style={{
-                        boxShadow: '0 2px 8px 0 rgba(82,156,156,0.10)',
+                        boxShadow: '0 0 0 1px rgba(31, 95, 88, 0.5), 0 2px 8px 0 rgba(82,156,156,0.10)',
                         pointerEvents: 'none',
                         height: navCellHeight,
                         minHeight: navCellHeight,

@@ -18,13 +18,12 @@
      shared by the blog drawer and the toolbox reading surface. */
   --cream: #f8f5f2;
 
-  /* Refined edge language — hairlines for *contained* surfaces (cards, media,
-     inputs). Used selectively, as hierarchy: contained / interactive things
-     get an edge; body text and full-bleed sections stay edgeless. */
-  --edge:        rgba(28, 54, 100, 0.10);  /* hairline on light surfaces     */
-  --edge-strong: rgba(28, 54, 100, 0.16);  /* emphasis / dividers            */
-  --edge-light:  rgba(255, 255, 255, 0.14); /* hairline on dark media         */
-  --edge-sheen:  rgba(255, 255, 255, 0.55); /* top inner highlight (lit edge) */
+  /* Edge language — every element with its own fill gets a full 1px outline;
+     the nesting of those outlined boxes IS the hierarchy. Tuned to read
+     clearly, not whisper. Full boxes only — no top-only highlight. */
+  --edge:        rgba(28, 54, 100, 0.16);  /* outline on light surfaces      */
+  --edge-strong: rgba(28, 54, 100, 0.26);  /* heavier / top-level containers */
+  --edge-light:  rgba(255, 255, 255, 0.18); /* outline on dark / over-video   */
 }
 
 /* Loading bar animation */

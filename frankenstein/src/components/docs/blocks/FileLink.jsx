@@ -17,7 +17,7 @@ export default function FileLink({ src, name }) {
         gap: 12,
         padding: '12px 16px',
         margin: '10px 0',
-        border: '1px solid rgba(17, 17, 98, 0.08)',
+        border: '1px solid rgba(28, 54, 100, 0.08)',
         borderRadius: 10,
         background: 'white',
         textDecoration: 'none',

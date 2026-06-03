@@ -7,29 +7,29 @@
    ---------------------------------------------------------------------- */
 
 /* Palette — the toolbox's own design tokens (originally ported from the
-   vragenlijst project). The salmon/terracotta variable names are historical;
-   the accent is the brand teal (#529c9c, deepened to #2c7d74 for legible
-   text), not GitBook blue. */
+   vragenlijst project). Accent is the brand teal (--docs-teal: #529c9c,
+   deepened to #2c7d74 for legible text); navy is the wordmark navy #1c3664.
+   No GitBook blue or indigo. */
 :root {
-  --docs-salmon: #529c9c;
-  --docs-salmon-light: #cfe6e4;
-  --docs-salmon-dark: #2c7d74;
-  --docs-salmon-rgb: 82, 156, 156;
+  --docs-teal: #529c9c;
+  --docs-teal-light: #cfe6e4;
+  --docs-teal-dark: #2c7d74;
+  --docs-teal-rgb: 82, 156, 156;
 
-  --docs-navy: #111162;
-  --docs-navy-dark: #07072f;
-  --docs-navy-rgb: 17, 17, 98;
+  --docs-navy: #1c3664;
+  --docs-navy-dark: #0e1c31;
+  --docs-navy-rgb: 28, 54, 100;
 
   --docs-sand: var(--cool-sunken);
   --docs-sand-light: var(--cool-subtle);
-  --docs-cream: #f8f5f2;
+  --docs-cream: var(--cream);
   --docs-surface: var(--cool-card);
 
   --docs-text: #1d1d30;
   --docs-text-light: #3c3c5d;
   --docs-text-muted: #7a7a96;
 
-  --docs-accent: var(--docs-salmon-dark);
+  --docs-accent: var(--docs-teal-dark);
   --docs-accent-hover: #1f5f58;
   --docs-accent-soft: #e6f2f1;
 
@@ -517,7 +517,7 @@
 .docs-body li > ul, .docs-body li > ol { margin-top: 6px; }
 
 .docs-body blockquote {
-  border-left: 3px solid var(--docs-salmon);
+  border-left: 3px solid var(--docs-teal);
   background: var(--docs-sand-light);
   margin: 20px 0;
   padding: 12px 18px;
@@ -603,7 +603,7 @@
   transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
 }
 .docs-card:hover {
-  border-color: var(--docs-salmon);
+  border-color: var(--docs-teal);
   box-shadow: 0 4px 16px rgba(var(--docs-navy-rgb), 0.08);
   transform: translateY(-1px);
 }
@@ -719,7 +719,7 @@
   transition: border-color 0.15s, background-color 0.15s, transform 0.15s;
 }
 .docs-prev-next a:hover {
-  border-color: var(--docs-salmon);
+  border-color: var(--docs-teal);
   background: var(--docs-accent-soft);
   transform: translateY(-1px);
 }

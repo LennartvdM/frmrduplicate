@@ -207,7 +207,7 @@ export default function Navbar() {
   }, [location.pathname, location.hash, isMobile]);
 
   return (
-    <nav ref={navRef} data-app-navbar className="fixed inset-x-0 top-0 z-40 bg-white flex items-center justify-between" style={{ height: 60, borderBottom: '1px solid rgba(17, 17, 98, 0.08)', boxShadow: '0 1px 2px rgba(17, 17, 98, 0.05), 0 2px 8px -2px rgba(17, 17, 98, 0.06)' }}>
+    <nav ref={navRef} data-app-navbar className="fixed inset-x-0 top-0 z-40 bg-white flex items-center justify-between" style={{ height: 60, borderBottom: '1px solid rgba(28, 54, 100, 0.08)', boxShadow: '0 1px 2px rgba(28, 54, 100, 0.05), 0 2px 8px -2px rgba(28, 54, 100, 0.06)' }}>
       {/* Logo */}
       <div className="flex items-center h-full pl-6 pr-4">
         <FaviconLogo onClick={() => {

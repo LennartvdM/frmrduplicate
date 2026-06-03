@@ -13,6 +13,10 @@
   --cool-page:   #f5f9fc; /* page & section backgrounds (canonical) */
   --cool-subtle: #edf2f8; /* subtle fills: code, chips, tabs, hovers */
   --cool-sunken: #e2e9f3; /* wells, table headers, deeper fills     */
+
+  /* The one warm paper — kept warm on purpose (warm paper, cool ink),
+     shared by the blog drawer and the toolbox reading surface. */
+  --cream: #f8f5f2;
 }
 
 /* Loading bar animation */

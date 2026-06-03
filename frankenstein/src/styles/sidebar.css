@@ -13,7 +13,7 @@
   --sb-sand-dark: #B8A88A;
   --sb-teal: #529c9c;
   --sb-teal-dark: #3d7373;
-  --sb-cream: #FFF8F0;
+  --sb-cream: var(--cream);
   --sb-text: #3D3630;
   --sb-text-rgb: 61, 54, 48;
   --sb-text-light: #8A7E74;

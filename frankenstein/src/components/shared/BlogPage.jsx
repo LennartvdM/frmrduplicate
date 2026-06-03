@@ -179,8 +179,8 @@ export default function BlogPage({ sections, scrollTo }) {
             position: 'sticky',
             top: 112,
             backgroundColor: '#0e1c31',
-            borderRadius: 15,
-            padding: '64px 22px',
+            borderRadius: 16,
+            padding: '64px 24px',
             color: '#f5f9fc',
             fontFamily: 'Inter, sans-serif',
             display: 'flex',
@@ -240,7 +240,7 @@ export default function BlogPage({ sections, scrollTo }) {
                       style={{
                         width: '100%',
                         textAlign: 'left',
-                        padding: '13px 6px',
+                        padding: '12px 8px',
                         border: 'none',
                         background: 'transparent',
                         fontSize: 15,
@@ -457,8 +457,8 @@ function TitleCard({ card }) {
       style={{
         display: 'block',
         backgroundColor: '#1c3664',
-        borderRadius: 14,
-        padding: '22px 26px',
+        borderRadius: 16,
+        padding: '24px 24px',
         color: '#ffffff',
         textDecoration: 'none',
         position: 'relative',
@@ -653,7 +653,7 @@ function InlineVideo({ src }) {
     return () => io.disconnect();
   }, []);
   return (
-    <div style={{ maxWidth: 600, margin: '24px 0', borderRadius: 12, overflow: 'hidden', boxShadow: '0 4px 18px rgba(0,0,0,0.10)' }}>
+    <div style={{ maxWidth: 600, margin: '24px 0', borderRadius: 12, overflow: 'hidden', boxShadow: '0 4px 18px rgba(28,54,100,0.12)' }}>
       <video
         ref={ref}
         src={src}

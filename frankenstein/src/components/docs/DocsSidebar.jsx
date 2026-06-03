@@ -409,7 +409,7 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
               top: rowRect.y,
               width: rowRect.w + 60,
               height: rowRect.h,
-              boxShadow: '0 10px 24px rgba(0, 0, 0, 0.35)',
+              boxShadow: '0 10px 24px rgba(28, 54, 100, 0.35)',
               zIndex: 1000,
               // Right side is a full semi-circle so the row reads as a
               // pill-tab-style page guide instead of a plain rectangle.
@@ -435,7 +435,7 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
                 height: 8,
                 borderRadius: '50%',
                 backgroundColor: '#48c1c4',
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.35)',
+                boxShadow: '0 2px 4px rgba(28, 54, 100, 0.35)',
                 pointerEvents: 'none',
               }}
             />

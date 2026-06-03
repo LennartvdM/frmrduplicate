@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState, memo, useCallback } from 'react';
 
-// Auto-scaling multi-line heading: preserves explicit breaks, scales block via transform
+// Auto-fitting multi-line heading: preserves explicit breaks, fits to its
+// container by computing font-size (renders crisp; no transform-scale blur).
 const AutoFitHeading = memo(function AutoFitHeading({
   lines = [],
   basePx = 44,
@@ -26,7 +27,10 @@ const AutoFitHeading = memo(function AutoFitHeading({
     const content = contentRef.current;
     if (!container || !content) return;
 
-    content.style.transform = 'scale(1)';
+    // Measure at the base font size (not the fitted one) so the ratio is
+    // independent of what's currently applied — keeps the ResizeObserver
+    // convergent instead of oscillating.
+    content.style.fontSize = basePx + 'px';
     // eslint-disable-next-line no-unused-expressions
     content.offsetHeight;
 
@@ -40,7 +44,7 @@ const AutoFitHeading = memo(function AutoFitHeading({
     const scaleY = ch > 0 ? (ch / bh) : Number.POSITIVE_INFINITY;
     const newScale = Math.max(0.01, Math.min(scaleX, scaleY) * 0.9);
     setScale(newScale);
-  }, []);
+  }, [basePx]);
 
   useLayoutEffect(() => { fit(); }, [fit]);
 
@@ -72,14 +76,16 @@ const AutoFitHeading = memo(function AutoFitHeading({
         ref={contentRef}
         style={{
           display: 'inline-block',
-          transform: `scale(${scale})`,
-          transformOrigin: 'center left',
+          // Fit by font-size (crisp at native resolution) instead of
+          // transform: scale() (which rasterizes then resamples → soft).
+          // letter-spacing is em-relative so it scales with the fitted size,
+          // keeping the measure-then-fit math correct.
           whiteSpace: 'nowrap',
           lineHeight,
           fontFamily: 'Inter, sans-serif',
           fontWeight: 700,
-          letterSpacing: -2,
-          fontSize: basePx,
+          letterSpacing: `${(-2 / basePx).toFixed(4)}em`,
+          fontSize: Math.round(basePx * scale),
           color: '#fff',
           textShadow: '0 4px 24px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.22), 0 1px 2px rgba(0,0,0,0.18)'
         }}
@@ -91,8 +97,7 @@ const AutoFitHeading = memo(function AutoFitHeading({
             textAlign: resolveAlign(i),
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(8px)',
-            transition: `opacity 2250ms ease ${shouldDelay ? staggerDelayMs : 0}ms, transform 2250ms cubic-bezier(0.4,0,0.2,1) ${shouldDelay ? staggerDelayMs : 0}ms`,
-            willChange: 'opacity, transform'
+            transition: `opacity 2250ms ease ${shouldDelay ? staggerDelayMs : 0}ms, transform 2250ms cubic-bezier(0.4,0,0.2,1) ${shouldDelay ? staggerDelayMs : 0}ms`
           };
 
           // If we need to stagger after the comma on this line and it is a string

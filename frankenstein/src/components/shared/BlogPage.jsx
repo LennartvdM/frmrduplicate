@@ -179,6 +179,7 @@ export default function BlogPage({ sections, scrollTo }) {
             position: 'sticky',
             top: 112,
             backgroundColor: '#0e1c31',
+            border: '1px solid var(--edge-1d)',
             borderRadius: 16,
             padding: '64px 24px',
             color: '#f5f9fc',

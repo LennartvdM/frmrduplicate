@@ -39,8 +39,8 @@
   --docs-success: #2d8a4e;
   --docs-warning: #f59e0b;
 
-  --docs-border: rgba(var(--docs-navy-rgb), 0.08);
-  --docs-border-strong: rgba(var(--docs-navy-rgb), 0.16);
+  --docs-border: var(--edge-2);
+  --docs-border-strong: var(--edge-1);
 
   --docs-code-bg: var(--docs-sand-light);
 

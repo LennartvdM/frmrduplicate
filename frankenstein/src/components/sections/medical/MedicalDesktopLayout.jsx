@@ -333,7 +333,7 @@ export default function MedicalDesktopLayout({
                 borderRadius: 16,
                 overflow: 'hidden',
                 border: 'none',
-                boxShadow: 'none',
+                boxShadow: '0 0 0 1px var(--edge-1d)',
                 opacity: shouldTransition ? (videoVisible ? 1 : 0) : 0, // Always hide when not transitioning
                 transition: shouldTransition ? 'opacity 1.5s ease' : 'none !important'
               }}

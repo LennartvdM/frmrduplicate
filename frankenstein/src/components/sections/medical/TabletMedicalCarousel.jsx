@@ -55,6 +55,7 @@ const TabletMedicalCarousel = memo(function TabletMedicalCarousel({ videos = [],
             zIndex: getZ(i),
             opacity: getOpacity(i),
             background: 'none',
+            boxShadow: '0 0 0 1px var(--edge-1d)',
             transition: 'opacity 1.2s cubic-bezier(0.4,0,0.2,1)',
             pointerEvents: i === current ? 'auto' : 'none',
           }}

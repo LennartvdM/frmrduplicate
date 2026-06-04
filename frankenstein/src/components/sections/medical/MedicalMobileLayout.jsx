@@ -192,7 +192,7 @@ export default function MedicalMobileLayout({
                     padding: 0,
                     background: '#000',
                     cursor: 'pointer',
-                    boxShadow: '0 6px 24px rgba(0,0,0,0.25)',
+                    boxShadow: '0 0 0 1px var(--edge-1d), 0 6px 24px rgba(0,0,0,0.25)',
                   }}
                   aria-label={`Open ${headlines[idx]?.firstLine || `slide ${idx + 1}`}`}
                 >

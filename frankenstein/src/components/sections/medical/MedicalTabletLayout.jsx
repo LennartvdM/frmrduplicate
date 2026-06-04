@@ -125,6 +125,7 @@ export default function MedicalTabletLayout({
             borderRadius: 16,
             overflow: 'hidden',
             position: 'relative',
+            boxShadow: '0 0 0 1px var(--edge-1d)',
             opacity: videoVisible ? 1 : 0,
             transition: transitionsDisabled
               ? 'none'

@@ -360,6 +360,8 @@ export default function BlogPage({ sections, scrollTo }) {
                 </div>
 
                 <div className="blog-section__content">
+                  <div aria-hidden="true" className="blog-section__content-wash" />
+
                 {parsed.bodyHtmlBefore && (
                   <div
                     className="blog-body"
@@ -437,24 +439,43 @@ export default function BlogPage({ sections, scrollTo }) {
           z-index: 3;
           margin: 0 72px -1px 0;
           padding: 42px 54px 34px;
+          background: transparent;
+          border: 0;
+          border-radius: 0;
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+        }
+        .blog-section--plain .blog-section__header {
           background:
             linear-gradient(to bottom, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08));
           border: 1px solid rgba(255, 255, 255, 0.24);
           border-bottom-color: rgba(255, 255, 255, 0.14);
-          border-radius: 8px 8px 8px 0;
+          border-radius: 8px 8px 0 0;
           backdrop-filter: blur(18px) saturate(1.08);
           -webkit-backdrop-filter: blur(18px) saturate(1.08);
         }
         .blog-section__content {
           position: relative;
           z-index: 2;
-          margin-left: 24px;
-          padding: 0 54px 88px 30px;
-          border-radius: 0 8px 8px 8px;
-          overflow: visible;
+          padding: 44px 54px 88px;
+          isolation: isolate;
+          border-radius: 8px;
+          overflow: hidden;
         }
         .blog-section--plain .blog-section__content {
-          padding-top: 44px;
+          border-radius: 0 0 8px 8px;
+        }
+        .blog-section__content-wash {
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          pointer-events: none;
+          background: rgba(245, 249, 252, 0.9);
+          mix-blend-mode: screen;
+          border-radius: 8px;
+        }
+        .blog-section--plain .blog-section__content-wash {
+          border-radius: 0 0 8px 8px;
         }
         .publication-lead {
           position: relative;
@@ -536,11 +557,7 @@ export default function BlogPage({ sections, scrollTo }) {
             padding: 32px 24px 28px;
           }
           .blog-section__content {
-            margin-left: 12px;
-            padding: 0 24px 40px 20px;
-          }
-          .blog-section--plain .blog-section__content {
-            padding-top: 32px;
+            padding: 32px 24px 40px;
           }
           .publication-lead {
             grid-template-columns: 1fr;

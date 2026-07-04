@@ -37,32 +37,6 @@ const STAGGER_DELAY = 0.25;
 const STAGGER_DURATION = 0.5;
 const STAGGER_EASE = [0.4, 0, 0.2, 1];
 
-const SECTION_ACCENTS = [
-  '#62c8c9',
-  '#f3b45b',
-  '#8ac6ff',
-  '#79d39d',
-  '#e6a1a8',
-  '#c5bcff',
-  '#f0d66a',
-];
-
-function sectionAccent(index) {
-  return SECTION_ACCENTS[index % SECTION_ACCENTS.length];
-}
-
-function sectionIndexLabel(section, index) {
-  const { numberPart } = splitHeading(section.title);
-  if (numberPart) return numberPart.replace('.', '').padStart(2, '0');
-  return String(index + 1).padStart(2, '0');
-}
-
-function pageLabelForSections(sections) {
-  return sections.some((section) => splitHeading(section.title).numberPart)
-    ? 'Articles'
-    : 'Guide';
-}
-
 export default function BlogPage({ sections, scrollTo }) {
   // Internal scroll container. BlogPage renders inside RouteSlider,
   // which is `position: fixed; inset: 0` — window never scrolls under
@@ -123,11 +97,6 @@ export default function BlogPage({ sections, scrollTo }) {
 
   const sectionIds = sections.map((s) => s.id);
   const active = useScrollSpy(sectionIds, 120, scrollRef);
-  const activeSectionIndex = Math.max(0, sections.findIndex((section) => section.id === active));
-  const activeProgress = sections.length > 1
-    ? (activeSectionIndex / (sections.length - 1)) * 100
-    : 0;
-  const pageLabel = pageLabelForSections(sections);
   const [hovered, setHovered] = useState(null);
 
   const activeIdx = blogIdxForSection(active);
@@ -177,7 +146,6 @@ export default function BlogPage({ sections, scrollTo }) {
   return (
     <div
       ref={scrollRef}
-      className="blog-shell"
       style={{
         position: 'absolute',
         inset: 0,
@@ -189,12 +157,12 @@ export default function BlogPage({ sections, scrollTo }) {
         style={{
           position: 'relative',
           zIndex: 1,
-          maxWidth: 1660,
+          maxWidth: 1540,
           margin: '0 auto',
-          padding: '108px 28px 128px',
+          padding: '96px 24px 120px',
           display: 'grid',
-          gridTemplateColumns: 'minmax(260px, 340px) minmax(0, 980px)',
-          columnGap: 56,
+          gridTemplateColumns: 'minmax(220px, 300px) minmax(0, 960px)',
+          columnGap: 40,
           alignItems: 'start',
         }}
         className="blog-grid"
@@ -204,41 +172,39 @@ export default function BlogPage({ sections, scrollTo }) {
             plus an optional inner translate when it trails. */}
         <motion.aside
           data-blog-sidebar="true"
-          className="blog-sidebar"
           initial={sidebarTrails ? { x: `-${STAGGER_OFFSET}` } : false}
           animate={sidebarTrails ? { x: 0 } : undefined}
           transition={sidebarTrails ? { duration: STAGGER_DURATION, delay: STAGGER_DELAY, ease: STAGGER_EASE } : undefined}
           style={{
             position: 'sticky',
-            top: 96,
-            borderRadius: 8,
-            padding: 22,
+            top: 112,
+            backgroundColor: '#0e1c31',
+            border: '1px solid var(--edge-1d)',
+            borderRadius: 16,
+            padding: '64px 24px',
             color: '#f5f9fc',
             fontFamily: 'Inter, sans-serif',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'flex-start',
-            minHeight: 'min(680px, calc(100vh - 132px))',
-            '--blog-active-progress': `${activeProgress}%`,
+            justifyContent: 'center',
+            minHeight: 'min(640px, calc(100vh - 160px))',
           }}
         >
-          <div className="blog-sidebar__meta">
-            <span>Neoflix</span>
-            <strong>{pageLabel}</strong>
-            <em>{String(activeSectionIndex + 1).padStart(2, '0')} / {String(sections.length).padStart(2, '0')}</em>
-          </div>
-          <div className="blog-sidebar__meter" aria-hidden="true">
-            <motion.span
-              animate={{ height: `${activeProgress}%`, backgroundColor: sectionAccent(activeSectionIndex) }}
-              transition={{ height: { type: 'spring', stiffness: 240, damping: 30 }, backgroundColor: { duration: 0.25 } }}
-            />
-          </div>
-          <ul className="blog-sidebar__list" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
             {sections.map((s, idx) => {
               const isActive = s.id === active;
               const isHovered = hovered === s.id;
-              const itemAccent = sectionAccent(idx);
-              const { titlePart } = splitHeading(s.title);
+              const markerWidth = isActive ? 26 : isHovered ? 14 : 4;
+              const markerColor = isActive
+                ? '#ffffff'
+                : isHovered
+                ? '#c4ccd6'
+                : '#666f7c';
+              const textColor = isActive
+                ? '#ffffff'
+                : isHovered
+                ? '#c4ccd6'
+                : '#666f7c';
               // Intro divider: render below the first item only when
               // it's unnumbered and the next item IS numbered (e.g.
               // "Preface" → "1. Narrative Review"). The /neoflix index
@@ -254,30 +220,66 @@ export default function BlogPage({ sections, scrollTo }) {
               return (
                 <React.Fragment key={s.id}>
                   {dividerAbove && (
-                    <li aria-hidden="true" className="blog-sidebar__divider">
-                      <div />
+                    <li aria-hidden="true" style={{ listStyle: 'none', padding: '10px 0' }}>
+                      <div
+                        style={{
+                          height: 1,
+                          background: 'rgba(255, 255, 255, 0.1)',
+                          margin: '0 8px',
+                        }}
+                      />
                     </li>
                   )}
                   <li>
                     <motion.button
                       type="button"
-                      className={`blog-sidebar__button${isActive ? ' is-active' : ''}`}
                       onClick={() => handleSidebarClick(s.id)}
                       onMouseEnter={() => setHovered(s.id)}
                       onMouseLeave={() => setHovered((h) => (h === s.id ? null : h))}
-                      animate={{ opacity: isActive ? 1 : isHovered ? 0.92 : 0.62 }}
-                      transition={{ opacity: { duration: 0.26, ease: [0.4, 0, 0.2, 1] } }}
+                      animate={{ color: textColor }}
+                      transition={{ color: { duration: 0.32, ease: [0.4, 0, 0.2, 1] } }}
                       style={{
-                        '--section-accent': itemAccent,
+                        width: '100%',
+                        textAlign: 'left',
+                        padding: '12px 8px',
+                        border: 'none',
+                        background: 'transparent',
+                        fontSize: 15,
+                        lineHeight: 1.45,
+                        fontWeight: isActive ? 700 : isHovered ? 600 : 500,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 14,
+                        transition: 'font-weight 0.25s ease',
                       }}
                     >
-                      <span className="blog-sidebar__index">{sectionIndexLabel(s, idx)}</span>
-                      <span className="blog-sidebar__title">{titlePart}</span>
+                      <motion.span
+                        aria-hidden="true"
+                        animate={{ width: markerWidth, backgroundColor: markerColor }}
+                        transition={{
+                          width: { type: 'spring', stiffness: 320, damping: 26 },
+                          backgroundColor: { duration: 0.3 },
+                        }}
+                        style={{
+                          display: 'inline-block',
+                          height: 2,
+                          borderRadius: 1,
+                          flexShrink: 0,
+                        }}
+                      />
+                      <span>{s.title}</span>
                     </motion.button>
                   </li>
                   {isIntro && (
-                    <li aria-hidden="true" className="blog-sidebar__divider">
-                      <div />
+                    <li aria-hidden="true" style={{ listStyle: 'none', padding: '10px 0' }}>
+                      <div
+                        style={{
+                          height: 1,
+                          background: 'rgba(255, 255, 255, 0.1)',
+                          margin: '0 8px',
+                        }}
+                      />
                     </li>
                   )}
                 </React.Fragment>
@@ -293,7 +295,7 @@ export default function BlogPage({ sections, scrollTo }) {
           transition={articleTrails ? { duration: STAGGER_DURATION, delay: STAGGER_DELAY, ease: STAGGER_EASE } : undefined}
           style={{ display: 'flex', flexDirection: 'column', gap: 40 }}
         >
-          {sections.map((section, sectionIndex) => {
+          {sections.map((section) => {
             const parsed = parseSectionContent(section.content || '', {
               video: section.video,
               videoAfterParagraph: section.videoAfterParagraph,
@@ -303,23 +305,26 @@ export default function BlogPage({ sections, scrollTo }) {
               <section
                 key={section.id}
                 id={section.id}
-                className="blog-section"
                 style={{
-                  '--section-accent': sectionAccent(sectionIndex),
                   position: 'relative',
-                  borderRadius: 0,
-                  padding: '96px 64px',
+                  borderRadius: 10,
+                  padding: '96px 56px',
                   scrollMarginTop: 96,
                   opacity: 1,
                   isolation: 'isolate',
                 }}
               >
+                {/* Screen-blended backdrop — F5F9FC at 90%, blends with the
+                    video deck below to a soft washed cream. Separate layer
+                    so it doesn't affect text rendering on top. */}
                 <div
                   aria-hidden="true"
-                  className="blog-section__wash"
                   style={{
                     position: 'absolute',
                     inset: 0,
+                    background: 'rgba(245, 249, 252, 0.9)',
+                    mixBlendMode: 'screen',
+                    borderRadius: 10,
                     pointerEvents: 'none',
                     zIndex: -1,
                   }}
@@ -333,8 +338,8 @@ export default function BlogPage({ sections, scrollTo }) {
                     alignItems: 'baseline',
                     gap: 18,
                     flexWrap: 'wrap',
-                    color: '#ffffff',
-                    letterSpacing: 0,
+                    color: '#383437',
+                    letterSpacing: '-1.5px',
                     lineHeight: 1.1,
                   }}
                 >
@@ -343,7 +348,7 @@ export default function BlogPage({ sections, scrollTo }) {
                       style={{
                         fontWeight: 300,
                         fontSize: 44,
-                        color: 'var(--section-accent)',
+                        color: 'rgba(56, 52, 55, 0.55)',
                         fontVariantNumeric: 'tabular-nums',
                       }}
                     >
@@ -365,8 +370,8 @@ export default function BlogPage({ sections, scrollTo }) {
                       fontWeight: 500,
                       fontSize: 16,
                       lineHeight: 1.9,
-                      color: 'rgba(247, 250, 248, 0.86)',
-                      maxWidth: 690,
+                      color: '#383437',
+                      maxWidth: 600,
                       marginTop: parsed.titleCard || parsed.citation ? 12 : 0,
                     }}
                     dangerouslySetInnerHTML={{ __html: parsed.bodyHtmlBefore }}
@@ -384,8 +389,8 @@ export default function BlogPage({ sections, scrollTo }) {
                       fontWeight: 500,
                       fontSize: 16,
                       lineHeight: 1.9,
-                      color: 'rgba(247, 250, 248, 0.86)',
-                      maxWidth: 690,
+                      color: '#383437',
+                      maxWidth: 600,
                       marginTop: section.video ? 24 : (parsed.titleCard || parsed.citation ? 12 : 0),
                     }}
                     dangerouslySetInnerHTML={{ __html: parsed.bodyHtmlAfter }}
@@ -403,194 +408,13 @@ export default function BlogPage({ sections, scrollTo }) {
       </div>
 
       <style>{`
-        .blog-shell {
-          background:
-            radial-gradient(circle at 16% 12%, rgba(98, 200, 201, 0.16), transparent 32%),
-            radial-gradient(circle at 90% 18%, rgba(197, 188, 255, 0.12), transparent 30%),
-            #07110f;
-        }
-
-        .blog-sidebar {
-          position: relative;
-          overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.14);
-          background:
-            linear-gradient(145deg, rgba(7, 17, 15, 0.74), rgba(14, 35, 42, 0.64)),
-            rgba(7, 17, 15, 0.74);
-          box-shadow:
-            0 30px 90px rgba(0, 0, 0, 0.26),
-            inset 0 1px 0 rgba(255, 255, 255, 0.08);
-          backdrop-filter: blur(22px) saturate(1.18);
-          -webkit-backdrop-filter: blur(22px) saturate(1.18);
-        }
-
-        .blog-sidebar::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background:
-            radial-gradient(circle at 16% 10%, rgba(98, 200, 201, 0.22), transparent 32%),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent 35%);
-          pointer-events: none;
-        }
-
-        .blog-sidebar__meta {
-          position: relative;
-          z-index: 1;
-          display: grid;
-          grid-template-columns: 1fr auto;
-          gap: 6px 12px;
-          padding: 4px 4px 22px;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-        }
-
-        .blog-sidebar__meta span {
-          grid-column: 1 / -1;
-          color: #62c8c9;
-          font-size: 11px;
-          font-weight: 820;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-        }
-
-        .blog-sidebar__meta strong {
-          color: #ffffff;
-          font-size: 24px;
-          font-weight: 820;
-          line-height: 1;
-        }
-
-        .blog-sidebar__meta em {
-          align-self: end;
-          color: rgba(247, 250, 248, 0.62);
-          font-size: 12px;
-          font-style: normal;
-          font-weight: 720;
-          font-variant-numeric: tabular-nums;
-        }
-
-        .blog-sidebar__meter {
-          position: absolute;
-          left: 22px;
-          top: 116px;
-          bottom: 24px;
-          width: 2px;
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.1);
-          overflow: hidden;
-        }
-
-        .blog-sidebar__meter span {
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          min-height: 16px;
-          border-radius: inherit;
-          box-shadow: 0 0 18px currentColor;
-        }
-
-        .blog-sidebar__list {
-          position: relative;
-          z-index: 1;
-          display: flex;
-          flex-direction: column;
-          gap: 6px;
-          padding: 22px 0 0 18px !important;
-        }
-
-        .blog-sidebar__button {
-          position: relative;
-          display: grid;
-          grid-template-columns: 38px minmax(0, 1fr);
-          align-items: center;
-          gap: 12px;
-          width: 100%;
-          min-height: 54px;
-          padding: 9px 10px;
-          border: 0;
-          border-radius: 8px;
-          background: transparent;
-          color: rgba(247, 250, 248, 0.82);
-          cursor: pointer;
-          text-align: left;
-          transition: background 180ms ease, color 180ms ease;
-        }
-
-        .blog-sidebar__button::before {
-          content: "";
-          position: absolute;
-          left: -18px;
-          top: 50%;
-          width: 10px;
-          height: 10px;
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          border-radius: 50%;
-          background: #07110f;
-          transform: translate(-50%, -50%);
-          transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
-        }
-
-        .blog-sidebar__button:hover,
-        .blog-sidebar__button.is-active {
-          background:
-            linear-gradient(135deg, color-mix(in srgb, var(--section-accent) 16%, transparent), transparent 55%),
-            rgba(255, 255, 255, 0.07);
-          color: #ffffff;
-        }
-
-        .blog-sidebar__button.is-active::before {
-          border-color: var(--section-accent);
-          background: var(--section-accent);
-          box-shadow: 0 0 18px var(--section-accent);
-        }
-
-        .blog-sidebar__index {
-          color: var(--section-accent);
-          font-size: 12px;
-          font-weight: 840;
-          letter-spacing: 0.08em;
-          font-variant-numeric: tabular-nums;
-        }
-
-        .blog-sidebar__title {
-          min-width: 0;
-          font-size: 14px;
-          font-weight: 700;
-          line-height: 1.25;
-        }
-
-        .blog-sidebar__divider {
-          padding: 9px 10px;
-        }
-
-        .blog-sidebar__divider div {
-          height: 1px;
-          background: rgba(255, 255, 255, 0.12);
-        }
-
-        .blog-section {
-          overflow: hidden;
-          border-top: 1px solid rgba(255, 255, 255, 0.12);
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-        }
-
-        .blog-section__wash {
-          background:
-            linear-gradient(to bottom, rgba(7, 17, 15, 0.5), rgba(16, 36, 43, 0.74) 42%, rgba(7, 17, 15, 0.88)),
-            linear-gradient(135deg, color-mix(in srgb, var(--section-accent) 17%, transparent), rgba(17, 32, 56, 0.22));
-          backdrop-filter: blur(20px) saturate(1.12);
-          -webkit-backdrop-filter: blur(20px) saturate(1.12);
-        }
-
         @media (max-width: 900px) {
           .blog-grid {
             grid-template-columns: 1fr !important;
-            padding: 96px 16px 96px !important;
+            padding: 96px 16px 80px !important;
           }
           .blog-grid aside {
             position: static !important;
-            min-height: auto !important;
           }
           .blog-grid section {
             padding: 40px 24px !important;
@@ -598,32 +422,25 @@ export default function BlogPage({ sections, scrollTo }) {
         }
         .blog-body p { margin: 0 0 1.35em 0; }
         .blog-body p:last-child { margin-bottom: 0; }
-        .blog-body a {
-          color: var(--section-accent, #62c8c9);
-          font-weight: 720;
-          text-decoration: underline;
-          text-underline-offset: 3px;
-          transition: color 0.2s;
-        }
-        .blog-body a:hover { color: #ffffff; }
-        .blog-body strong { font-weight: 760; color: #ffffff; }
-        .blog-body em { color: rgba(247, 250, 248, 0.72); font-style: italic; }
+        .blog-body a { color: #529c9c; text-decoration: underline; text-underline-offset: 2px; transition: color 0.2s; }
+        .blog-body a:hover { color: #48c1c4; }
+        .blog-body strong { font-weight: 700; color: #383437; }
+        .blog-body em { font-style: italic; }
         .blog-body h2 {
-          font-weight: 800; color: #ffffff; font-size: 24px;
-          letter-spacing: 0; line-height: 1.35;
+          font-weight: 700; color: #383437; font-size: 24px;
+          letter-spacing: -0.5px; line-height: 1.35;
           margin: 44px 0 18px;
         }
         .blog-body h3 {
-          font-weight: 800; color: #ffffff; font-size: 20px;
+          font-weight: 700; color: #383437; font-size: 20px;
           line-height: 1.4; margin: 36px 0 16px;
         }
         .blog-body ul, .blog-body ol { padding-left: 1.4em; margin: 0 0 1.35em; }
         .blog-body ul li { margin-bottom: 12px; }
         .blog-body ol li { margin-bottom: 12px; }
-        .blog-body ul li::marker,
-        .blog-body ol li::marker { color: var(--section-accent, #62c8c9); }
+        .blog-body ul li::marker { color: #48c1c4; }
         .blog-body hr {
-          border: 0; border-top: 1px solid rgba(255, 255, 255, 0.14);
+          border: 0; border-top: 1px solid rgba(56, 52, 55, 0.12);
           margin: 32px 0;
         }
       `}</style>
@@ -640,31 +457,27 @@ function TitleCard({ card }) {
       rel="noopener noreferrer"
       style={{
         display: 'block',
-        background:
-          'linear-gradient(135deg, rgba(98, 200, 201, 0.14), rgba(255, 255, 255, 0.06))',
-        border: '1px solid rgba(255, 255, 255, 0.16)',
-        borderRadius: 8,
+        backgroundColor: '#1c3664',
+        borderRadius: 16,
         padding: '24px 24px',
         color: '#ffffff',
         textDecoration: 'none',
         position: 'relative',
         overflow: 'hidden',
         marginBottom: 18,
-        maxWidth: 690,
-        boxShadow: '0 18px 42px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08)',
-        backdropFilter: 'blur(14px)',
-        WebkitBackdropFilter: 'blur(14px)',
+        maxWidth: 600,
+        boxShadow: '0 1px 2px rgba(28,54,100,0.12), inset 0 0 0 1px rgba(255,255,255,0.06)',
         transition: 'transform 0.2s ease, box-shadow 0.2s ease',
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-1px)';
         e.currentTarget.style.boxShadow =
-          '0 22px 54px rgba(0,0,0,0.26), inset 0 1px 0 rgba(255,255,255,0.1)';
+          '0 4px 12px rgba(28, 54, 100, 0.25), inset 0 0 0 1px rgba(255,255,255,0.08)';
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'translateY(0)';
         e.currentTarget.style.boxShadow =
-          '0 18px 42px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08)';
+          '0 1px 2px rgba(28,54,100,0.12), inset 0 0 0 1px rgba(255,255,255,0.06)';
       }}
     >
       <div
@@ -697,10 +510,10 @@ function TitleCard({ card }) {
         style={{
           position: 'relative',
           fontFamily: 'Inter, sans-serif',
-          fontWeight: 720,
-          fontSize: 16,
+          fontWeight: 600,
+          fontSize: 15,
           lineHeight: 1.5,
-          letterSpacing: 0,
+          letterSpacing: '-0.1px',
           display: 'inline-block',
           paddingRight: 18,
         }}
@@ -744,19 +557,18 @@ function CitationCard({ text }) {
     <div
       style={{
         position: 'relative',
-        background: 'rgba(255, 255, 255, 0.07)',
+        background: 'rgba(245, 249, 252, 0.7)',
         borderRadius: 8,
         padding: '14px 18px 14px 22px',
         marginBottom: 18,
-        maxWidth: 690,
+        maxWidth: 600,
         borderLeft: '3px solid #48c1c4',
         fontFamily: 'Inter, sans-serif',
         fontWeight: 500,
         fontStyle: 'italic',
         fontSize: 14,
         lineHeight: 1.7,
-        color: 'rgba(247, 250, 248, 0.7)',
-        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.06)',
+        color: 'rgba(56, 52, 55, 0.75)',
       }}
     >
       {text}
@@ -842,16 +654,7 @@ function InlineVideo({ src }) {
     return () => io.disconnect();
   }, []);
   return (
-    <div
-      style={{
-        maxWidth: 690,
-        margin: '28px 0',
-        borderRadius: 8,
-        overflow: 'hidden',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
-        boxShadow: '0 18px 46px rgba(0,0,0,0.24)',
-      }}
-    >
+    <div style={{ maxWidth: 600, margin: '24px 0', borderRadius: 12, overflow: 'hidden', boxShadow: '0 4px 18px rgba(28,54,100,0.12)' }}>
       <video
         ref={ref}
         src={src}
@@ -860,15 +663,7 @@ function InlineVideo({ src }) {
         playsInline
         preload="metadata"
         aria-hidden="true"
-        style={{
-          display: 'block',
-          width: '100%',
-          height: 'auto',
-          aspectRatio: '16 / 9',
-          objectFit: 'cover',
-          background: '#000',
-          filter: 'saturate(0.92) contrast(1.03)',
-        }}
+        style={{ display: 'block', width: '100%', height: 'auto', aspectRatio: '3 / 2', objectFit: 'cover', background: '#000' }}
       />
     </div>
   );

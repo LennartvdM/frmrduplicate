@@ -157,12 +157,12 @@ export default function BlogPage({ sections, scrollTo }) {
         style={{
           position: 'relative',
           zIndex: 1,
-          maxWidth: 1540,
+          maxWidth: 1480,
           margin: '0 auto',
-          padding: '96px 24px 120px',
+          padding: '104px 24px 120px',
           display: 'grid',
-          gridTemplateColumns: 'minmax(220px, 300px) minmax(0, 960px)',
-          columnGap: 40,
+          gridTemplateColumns: 'minmax(220px, 284px) minmax(0, 900px)',
+          columnGap: 46,
           alignItems: 'start',
         }}
         className="blog-grid"
@@ -177,17 +177,17 @@ export default function BlogPage({ sections, scrollTo }) {
           transition={sidebarTrails ? { duration: STAGGER_DURATION, delay: STAGGER_DELAY, ease: STAGGER_EASE } : undefined}
           style={{
             position: 'sticky',
-            top: 112,
+            top: 104,
             backgroundColor: '#0e1c31',
             border: '1px solid var(--edge-1d)',
-            borderRadius: 16,
-            padding: '64px 24px',
+            borderRadius: 12,
+            padding: '56px 22px',
             color: '#f5f9fc',
             fontFamily: 'Inter, sans-serif',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: 'min(640px, calc(100vh - 160px))',
+            minHeight: 'min(620px, calc(100vh - 148px))',
           }}
         >
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -241,16 +241,16 @@ export default function BlogPage({ sections, scrollTo }) {
                       style={{
                         width: '100%',
                         textAlign: 'left',
-                        padding: '12px 8px',
+                        padding: '10px 8px',
                         border: 'none',
                         background: 'transparent',
-                        fontSize: 15,
-                        lineHeight: 1.45,
+                        fontSize: 14,
+                        lineHeight: 1.4,
                         fontWeight: isActive ? 700 : isHovered ? 600 : 500,
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: 14,
+                        gap: 12,
                         transition: 'font-weight 0.25s ease',
                       }}
                     >
@@ -305,60 +305,63 @@ export default function BlogPage({ sections, scrollTo }) {
               <section
                 key={section.id}
                 id={section.id}
+                className="blog-section"
                 style={{
                   position: 'relative',
-                  borderRadius: 10,
-                  padding: '96px 56px',
+                  borderRadius: 8,
+                  padding: 0,
                   scrollMarginTop: 96,
                   opacity: 1,
                   isolation: 'isolate',
+                  overflow: 'hidden',
                 }}
               >
-                {/* Screen-blended backdrop — F5F9FC at 90%, blends with the
-                    video deck below to a soft washed cream. Separate layer
-                    so it doesn't affect text rendering on top. */}
-                <div
-                  aria-hidden="true"
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'rgba(245, 249, 252, 0.9)',
-                    mixBlendMode: 'screen',
-                    borderRadius: 10,
-                    pointerEvents: 'none',
-                    zIndex: -1,
-                  }}
-                />
-                <h2
+                <div className="blog-section__header">
+                  <h2
                   style={{
                     fontFamily: 'Inter, sans-serif',
                     margin: 0,
-                    marginBottom: 28,
                     display: 'flex',
                     alignItems: 'baseline',
-                    gap: 18,
+                    gap: 14,
                     flexWrap: 'wrap',
-                    color: '#383437',
-                    letterSpacing: '-1.5px',
-                    lineHeight: 1.1,
+                    color: '#f8fbff',
+                    letterSpacing: 0,
+                    lineHeight: 1.08,
+                    textShadow: '0 2px 14px rgba(8, 17, 24, 0.24)',
                   }}
                 >
                   {numberPart && (
                     <span
                       style={{
                         fontWeight: 300,
-                        fontSize: 44,
-                        color: 'rgba(56, 52, 55, 0.55)',
+                        fontSize: 42,
+                        color: 'rgba(248, 251, 255, 0.72)',
                         fontVariantNumeric: 'tabular-nums',
                       }}
                     >
                       {numberPart}
                     </span>
                   )}
-                  <span style={{ fontWeight: 700, fontSize: 40 }}>
+                  <span style={{ fontWeight: 740, fontSize: 38 }}>
                     {titlePart}
                   </span>
-                </h2>
+                  </h2>
+                </div>
+
+                <div className="blog-section__content">
+                  <div
+                    aria-hidden="true"
+                    className="blog-section__content-wash"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'rgba(245, 249, 252, 0.9)',
+                      mixBlendMode: 'screen',
+                      pointerEvents: 'none',
+                      zIndex: -1,
+                    }}
+                  />
 
                 {parsed.titleCard && <TitleCard card={parsed.titleCard} />}
                 {parsed.citation && <CitationCard text={parsed.citation} />}
@@ -369,9 +372,9 @@ export default function BlogPage({ sections, scrollTo }) {
                       fontFamily: 'Inter, sans-serif',
                       fontWeight: 500,
                       fontSize: 16,
-                      lineHeight: 1.9,
+                      lineHeight: 1.8,
                       color: '#383437',
-                      maxWidth: 600,
+                      maxWidth: 620,
                       marginTop: parsed.titleCard || parsed.citation ? 12 : 0,
                     }}
                     dangerouslySetInnerHTML={{ __html: parsed.bodyHtmlBefore }}
@@ -388,15 +391,16 @@ export default function BlogPage({ sections, scrollTo }) {
                       fontFamily: 'Inter, sans-serif',
                       fontWeight: 500,
                       fontSize: 16,
-                      lineHeight: 1.9,
+                      lineHeight: 1.8,
                       color: '#383437',
-                      maxWidth: 600,
+                      maxWidth: 620,
                       marginTop: section.video ? 24 : (parsed.titleCard || parsed.citation ? 12 : 0),
                     }}
                     dangerouslySetInnerHTML={{ __html: parsed.bodyHtmlAfter }}
                     onClick={handleBodyClick}
                   />
                 )}
+                </div>
               </section>
             );
           })}
@@ -408,6 +412,26 @@ export default function BlogPage({ sections, scrollTo }) {
       </div>
 
       <style>{`
+        .blog-section__header {
+          padding: 42px 54px 34px;
+          background:
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08));
+          border: 1px solid rgba(255, 255, 255, 0.24);
+          border-bottom-color: rgba(255, 255, 255, 0.14);
+          border-radius: 8px 8px 0 0;
+          backdrop-filter: blur(18px) saturate(1.08);
+          -webkit-backdrop-filter: blur(18px) saturate(1.08);
+        }
+        .blog-section__content {
+          position: relative;
+          padding: 44px 54px 88px;
+          isolation: isolate;
+          border-radius: 0 0 8px 8px;
+          overflow: hidden;
+        }
+        .blog-section__content-wash {
+          border-radius: 0 0 8px 8px;
+        }
         @media (max-width: 900px) {
           .blog-grid {
             grid-template-columns: 1fr !important;
@@ -416,8 +440,14 @@ export default function BlogPage({ sections, scrollTo }) {
           .blog-grid aside {
             position: static !important;
           }
-          .blog-grid section {
-            padding: 40px 24px !important;
+          .blog-grid section.blog-section {
+            padding: 0 !important;
+          }
+          .blog-section__header {
+            padding: 32px 24px 28px;
+          }
+          .blog-section__content {
+            padding: 32px 24px 40px;
           }
         }
         .blog-body p { margin: 0 0 1.35em 0; }
@@ -428,7 +458,7 @@ export default function BlogPage({ sections, scrollTo }) {
         .blog-body em { font-style: italic; }
         .blog-body h2 {
           font-weight: 700; color: #383437; font-size: 24px;
-          letter-spacing: -0.5px; line-height: 1.35;
+          letter-spacing: 0; line-height: 1.32;
           margin: 44px 0 18px;
         }
         .blog-body h3 {
@@ -458,14 +488,14 @@ function TitleCard({ card }) {
       style={{
         display: 'block',
         backgroundColor: '#1c3664',
-        borderRadius: 16,
-        padding: '24px 24px',
+        borderRadius: 8,
+        padding: '22px 24px',
         color: '#ffffff',
         textDecoration: 'none',
         position: 'relative',
         overflow: 'hidden',
         marginBottom: 18,
-        maxWidth: 600,
+        maxWidth: 620,
         boxShadow: '0 1px 2px rgba(28,54,100,0.12), inset 0 0 0 1px rgba(255,255,255,0.06)',
         transition: 'transform 0.2s ease, box-shadow 0.2s ease',
       }}
@@ -512,8 +542,8 @@ function TitleCard({ card }) {
           fontFamily: 'Inter, sans-serif',
           fontWeight: 600,
           fontSize: 15,
-          lineHeight: 1.5,
-          letterSpacing: '-0.1px',
+          lineHeight: 1.46,
+          letterSpacing: 0,
           display: 'inline-block',
           paddingRight: 18,
         }}
@@ -561,13 +591,13 @@ function CitationCard({ text }) {
         borderRadius: 8,
         padding: '14px 18px 14px 22px',
         marginBottom: 18,
-        maxWidth: 600,
+        maxWidth: 620,
         borderLeft: '3px solid #48c1c4',
         fontFamily: 'Inter, sans-serif',
         fontWeight: 500,
         fontStyle: 'italic',
         fontSize: 14,
-        lineHeight: 1.7,
+        lineHeight: 1.65,
         color: 'rgba(56, 52, 55, 0.75)',
       }}
     >
@@ -654,7 +684,7 @@ function InlineVideo({ src }) {
     return () => io.disconnect();
   }, []);
   return (
-    <div style={{ maxWidth: 600, margin: '24px 0', borderRadius: 12, overflow: 'hidden', boxShadow: '0 4px 18px rgba(28,54,100,0.12)' }}>
+    <div style={{ maxWidth: 620, margin: '26px 0', borderRadius: 8, overflow: 'hidden', boxShadow: '0 4px 16px rgba(28,54,100,0.1)' }}>
       <video
         ref={ref}
         src={src}

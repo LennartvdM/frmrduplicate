@@ -81,6 +81,7 @@ export default function Navbar() {
   const [traveling, setTraveling] = useState(false);
   const [blobHeight, setBlobHeight] = useState(0);
   const [isMobile, setIsMobile] = useState(() => (typeof window !== 'undefined' ? window.innerWidth < 768 : false));
+  const [isCompactMobile, setIsCompactMobile] = useState(() => (typeof window !== 'undefined' ? window.innerWidth < 600 : false));
   const [menuOpen, setMenuOpen] = useState(false);
   const settleTimeout = useRef(null);
   const prevIdx = useRef(null);
@@ -128,8 +129,10 @@ export default function Navbar() {
 
   useEffect(() => {
     const onResize = () => {
-      const mobile = window.innerWidth < 768;
+      const width = window.innerWidth;
+      const mobile = width < 768;
       setIsMobile(mobile);
+      setIsCompactMobile(width < 600);
       if (!mobile) setMenuOpen(false);
     };
     window.addEventListener('resize', onResize);
@@ -175,14 +178,14 @@ export default function Navbar() {
     const updateVar = () => {
       try {
         const navEl = navRef.current;
-        const h = navEl?.getBoundingClientRect()?.height || 60;
+        const h = isCompactMobile ? 0 : (navEl?.getBoundingClientRect()?.height || 60);
         document.documentElement.style.setProperty('--nav-h', `${Math.round(h)}px`);
       } catch {}
     };
     updateVar();
     window.addEventListener('resize', updateVar);
     return () => window.removeEventListener('resize', updateVar);
-  }, []);
+  }, [isCompactMobile]);
 
   useEffect(() => {
     if (isMobile) return;
@@ -205,6 +208,8 @@ export default function Navbar() {
       setHoveredIdx(null);
     }
   }, [location.pathname, location.hash, isMobile]);
+
+  if (isCompactMobile) return null;
 
   return (
     <nav ref={navRef} data-app-navbar className="fixed inset-x-0 top-0 z-40 bg-white flex items-center justify-between" style={{ height: 60, borderBottom: '1px solid rgba(28, 54, 100, 0.08)', boxShadow: '0 1px 2px rgba(28, 54, 100, 0.05), 0 2px 8px -2px rgba(28, 54, 100, 0.06)' }}>

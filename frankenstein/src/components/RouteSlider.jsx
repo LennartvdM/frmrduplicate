@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTransitionState } from '../contexts/TransitionContext';
 import { getNavIndexForPath } from '../hooks/useNavIndex';
+import useTabletLayout from '../hooks/useTabletLayout';
 
 /**
  * RouteSlider — scoped page-transition wrapper.
@@ -37,6 +38,8 @@ const EASE = [0.4, 0, 0.2, 1];
 export default function RouteSlider({ children }) {
   const location = useLocation();
   const { direction, isSliding, setIsSliding } = useTransitionState();
+  const { width } = useTabletLayout();
+  const navSurface = width > 0 && width < 600 ? 'mobile' : 'desktop';
 
   // Capture the direction at the moment each slide starts. Framer Motion
   // reads variant args at animation start, and `direction` in context
@@ -55,7 +58,7 @@ export default function RouteSlider({ children }) {
   // rather than an AnimatePresence swap. That kills the stale-slide flash
   // on sidebar clicks inside the toolbox and preserves per-route state
   // (sidebar scroll position, open/collapsed sections, etc).
-  const slotKey = getNavIndexForPath(location.pathname);
+  const slotKey = getNavIndexForPath(location.pathname, navSurface);
 
   // Flip sliding on whenever a transition is starting. AnimatePresence's
   // `onExitComplete` flips it back off.

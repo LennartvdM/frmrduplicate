@@ -124,9 +124,6 @@ export default function BlogPage({ sections, scrollTo }) {
   const sectionIds = sections.map((s) => s.id);
   const active = useScrollSpy(sectionIds, 120, scrollRef);
   const activeSectionIndex = Math.max(0, sections.findIndex((section) => section.id === active));
-  const activeProgress = sections.length > 1
-    ? (activeSectionIndex / (sections.length - 1)) * 100
-    : 0;
   const pageLabel = pageLabelForSections(sections);
   const [hovered, setHovered] = useState(null);
 
@@ -219,19 +216,12 @@ export default function BlogPage({ sections, scrollTo }) {
             flexDirection: 'column',
             justifyContent: 'flex-start',
             minHeight: 'min(680px, calc(100vh - 132px))',
-            '--blog-active-progress': `${activeProgress}%`,
           }}
         >
           <div className="blog-sidebar__meta">
             <span>Neoflix</span>
             <strong>{pageLabel}</strong>
             <em>{String(activeSectionIndex + 1).padStart(2, '0')} / {String(sections.length).padStart(2, '0')}</em>
-          </div>
-          <div className="blog-sidebar__meter" aria-hidden="true">
-            <motion.span
-              animate={{ height: `${activeProgress}%`, backgroundColor: sectionAccent(activeSectionIndex) }}
-              transition={{ height: { type: 'spring', stiffness: 240, damping: 30 }, backgroundColor: { duration: 0.25 } }}
-            />
           </div>
           <ul className="blog-sidebar__list" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
             {sections.map((s, idx) => {
@@ -271,6 +261,14 @@ export default function BlogPage({ sections, scrollTo }) {
                         '--section-accent': itemAccent,
                       }}
                     >
+                      {isActive && (
+                        <motion.span
+                          layoutId={`blog-sidebar-bookmark-${pageLabel}`}
+                          className="blog-sidebar__bookmark"
+                          style={{ backgroundColor: itemAccent }}
+                          transition={{ type: 'spring', stiffness: 420, damping: 38 }}
+                        />
+                      )}
                       <span className="blog-sidebar__index">{sectionIndexLabel(s, idx)}</span>
                       <span className="blog-sidebar__title">{titlePart}</span>
                     </motion.button>
@@ -405,33 +403,19 @@ export default function BlogPage({ sections, scrollTo }) {
       <style>{`
         .blog-shell {
           background:
-            radial-gradient(circle at 16% 12%, rgba(98, 200, 201, 0.16), transparent 32%),
-            radial-gradient(circle at 90% 18%, rgba(197, 188, 255, 0.12), transparent 30%),
-            #07110f;
+            linear-gradient(to bottom, rgba(7, 17, 15, 0.08), rgba(7, 17, 15, 0.16) 55%, rgba(7, 17, 15, 0.22)),
+            radial-gradient(circle at 16% 12%, rgba(98, 200, 201, 0.08), transparent 32%),
+            radial-gradient(circle at 90% 18%, rgba(197, 188, 255, 0.07), transparent 30%);
         }
 
         .blog-sidebar {
           position: relative;
           overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.14);
-          background:
-            linear-gradient(145deg, rgba(7, 17, 15, 0.74), rgba(14, 35, 42, 0.64)),
-            rgba(7, 17, 15, 0.74);
-          box-shadow:
-            0 30px 90px rgba(0, 0, 0, 0.26),
-            inset 0 1px 0 rgba(255, 255, 255, 0.08);
-          backdrop-filter: blur(22px) saturate(1.18);
-          -webkit-backdrop-filter: blur(22px) saturate(1.18);
-        }
-
-        .blog-sidebar::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background:
-            radial-gradient(circle at 16% 10%, rgba(98, 200, 201, 0.22), transparent 32%),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent 35%);
-          pointer-events: none;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: rgba(6, 14, 13, 0.46);
+          box-shadow: 0 18px 48px rgba(0, 0, 0, 0.16);
+          backdrop-filter: blur(10px) saturate(1.02);
+          -webkit-backdrop-filter: blur(10px) saturate(1.02);
         }
 
         .blog-sidebar__meta {
@@ -440,8 +424,8 @@ export default function BlogPage({ sections, scrollTo }) {
           display: grid;
           grid-template-columns: 1fr auto;
           gap: 6px 12px;
-          padding: 4px 4px 22px;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+          padding: 2px 2px 18px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.09);
         }
 
         .blog-sidebar__meta span {
@@ -469,34 +453,13 @@ export default function BlogPage({ sections, scrollTo }) {
           font-variant-numeric: tabular-nums;
         }
 
-        .blog-sidebar__meter {
-          position: absolute;
-          left: 22px;
-          top: 116px;
-          bottom: 24px;
-          width: 2px;
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.1);
-          overflow: hidden;
-        }
-
-        .blog-sidebar__meter span {
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          min-height: 16px;
-          border-radius: inherit;
-          box-shadow: 0 0 18px currentColor;
-        }
-
         .blog-sidebar__list {
           position: relative;
           z-index: 1;
           display: flex;
           flex-direction: column;
           gap: 6px;
-          padding: 22px 0 0 18px !important;
+          padding: 18px 0 0 !important;
         }
 
         .blog-sidebar__button {
@@ -507,7 +470,7 @@ export default function BlogPage({ sections, scrollTo }) {
           gap: 12px;
           width: 100%;
           min-height: 54px;
-          padding: 9px 10px;
+          padding: 9px 12px 9px 16px;
           border: 0;
           border-radius: 8px;
           background: transparent;
@@ -517,32 +480,22 @@ export default function BlogPage({ sections, scrollTo }) {
           transition: background 180ms ease, color 180ms ease;
         }
 
-        .blog-sidebar__button::before {
-          content: "";
+        .blog-sidebar__bookmark {
           position: absolute;
-          left: -18px;
-          top: 50%;
-          width: 10px;
-          height: 10px;
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          border-radius: 50%;
-          background: #07110f;
-          transform: translate(-50%, -50%);
-          transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+          left: 0;
+          top: 8px;
+          bottom: 8px;
+          width: 4px;
+          border-radius: 999px;
+          pointer-events: none;
         }
 
         .blog-sidebar__button:hover,
         .blog-sidebar__button.is-active {
           background:
-            linear-gradient(135deg, color-mix(in srgb, var(--section-accent) 16%, transparent), transparent 55%),
-            rgba(255, 255, 255, 0.07);
+            linear-gradient(90deg, color-mix(in srgb, var(--section-accent) 14%, transparent), transparent 72%),
+            rgba(255, 255, 255, 0.045);
           color: #ffffff;
-        }
-
-        .blog-sidebar__button.is-active::before {
-          border-color: var(--section-accent);
-          background: var(--section-accent);
-          box-shadow: 0 0 18px var(--section-accent);
         }
 
         .blog-sidebar__index {
@@ -566,21 +519,20 @@ export default function BlogPage({ sections, scrollTo }) {
 
         .blog-sidebar__divider div {
           height: 1px;
-          background: rgba(255, 255, 255, 0.12);
+          background: rgba(255, 255, 255, 0.09);
         }
 
         .blog-section {
           overflow: hidden;
-          border-top: 1px solid rgba(255, 255, 255, 0.12);
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+          border-top: 1px solid rgba(255, 255, 255, 0.09);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
         }
 
         .blog-section__wash {
           background:
-            linear-gradient(to bottom, rgba(7, 17, 15, 0.5), rgba(16, 36, 43, 0.74) 42%, rgba(7, 17, 15, 0.88)),
-            linear-gradient(135deg, color-mix(in srgb, var(--section-accent) 17%, transparent), rgba(17, 32, 56, 0.22));
-          backdrop-filter: blur(20px) saturate(1.12);
-          -webkit-backdrop-filter: blur(20px) saturate(1.12);
+            linear-gradient(to bottom, rgba(11, 20, 17, 0.2), rgba(13, 24, 23, 0.34) 46%, rgba(6, 12, 11, 0.46)),
+            linear-gradient(135deg, color-mix(in srgb, var(--section-accent) 10%, transparent), rgba(255, 255, 255, 0.04));
+          mix-blend-mode: multiply;
         }
 
         @media (max-width: 900px) {
@@ -641,58 +593,33 @@ function TitleCard({ card }) {
       style={{
         display: 'block',
         background:
-          'linear-gradient(135deg, rgba(98, 200, 201, 0.14), rgba(255, 255, 255, 0.06))',
-        border: '1px solid rgba(255, 255, 255, 0.16)',
+          'linear-gradient(90deg, color-mix(in srgb, var(--section-accent, #62c8c9) 10%, transparent), rgba(8, 17, 16, 0.36))',
+        border: '1px solid rgba(255, 255, 255, 0.12)',
+        borderLeft: '3px solid var(--section-accent, #62c8c9)',
         borderRadius: 8,
-        padding: '24px 24px',
+        padding: '22px 24px',
         color: '#ffffff',
         textDecoration: 'none',
         position: 'relative',
         overflow: 'hidden',
         marginBottom: 18,
         maxWidth: 690,
-        boxShadow: '0 18px 42px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08)',
-        backdropFilter: 'blur(14px)',
-        WebkitBackdropFilter: 'blur(14px)',
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.07)',
+        backdropFilter: 'blur(4px)',
+        WebkitBackdropFilter: 'blur(4px)',
+        transition: 'transform 0.2s ease, background 0.2s ease',
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-1px)';
-        e.currentTarget.style.boxShadow =
-          '0 22px 54px rgba(0,0,0,0.26), inset 0 1px 0 rgba(255,255,255,0.1)';
+        e.currentTarget.style.background =
+          'linear-gradient(90deg, color-mix(in srgb, var(--section-accent, #62c8c9) 14%, transparent), rgba(8, 17, 16, 0.42))';
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow =
-          '0 18px 42px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08)';
+        e.currentTarget.style.background =
+          'linear-gradient(90deg, color-mix(in srgb, var(--section-accent, #62c8c9) 10%, transparent), rgba(8, 17, 16, 0.36))';
       }}
     >
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          right: -36,
-          top: -36,
-          width: 140,
-          height: 140,
-          borderRadius: '50%',
-          border: '1px solid rgba(72, 193, 196, 0.18)',
-          pointerEvents: 'none',
-        }}
-      />
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          right: -8,
-          bottom: -8,
-          width: 70,
-          height: 70,
-          borderRadius: '50%',
-          border: '1px solid rgba(72, 193, 196, 0.12)',
-          pointerEvents: 'none',
-        }}
-      />
       <span
         style={{
           position: 'relative',
@@ -744,19 +671,19 @@ function CitationCard({ text }) {
     <div
       style={{
         position: 'relative',
-        background: 'rgba(255, 255, 255, 0.07)',
+        background: 'rgba(8, 17, 16, 0.28)',
         borderRadius: 8,
         padding: '14px 18px 14px 22px',
         marginBottom: 18,
         maxWidth: 690,
-        borderLeft: '3px solid #48c1c4',
+        borderLeft: '3px solid var(--section-accent, #48c1c4)',
         fontFamily: 'Inter, sans-serif',
         fontWeight: 500,
         fontStyle: 'italic',
         fontSize: 14,
         lineHeight: 1.7,
-        color: 'rgba(247, 250, 248, 0.7)',
-        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.06)',
+        color: 'rgba(247, 250, 248, 0.74)',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.045)',
       }}
     >
       {text}

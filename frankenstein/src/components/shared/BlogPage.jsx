@@ -363,8 +363,9 @@ export default function BlogPage({ sections, scrollTo }) {
                     }}
                   />
 
-                {parsed.titleCard && <TitleCard card={parsed.titleCard} />}
-                {parsed.citation && <CitationCard text={parsed.citation} />}
+                {(parsed.titleCard || parsed.citation) && (
+                  <PublicationLead card={parsed.titleCard} citation={parsed.citation} />
+                )}
                 {parsed.bodyHtmlBefore && (
                   <div
                     className="blog-body"
@@ -375,7 +376,7 @@ export default function BlogPage({ sections, scrollTo }) {
                       lineHeight: 1.8,
                       color: '#383437',
                       maxWidth: 620,
-                      marginTop: parsed.titleCard || parsed.citation ? 12 : 0,
+                      marginTop: parsed.titleCard || parsed.citation ? 4 : 0,
                     }}
                     dangerouslySetInnerHTML={{ __html: parsed.bodyHtmlBefore }}
                     onClick={handleBodyClick}
@@ -432,6 +433,59 @@ export default function BlogPage({ sections, scrollTo }) {
         .blog-section__content-wash {
           border-radius: 0 0 8px 8px;
         }
+        .publication-lead {
+          position: relative;
+          max-width: 680px;
+          margin: 0 0 34px;
+          font-family: Inter, sans-serif;
+        }
+        .publication-lead::before {
+          content: "";
+          position: absolute;
+          left: -22px;
+          top: 4px;
+          bottom: 6px;
+          width: 2px;
+          background: #48c1c4;
+        }
+        .publication-lead__title {
+          position: relative;
+          display: block;
+          margin-left: -18px;
+          padding: 0 0 18px 18px;
+          max-width: 660px;
+          color: #172f56;
+          text-decoration: none;
+          border-bottom: 1px solid rgba(28, 54, 100, 0.18);
+        }
+        .publication-lead__title::after {
+          content: "";
+          position: absolute;
+          left: 18px;
+          bottom: -1px;
+          width: 96px;
+          height: 1px;
+          background: #48c1c4;
+        }
+        .publication-lead__title-text {
+          display: inline;
+          font-size: 19px;
+          font-weight: 760;
+          line-height: 1.34;
+          letter-spacing: 0;
+        }
+        .publication-lead__citation {
+          display: block;
+          margin: 14px 0 0 56px;
+          max-width: 560px;
+          padding-left: 18px;
+          border-left: 1px solid rgba(72, 193, 196, 0.48);
+          color: rgba(56, 52, 55, 0.72);
+          font-size: 14px;
+          font-style: italic;
+          font-weight: 500;
+          line-height: 1.62;
+        }
         @media (max-width: 900px) {
           .blog-grid {
             grid-template-columns: 1fr !important;
@@ -448,6 +502,19 @@ export default function BlogPage({ sections, scrollTo }) {
           }
           .blog-section__content {
             padding: 32px 24px 40px;
+          }
+          .publication-lead::before {
+            left: -12px;
+          }
+          .publication-lead__title {
+            margin-left: 0;
+            padding-left: 0;
+          }
+          .publication-lead__title::after {
+            left: 0;
+          }
+          .publication-lead__citation {
+            margin-left: 18px;
           }
         }
         .blog-body p { margin: 0 0 1.35em 0; }
@@ -478,80 +545,29 @@ export default function BlogPage({ sections, scrollTo }) {
   );
 }
 
-/* ── Title card ─────────────────────────────────────────────────────── */
-function TitleCard({ card }) {
+/* ── Publication lead ───────────────────────────────────────────────── */
+function PublicationLead({ card, citation }) {
   return (
-    <a
-      href={card.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{
-        display: 'block',
-        backgroundColor: '#1c3664',
-        borderRadius: 8,
-        padding: '22px 24px',
-        color: '#ffffff',
-        textDecoration: 'none',
-        position: 'relative',
-        overflow: 'hidden',
-        marginBottom: 18,
-        maxWidth: 620,
-        boxShadow: '0 1px 2px rgba(28,54,100,0.12), inset 0 0 0 1px rgba(255,255,255,0.06)',
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-1px)';
-        e.currentTarget.style.boxShadow =
-          '0 4px 12px rgba(28, 54, 100, 0.25), inset 0 0 0 1px rgba(255,255,255,0.08)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow =
-          '0 1px 2px rgba(28,54,100,0.12), inset 0 0 0 1px rgba(255,255,255,0.06)';
-      }}
-    >
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          right: -36,
-          top: -36,
-          width: 140,
-          height: 140,
-          borderRadius: '50%',
-          border: '1px solid rgba(72, 193, 196, 0.18)',
-          pointerEvents: 'none',
-        }}
-      />
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          right: -8,
-          bottom: -8,
-          width: 70,
-          height: 70,
-          borderRadius: '50%',
-          border: '1px solid rgba(72, 193, 196, 0.12)',
-          pointerEvents: 'none',
-        }}
-      />
-      <span
-        style={{
-          position: 'relative',
-          fontFamily: 'Inter, sans-serif',
-          fontWeight: 600,
-          fontSize: 15,
-          lineHeight: 1.46,
-          letterSpacing: 0,
-          display: 'inline-block',
-          paddingRight: 18,
-        }}
-      >
-        {card.title}
-        <ExternalArrow />
-      </span>
-    </a>
+    <div className="publication-lead">
+      {card && (
+        <a
+          className="publication-lead__title"
+          href={card.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span className="publication-lead__title-text">
+            {card.title}
+          </span>
+          <ExternalArrow />
+        </a>
+      )}
+      {citation && (
+        <cite className="publication-lead__citation">
+          {citation}
+        </cite>
+      )}
+    </div>
   );
 }
 
@@ -578,31 +594,6 @@ function ExternalArrow() {
         strokeLinejoin="round"
       />
     </svg>
-  );
-}
-
-/* ── Citation card ──────────────────────────────────────────────────── */
-function CitationCard({ text }) {
-  return (
-    <div
-      style={{
-        position: 'relative',
-        background: 'rgba(245, 249, 252, 0.7)',
-        borderRadius: 8,
-        padding: '14px 18px 14px 22px',
-        marginBottom: 18,
-        maxWidth: 620,
-        borderLeft: '3px solid #48c1c4',
-        fontFamily: 'Inter, sans-serif',
-        fontWeight: 500,
-        fontStyle: 'italic',
-        fontSize: 14,
-        lineHeight: 1.65,
-        color: 'rgba(56, 52, 55, 0.75)',
-      }}
-    >
-      {text}
-    </div>
   );
 }
 

@@ -2,6 +2,8 @@ import React, { lazy, Suspense } from 'react';
 import ScrollSnap from '../components/ScrollSnap';
 import SectionManager from '../components/SectionManager';
 import Footer from '../components/Footer';
+import MobileHome from '../components/mobile/MobileHome';
+import useTabletLayout from '../hooks/useTabletLayout';
 
 // Eagerly load the intro section for fast initial paint
 import IntroSection from '../components/sections/IntroSection';
@@ -33,6 +35,13 @@ const sections = [
 ];
 
 const Home = () => {
+  const { width } = useTabletLayout();
+  const useMobileHome = width > 0 && width < 600;
+
+  if (useMobileHome) {
+    return <MobileHome />;
+  }
+
   // Footer sits inside ScrollSnap so scrolling past the last section reveals
   // it. Its scroll-snap-align:end makes it a reachable snap target without
   // becoming its own full slide.

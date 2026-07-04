@@ -9,8 +9,16 @@
  */
 import React from 'react';
 import BlogPage from '../components/shared/BlogPage';
+import MobileNeoflixPage from '../components/mobile/MobileNeoflixPage';
+import useTabletLayout from '../hooks/useTabletLayout';
 import { sections } from '../data/neoflixPage';
 
 export default function NeoflixPage({ scrollTo }) {
+  const { width } = useTabletLayout();
+
+  if (width > 0 && width < 600) {
+    return <MobileNeoflixPage sections={sections} scrollTo={scrollTo} />;
+  }
+
   return <BlogPage sections={sections} scrollTo={scrollTo} />;
 }

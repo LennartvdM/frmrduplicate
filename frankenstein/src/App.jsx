@@ -1,9 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import MobileDock from './components/mobile/MobileDock';
 import RouteSlider from './components/RouteSlider';
 import BackdropProvider from './backdrop/BackdropProvider';
 import { TransitionProvider } from './contexts/TransitionContext';
+import useTabletLayout from './hooks/useTabletLayout';
 import Home from './pages/Home';
 import NeoflixPage from './pages/NeoflixPage';
 import PublicationsPage from './pages/PublicationsPage';
@@ -11,10 +13,12 @@ import DocsPage from './pages/DocsPage';
 
 function AppShell() {
   const location = useLocation();
+  const { width } = useTabletLayout();
   const isNeoflix = location.pathname === '/neoflix' || location.pathname.startsWith('/neoflix/');
   const isPublications = location.pathname === '/publications';
   const isContact = location.pathname === '/contact';
   const isToolbox = location.pathname.startsWith('/toolbox');
+  const showMobileDock = width > 0 && width < 600;
 
   // The navbar, backdrop, and route slider each render independently.
   // They share a single source of truth — TransitionContext — for the
@@ -40,6 +44,7 @@ function AppShell() {
           )}
         </RouteSlider>
       </BackdropProvider>
+      {showMobileDock ? <MobileDock /> : null}
     </div>
   );
 }

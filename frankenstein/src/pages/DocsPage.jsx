@@ -65,11 +65,27 @@ export default function DocsPage() {
   if (!page) return <NotFound slug={raw} />;
 
   const sourcePath = page.meta?.source;
+  const hrefForSection = (section) => {
+    const slug = section.items?.[0]?.slug;
+    return slug ? `/toolbox/${slug}` : '/toolbox';
+  };
 
   return (
     <div ref={scrollRef} className="docs-scroll">
       <div className="docs-shell">
         <DocsSidebar sections={navSections} activeSlug={slug} />
+
+        <nav className="docs-mobile-sections" aria-label="Toolbox sections">
+          {navSections.map((section) => (
+            <DocsLink key={section.title} href={hrefForSection(section)} internal>
+              <span
+                className={section.title === sectionCrumb ? 'is-active' : undefined}
+              >
+                {section.title}
+              </span>
+            </DocsLink>
+          ))}
+        </nav>
 
         <main className="docs-main">
           <article className="docs-article">

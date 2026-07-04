@@ -1,0 +1,388 @@
+.mobile-neoflix {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #07110f;
+  color: #f7faf8;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+  scroll-behavior: smooth;
+}
+
+.mobile-neoflix__hero {
+  position: relative;
+  min-height: max(420px, min(720px, calc(100svh - 150px)));
+  overflow: hidden;
+  background: #07110f var(--mobile-neoflix-hero-poster) center / cover no-repeat;
+}
+
+.mobile-neoflix__hero-video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mobile-neoflix__hero-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(4, 12, 12, 0.04),
+    rgba(4, 12, 12, 0.24) 50%,
+    rgba(4, 12, 12, 0.64) 100%
+  );
+}
+
+.mobile-neoflix__hero-copy {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 92px;
+  max-width: 340px;
+}
+
+.mobile-neoflix__eyebrow,
+.mobile-neoflix__kicker {
+  margin: 0;
+  color: var(--mobile-neoflix-section-accent, #62c8c9);
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mobile-neoflix__hero-copy h1 {
+  margin: 10px 0 14px;
+  color: #ffffff;
+  font-family: Inter, sans-serif;
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.mobile-neoflix__hero-copy p:not(.mobile-neoflix__eyebrow) {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.86);
+  font-family: Inter, sans-serif;
+  font-size: 17px;
+  font-weight: 550;
+  line-height: 1.48;
+}
+
+.mobile-neoflix__hero-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 24px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 750;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.mobile-neoflix__rail {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px 14px;
+  background: rgba(7, 17, 15, 0.82);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  scroll-padding-inline: 14px;
+}
+
+.mobile-neoflix__rail-button {
+  flex: 0 0 auto;
+  min-height: 42px;
+  max-width: 168px;
+  padding: 7px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.72);
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.mobile-neoflix__rail-button span {
+  margin-right: 7px;
+  color: #62c8c9;
+  font-variant-numeric: tabular-nums;
+}
+
+.mobile-neoflix__rail-button--active {
+  border-color: rgba(98, 200, 201, 0.52);
+  background: rgba(98, 200, 201, 0.17);
+  color: #ffffff;
+}
+
+.mobile-neoflix__intro-band {
+  padding: 82px 22px 26px;
+  background:
+    linear-gradient(135deg, rgba(98, 200, 201, 0.16), transparent 42%),
+    #07110f;
+  color: #ffffff;
+}
+
+.mobile-neoflix__intro-band p {
+  max-width: 34rem;
+  margin: 0;
+  font-family: Inter, sans-serif;
+  font-size: 22px;
+  font-weight: 720;
+  line-height: 1.24;
+  letter-spacing: 0;
+}
+
+.mobile-neoflix__section {
+  position: relative;
+  min-height: calc(100svh - 62px);
+  overflow: hidden;
+  background: #07110f;
+  color: #f7faf8;
+  scroll-margin-top: 62px;
+}
+
+.mobile-neoflix__section + .mobile-neoflix__section {
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.mobile-neoflix__section-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #07110f;
+}
+
+.mobile-neoflix__section-backdrop video {
+  position: absolute;
+  inset: -18px;
+  display: block;
+  width: calc(100% + 36px);
+  height: calc(100% + 36px);
+  object-fit: cover;
+  filter: blur(14px) saturate(1.08) brightness(0.82);
+  transform: scale(1.08);
+  opacity: 0.94;
+}
+
+.mobile-neoflix__section-backdrop div {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 80% 16%, color-mix(in srgb, var(--mobile-neoflix-section-accent, #62c8c9) 38%, transparent), transparent 30%),
+    linear-gradient(to bottom, rgba(5, 13, 14, 0.28), rgba(5, 13, 14, 0.72)),
+    linear-gradient(135deg, rgba(18, 42, 54, 0.46), rgba(30, 14, 42, 0.14));
+}
+
+.mobile-neoflix__section-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.mobile-neoflix__visual {
+  width: 100%;
+  height: min(62vw, 300px);
+  min-height: 184px;
+  margin: 0;
+  overflow: hidden;
+  background: #07110f;
+}
+
+.mobile-neoflix__visual video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.9) contrast(1.03);
+}
+
+.mobile-neoflix__copy {
+  padding: 30px 22px 40px;
+  border: 0;
+  background:
+    linear-gradient(to bottom, rgba(7, 17, 15, 0.54), rgba(16, 36, 43, 0.78) 42%, rgba(7, 17, 15, 0.9)),
+    linear-gradient(135deg, color-mix(in srgb, var(--mobile-neoflix-section-accent, #62c8c9) 18%, transparent), rgba(17, 32, 56, 0.2));
+  box-shadow: none;
+  backdrop-filter: blur(20px) saturate(1.15);
+  -webkit-backdrop-filter: blur(20px) saturate(1.15);
+}
+
+.mobile-neoflix__copy h2 {
+  margin: 8px 0 14px;
+  max-width: 34rem;
+  color: #ffffff;
+  font-family: Inter, sans-serif;
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.mobile-neoflix__summary {
+  margin: 0 0 24px;
+  max-width: 34rem;
+  color: rgba(247, 250, 248, 0.82);
+  font-family: Inter, sans-serif;
+  font-size: 18px;
+  font-weight: 620;
+  line-height: 1.52;
+}
+
+.mobile-neoflix__body {
+  max-width: 34rem;
+  color: rgba(247, 250, 248, 0.86);
+  font-family: Inter, sans-serif;
+  font-size: 17px;
+  font-weight: 480;
+  line-height: 1.74;
+}
+
+.mobile-neoflix__body p {
+  margin: 0 0 1.2em;
+}
+
+.mobile-neoflix__body p:last-child {
+  margin-bottom: 0;
+}
+
+.mobile-neoflix__body strong {
+  color: #ffffff;
+  font-weight: 760;
+}
+
+.mobile-neoflix__body a {
+  color: var(--mobile-neoflix-section-accent, #62c8c9);
+  font-weight: 720;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.mobile-neoflix__body ul,
+.mobile-neoflix__body ol {
+  padding-left: 1.25rem;
+  margin: 0 0 1.2em;
+}
+
+.mobile-neoflix__body li {
+  margin-bottom: 10px;
+}
+
+.mobile-neoflix__section--contact {
+  background: #112038;
+  color: #f7faf8;
+  min-height: auto;
+}
+
+.mobile-neoflix__section--contact .mobile-neoflix__section-content {
+  padding: 0;
+}
+
+.mobile-neoflix__section--contact .mobile-neoflix__copy {
+  padding: 34px 22px 42px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.mobile-neoflix__section--contact .mobile-neoflix__copy h2,
+.mobile-neoflix__section--contact .mobile-neoflix__body strong {
+  color: #ffffff;
+}
+
+.mobile-neoflix__section--contact .mobile-neoflix__body {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.mobile-neoflix__mail {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  margin-top: 22px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: rgba(98, 200, 201, 0.14);
+  color: #ffffff;
+  font-family: Inter, sans-serif;
+  font-weight: 760;
+  text-decoration: none;
+}
+
+.mobile-neoflix__bottom-spacer {
+  height: calc(112px + env(safe-area-inset-bottom));
+  background: #112038;
+}
+
+@media (max-width: 340px) {
+  .mobile-neoflix__copy,
+  .mobile-neoflix__intro-band {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .mobile-neoflix__hero-copy {
+    left: 16px;
+    right: 16px;
+  }
+
+  .mobile-neoflix__body {
+    font-size: 16px;
+  }
+
+  .mobile-neoflix__hero-copy h1 {
+    font-size: 46px;
+  }
+
+  .mobile-neoflix__copy h2 {
+    font-size: 33px;
+  }
+}
+
+@media (max-height: 700px) {
+  .mobile-neoflix__hero-copy {
+    bottom: 56px;
+  }
+
+  .mobile-neoflix__hero-copy h1 {
+    font-size: 44px;
+  }
+
+  .mobile-neoflix__hero-button {
+    margin-top: 18px;
+  }
+}

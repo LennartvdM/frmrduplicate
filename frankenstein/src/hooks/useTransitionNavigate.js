@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getNavIndexForPath } from './useNavIndex';
 import { useTransitionState } from '../contexts/TransitionContext';
+import useTabletLayout from './useTabletLayout';
 
 /**
  * Direction-aware route navigator.
@@ -22,6 +23,8 @@ export default function useTransitionNavigate() {
   const navigate = useNavigate();
   const location = useLocation();
   const { setDirection } = useTransitionState();
+  const { width } = useTabletLayout();
+  const navSurface = width > 0 && width < 600 ? 'mobile' : 'desktop';
 
   return (to, opts) => {
     const targetPath =
@@ -33,8 +36,8 @@ export default function useTransitionNavigate() {
       return;
     }
 
-    const fromIndex = getNavIndexForPath(currentPath);
-    const toIndex = getNavIndexForPath(targetPath);
+    const fromIndex = getNavIndexForPath(currentPath, navSurface);
+    const toIndex = getNavIndexForPath(targetPath, navSurface);
     const direction = toIndex - fromIndex;
 
     // Same navbar slot (e.g. /toolbox/a → /toolbox/b): no slide, and

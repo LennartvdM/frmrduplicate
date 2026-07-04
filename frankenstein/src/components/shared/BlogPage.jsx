@@ -301,71 +301,65 @@ export default function BlogPage({ sections, scrollTo }) {
               videoAfterParagraph: section.videoAfterParagraph,
             });
             const { numberPart, titlePart } = splitHeading(section.title);
+            const hasPublicationLead = Boolean(parsed.titleCard || parsed.citation);
             return (
               <section
                 key={section.id}
                 id={section.id}
-                className="blog-section"
+                className={`blog-section${hasPublicationLead ? ' blog-section--with-publication' : ' blog-section--plain'}`}
                 style={{
                   position: 'relative',
-                  borderRadius: 8,
+                  borderRadius: 0,
                   padding: 0,
                   scrollMarginTop: 96,
                   opacity: 1,
                   isolation: 'isolate',
-                  overflow: 'hidden',
+                  overflow: 'visible',
                 }}
               >
-                <div className="blog-section__header">
-                  <h2
-                  style={{
-                    fontFamily: 'Inter, sans-serif',
-                    margin: 0,
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    gap: 14,
-                    flexWrap: 'wrap',
-                    color: '#f8fbff',
-                    letterSpacing: 0,
-                    lineHeight: 1.08,
-                    textShadow: '0 2px 14px rgba(8, 17, 24, 0.24)',
-                  }}
-                >
-                  {numberPart && (
-                    <span
+                <div className={`blog-section__lead${hasPublicationLead ? ' blog-section__lead--publication' : ' blog-section__lead--plain'}`}>
+                  {hasPublicationLead && (
+                    <div aria-hidden="true" className="blog-section__glass" />
+                  )}
+                  <div className="blog-section__header">
+                    <h2
                       style={{
-                        fontWeight: 300,
-                        fontSize: 42,
-                        color: 'rgba(248, 251, 255, 0.72)',
-                        fontVariantNumeric: 'tabular-nums',
+                        fontFamily: 'Inter, sans-serif',
+                        margin: 0,
+                        display: 'flex',
+                        alignItems: 'baseline',
+                        gap: 14,
+                        flexWrap: 'wrap',
+                        color: '#f8fbff',
+                        letterSpacing: 0,
+                        lineHeight: 1.08,
+                        textShadow: '0 2px 14px rgba(8, 17, 24, 0.24)',
                       }}
                     >
-                      {numberPart}
-                    </span>
+                      {numberPart && (
+                        <span
+                          style={{
+                            fontWeight: 300,
+                            fontSize: 42,
+                            color: 'rgba(248, 251, 255, 0.72)',
+                            fontVariantNumeric: 'tabular-nums',
+                          }}
+                        >
+                          {numberPart}
+                        </span>
+                      )}
+                      <span style={{ fontWeight: 740, fontSize: 38 }}>
+                        {titlePart}
+                      </span>
+                    </h2>
+                  </div>
+
+                  {hasPublicationLead && (
+                    <PublicationLead card={parsed.titleCard} citation={parsed.citation} />
                   )}
-                  <span style={{ fontWeight: 740, fontSize: 38 }}>
-                    {titlePart}
-                  </span>
-                  </h2>
                 </div>
 
                 <div className="blog-section__content">
-                  <div
-                    aria-hidden="true"
-                    className="blog-section__content-wash"
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'rgba(245, 249, 252, 0.9)',
-                      mixBlendMode: 'screen',
-                      pointerEvents: 'none',
-                      zIndex: -1,
-                    }}
-                  />
-
-                {(parsed.titleCard || parsed.citation) && (
-                  <PublicationLead card={parsed.titleCard} citation={parsed.citation} />
-                )}
                 {parsed.bodyHtmlBefore && (
                   <div
                     className="blog-body"
@@ -376,7 +370,7 @@ export default function BlogPage({ sections, scrollTo }) {
                       lineHeight: 1.8,
                       color: '#383437',
                       maxWidth: 620,
-                      marginTop: parsed.titleCard || parsed.citation ? 4 : 0,
+                      marginTop: hasPublicationLead ? 4 : 0,
                     }}
                     dangerouslySetInnerHTML={{ __html: parsed.bodyHtmlBefore }}
                     onClick={handleBodyClick}
@@ -395,7 +389,7 @@ export default function BlogPage({ sections, scrollTo }) {
                       lineHeight: 1.8,
                       color: '#383437',
                       maxWidth: 620,
-                      marginTop: section.video ? 24 : (parsed.titleCard || parsed.citation ? 12 : 0),
+                      marginTop: section.video ? 24 : (hasPublicationLead ? 12 : 0),
                     }}
                     dangerouslySetInnerHTML={{ __html: parsed.bodyHtmlAfter }}
                     onClick={handleBodyClick}
@@ -413,73 +407,106 @@ export default function BlogPage({ sections, scrollTo }) {
       </div>
 
       <style>{`
+        .blog-section {
+          z-index: 0;
+        }
+        .blog-section__lead {
+          position: relative;
+          z-index: 1;
+          isolation: isolate;
+          margin-bottom: 2px;
+        }
+        .blog-section__glass {
+          position: absolute;
+          z-index: 0;
+          top: -22px;
+          right: -18px;
+          bottom: -24px;
+          left: 0;
+          pointer-events: none;
+          background:
+            linear-gradient(135deg, rgba(255, 255, 255, 0.46), rgba(245, 249, 252, 0.34) 48%, rgba(232, 244, 246, 0.3));
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          border-radius: 12px;
+          box-shadow: 0 28px 58px rgba(17, 34, 65, 0.12);
+          backdrop-filter: blur(20px) saturate(1.05);
+          -webkit-backdrop-filter: blur(20px) saturate(1.05);
+        }
         .blog-section__header {
+          position: relative;
+          z-index: 3;
+          margin: 0 72px -1px 0;
           padding: 42px 54px 34px;
           background:
             linear-gradient(to bottom, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08));
           border: 1px solid rgba(255, 255, 255, 0.24);
           border-bottom-color: rgba(255, 255, 255, 0.14);
-          border-radius: 8px 8px 0 0;
+          border-radius: 8px 8px 8px 0;
           backdrop-filter: blur(18px) saturate(1.08);
           -webkit-backdrop-filter: blur(18px) saturate(1.08);
         }
         .blog-section__content {
           position: relative;
-          padding: 44px 54px 88px;
-          isolation: isolate;
-          border-radius: 0 0 8px 8px;
-          overflow: hidden;
+          z-index: 2;
+          margin-left: 24px;
+          padding: 0 54px 88px 30px;
+          border-radius: 0 8px 8px 8px;
+          overflow: visible;
         }
-        .blog-section__content-wash {
-          border-radius: 0 0 8px 8px;
+        .blog-section--plain .blog-section__content {
+          padding-top: 44px;
         }
         .publication-lead {
           position: relative;
-          max-width: 680px;
-          margin: 0 0 34px;
+          z-index: 1;
+          display: grid;
+          grid-template-columns: 76px minmax(0, 1fr);
+          max-width: 690px;
+          margin: 42px 54px 46px;
           font-family: Inter, sans-serif;
         }
-        .publication-lead::before {
-          content: "";
-          position: absolute;
-          left: -22px;
-          top: 4px;
-          bottom: 6px;
-          width: 2px;
-          background: #48c1c4;
-        }
-        .publication-lead__title {
+        .publication-lead__button {
           position: relative;
-          display: block;
-          margin-left: -18px;
-          padding: 0 0 18px 18px;
-          max-width: 660px;
-          color: #172f56;
+          display: grid;
+          grid-column: 1 / -1;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: end;
+          gap: 20px;
+          min-height: 112px;
+          padding: 24px 28px;
+          color: #ffffff;
+          background: #1d3767;
+          border-radius: 8px;
+          box-shadow: 0 18px 36px rgba(17, 34, 65, 0.16);
           text-decoration: none;
-          border-bottom: 1px solid rgba(28, 54, 100, 0.18);
+          transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
         }
-        .publication-lead__title::after {
-          content: "";
-          position: absolute;
-          left: 18px;
-          bottom: -1px;
-          width: 96px;
-          height: 1px;
-          background: #48c1c4;
+        .publication-lead__button:hover {
+          background: #234171;
+          box-shadow: 0 22px 42px rgba(17, 34, 65, 0.2);
+          transform: translateY(-1px);
         }
-        .publication-lead__title-text {
-          display: inline;
-          font-size: 19px;
+        .publication-lead__button-text {
+          display: block;
+          max-width: 630px;
+          font-size: 20px;
           font-weight: 760;
-          line-height: 1.34;
+          line-height: 1.3;
           letter-spacing: 0;
+        }
+        .publication-lead__button svg {
+          flex: 0 0 auto;
+          margin-left: 0 !important;
+          color: rgba(255, 255, 255, 0.82);
         }
         .publication-lead__citation {
           display: block;
-          margin: 14px 0 0 56px;
+          grid-column: 2 / -1;
           max-width: 560px;
-          padding-left: 18px;
-          border-left: 1px solid rgba(72, 193, 196, 0.48);
+          margin-top: 16px;
+          padding: 16px 0 0 20px;
+          border-top: 1px solid rgba(28, 54, 100, 0.18);
+          border-left: 2px solid rgba(72, 193, 196, 0.72);
           color: rgba(56, 52, 55, 0.72);
           font-size: 14px;
           font-style: italic;
@@ -497,25 +524,46 @@ export default function BlogPage({ sections, scrollTo }) {
           .blog-grid section.blog-section {
             padding: 0 !important;
           }
+          .blog-section__glass {
+            top: -14px;
+            right: -8px;
+            bottom: -16px;
+            left: 0;
+            border-radius: 8px;
+          }
           .blog-section__header {
+            margin: 0 20px -1px 0;
             padding: 32px 24px 28px;
           }
           .blog-section__content {
-            padding: 32px 24px 40px;
+            margin-left: 12px;
+            padding: 0 24px 40px 20px;
           }
-          .publication-lead::before {
-            left: -12px;
+          .blog-section--plain .blog-section__content {
+            padding-top: 32px;
           }
-          .publication-lead__title {
-            margin-left: 0;
-            padding-left: 0;
+          .publication-lead {
+            grid-template-columns: 1fr;
+            margin: 30px 20px 34px;
           }
-          .publication-lead__title::after {
-            left: 0;
+          .publication-lead__button {
+            grid-column: 1;
+            grid-template-columns: minmax(0, 1fr) auto;
+            min-height: 104px;
+            padding: 22px 22px 24px;
+          }
+          .publication-lead__button-text {
+            font-size: 18px;
           }
           .publication-lead__citation {
-            margin-left: 18px;
+            grid-column: 1;
+            margin-top: 8px;
+            padding-left: 16px;
           }
+        }
+        .blog-body {
+          position: relative;
+          z-index: 1;
         }
         .blog-body p { margin: 0 0 1.35em 0; }
         .blog-body p:last-child { margin-bottom: 0; }
@@ -551,12 +599,12 @@ function PublicationLead({ card, citation }) {
     <div className="publication-lead">
       {card && (
         <a
-          className="publication-lead__title"
+          className="publication-lead__button"
           href={card.href}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span className="publication-lead__title-text">
+          <span className="publication-lead__button-text">
             {card.title}
           </span>
           <ExternalArrow />

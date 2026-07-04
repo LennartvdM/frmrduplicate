@@ -15,7 +15,7 @@ export const sectionToVideo = {
   'time-sensitive': assetUrl('/videos/blururgency.mp4'),
   'like-a-dance': assetUrl('/videos/blurcoordination.mp4'),
   'cost': assetUrl('/videos/blurfocus.mp4'),
-  'sharpening': assetUrl('/videos/blursskills.mp4'),
+  'sharpening': assetUrl('/videos/Blursskills.mp4'),
   'team-dynamics': assetUrl('/videos/blurteam.mp4'),
   'perspectives': assetUrl('/videos/blurperspectives.mp4'),
   'contact': assetUrl('/videos/blurcoordination.mp4'),
@@ -26,7 +26,7 @@ export const deckSources = [
   assetUrl('/videos/blurcoordination.mp4'),
   assetUrl('/videos/blurfocus.mp4'),
   assetUrl('/videos/blurperspectives.mp4'),
-  assetUrl('/videos/blursskills.mp4'),
+  assetUrl('/videos/Blursskills.mp4'),
   assetUrl('/videos/blurteam.mp4'),
   assetUrl('/videos/blururgency.mp4'),
 ];

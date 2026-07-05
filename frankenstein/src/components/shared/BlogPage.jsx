@@ -472,7 +472,8 @@ export default function BlogPage({ sections, scrollTo }) {
           pointer-events: none;
           background:
             linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(245, 249, 252, 0.34) 48%, rgba(232, 244, 246, 0.28));
-          border: 0;
+          border: 1px solid rgba(255, 255, 255, 0.24);
+          border-bottom: 0;
           border-radius: 12px 12px 0 0;
           box-shadow: 0 20px 54px rgba(17, 34, 65, 0.08);
           backdrop-filter: none;

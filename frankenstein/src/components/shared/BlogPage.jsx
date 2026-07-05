@@ -498,8 +498,7 @@ export default function BlogPage({ sections, scrollTo }) {
           margin: 0 0 -1px;
           background:
             linear-gradient(to bottom, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08));
-          border: 1px solid rgba(255, 255, 255, 0.24);
-          border-bottom-color: transparent;
+          border: 0;
           border-radius: 8px 8px 0 0;
           backdrop-filter: none;
           -webkit-backdrop-filter: none;

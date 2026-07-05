@@ -571,7 +571,7 @@ export default function BlogPage({ sections, scrollTo }) {
           inset: 0;
           pointer-events: none;
           background:
-            linear-gradient(180deg, rgba(14, 28, 49, 0.24) 0%, rgba(14, 28, 49, 0.08) 42%, rgba(14, 28, 49, 0.18) 100%);
+            linear-gradient(0deg, rgba(14, 28, 49, 0.36) 0%, rgba(14, 28, 49, 0.24) 34%, rgba(14, 28, 49, 0.08) 72%, rgba(14, 28, 49, 0.02) 100%);
         }
         .publication-lead {
           position: relative;

@@ -185,12 +185,22 @@ export default function MobileHome() {
   useEffect(() => {
     videoRefs.current.forEach((video, index) => {
       if (!video) return;
-      const shouldPlay = Math.abs(index - activeIndex) <= 1;
-      if (shouldPlay) {
-        video.play().catch(() => {});
-      } else {
+      if (index !== activeIndex) {
         video.pause();
+        try {
+          video.currentTime = 0;
+        } catch {
+          // Some browsers reject seeking before metadata is available.
+        }
+        return;
       }
+
+      try {
+        video.currentTime = 0;
+      } catch {
+        // Playback can still start if an early seek is not accepted.
+      }
+      video.play().catch(() => {});
     });
   }, [activeIndex]);
 

@@ -3,6 +3,8 @@ import { assetUrl } from '../../utils/assetUrl';
 import useTransitionNavigate from '../../hooks/useTransitionNavigate';
 import '../../styles/mobile-home.css';
 
+const TEXT_REVEAL_DELAY_MS = 140;
+
 const MOBILE_PANELS = [
   {
     id: 'intro',
@@ -108,7 +110,12 @@ export default function MobileHome() {
   const scrollRef = useRef(null);
   const sectionRefs = useRef([]);
   const videoRefs = useRef([]);
+  const activeIndexRef = useRef(0);
+  const visibleTextIndexRef = useRef(null);
+  const revealTimerRef = useRef(null);
+  const scrollTimerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [visibleTextIndex, setVisibleTextIndex] = useState(null);
   const transitionNavigate = useTransitionNavigate();
 
   const observerOptions = useMemo(() => ({ threshold: 0.58 }), []);
@@ -117,6 +124,30 @@ export default function MobileHome() {
     if (!target) return;
     transitionNavigate(`/neoflix#${target}`);
   }, [transitionNavigate]);
+
+  const hideSlideText = useCallback(() => {
+    if (revealTimerRef.current) clearTimeout(revealTimerRef.current);
+    if (visibleTextIndexRef.current === null) return;
+    visibleTextIndexRef.current = null;
+    setVisibleTextIndex(null);
+  }, []);
+
+  const revealActiveSlideText = useCallback((delay = TEXT_REVEAL_DELAY_MS) => {
+    if (revealTimerRef.current) clearTimeout(revealTimerRef.current);
+    revealTimerRef.current = setTimeout(() => {
+      const nextIndex = activeIndexRef.current;
+      visibleTextIndexRef.current = nextIndex;
+      setVisibleTextIndex(nextIndex);
+    }, delay);
+  }, []);
+
+  const handleScroll = useCallback(() => {
+    hideSlideText();
+    if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+    scrollTimerRef.current = setTimeout(() => {
+      revealActiveSlideText(0);
+    }, TEXT_REVEAL_DELAY_MS);
+  }, [hideSlideText, revealActiveSlideText]);
 
   useEffect(() => {
     const root = scrollRef.current;
@@ -130,7 +161,10 @@ export default function MobileHome() {
 
         if (!active) return;
         const nextIndex = sectionRefs.current.indexOf(active.target);
-        if (nextIndex >= 0) setActiveIndex(nextIndex);
+        if (nextIndex >= 0) {
+          activeIndexRef.current = nextIndex;
+          setActiveIndex(nextIndex);
+        }
       },
       { ...observerOptions, root }
     );
@@ -141,6 +175,12 @@ export default function MobileHome() {
 
     return () => observer.disconnect();
   }, [observerOptions]);
+
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+    hideSlideText();
+    revealActiveSlideText();
+  }, [activeIndex, hideSlideText, revealActiveSlideText]);
 
   useEffect(() => {
     videoRefs.current.forEach((video, index) => {
@@ -163,8 +203,18 @@ export default function MobileHome() {
     return () => window.removeEventListener('mobile-home:go-to-top', goHome);
   }, []);
 
+  useEffect(() => () => {
+    if (revealTimerRef.current) clearTimeout(revealTimerRef.current);
+    if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+  }, []);
+
   return (
-    <main ref={scrollRef} className="mobile-home" aria-label="Neoflix mobile introduction">
+    <main
+      ref={scrollRef}
+      className="mobile-home"
+      aria-label="Neoflix mobile introduction"
+      onScroll={handleScroll}
+    >
       {MOBILE_PANELS.map((panel, index) => (
         <section
           key={panel.id}
@@ -210,7 +260,7 @@ export default function MobileHome() {
             </div>
           )}
           <h1
-            className={`mobile-home__headline${panel.intro ? ' mobile-home__headline--intro' : ''}`}
+            className={`mobile-home__headline${panel.intro ? ' mobile-home__headline--intro' : ''}${visibleTextIndex === index ? ' mobile-home__headline--visible' : ''}`}
             aria-label={headlineLabel(panel.lines)}
           >
             <MobileLine lines={panel.lines} />

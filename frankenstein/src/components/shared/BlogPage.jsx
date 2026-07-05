@@ -429,7 +429,7 @@ export default function BlogPage({ sections, scrollTo }) {
           position: absolute;
           z-index: 0;
           top: -24px;
-          right: -18px;
+          right: 0;
           bottom: 18px;
           left: 0;
           pointer-events: none;
@@ -453,7 +453,7 @@ export default function BlogPage({ sections, scrollTo }) {
           -webkit-backdrop-filter: none;
         }
         .blog-section--with-publication .blog-section__header {
-          grid-column: 1 / 9;
+          grid-column: 1 / 13;
           margin: 0;
           padding: 42px 54px 18px;
         }
@@ -505,7 +505,7 @@ export default function BlogPage({ sections, scrollTo }) {
           grid-template-columns: minmax(0, 1fr) auto;
           align-items: end;
           gap: 22px;
-          grid-column: 4 / 12;
+          grid-column: 2 / 13;
           margin: 0;
           min-height: 126px;
           padding: 28px 32px 30px;
@@ -523,7 +523,7 @@ export default function BlogPage({ sections, scrollTo }) {
         }
         .publication-lead__title-text {
           display: block;
-          font-size: 20px;
+          font-size: 19px;
           font-weight: 760;
           line-height: 1.28;
           letter-spacing: 0;
@@ -561,7 +561,7 @@ export default function BlogPage({ sections, scrollTo }) {
           }
           .blog-section__glass {
             top: -14px;
-            right: -8px;
+            right: 0;
             bottom: -16px;
             left: 0;
             border-radius: 8px;

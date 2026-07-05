@@ -364,7 +364,7 @@ export default function BlogPage({ sections, scrollTo }) {
 
                 {parsed.bodyHtmlBefore && (
                   <div
-                    className={`blog-body${hasPublicationLead ? ' blog-body--publication blog-body--primary' : ''}`}
+                    className="blog-body"
                     style={{
                       fontFamily: 'Inter, sans-serif',
                       fontWeight: 500,
@@ -383,7 +383,7 @@ export default function BlogPage({ sections, scrollTo }) {
                 )}
                 {parsed.bodyHtmlAfter && (
                   <div
-                    className={`blog-body${hasPublicationLead ? ' blog-body--publication blog-body--after' : ''}`}
+                    className="blog-body"
                     style={{
                       fontFamily: 'Inter, sans-serif',
                       fontWeight: 500,
@@ -427,10 +427,10 @@ export default function BlogPage({ sections, scrollTo }) {
           left: 0;
           pointer-events: none;
           background:
-            linear-gradient(135deg, rgba(255, 255, 255, 0.46), rgba(245, 249, 252, 0.34) 48%, rgba(232, 244, 246, 0.3));
-          border: 1px solid rgba(255, 255, 255, 0.3);
+            linear-gradient(135deg, rgba(255, 255, 255, 0.34), rgba(245, 249, 252, 0.24) 48%, rgba(232, 244, 246, 0.2));
+          border: 0;
           border-radius: 12px;
-          box-shadow: 0 28px 58px rgba(17, 34, 65, 0.12);
+          box-shadow: 0 20px 54px rgba(17, 34, 65, 0.08);
           backdrop-filter: blur(20px) saturate(1.05);
           -webkit-backdrop-filter: blur(20px) saturate(1.05);
         }
@@ -465,11 +465,6 @@ export default function BlogPage({ sections, scrollTo }) {
         .blog-section--plain .blog-section__content {
           border-radius: 0 0 8px 8px;
         }
-        .blog-section--with-publication .blog-section__content {
-          padding: 0 0 88px;
-          border-radius: 0;
-          overflow: visible;
-        }
         .blog-section__content-wash {
           position: absolute;
           inset: 0;
@@ -482,60 +477,60 @@ export default function BlogPage({ sections, scrollTo }) {
         .blog-section--plain .blog-section__content-wash {
           border-radius: 0 0 8px 8px;
         }
-        .blog-section--with-publication .blog-section__content-wash {
-          display: none;
-        }
         .publication-lead {
           position: relative;
           z-index: 1;
-          display: grid;
-          grid-template-columns: 76px minmax(0, 1fr);
-          max-width: 690px;
-          margin: 42px 54px 46px;
+          max-width: 680px;
+          margin: 36px 54px 46px;
           font-family: Inter, sans-serif;
         }
-        .publication-lead__button {
+        .publication-lead::before {
+          content: "";
+          position: absolute;
+          left: -22px;
+          top: 4px;
+          bottom: 6px;
+          width: 2px;
+          background: #48c1c4;
+        }
+        .publication-lead__title {
           position: relative;
-          display: grid;
-          grid-column: 1 / -1;
-          grid-template-columns: minmax(0, 1fr) auto;
-          align-items: end;
-          gap: 20px;
-          min-height: 112px;
-          padding: 24px 28px;
-          color: #ffffff;
-          background: #1d3767;
-          border-radius: 8px;
-          box-shadow: 0 18px 36px rgba(17, 34, 65, 0.16);
-          text-decoration: none;
-          transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-        }
-        .publication-lead__button:hover {
-          background: #234171;
-          box-shadow: 0 22px 42px rgba(17, 34, 65, 0.2);
-          transform: translateY(-1px);
-        }
-        .publication-lead__button-text {
           display: block;
-          max-width: 630px;
-          font-size: 20px;
+          margin-left: -18px;
+          padding: 0 0 18px 18px;
+          max-width: 660px;
+          color: #172f56;
+          text-decoration: none;
+          border-bottom: 1px solid rgba(28, 54, 100, 0.18);
+        }
+        .publication-lead__title::after {
+          content: "";
+          position: absolute;
+          left: 18px;
+          bottom: -1px;
+          width: 96px;
+          height: 1px;
+          background: #48c1c4;
+        }
+        .publication-lead__title:hover {
+          color: #214777;
+        }
+        .publication-lead__title-text {
+          display: inline;
+          font-size: 19px;
           font-weight: 760;
-          line-height: 1.3;
+          line-height: 1.34;
           letter-spacing: 0;
         }
-        .publication-lead__button svg {
-          flex: 0 0 auto;
-          margin-left: 0 !important;
-          color: rgba(255, 255, 255, 0.82);
+        .publication-lead__title svg {
+          color: rgba(23, 47, 86, 0.74);
         }
         .publication-lead__citation {
           display: block;
-          grid-column: 2 / -1;
+          margin: 14px 0 0 56px;
           max-width: 560px;
-          margin-top: 16px;
-          padding: 16px 0 0 20px;
-          border-top: 1px solid rgba(28, 54, 100, 0.18);
-          border-left: 2px solid rgba(72, 193, 196, 0.72);
+          padding-left: 18px;
+          border-left: 1px solid rgba(72, 193, 196, 0.48);
           color: rgba(56, 52, 55, 0.72);
           font-size: 14px;
           font-style: italic;
@@ -567,60 +562,26 @@ export default function BlogPage({ sections, scrollTo }) {
           .blog-section__content {
             padding: 32px 24px 40px;
           }
-          .blog-section--with-publication .blog-section__content {
-            padding: 0 0 56px;
-          }
-          .blog-body--publication {
-            width: calc(100% - 32px);
-            margin-left: 16px;
-            padding: 28px 22px 34px;
-          }
-          .blog-body--publication.blog-body--primary {
-            margin-top: 28px !important;
+          .publication-lead::before {
+            left: -12px;
           }
           .publication-lead {
-            grid-template-columns: 1fr;
             margin: 30px 20px 34px;
           }
-          .publication-lead__button {
-            grid-column: 1;
-            grid-template-columns: minmax(0, 1fr) auto;
-            min-height: 104px;
-            padding: 22px 22px 24px;
+          .publication-lead__title {
+            margin-left: 0;
+            padding-left: 0;
           }
-          .publication-lead__button-text {
-            font-size: 18px;
+          .publication-lead__title::after {
+            left: 0;
           }
           .publication-lead__citation {
-            grid-column: 1;
-            margin-top: 8px;
-            padding-left: 16px;
+            margin-left: 18px;
           }
         }
         .blog-body {
           position: relative;
           z-index: 1;
-        }
-        .blog-body--publication {
-          box-sizing: border-box;
-          width: min(720px, calc(100% - 108px));
-          max-width: none !important;
-          margin-left: 54px;
-          margin-right: auto;
-          padding: 40px 48px 56px;
-          background: rgba(245, 249, 252, 0.9);
-          border: 1px solid rgba(255, 255, 255, 0.34);
-          border-radius: 8px;
-          box-shadow: 0 20px 44px rgba(17, 34, 65, 0.1);
-        }
-        .blog-body--publication.blog-body--primary {
-          margin-top: 42px !important;
-        }
-        .blog-body--publication.blog-body--after {
-          margin-top: 24px !important;
-        }
-        .blog-body--publication h2:first-child {
-          margin-top: 0;
         }
         .blog-body p { margin: 0 0 1.35em 0; }
         .blog-body p:last-child { margin-bottom: 0; }
@@ -656,12 +617,12 @@ function PublicationLead({ card, citation }) {
     <div className="publication-lead">
       {card && (
         <a
-          className="publication-lead__button"
+          className="publication-lead__title"
           href={card.href}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span className="publication-lead__button-text">
+          <span className="publication-lead__title-text">
             {card.title}
           </span>
           <ExternalArrow />

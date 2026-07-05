@@ -530,7 +530,7 @@ export default function BlogPage({ sections, scrollTo }) {
           width: 100%;
           height: 100%;
           background: #ffffff;
-          object-fit: contain;
+          object-fit: cover;
           object-position: center;
           filter: none;
           opacity: 1;
@@ -592,7 +592,7 @@ export default function BlogPage({ sections, scrollTo }) {
           width: 100%;
           height: 100%;
           background: #ffffff;
-          object-fit: contain;
+          object-fit: cover;
           object-position: center;
           opacity: 1;
         }

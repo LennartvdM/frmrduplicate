@@ -495,6 +495,7 @@ export default function BlogPage({ sections, scrollTo }) {
           padding: 42px 54px 18px;
         }
         .blog-section--plain .blog-section__header {
+          margin: 0 0 -1px;
           background:
             linear-gradient(to bottom, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08));
           border: 1px solid rgba(255, 255, 255, 0.24);

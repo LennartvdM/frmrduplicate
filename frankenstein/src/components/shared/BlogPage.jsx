@@ -44,6 +44,27 @@ const PUBLICATION_PREVIEW_OVERRIDES = new Map([
       label: 'Fetal & Neonatal',
     },
   ],
+  [
+    'https://www.nature.com/articles/s41390-024-03083-w',
+    {
+      image: '/docs-assets/record-reflect-refine-nature-preview.png',
+      label: 'Pediatric Research',
+    },
+  ],
+  [
+    'https://docs.google.com/viewerng/viewer?url=https://bmjopenquality.bmj.com/content/bmjqir/13/2/e002588.full.pdf',
+    {
+      image: '/docs-assets/practical-guidance-bmj-open-quality-preview.png',
+      label: 'BMJ Open Quality',
+    },
+  ],
+  [
+    'https://www.sciencedirect.com/science/article/pii/S030095722300789X',
+    {
+      image: '/docs-assets/driving-research-sciencedirect-preview.png',
+      label: 'Resuscitation',
+    },
+  ],
 ]);
 
 export default function BlogPage({ sections, scrollTo }) {

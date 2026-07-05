@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { assetUrl } from '../../utils/assetUrl';
+import useTransitionNavigate from '../../hooks/useTransitionNavigate';
 import '../../styles/mobile-home.css';
 
 const MOBILE_PANELS = [
@@ -18,8 +19,9 @@ const MOBILE_PANELS = [
   },
   {
     id: 'urgency',
-    video: assetUrl('/videos/mobile/collaboration.mp4'),
-    label: 'Medical interventions demand',
+    video: assetUrl('/videos/mobile/urgency.mp4'),
+    target: 'time-sensitive',
+    label: 'Medical interventions demand precision and urgency.',
     lines: [
       [{ text: 'Medical interventions demand' }],
       [{ text: 'precision and urgency', accent: true }, { text: '.' }],
@@ -28,6 +30,7 @@ const MOBILE_PANELS = [
   {
     id: 'coordination',
     video: assetUrl('/videos/mobile/coordination.mp4'),
+    target: 'like-a-dance',
     label: 'Which makes coordination within teams vital for success.',
     lines: [
       [{ text: 'Which makes ' }, { text: 'coordination', accent: true }],
@@ -37,6 +40,7 @@ const MOBILE_PANELS = [
   {
     id: 'tunnelvision',
     video: assetUrl('/videos/mobile/tunnelvision.mp4'),
+    target: 'cost',
     label: 'Task-driven focus can lead to tunnel vision and misalignment.',
     lines: [
       [{ text: 'Task-driven focus can lead to' }],
@@ -46,6 +50,7 @@ const MOBILE_PANELS = [
   {
     id: 'reflection',
     video: assetUrl('/videos/mobile/reflection.mp4'),
+    target: 'sharpening',
     label: 'Quiet reflection allows for sharpening skills.',
     lines: [
       [{ text: 'Quiet ' }, { text: 'reflection', accent: true }, { text: ' allows for' }],
@@ -55,6 +60,7 @@ const MOBILE_PANELS = [
   {
     id: 'cohesion',
     video: assetUrl('/videos/mobile/cohesion.mp4'),
+    target: 'team-dynamics',
     label: 'Further video debriefs foster cohesion amongst peers.',
     lines: [
       [{ text: 'Further video debriefs foster' }],
@@ -64,6 +70,7 @@ const MOBILE_PANELS = [
   {
     id: 'alignment',
     video: assetUrl('/videos/mobile/alignment.mp4'),
+    target: 'perspectives',
     label: 'Shared understanding enhances decisiveness.',
     lines: [
       [{ text: 'Shared ' }, { text: 'understanding', accent: true }],
@@ -102,8 +109,14 @@ export default function MobileHome() {
   const sectionRefs = useRef([]);
   const videoRefs = useRef([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const transitionNavigate = useTransitionNavigate();
 
   const observerOptions = useMemo(() => ({ threshold: 0.58 }), []);
+
+  const openPanelArticle = useCallback((target) => {
+    if (!target) return;
+    transitionNavigate(`/neoflix#${target}`);
+  }, [transitionNavigate]);
 
   useEffect(() => {
     const root = scrollRef.current;
@@ -174,6 +187,15 @@ export default function MobileHome() {
             <source src={panel.video} type="video/mp4" />
           </video>
           <div className="mobile-home__shade" aria-hidden="true" />
+          {panel.target && (
+            <button
+              type="button"
+              className="mobile-home__tap"
+              data-neoflix-target={panel.target}
+              aria-label={`Open Neoflix article: ${panel.label}`}
+              onClick={() => openPanelArticle(panel.target)}
+            />
+          )}
           {panel.logo && (
             <div className="mobile-home__brand" aria-label="Neoflix">
               <img

@@ -516,26 +516,19 @@ export default function BlogPage({ sections, scrollTo }) {
           right: 6px;
           bottom: -28px;
           left: 40%;
-          overflow: hidden;
+          overflow: visible;
           pointer-events: none;
           border-radius: 0;
-          opacity: 0.38;
-          -webkit-mask-image:
-            linear-gradient(to right, transparent 0%, #000 8%, #000 100%),
-            linear-gradient(to bottom, transparent 0%, #000 7%, #000 92%, transparent 100%);
-          -webkit-mask-composite: source-in;
-          mask-image:
-            linear-gradient(to right, transparent 0%, #000 8%, #000 100%),
-            linear-gradient(to bottom, transparent 0%, #000 7%, #000 92%, transparent 100%);
-          mask-composite: intersect;
+          opacity: 0.68;
         }
         .publication-lead__ghost img {
           position: absolute;
           inset: 0;
           width: 100%;
           height: 100%;
-          object-fit: cover;
-          filter: saturate(0.72) contrast(0.95) brightness(0.98);
+          object-fit: contain;
+          object-position: center;
+          filter: none;
         }
         .publication-lead__title {
           position: relative;
@@ -584,7 +577,8 @@ export default function BlogPage({ sections, scrollTo }) {
           inset: 0;
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          object-fit: contain;
+          object-position: center;
         }
         .publication-lead__preview-label {
           position: absolute;

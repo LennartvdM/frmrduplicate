@@ -501,12 +501,47 @@ export default function BlogPage({ sections, scrollTo }) {
         .publication-lead {
           position: relative;
           z-index: 1;
+          isolation: isolate;
           grid-column: 1 / -1;
           display: grid;
           grid-template-columns: repeat(12, minmax(0, 1fr));
           max-width: none;
           margin: 6px 0 0;
           font-family: Inter, sans-serif;
+        }
+        .publication-lead__ghost {
+          position: absolute;
+          z-index: 0;
+          top: -8px;
+          right: -16px;
+          bottom: -48px;
+          left: 9%;
+          overflow: hidden;
+          pointer-events: none;
+          border-radius: 10px 10px 0 0;
+          opacity: 0.34;
+          mix-blend-mode: normal;
+          -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 16%, #000 100%), linear-gradient(to bottom, transparent 0%, #000 14%, #000 82%, transparent 100%);
+          -webkit-mask-composite: source-in;
+          mask-image: linear-gradient(to right, transparent 0%, #000 16%, #000 100%), linear-gradient(to bottom, transparent 0%, #000 14%, #000 82%, transparent 100%);
+          mask-composite: intersect;
+        }
+        .publication-lead__ghost img {
+          position: absolute;
+          inset: -56px;
+          width: calc(100% + 112px);
+          height: calc(100% + 112px);
+          object-fit: cover;
+          filter: blur(34px) saturate(0.72) contrast(0.9);
+          transform: scale(1.04);
+        }
+        .publication-lead__ghost::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(90deg, rgba(245, 249, 252, 0.1), rgba(245, 249, 252, 0.02) 34%, rgba(14, 28, 49, 0.08)),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(245, 249, 252, 0.12));
         }
         .publication-lead__title {
           position: relative;
@@ -652,6 +687,9 @@ export default function BlogPage({ sections, scrollTo }) {
             grid-template-columns: 1fr;
             margin: 30px 20px 34px;
           }
+          .publication-lead__ghost {
+            display: none;
+          }
           .publication-lead__title {
             grid-template-columns: minmax(0, 1fr) auto;
             grid-column: 1;
@@ -714,6 +752,26 @@ function PublicationLead({ card, citation }) {
 
   return (
     <div className="publication-lead">
+      {preview && (
+        <span className="publication-lead__ghost" aria-hidden="true">
+          <img
+            src={preview.image}
+            data-fallback-src={preview.fallbackImage}
+            alt=""
+            loading="lazy"
+            onError={(event) => {
+              const img = event.currentTarget;
+              const fallback = img.dataset.fallbackSrc;
+              if (fallback && img.src !== fallback) {
+                img.src = fallback;
+                img.dataset.fallbackSrc = '';
+                return;
+              }
+              img.style.display = 'none';
+            }}
+          />
+        </span>
+      )}
       {card && (
         <a
           className="publication-lead__title"

@@ -99,7 +99,7 @@
   position: absolute;
   left: max(12px, env(safe-area-inset-left));
   right: max(12px, env(safe-area-inset-right));
-  bottom: max(158px, calc(env(safe-area-inset-bottom) + 152px));
+  bottom: max(138px, calc(env(safe-area-inset-bottom) + 132px));
   z-index: 1;
   margin: 0 auto;
   width: min(92vw, 340px);

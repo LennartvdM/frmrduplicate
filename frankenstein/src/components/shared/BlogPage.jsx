@@ -565,6 +565,14 @@ export default function BlogPage({ sections, scrollTo }) {
           filter: none;
           opacity: 1;
         }
+        .blog-section__glass-preview-plate::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          background:
+            linear-gradient(180deg, rgba(14, 28, 49, 0.24) 0%, rgba(14, 28, 49, 0.08) 42%, rgba(14, 28, 49, 0.18) 100%);
+        }
         .publication-lead {
           position: relative;
           z-index: 2;

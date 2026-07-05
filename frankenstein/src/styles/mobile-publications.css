@@ -275,7 +275,9 @@
 
 .mobile-publications__paper-link svg {
   flex: 0 0 auto;
-  color: var(--publication-accent, #62c8c9);
+  width: 26px;
+  height: 26px;
+  color: #ffffff;
 }
 
 .mobile-publications__status,

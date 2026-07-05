@@ -36,6 +36,36 @@ const STAGGER_OFFSET = '40%';
 const STAGGER_DELAY = 0.25;
 const STAGGER_DURATION = 0.5;
 const STAGGER_EASE = [0.4, 0, 0.2, 1];
+const PUBLICATION_PREVIEW_OVERRIDES = new Map([
+  [
+    'https://fn.bmj.com/content/early/2024/02/07/archdischild-2023-326528',
+    {
+      image: '/docs-assets/providers-perspective-bmj-preview.png',
+      label: 'Fetal & Neonatal',
+    },
+  ],
+  [
+    'https://www.nature.com/articles/s41390-024-03083-w',
+    {
+      image: '/docs-assets/record-reflect-refine-nature-preview.png',
+      label: 'Pediatric Research',
+    },
+  ],
+  [
+    'https://docs.google.com/viewerng/viewer?url=https://bmjopenquality.bmj.com/content/bmjqir/13/2/e002588.full.pdf',
+    {
+      image: '/docs-assets/practical-guidance-bmj-open-quality-preview.png',
+      label: 'BMJ Open Quality',
+    },
+  ],
+  [
+    'https://www.sciencedirect.com/science/article/pii/S030095722300789X',
+    {
+      image: '/docs-assets/driving-research-sciencedirect-preview.png',
+      label: 'Resuscitation',
+    },
+  ],
+]);
 
 export default function BlogPage({ sections, scrollTo }) {
   // Internal scroll container. BlogPage renders inside RouteSlider,
@@ -157,12 +187,12 @@ export default function BlogPage({ sections, scrollTo }) {
         style={{
           position: 'relative',
           zIndex: 1,
-          maxWidth: 1540,
+          maxWidth: 1480,
           margin: '0 auto',
-          padding: '96px 24px 120px',
+          padding: '104px 24px 120px',
           display: 'grid',
-          gridTemplateColumns: 'minmax(220px, 300px) minmax(0, 960px)',
-          columnGap: 40,
+          gridTemplateColumns: 'minmax(220px, 284px) minmax(0, 900px)',
+          columnGap: 46,
           alignItems: 'start',
         }}
         className="blog-grid"
@@ -177,17 +207,17 @@ export default function BlogPage({ sections, scrollTo }) {
           transition={sidebarTrails ? { duration: STAGGER_DURATION, delay: STAGGER_DELAY, ease: STAGGER_EASE } : undefined}
           style={{
             position: 'sticky',
-            top: 112,
+            top: 104,
             backgroundColor: '#0e1c31',
             border: '1px solid var(--edge-1d)',
-            borderRadius: 16,
-            padding: '64px 24px',
+            borderRadius: 12,
+            padding: '56px 22px',
             color: '#f5f9fc',
             fontFamily: 'Inter, sans-serif',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: 'min(640px, calc(100vh - 160px))',
+            minHeight: 'min(620px, calc(100vh - 148px))',
           }}
         >
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -241,16 +271,16 @@ export default function BlogPage({ sections, scrollTo }) {
                       style={{
                         width: '100%',
                         textAlign: 'left',
-                        padding: '12px 8px',
+                        padding: '10px 8px',
                         border: 'none',
                         background: 'transparent',
-                        fontSize: 15,
-                        lineHeight: 1.45,
+                        fontSize: 14,
+                        lineHeight: 1.4,
                         fontWeight: isActive ? 700 : isHovered ? 600 : 500,
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: 14,
+                        gap: 12,
                         transition: 'font-weight 0.25s ease',
                       }}
                     >
@@ -301,67 +331,73 @@ export default function BlogPage({ sections, scrollTo }) {
               videoAfterParagraph: section.videoAfterParagraph,
             });
             const { numberPart, titlePart } = splitHeading(section.title);
+            const hasPublicationLead = Boolean(parsed.titleCard || parsed.citation);
+            const publicationPreview = hasPublicationLead && parsed.titleCard
+              ? getPublicationPreview(parsed.titleCard.href)
+              : null;
             return (
               <section
                 key={section.id}
                 id={section.id}
+                className={`blog-section${hasPublicationLead ? ' blog-section--with-publication' : ' blog-section--plain'}`}
                 style={{
                   position: 'relative',
-                  borderRadius: 10,
-                  padding: '96px 56px',
+                  borderRadius: 0,
+                  padding: 0,
                   scrollMarginTop: 96,
                   opacity: 1,
                   isolation: 'isolate',
+                  overflow: 'visible',
                 }}
               >
-                {/* Screen-blended backdrop — F5F9FC at 90%, blends with the
-                    video deck below to a soft washed cream. Separate layer
-                    so it doesn't affect text rendering on top. */}
-                <div
-                  aria-hidden="true"
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'rgba(245, 249, 252, 0.9)',
-                    mixBlendMode: 'screen',
-                    borderRadius: 10,
-                    pointerEvents: 'none',
-                    zIndex: -1,
-                  }}
-                />
-                <h2
-                  style={{
-                    fontFamily: 'Inter, sans-serif',
-                    margin: 0,
-                    marginBottom: 28,
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    gap: 18,
-                    flexWrap: 'wrap',
-                    color: '#383437',
-                    letterSpacing: '-1.5px',
-                    lineHeight: 1.1,
-                  }}
-                >
-                  {numberPart && (
-                    <span
+                <div className={`blog-section__lead${hasPublicationLead ? ' blog-section__lead--publication' : ' blog-section__lead--plain'}`}>
+                  {hasPublicationLead && (
+                    <div aria-hidden="true" className="blog-section__glass" />
+                  )}
+                  {publicationPreview && (
+                    <PublicationGlassPreview preview={publicationPreview} />
+                  )}
+                  <div className="blog-section__header">
+                    <h2
                       style={{
-                        fontWeight: 300,
-                        fontSize: 44,
-                        color: 'rgba(56, 52, 55, 0.55)',
-                        fontVariantNumeric: 'tabular-nums',
+                        fontFamily: 'Inter, sans-serif',
+                        margin: 0,
+                        display: 'flex',
+                        alignItems: 'baseline',
+                        gap: 14,
+                        flexWrap: 'wrap',
+                        color: '#f8fbff',
+                        letterSpacing: 0,
+                        lineHeight: 1.08,
+                        textShadow: '0 2px 14px rgba(8, 17, 24, 0.24)',
                       }}
                     >
-                      {numberPart}
-                    </span>
-                  )}
-                  <span style={{ fontWeight: 700, fontSize: 40 }}>
-                    {titlePart}
-                  </span>
-                </h2>
+                      {numberPart && (
+                        <span
+                          style={{
+                            fontWeight: 300,
+                            fontSize: 42,
+                            color: 'rgba(248, 251, 255, 0.72)',
+                            fontVariantNumeric: 'tabular-nums',
+                          }}
+                        >
+                          {numberPart}
+                        </span>
+                      )}
+                      <span style={{ fontWeight: 740, fontSize: 38 }}>
+                        {titlePart}
+                      </span>
+                    </h2>
+                  </div>
 
-                {parsed.titleCard && <TitleCard card={parsed.titleCard} />}
-                {parsed.citation && <CitationCard text={parsed.citation} />}
+                  {hasPublicationLead && (
+                    <PublicationLead card={parsed.titleCard} citation={parsed.citation} preview={publicationPreview} />
+                  )}
+                </div>
+
+                <div className="blog-section__content">
+                  <div aria-hidden="true" className="blog-section__content-wash" />
+
                 {parsed.bodyHtmlBefore && (
                   <div
                     className="blog-body"
@@ -369,10 +405,10 @@ export default function BlogPage({ sections, scrollTo }) {
                       fontFamily: 'Inter, sans-serif',
                       fontWeight: 500,
                       fontSize: 16,
-                      lineHeight: 1.9,
+                      lineHeight: 1.8,
                       color: '#383437',
-                      maxWidth: 600,
-                      marginTop: parsed.titleCard || parsed.citation ? 12 : 0,
+                      maxWidth: 620,
+                      marginTop: hasPublicationLead ? 4 : 0,
                     }}
                     dangerouslySetInnerHTML={{ __html: parsed.bodyHtmlBefore }}
                     onClick={handleBodyClick}
@@ -388,15 +424,16 @@ export default function BlogPage({ sections, scrollTo }) {
                       fontFamily: 'Inter, sans-serif',
                       fontWeight: 500,
                       fontSize: 16,
-                      lineHeight: 1.9,
+                      lineHeight: 1.8,
                       color: '#383437',
-                      maxWidth: 600,
-                      marginTop: section.video ? 24 : (parsed.titleCard || parsed.citation ? 12 : 0),
+                      maxWidth: 620,
+                      marginTop: section.video ? 24 : (hasPublicationLead ? 12 : 0),
                     }}
                     dangerouslySetInnerHTML={{ __html: parsed.bodyHtmlAfter }}
                     onClick={handleBodyClick}
                   />
                 )}
+                </div>
               </section>
             );
           })}
@@ -408,6 +445,246 @@ export default function BlogPage({ sections, scrollTo }) {
       </div>
 
       <style>{`
+        .blog-section {
+          z-index: 0;
+        }
+        .blog-section__lead {
+          position: relative;
+          z-index: 1;
+          isolation: isolate;
+          margin-bottom: 2px;
+        }
+        .blog-section__lead--publication {
+          display: grid;
+          grid-template-columns: repeat(12, minmax(0, 1fr));
+          grid-auto-rows: auto;
+          align-items: start;
+          margin-bottom: 0;
+          padding-bottom: 48px;
+        }
+        .blog-section__glass {
+          position: absolute;
+          z-index: 0;
+          top: -24px;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          pointer-events: none;
+          background:
+            linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(245, 249, 252, 0.34) 48%, rgba(232, 244, 246, 0.28));
+          border: 0;
+          border-radius: 12px 12px 0 0;
+          box-shadow: 0 20px 54px rgba(17, 34, 65, 0.08);
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+        }
+        .blog-section__header {
+          position: relative;
+          z-index: 3;
+          margin: 0 72px -1px 0;
+          padding: 42px 54px 34px;
+          background: transparent;
+          border: 0;
+          border-radius: 0;
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+        }
+        .blog-section--with-publication .blog-section__header {
+          grid-column: 1 / 13;
+          margin: 0;
+          padding: 42px 54px 18px;
+        }
+        .blog-section--plain .blog-section__header {
+          margin: 0 0 -1px;
+          background:
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08));
+          border: 1px solid rgba(255, 255, 255, 0.24);
+          border-bottom-color: rgba(255, 255, 255, 0.14);
+          border-radius: 8px 8px 0 0;
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+        }
+        .blog-section__content {
+          position: relative;
+          z-index: 2;
+          padding: 44px 54px 88px;
+          isolation: isolate;
+          border-radius: 8px;
+          overflow: hidden;
+        }
+        .blog-section--with-publication .blog-section__content {
+          border-radius: 0 0 12px 12px;
+          overflow: hidden;
+          padding-top: 48px;
+        }
+        .blog-section--plain .blog-section__content {
+          border-radius: 0 0 8px 8px;
+        }
+        .blog-section__content-wash {
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          pointer-events: none;
+          background: rgba(245, 249, 252, 0.9);
+          mix-blend-mode: screen;
+          border-radius: 8px;
+        }
+        .blog-section--with-publication .blog-section__content-wash {
+          border-radius: 0 0 12px 12px;
+        }
+        .blog-section--plain .blog-section__content-wash {
+          border-radius: 0 0 8px 8px;
+        }
+        .blog-section__glass-preview {
+          position: absolute;
+          z-index: 1;
+          top: -24px;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          overflow: hidden;
+          pointer-events: none;
+          border-radius: 12px 12px 0 0;
+        }
+        .blog-section__glass-preview-plate {
+          position: absolute;
+          top: 266px;
+          right: 0;
+          bottom: 0;
+          left: 46%;
+          overflow: hidden;
+          background: #f7fafc;
+        }
+        .blog-section__glass-preview-plate img {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          background: #ffffff;
+          object-fit: cover;
+          object-position: center;
+          filter: none;
+          opacity: 1;
+        }
+        .blog-section__glass-preview-plate::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          background:
+            linear-gradient(0deg, rgba(14, 28, 49, 0.68) 0%, rgba(14, 28, 49, 0.52) 34%, rgba(14, 28, 49, 0.24) 72%, rgba(14, 28, 49, 0.08) 100%);
+        }
+        .publication-lead {
+          position: relative;
+          z-index: 2;
+          isolation: isolate;
+          grid-column: 1 / -1;
+          display: grid;
+          grid-template-columns: repeat(12, minmax(0, 1fr));
+          max-width: none;
+          margin: 6px 0 0;
+          font-family: Inter, sans-serif;
+        }
+        .publication-lead__title {
+          position: relative;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(116px, 148px) 42px;
+          align-items: center;
+          gap: 24px;
+          grid-column: 2 / 13;
+          margin: 0 -16px 0 0;
+          min-height: 126px;
+          padding: 24px 28px 24px 32px;
+          max-width: none;
+          color: #ffffff;
+          background: #0e1c31;
+          border: 0;
+          border-radius: 8px;
+          box-shadow: 0 22px 44px rgba(17, 34, 65, 0.18);
+          text-decoration: none;
+          z-index: 3;
+        }
+        .publication-lead__title:hover {
+          color: #ffffff;
+          background: #132641;
+        }
+        .publication-lead__title-text {
+          display: block;
+          font-size: 19px;
+          font-weight: 760;
+          line-height: 1.28;
+          letter-spacing: 0;
+        }
+        .publication-lead__preview {
+          position: relative;
+          display: block;
+          width: 100%;
+          aspect-ratio: 16 / 9;
+          overflow: hidden;
+          border-radius: 5px;
+          background: #f7fafc;
+          box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+        }
+        .publication-lead__preview img {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          background: #ffffff;
+          object-fit: cover;
+          object-position: center;
+          opacity: 1;
+        }
+        .publication-lead__preview-label {
+          position: absolute;
+          left: 8px;
+          right: 8px;
+          bottom: 7px;
+          padding: 4px 6px;
+          overflow: hidden;
+          color: rgba(255, 255, 255, 0.86);
+          background: rgba(14, 28, 49, 0.76);
+          border-radius: 4px;
+          font-size: 10px;
+          font-weight: 760;
+          line-height: 1;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .publication-lead__arrow {
+          display: grid;
+          place-items: center;
+          width: 42px;
+          height: 42px;
+          color: #ffffff;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          border-radius: 999px;
+        }
+        .publication-lead__title svg {
+          width: 30px;
+          height: 30px;
+          color: rgba(255, 255, 255, 0.92);
+          margin-left: 0 !important;
+        }
+        .publication-lead__citation {
+          position: relative;
+          display: block;
+          grid-column: 1 / 7;
+          margin: -18px 0 0 -26px;
+          max-width: none;
+          padding: 24px 28px 22px;
+          background: #f5f9fc;
+          border: 0;
+          border-radius: 8px;
+          box-shadow: 0 16px 34px rgba(17, 34, 65, 0.09);
+          color: rgba(56, 52, 55, 0.72);
+          font-size: 14px;
+          font-style: italic;
+          font-weight: 500;
+          line-height: 1.62;
+          z-index: 4;
+        }
         @media (max-width: 900px) {
           .blog-grid {
             grid-template-columns: 1fr !important;
@@ -416,9 +693,73 @@ export default function BlogPage({ sections, scrollTo }) {
           .blog-grid aside {
             position: static !important;
           }
-          .blog-grid section {
-            padding: 40px 24px !important;
+          .blog-grid section.blog-section {
+            padding: 0 !important;
           }
+          .blog-section__glass {
+            top: -14px;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-radius: 8px 8px 0 0;
+          }
+          .blog-section__lead--publication {
+            grid-template-columns: 1fr;
+            padding-bottom: 28px;
+          }
+          .blog-section__header {
+            margin: 0 20px -1px 0;
+            padding: 32px 24px 28px;
+          }
+          .blog-section--with-publication .blog-section__header {
+            grid-column: 1;
+            margin: 0;
+          }
+          .blog-section__content {
+            padding: 32px 24px 40px;
+          }
+          .blog-section--with-publication .blog-section__content {
+            border-radius: 0 0 8px 8px;
+            padding-top: 28px;
+          }
+          .blog-section--with-publication .blog-section__content-wash {
+            border-radius: 0 0 8px 8px;
+          }
+          .publication-lead {
+            grid-column: 1;
+            grid-template-columns: 1fr;
+            margin: 30px 20px 34px;
+          }
+          .blog-section__glass-preview {
+            display: none;
+          }
+          .publication-lead__title {
+            grid-template-columns: minmax(0, 1fr) auto;
+            grid-column: 1;
+            margin-right: 0;
+            min-height: 104px;
+            padding: 22px 22px 26px;
+          }
+          .publication-lead__preview {
+            display: none;
+          }
+          .publication-lead__arrow {
+            width: 38px;
+            height: 38px;
+          }
+          .publication-lead__title svg {
+            width: 26px;
+            height: 26px;
+          }
+          .publication-lead__citation {
+            grid-column: 1;
+            margin: -10px 0 0 -12px;
+            padding: 20px 20px 18px;
+          }
+        }
+        .blog-body {
+          position: relative;
+          z-index: 1;
         }
         .blog-body p { margin: 0 0 1.35em 0; }
         .blog-body p:last-child { margin-bottom: 0; }
@@ -428,7 +769,7 @@ export default function BlogPage({ sections, scrollTo }) {
         .blog-body em { font-style: italic; }
         .blog-body h2 {
           font-weight: 700; color: #383437; font-size: 24px;
-          letter-spacing: -0.5px; line-height: 1.35;
+          letter-spacing: 0; line-height: 1.32;
           margin: 44px 0 18px;
         }
         .blog-body h3 {
@@ -448,131 +789,129 @@ export default function BlogPage({ sections, scrollTo }) {
   );
 }
 
-/* ── Title card ─────────────────────────────────────────────────────── */
-function TitleCard({ card }) {
+/* ── Publication lead ───────────────────────────────────────────────── */
+function PublicationGlassPreview({ preview }) {
+  if (!preview) return null;
+
   return (
-    <a
-      href={card.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{
-        display: 'block',
-        backgroundColor: '#1c3664',
-        borderRadius: 16,
-        padding: '24px 24px',
-        color: '#ffffff',
-        textDecoration: 'none',
-        position: 'relative',
-        overflow: 'hidden',
-        marginBottom: 18,
-        maxWidth: 600,
-        boxShadow: '0 1px 2px rgba(28,54,100,0.12), inset 0 0 0 1px rgba(255,255,255,0.06)',
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-1px)';
-        e.currentTarget.style.boxShadow =
-          '0 4px 12px rgba(28, 54, 100, 0.25), inset 0 0 0 1px rgba(255,255,255,0.08)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow =
-          '0 1px 2px rgba(28,54,100,0.12), inset 0 0 0 1px rgba(255,255,255,0.06)';
-      }}
-    >
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          right: -36,
-          top: -36,
-          width: 140,
-          height: 140,
-          borderRadius: '50%',
-          border: '1px solid rgba(72, 193, 196, 0.18)',
-          pointerEvents: 'none',
-        }}
-      />
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          right: -8,
-          bottom: -8,
-          width: 70,
-          height: 70,
-          borderRadius: '50%',
-          border: '1px solid rgba(72, 193, 196, 0.12)',
-          pointerEvents: 'none',
-        }}
-      />
-      <span
-        style={{
-          position: 'relative',
-          fontFamily: 'Inter, sans-serif',
-          fontWeight: 600,
-          fontSize: 15,
-          lineHeight: 1.5,
-          letterSpacing: '-0.1px',
-          display: 'inline-block',
-          paddingRight: 18,
-        }}
-      >
-        {card.title}
-        <ExternalArrow />
+    <span className="blog-section__glass-preview" aria-hidden="true">
+      <span className="blog-section__glass-preview-plate">
+        <img
+          src={preview.image}
+          data-fallback-src={preview.fallbackImage}
+          alt=""
+          loading="lazy"
+          onError={handlePublicationPreviewError}
+        />
       </span>
-    </a>
+    </span>
   );
+}
+
+function PublicationLead({ card, citation, preview }) {
+
+  return (
+    <div className="publication-lead">
+      {card && (
+        <a
+          className="publication-lead__title"
+          href={card.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span className="publication-lead__title-text">
+            {card.title}
+          </span>
+          {preview && (
+            <span className="publication-lead__preview" aria-hidden="true">
+              <img
+                src={preview.image}
+                data-fallback-src={preview.fallbackImage}
+                alt=""
+                loading="lazy"
+                onError={handlePublicationPreviewError}
+              />
+              <span className="publication-lead__preview-label">
+                {preview.label}
+              </span>
+            </span>
+          )}
+          <span className="publication-lead__arrow" aria-hidden="true">
+            <ExternalArrow />
+          </span>
+        </a>
+      )}
+      {citation && (
+        <cite className="publication-lead__citation">
+          {citation}
+        </cite>
+      )}
+    </div>
+  );
+}
+
+function handlePublicationPreviewError(event) {
+  const img = event.currentTarget;
+  const fallback = img.dataset.fallbackSrc;
+  if (fallback && img.src !== fallback) {
+    img.src = fallback;
+    img.dataset.fallbackSrc = '';
+    return;
+  }
+  img.style.display = 'none';
+}
+
+function getPublicationPreview(href) {
+  if (!href || !/^https?:\/\//i.test(href)) return null;
+
+  let label = 'Open article';
+  let host = '';
+  const canonicalHref = href.replace(/\/$/, '');
+  try {
+    const url = new URL(href);
+    host = url.hostname.replace(/^www\./, '');
+    label = host;
+    if (label.endsWith('bmj.com')) {
+      label = 'Fetal & Neonatal';
+    }
+  } catch {
+    // Keep the neutral label if the URL cannot be parsed.
+  }
+
+  const encoded = encodeURIComponent(href);
+  const fallback = host
+    ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=128`
+    : '';
+  const override = PUBLICATION_PREVIEW_OVERRIDES.get(canonicalHref);
+
+  return {
+    label: override?.label || label,
+    image: override?.image || `https://s.wordpress.com/mshots/v1/${encoded}?w=640`,
+    fallbackImage: fallback,
+  };
 }
 
 function ExternalArrow() {
   return (
     <svg
-      width="14"
-      height="14"
+      width="30"
+      height="30"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       style={{
-        verticalAlign: '-1px',
-        marginLeft: 8,
-        opacity: 0.75,
+        display: 'block',
       }}
       aria-hidden="true"
     >
       <path
         d="M7 17L17 7M17 7H9M17 7V15"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
     </svg>
-  );
-}
-
-/* ── Citation card ──────────────────────────────────────────────────── */
-function CitationCard({ text }) {
-  return (
-    <div
-      style={{
-        position: 'relative',
-        background: 'rgba(245, 249, 252, 0.7)',
-        borderRadius: 8,
-        padding: '14px 18px 14px 22px',
-        marginBottom: 18,
-        maxWidth: 600,
-        borderLeft: '3px solid #48c1c4',
-        fontFamily: 'Inter, sans-serif',
-        fontWeight: 500,
-        fontStyle: 'italic',
-        fontSize: 14,
-        lineHeight: 1.7,
-        color: 'rgba(56, 52, 55, 0.75)',
-      }}
-    >
-      {text}
-    </div>
   );
 }
 
@@ -654,7 +993,7 @@ function InlineVideo({ src }) {
     return () => io.disconnect();
   }, []);
   return (
-    <div style={{ maxWidth: 600, margin: '24px 0', borderRadius: 12, overflow: 'hidden', boxShadow: '0 4px 18px rgba(28,54,100,0.12)' }}>
+    <div style={{ maxWidth: 620, margin: '26px 0', borderRadius: 8, overflow: 'hidden', boxShadow: '0 4px 16px rgba(28,54,100,0.1)' }}>
       <video
         ref={ref}
         src={src}

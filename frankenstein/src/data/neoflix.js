@@ -115,7 +115,7 @@ export const sectionToVideo = {
   preface: assetUrl('/videos/blurteam.mp4'),
   narrative: assetUrl('/videos/blururgency.mp4'),
   provider: assetUrl('/videos/blurteam.mp4'),
-  reflect: assetUrl('/videos/blursskills.mp4'),
+  reflect: assetUrl('/videos/Blursskills.mp4'),
   guidance: assetUrl('/videos/blurperspectives.mp4'),
   research: assetUrl('/videos/blurfocus.mp4'),
   collab: assetUrl('/videos/blurcoordination.mp4'),
@@ -126,7 +126,7 @@ export const deckSources = [
   assetUrl('/videos/blurcoordination.mp4'),
   assetUrl('/videos/blurfocus.mp4'),
   assetUrl('/videos/blurperspectives.mp4'),
-  assetUrl('/videos/blursskills.mp4'),
+  assetUrl('/videos/Blursskills.mp4'),
   assetUrl('/videos/blurteam.mp4'),
   assetUrl('/videos/blururgency.mp4'),
 ];

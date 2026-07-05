@@ -59,7 +59,7 @@ export const TOOLBOX_DECK = [
   assetUrl('/videos/blurcoordination.mp4'),
   assetUrl('/videos/blurfocus.mp4'),
   assetUrl('/videos/blurperspectives.mp4'),
-  assetUrl('/videos/blursskills.mp4'),
+  assetUrl('/videos/Blursskills.mp4'),
   assetUrl('/videos/blurteam.mp4'),
   assetUrl('/videos/blururgency.mp4'),
 ];
@@ -82,4 +82,3 @@ export function toolboxIdxForSlug(slug) {
   if (!slug) return 0;
   return hashSlug(slug) % TOOLBOX_DECK.length;
 }
-

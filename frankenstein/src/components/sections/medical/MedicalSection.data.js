@@ -36,7 +36,7 @@ export const VARIANTS = {
   v3: {
     id: 'medical-v3',
     blurVideos: [
-      { id: "0", video: assetUrl("/videos/blursskills.mp4"), alt: "Blurred skills demonstration" },
+      { id: "0", video: assetUrl("/videos/Blursskills.mp4"), alt: "Blurred skills demonstration" },
       { id: "1", video: assetUrl("/videos/blurteam.mp4"), alt: "Blurred team coordination" },
       { id: "2", video: assetUrl("/videos/blurperspectives.mp4"), alt: "Blurred perspectives" },
     ],

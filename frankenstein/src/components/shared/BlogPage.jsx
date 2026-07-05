@@ -423,7 +423,7 @@ export default function BlogPage({ sections, scrollTo }) {
           grid-template-columns: repeat(12, minmax(0, 1fr));
           grid-auto-rows: auto;
           align-items: start;
-          padding-bottom: 44px;
+          padding-bottom: 64px;
         }
         .blog-section__glass {
           position: absolute;
@@ -453,9 +453,9 @@ export default function BlogPage({ sections, scrollTo }) {
           -webkit-backdrop-filter: none;
         }
         .blog-section--with-publication .blog-section__header {
-          grid-column: 1 / 11;
+          grid-column: 1 / 9;
           margin: 0;
-          padding: 42px 54px 30px;
+          padding: 42px 54px 18px;
         }
         .blog-section--plain .blog-section__header {
           background:
@@ -496,62 +496,52 @@ export default function BlogPage({ sections, scrollTo }) {
           display: grid;
           grid-template-columns: repeat(12, minmax(0, 1fr));
           max-width: none;
-          margin: 16px 0 0;
+          margin: 6px 0 0;
           font-family: Inter, sans-serif;
-        }
-        .publication-lead::before {
-          content: "";
-          position: absolute;
-          left: 32px;
-          top: -8px;
-          bottom: 4px;
-          width: 2px;
-          background: #48c1c4;
         }
         .publication-lead__title {
           position: relative;
-          display: block;
-          grid-column: 2 / 12;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: end;
+          gap: 22px;
+          grid-column: 4 / 12;
           margin: 0;
-          padding: 24px 30px 28px;
+          min-height: 126px;
+          padding: 28px 32px 30px;
           max-width: none;
-          color: #172f56;
-          background: rgba(245, 249, 252, 0.7);
-          border-left: 2px solid rgba(72, 193, 196, 0.92);
-          border-radius: 0 6px 6px 0;
-          box-shadow: 0 18px 40px rgba(17, 34, 65, 0.11);
+          color: #ffffff;
+          background: #1d3767;
+          border: 0;
+          border-radius: 8px;
+          box-shadow: 0 22px 44px rgba(17, 34, 65, 0.18);
           text-decoration: none;
         }
-        .publication-lead__title::after {
-          content: "";
-          position: absolute;
-          left: 30px;
-          bottom: 16px;
-          width: 116px;
-          height: 1px;
-          background: #48c1c4;
-        }
         .publication-lead__title:hover {
-          color: #214777;
+          color: #ffffff;
+          background: #244575;
         }
         .publication-lead__title-text {
-          display: inline;
-          font-size: 21px;
+          display: block;
+          font-size: 20px;
           font-weight: 760;
           line-height: 1.28;
           letter-spacing: 0;
         }
         .publication-lead__title svg {
-          color: rgba(23, 47, 86, 0.74);
+          color: rgba(255, 255, 255, 0.82);
+          margin-left: 0 !important;
         }
         .publication-lead__citation {
           display: block;
-          grid-column: 4 / 11;
-          margin: 18px 0 0;
+          grid-column: 2 / 8;
+          margin: -18px 0 0;
           max-width: none;
-          padding: 17px 24px 0;
-          border-top: 1px solid rgba(28, 54, 100, 0.18);
-          border-left: 1px solid rgba(72, 193, 196, 0.5);
+          padding: 24px 28px 22px;
+          background: rgba(245, 249, 252, 0.76);
+          border: 0;
+          border-radius: 8px;
+          box-shadow: 0 16px 34px rgba(17, 34, 65, 0.09);
           color: rgba(56, 52, 55, 0.72);
           font-size: 14px;
           font-style: italic;
@@ -591,9 +581,6 @@ export default function BlogPage({ sections, scrollTo }) {
           .blog-section__content {
             padding: 32px 24px 40px;
           }
-          .publication-lead::before {
-            left: 12px;
-          }
           .publication-lead {
             grid-column: 1;
             grid-template-columns: 1fr;
@@ -601,15 +588,13 @@ export default function BlogPage({ sections, scrollTo }) {
           }
           .publication-lead__title {
             grid-column: 1;
+            min-height: 104px;
             padding: 22px 22px 26px;
-          }
-          .publication-lead__title::after {
-            left: 22px;
           }
           .publication-lead__citation {
             grid-column: 1;
-            margin-top: 12px;
-            padding-left: 18px;
+            margin-top: -10px;
+            padding: 20px 20px 18px;
           }
         }
         .blog-body {

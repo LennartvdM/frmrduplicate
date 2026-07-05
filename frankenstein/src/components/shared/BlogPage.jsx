@@ -512,35 +512,35 @@ export default function BlogPage({ sections, scrollTo }) {
         .publication-lead__ghost {
           position: absolute;
           z-index: 0;
-          top: -4px;
-          right: -16px;
-          bottom: -58px;
-          left: 12%;
+          top: -18px;
+          right: -8px;
+          bottom: -34px;
+          left: 42%;
           overflow: hidden;
           pointer-events: none;
-          border-radius: 10px 10px 0 0;
-          opacity: 0.9;
+          border-radius: 8px;
+          opacity: 0.76;
           mix-blend-mode: normal;
-          -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 10%, #000 100%), linear-gradient(to bottom, transparent 0%, #000 9%, #000 88%, transparent 100%);
+          -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 5%, #000 100%), linear-gradient(to bottom, transparent 0%, #000 5%, #000 94%, transparent 100%);
           -webkit-mask-composite: source-in;
-          mask-image: linear-gradient(to right, transparent 0%, #000 10%, #000 100%), linear-gradient(to bottom, transparent 0%, #000 9%, #000 88%, transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0%, #000 5%, #000 100%), linear-gradient(to bottom, transparent 0%, #000 5%, #000 94%, transparent 100%);
           mask-composite: intersect;
         }
         .publication-lead__ghost img {
           position: absolute;
-          inset: -34px;
-          width: calc(100% + 68px);
-          height: calc(100% + 68px);
+          inset: -18px;
+          width: calc(100% + 36px);
+          height: calc(100% + 36px);
           object-fit: cover;
-          filter: blur(9px) saturate(0.92) contrast(1.24) brightness(0.82);
-          transform: scale(1.08);
+          filter: blur(5px) saturate(0.96) contrast(1.18) brightness(0.88);
+          transform: scale(1.03);
         }
         .publication-lead__ghost::after {
           content: "";
           position: absolute;
           inset: 0;
           background:
-            linear-gradient(90deg, rgba(245, 249, 252, 0.02), rgba(245, 249, 252, 0) 34%, rgba(14, 28, 49, 0.04)),
+            linear-gradient(90deg, rgba(245, 249, 252, 0), rgba(14, 28, 49, 0.04)),
             linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(245, 249, 252, 0.02));
         }
         .publication-lead__title {

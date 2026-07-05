@@ -99,13 +99,13 @@
   position: absolute;
   left: max(12px, env(safe-area-inset-left));
   right: max(12px, env(safe-area-inset-right));
-  top: 78.8%;
+  bottom: max(158px, calc(env(safe-area-inset-bottom) + 152px));
   z-index: 1;
   margin: 0 auto;
-  width: min(82vw, 320px);
+  width: min(92vw, 340px);
   color: #f6fbfa;
   font-family: Inter, sans-serif;
-  font-size: clamp(22px, 6vw, 23px);
+  font-size: clamp(19px, 5.7vw, 22px);
   font-weight: 600;
   line-height: 1.28;
   letter-spacing: 0;
@@ -115,26 +115,25 @@
     0 8px 22px rgba(0, 0, 0, 0.38);
   opacity: 0;
   filter: blur(3px);
-  transform: translateY(calc(-50% + 12px));
   transition:
     opacity 180ms ease,
-    filter 180ms ease,
-    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, filter, transform;
+    filter 180ms ease;
+  will-change: opacity, filter;
 }
 
 .mobile-home__headline--visible {
   opacity: 1;
   filter: blur(0);
-  transform: translateY(-50%);
 }
 
 .mobile-home__headline--intro {
   top: 68%;
+  bottom: auto;
   width: min(84vw, 340px);
   font-size: 52px;
   font-weight: 800;
   line-height: 0.95;
+  transform: translateY(-50%);
 }
 
 .mobile-home__line {
@@ -148,8 +147,8 @@
 
 @media (max-width: 340px) {
   .mobile-home__headline {
-    width: min(91vw, 292px);
-    font-size: 20px;
+    width: min(92vw, 312px);
+    font-size: 19px;
   }
 
   .mobile-home__headline--intro {
@@ -177,6 +176,9 @@
   .mobile-home__headline {
     filter: none;
     transition: opacity 80ms linear;
+  }
+
+  .mobile-home__headline--intro {
     transform: translateY(-50%);
   }
 }

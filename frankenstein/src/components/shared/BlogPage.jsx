@@ -517,10 +517,10 @@ export default function BlogPage({ sections, scrollTo }) {
         }
         .blog-section__glass-preview-plate {
           position: absolute;
+          top: 266px;
           right: 0;
           bottom: 0;
           left: 46%;
-          height: 201px;
           overflow: hidden;
           background: #f7fafc;
         }

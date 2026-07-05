@@ -425,6 +425,7 @@ export default function BlogPage({ sections, scrollTo }) {
           align-items: start;
           margin-bottom: 0;
           padding-bottom: 48px;
+          clip-path: inset(-96px -96px 0 -96px);
         }
         .blog-section__glass {
           position: absolute;
@@ -519,16 +520,19 @@ export default function BlogPage({ sections, scrollTo }) {
           overflow: visible;
           pointer-events: none;
           border-radius: 0;
-          opacity: 0.68;
+          background: #f7fafc;
+          opacity: 1;
         }
         .publication-lead__ghost img {
           position: absolute;
           inset: 0;
           width: 100%;
           height: 100%;
+          background: #ffffff;
           object-fit: contain;
           object-position: center;
           filter: none;
+          opacity: 1;
         }
         .publication-lead__title {
           position: relative;
@@ -567,9 +571,7 @@ export default function BlogPage({ sections, scrollTo }) {
           aspect-ratio: 16 / 9;
           overflow: hidden;
           border-radius: 5px;
-          background:
-            linear-gradient(135deg, rgba(82, 156, 156, 0.34), rgba(245, 249, 252, 0.08)),
-            rgba(255, 255, 255, 0.1);
+          background: #f7fafc;
           box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
         }
         .publication-lead__preview img {
@@ -577,8 +579,10 @@ export default function BlogPage({ sections, scrollTo }) {
           inset: 0;
           width: 100%;
           height: 100%;
+          background: #ffffff;
           object-fit: contain;
           object-position: center;
+          opacity: 1;
         }
         .publication-lead__preview-label {
           position: absolute;

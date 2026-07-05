@@ -36,6 +36,15 @@ const STAGGER_OFFSET = '40%';
 const STAGGER_DELAY = 0.25;
 const STAGGER_DURATION = 0.5;
 const STAGGER_EASE = [0.4, 0, 0.2, 1];
+const PUBLICATION_PREVIEW_OVERRIDES = new Map([
+  [
+    'https://fn.bmj.com/content/early/2024/02/07/archdischild-2023-326528',
+    {
+      image: '/docs-assets/providers-perspective-bmj-preview.png',
+      label: 'Fetal & Neonatal',
+    },
+  ],
+]);
 
 export default function BlogPage({ sections, scrollTo }) {
   // Internal scroll container. BlogPage renders inside RouteSlider,
@@ -827,6 +836,7 @@ function getPublicationPreview(href) {
 
   let label = 'Open article';
   let host = '';
+  const canonicalHref = href.replace(/\/$/, '');
   try {
     const url = new URL(href);
     host = url.hostname.replace(/^www\./, '');
@@ -842,10 +852,11 @@ function getPublicationPreview(href) {
   const fallback = host
     ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=128`
     : '';
+  const override = PUBLICATION_PREVIEW_OVERRIDES.get(canonicalHref);
 
   return {
-    label,
-    image: `https://s.wordpress.com/mshots/v1/${encoded}?w=640`,
+    label: override?.label || label,
+    image: override?.image || `https://s.wordpress.com/mshots/v1/${encoded}?w=640`,
     fallbackImage: fallback,
   };
 }

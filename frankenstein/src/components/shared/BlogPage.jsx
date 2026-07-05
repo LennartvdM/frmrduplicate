@@ -512,10 +512,10 @@ export default function BlogPage({ sections, scrollTo }) {
         .publication-lead__ghost {
           position: absolute;
           z-index: 1;
-          top: -14px;
-          right: 6px;
-          bottom: -28px;
-          left: 40%;
+          top: 74px;
+          right: -18px;
+          left: 46%;
+          height: 206px;
           overflow: visible;
           pointer-events: none;
           border-radius: 0;

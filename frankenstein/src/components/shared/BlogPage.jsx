@@ -437,7 +437,7 @@ export default function BlogPage({ sections, scrollTo }) {
           background:
             linear-gradient(135deg, rgba(255, 255, 255, 0.42), rgba(245, 249, 252, 0.3) 48%, rgba(232, 244, 246, 0.24));
           border: 0;
-          border-radius: 0;
+          border-radius: 12px 12px 0 0;
           box-shadow: 0 20px 54px rgba(17, 34, 65, 0.08);
           backdrop-filter: blur(20px) saturate(1.05);
           -webkit-backdrop-filter: blur(20px) saturate(1.05);
@@ -476,7 +476,7 @@ export default function BlogPage({ sections, scrollTo }) {
           overflow: hidden;
         }
         .blog-section--with-publication .blog-section__content {
-          border-radius: 0;
+          border-radius: 0 0 12px 12px;
           overflow: hidden;
           padding-top: 48px;
         }
@@ -493,7 +493,7 @@ export default function BlogPage({ sections, scrollTo }) {
           border-radius: 8px;
         }
         .blog-section--with-publication .blog-section__content-wash {
-          border-radius: 0;
+          border-radius: 0 0 12px 12px;
         }
         .blog-section--plain .blog-section__content-wash {
           border-radius: 0 0 8px 8px;
@@ -511,24 +511,25 @@ export default function BlogPage({ sections, scrollTo }) {
         .publication-lead__title {
           position: relative;
           display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
-          align-items: end;
-          gap: 22px;
+          grid-template-columns: minmax(0, 1fr) minmax(116px, 148px) 42px;
+          align-items: center;
+          gap: 24px;
           grid-column: 2 / 13;
           margin: 0 -16px 0 0;
           min-height: 126px;
-          padding: 28px 32px 30px;
+          padding: 24px 28px 24px 32px;
           max-width: none;
           color: #ffffff;
-          background: #1d3767;
+          background: #0e1c31;
           border: 0;
           border-radius: 8px;
           box-shadow: 0 22px 44px rgba(17, 34, 65, 0.18);
           text-decoration: none;
+          z-index: 2;
         }
         .publication-lead__title:hover {
           color: #ffffff;
-          background: #244575;
+          background: #132641;
         }
         .publication-lead__title-text {
           display: block;
@@ -537,17 +538,65 @@ export default function BlogPage({ sections, scrollTo }) {
           line-height: 1.28;
           letter-spacing: 0;
         }
+        .publication-lead__preview {
+          position: relative;
+          display: block;
+          width: 100%;
+          aspect-ratio: 16 / 9;
+          overflow: hidden;
+          border-radius: 5px;
+          background:
+            linear-gradient(135deg, rgba(82, 156, 156, 0.34), rgba(245, 249, 252, 0.08)),
+            rgba(255, 255, 255, 0.1);
+          box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+        }
+        .publication-lead__preview img {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .publication-lead__preview-label {
+          position: absolute;
+          left: 8px;
+          right: 8px;
+          bottom: 7px;
+          padding: 4px 6px;
+          overflow: hidden;
+          color: rgba(255, 255, 255, 0.86);
+          background: rgba(14, 28, 49, 0.76);
+          border-radius: 4px;
+          font-size: 10px;
+          font-weight: 760;
+          line-height: 1;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .publication-lead__arrow {
+          display: grid;
+          place-items: center;
+          width: 42px;
+          height: 42px;
+          color: #ffffff;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          border-radius: 999px;
+        }
         .publication-lead__title svg {
-          color: rgba(255, 255, 255, 0.82);
+          width: 30px;
+          height: 30px;
+          color: rgba(255, 255, 255, 0.92);
           margin-left: 0 !important;
         }
         .publication-lead__citation {
+          position: relative;
           display: block;
           grid-column: 1 / 7;
           margin: -18px 0 0 -26px;
           max-width: none;
           padding: 24px 28px 22px;
-          background: rgba(245, 249, 252, 0.76);
+          background: #f5f9fc;
           border: 0;
           border-radius: 8px;
           box-shadow: 0 16px 34px rgba(17, 34, 65, 0.09);
@@ -556,6 +605,7 @@ export default function BlogPage({ sections, scrollTo }) {
           font-style: italic;
           font-weight: 500;
           line-height: 1.62;
+          z-index: 3;
         }
         @media (max-width: 900px) {
           .blog-grid {
@@ -573,7 +623,7 @@ export default function BlogPage({ sections, scrollTo }) {
             right: 0;
             bottom: 0;
             left: 0;
-            border-radius: 0;
+            border-radius: 8px 8px 0 0;
           }
           .blog-section__lead--publication {
             grid-template-columns: 1fr;
@@ -591,7 +641,11 @@ export default function BlogPage({ sections, scrollTo }) {
             padding: 32px 24px 40px;
           }
           .blog-section--with-publication .blog-section__content {
+            border-radius: 0 0 8px 8px;
             padding-top: 28px;
+          }
+          .blog-section--with-publication .blog-section__content-wash {
+            border-radius: 0 0 8px 8px;
           }
           .publication-lead {
             grid-column: 1;
@@ -599,10 +653,22 @@ export default function BlogPage({ sections, scrollTo }) {
             margin: 30px 20px 34px;
           }
           .publication-lead__title {
+            grid-template-columns: minmax(0, 1fr) auto;
             grid-column: 1;
             margin-right: 0;
             min-height: 104px;
             padding: 22px 22px 26px;
+          }
+          .publication-lead__preview {
+            display: none;
+          }
+          .publication-lead__arrow {
+            width: 38px;
+            height: 38px;
+          }
+          .publication-lead__title svg {
+            width: 26px;
+            height: 26px;
           }
           .publication-lead__citation {
             grid-column: 1;
@@ -644,6 +710,8 @@ export default function BlogPage({ sections, scrollTo }) {
 
 /* ── Publication lead ───────────────────────────────────────────────── */
 function PublicationLead({ card, citation }) {
+  const preview = card ? getPublicationPreview(card.href) : null;
+
   return (
     <div className="publication-lead">
       {card && (
@@ -656,7 +724,32 @@ function PublicationLead({ card, citation }) {
           <span className="publication-lead__title-text">
             {card.title}
           </span>
-          <ExternalArrow />
+          {preview && (
+            <span className="publication-lead__preview" aria-hidden="true">
+              <img
+                src={preview.image}
+                data-fallback-src={preview.fallbackImage}
+                alt=""
+                loading="lazy"
+                onError={(event) => {
+                  const img = event.currentTarget;
+                  const fallback = img.dataset.fallbackSrc;
+                  if (fallback && img.src !== fallback) {
+                    img.src = fallback;
+                    img.dataset.fallbackSrc = '';
+                    return;
+                  }
+                  img.style.display = 'none';
+                }}
+              />
+              <span className="publication-lead__preview-label">
+                {preview.label}
+              </span>
+            </span>
+          )}
+          <span className="publication-lead__arrow" aria-hidden="true">
+            <ExternalArrow />
+          </span>
         </a>
       )}
       {citation && (
@@ -668,25 +761,51 @@ function PublicationLead({ card, citation }) {
   );
 }
 
+function getPublicationPreview(href) {
+  if (!href || !/^https?:\/\//i.test(href)) return null;
+
+  let label = 'Open article';
+  let host = '';
+  try {
+    const url = new URL(href);
+    host = url.hostname.replace(/^www\./, '');
+    label = host;
+    if (label.endsWith('bmj.com')) {
+      label = 'Fetal & Neonatal';
+    }
+  } catch {
+    // Keep the neutral label if the URL cannot be parsed.
+  }
+
+  const encoded = encodeURIComponent(href);
+  const fallback = host
+    ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=128`
+    : '';
+
+  return {
+    label,
+    image: `https://s.wordpress.com/mshots/v1/${encoded}?w=640`,
+    fallbackImage: fallback,
+  };
+}
+
 function ExternalArrow() {
   return (
     <svg
-      width="14"
-      height="14"
+      width="30"
+      height="30"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       style={{
-        verticalAlign: '-1px',
-        marginLeft: 8,
-        opacity: 0.75,
+        display: 'block',
       }}
       aria-hidden="true"
     >
       <path
         d="M7 17L17 7M17 7H9M17 7V15"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
       />

@@ -271,7 +271,7 @@ export default function MobilePublicationsPage({ sections, scrollTo }) {
                   rel="noopener noreferrer"
                 >
                   <span>{parsed.paperTitle}</span>
-                  <ExternalLink aria-hidden="true" size={17} strokeWidth={2.25} />
+                  <ExternalLink aria-hidden="true" size={26} strokeWidth={2.1} />
                 </a>
               )}
 

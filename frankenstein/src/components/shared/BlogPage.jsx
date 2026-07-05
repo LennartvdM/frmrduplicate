@@ -562,9 +562,8 @@ export default function BlogPage({ sections, scrollTo }) {
           background: #ffffff;
           object-fit: cover;
           object-position: center;
-          filter: blur(1.6px);
+          filter: none;
           opacity: 1;
-          transform: scale(1.012);
         }
         .blog-section__glass-preview-plate::after {
           content: '';

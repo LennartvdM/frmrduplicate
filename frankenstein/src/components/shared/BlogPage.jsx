@@ -302,6 +302,9 @@ export default function BlogPage({ sections, scrollTo }) {
             });
             const { numberPart, titlePart } = splitHeading(section.title);
             const hasPublicationLead = Boolean(parsed.titleCard || parsed.citation);
+            const publicationPreview = hasPublicationLead && parsed.titleCard
+              ? getPublicationPreview(parsed.titleCard.href)
+              : null;
             return (
               <section
                 key={section.id}
@@ -320,6 +323,9 @@ export default function BlogPage({ sections, scrollTo }) {
                 <div className={`blog-section__lead${hasPublicationLead ? ' blog-section__lead--publication' : ' blog-section__lead--plain'}`}>
                   {hasPublicationLead && (
                     <div aria-hidden="true" className="blog-section__glass" />
+                  )}
+                  {publicationPreview && (
+                    <PublicationGlassPreview preview={publicationPreview} />
                   )}
                   <div className="blog-section__header">
                     <h2
@@ -355,7 +361,7 @@ export default function BlogPage({ sections, scrollTo }) {
                   </div>
 
                   {hasPublicationLead && (
-                    <PublicationLead card={parsed.titleCard} citation={parsed.citation} />
+                    <PublicationLead card={parsed.titleCard} citation={parsed.citation} preview={publicationPreview} />
                   )}
                 </div>
 
@@ -425,7 +431,6 @@ export default function BlogPage({ sections, scrollTo }) {
           align-items: start;
           margin-bottom: 0;
           padding-bottom: 48px;
-          clip-path: inset(-96px -96px 0 -96px);
         }
         .blog-section__glass {
           position: absolute;
@@ -499,31 +504,27 @@ export default function BlogPage({ sections, scrollTo }) {
         .blog-section--plain .blog-section__content-wash {
           border-radius: 0 0 8px 8px;
         }
-        .publication-lead {
-          position: relative;
-          z-index: 1;
-          isolation: isolate;
-          grid-column: 1 / -1;
-          display: grid;
-          grid-template-columns: repeat(12, minmax(0, 1fr));
-          max-width: none;
-          margin: 6px 0 0;
-          font-family: Inter, sans-serif;
-        }
-        .publication-lead__ghost {
+        .blog-section__glass-preview {
           position: absolute;
           z-index: 1;
-          top: 74px;
-          right: -18px;
-          left: 46%;
-          height: 206px;
-          overflow: visible;
+          top: -24px;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          overflow: hidden;
           pointer-events: none;
-          border-radius: 0;
-          background: #f7fafc;
-          opacity: 1;
+          border-radius: 12px 12px 0 0;
         }
-        .publication-lead__ghost img {
+        .blog-section__glass-preview-plate {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          left: 46%;
+          height: 201px;
+          overflow: hidden;
+          background: #f7fafc;
+        }
+        .blog-section__glass-preview-plate img {
           position: absolute;
           inset: 0;
           width: 100%;
@@ -533,6 +534,17 @@ export default function BlogPage({ sections, scrollTo }) {
           object-position: center;
           filter: none;
           opacity: 1;
+        }
+        .publication-lead {
+          position: relative;
+          z-index: 2;
+          isolation: isolate;
+          grid-column: 1 / -1;
+          display: grid;
+          grid-template-columns: repeat(12, minmax(0, 1fr));
+          max-width: none;
+          margin: 6px 0 0;
+          font-family: Inter, sans-serif;
         }
         .publication-lead__title {
           position: relative;
@@ -679,7 +691,7 @@ export default function BlogPage({ sections, scrollTo }) {
             grid-template-columns: 1fr;
             margin: 30px 20px 34px;
           }
-          .publication-lead__ghost {
+          .blog-section__glass-preview {
             display: none;
           }
           .publication-lead__title {
@@ -739,31 +751,28 @@ export default function BlogPage({ sections, scrollTo }) {
 }
 
 /* ── Publication lead ───────────────────────────────────────────────── */
-function PublicationLead({ card, citation }) {
-  const preview = card ? getPublicationPreview(card.href) : null;
+function PublicationGlassPreview({ preview }) {
+  if (!preview) return null;
+
+  return (
+    <span className="blog-section__glass-preview" aria-hidden="true">
+      <span className="blog-section__glass-preview-plate">
+        <img
+          src={preview.image}
+          data-fallback-src={preview.fallbackImage}
+          alt=""
+          loading="lazy"
+          onError={handlePublicationPreviewError}
+        />
+      </span>
+    </span>
+  );
+}
+
+function PublicationLead({ card, citation, preview }) {
 
   return (
     <div className="publication-lead">
-      {preview && (
-        <span className="publication-lead__ghost" aria-hidden="true">
-          <img
-            src={preview.image}
-            data-fallback-src={preview.fallbackImage}
-            alt=""
-            loading="lazy"
-            onError={(event) => {
-              const img = event.currentTarget;
-              const fallback = img.dataset.fallbackSrc;
-              if (fallback && img.src !== fallback) {
-                img.src = fallback;
-                img.dataset.fallbackSrc = '';
-                return;
-              }
-              img.style.display = 'none';
-            }}
-          />
-        </span>
-      )}
       {card && (
         <a
           className="publication-lead__title"
@@ -781,16 +790,7 @@ function PublicationLead({ card, citation }) {
                 data-fallback-src={preview.fallbackImage}
                 alt=""
                 loading="lazy"
-                onError={(event) => {
-                  const img = event.currentTarget;
-                  const fallback = img.dataset.fallbackSrc;
-                  if (fallback && img.src !== fallback) {
-                    img.src = fallback;
-                    img.dataset.fallbackSrc = '';
-                    return;
-                  }
-                  img.style.display = 'none';
-                }}
+                onError={handlePublicationPreviewError}
               />
               <span className="publication-lead__preview-label">
                 {preview.label}
@@ -809,6 +809,17 @@ function PublicationLead({ card, citation }) {
       )}
     </div>
   );
+}
+
+function handlePublicationPreviewError(event) {
+  const img = event.currentTarget;
+  const fallback = img.dataset.fallbackSrc;
+  if (fallback && img.src !== fallback) {
+    img.src = fallback;
+    img.dataset.fallbackSrc = '';
+    return;
+  }
+  img.style.display = 'none';
 }
 
 function getPublicationPreview(href) {

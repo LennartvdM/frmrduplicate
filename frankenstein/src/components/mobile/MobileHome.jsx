@@ -199,6 +199,7 @@ export default function MobileHome() {
   const activeIndexRef = useRef(0);
   const previousVideoIndexRef = useRef(null);
   const visibleTextIndexRef = useRef(null);
+  const pendingRevealIndexRef = useRef(null);
   const revealTimerRef = useRef(null);
   const scrollTimerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -212,36 +213,97 @@ export default function MobileHome() {
     transitionNavigate(`/neoflix#${target}`);
   }, [transitionNavigate]);
 
+  const cancelPendingReveal = useCallback(() => {
+    if (revealTimerRef.current) {
+      clearTimeout(revealTimerRef.current);
+      revealTimerRef.current = null;
+    }
+    pendingRevealIndexRef.current = null;
+  }, []);
+
+  const isPanelSettled = useCallback((index) => {
+    const root = scrollRef.current;
+    const section = sectionRefs.current[index];
+    if (!root || !section) return false;
+
+    return Math.abs(root.scrollTop - section.offsetTop) <= Math.max(4, root.clientHeight * 0.006);
+  }, []);
+
+  const showSlideText = useCallback((index) => {
+    pendingRevealIndexRef.current = null;
+    if (visibleTextIndexRef.current === index) return;
+    visibleTextIndexRef.current = index;
+    setVisibleTextIndex(index);
+  }, []);
+
   const hideSlideText = useCallback(() => {
-    if (revealTimerRef.current) clearTimeout(revealTimerRef.current);
+    cancelPendingReveal();
     if (visibleTextIndexRef.current === null) return;
     visibleTextIndexRef.current = null;
     setVisibleTextIndex(null);
-  }, []);
+  }, [cancelPendingReveal]);
 
-  const revealActiveSlideText = useCallback((delay = TEXT_REVEAL_DELAY_MS) => {
-    if (revealTimerRef.current) clearTimeout(revealTimerRef.current);
-    revealTimerRef.current = setTimeout(() => {
-      const nextIndex = activeIndexRef.current;
-      visibleTextIndexRef.current = nextIndex;
-      setVisibleTextIndex(nextIndex);
-    }, delay);
-  }, []);
+  const scheduleSlideTextReveal = useCallback((
+    index = activeIndexRef.current,
+    delay = TEXT_REVEAL_DELAY_MS,
+    options = {}
+  ) => {
+    const { requireSettled = false, attempts = 6 } = options;
+
+    if (visibleTextIndexRef.current === index) {
+      cancelPendingReveal();
+      return;
+    }
+
+    cancelPendingReveal();
+    pendingRevealIndexRef.current = index;
+
+    const queueReveal = (nextDelay, remainingAttempts) => {
+      revealTimerRef.current = setTimeout(() => {
+        revealTimerRef.current = null;
+
+        if (pendingRevealIndexRef.current !== index || activeIndexRef.current !== index) {
+          pendingRevealIndexRef.current = null;
+          return;
+        }
+
+        if (requireSettled && !isPanelSettled(index) && remainingAttempts > 0) {
+          queueReveal(TEXT_REVEAL_DELAY_MS, remainingAttempts - 1);
+          return;
+        }
+
+        showSlideText(index);
+      }, nextDelay);
+    };
+
+    queueReveal(delay, attempts);
+  }, [cancelPendingReveal, isPanelSettled, showSlideText]);
 
   const handleScroll = useCallback(() => {
     const root = scrollRef.current;
-    const inOpeningSequence =
-      root && root.scrollTop < root.clientHeight * INTRO_SEQUENCE_COUNT - 1;
+    if (!root) return;
 
-    if (!inOpeningSequence) hideSlideText();
+    const currentIndex = activeIndexRef.current;
+    const inOpeningSequence =
+      root.scrollTop < root.clientHeight * INTRO_SEQUENCE_COUNT - 1;
+    const visiblePanelIsStillSettled =
+      visibleTextIndexRef.current === currentIndex && isPanelSettled(currentIndex);
+
+    if (!inOpeningSequence && !visiblePanelIsStillSettled) hideSlideText();
     if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
     scrollTimerRef.current = setTimeout(() => {
-      const delay = inOpeningSequence && activeIndexRef.current > 0
+      scrollTimerRef.current = null;
+      const revealIndex = activeIndexRef.current;
+      const revealIsOpening =
+        root.scrollTop < root.clientHeight * INTRO_SEQUENCE_COUNT - 1;
+      const delay = revealIsOpening && revealIndex > 0
         ? OPENING_HEADER_REVEAL_DELAY_MS
         : 0;
-      revealActiveSlideText(delay);
+      scheduleSlideTextReveal(revealIndex, delay, {
+        requireSettled: revealIndex >= INTRO_SEQUENCE_COUNT,
+      });
     }, TEXT_REVEAL_DELAY_MS);
-  }, [hideSlideText, revealActiveSlideText]);
+  }, [hideSlideText, isPanelSettled, scheduleSlideTextReveal]);
 
   useEffect(() => {
     const root = scrollRef.current;
@@ -273,18 +335,17 @@ export default function MobileHome() {
   useEffect(() => {
     activeIndexRef.current = activeIndex;
     if (activeIndex < INTRO_SEQUENCE_COUNT) {
-      if (revealTimerRef.current) clearTimeout(revealTimerRef.current);
       if (activeIndex === 0) {
-        visibleTextIndexRef.current = activeIndex;
-        setVisibleTextIndex(activeIndex);
+        cancelPendingReveal();
+        showSlideText(activeIndex);
         return;
       }
       hideSlideText();
       return;
     }
     hideSlideText();
-    revealActiveSlideText();
-  }, [activeIndex, hideSlideText, revealActiveSlideText]);
+    scheduleSlideTextReveal(activeIndex, TEXT_REVEAL_DELAY_MS, { requireSettled: true });
+  }, [activeIndex, cancelPendingReveal, hideSlideText, scheduleSlideTextReveal, showSlideText]);
 
   useEffect(() => {
     const sharedIntroVideo = sharedIntroVideoRef.current;
@@ -349,6 +410,7 @@ export default function MobileHome() {
   useEffect(() => () => {
     if (revealTimerRef.current) clearTimeout(revealTimerRef.current);
     if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+    pendingRevealIndexRef.current = null;
   }, []);
 
   const renderPanel = (panel, index, options = {}) => {

@@ -38,6 +38,13 @@ const STAGGER_DURATION = 0.5;
 const STAGGER_EASE = [0.4, 0, 0.2, 1];
 const PUBLICATION_PREVIEW_OVERRIDES = new Map([
   [
+    'https://www.frontiersin.org/articles/10.3389/fped.2022.931055/full',
+    {
+      image: '/docs-assets/narrative-review-frontiers-preview.png',
+      label: 'Frontiers in Pediatrics',
+    },
+  ],
+  [
     'https://fn.bmj.com/content/early/2024/02/07/archdischild-2023-326528',
     {
       image: '/docs-assets/providers-perspective-bmj-preview.png',

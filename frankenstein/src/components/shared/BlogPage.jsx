@@ -72,6 +72,13 @@ const PUBLICATION_PREVIEW_OVERRIDES = new Map([
       label: 'Resuscitation',
     },
   ],
+  [
+    'https://www.mdpi.com/2227-9067/13/6/816',
+    {
+      image: '/docs-assets/international-collaboration-mdpi-preview.png',
+      label: 'Children',
+    },
+  ],
 ]);
 
 export default function BlogPage({ sections, scrollTo }) {

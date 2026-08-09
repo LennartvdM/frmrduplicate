@@ -172,7 +172,9 @@ These findings highlight the potential importance of considering vocal cord func
   {
     id: 'internationalcollab',
     title: '6. International Collaboration',
-    content: `*PENDING PUBLICATION*
+    content: `**[International Multicenter Video Review on Neonatal Procedures: Lessons Learned from a Collaborative Study](https://www.mdpi.com/2227-9067/13/6/816)**
+
+*Heesters V, Schwarz H, van Zanten HA, et al. Children (Basel). 2026;13(6):816. Published 2026 Jun 13.*
 
 ---
 

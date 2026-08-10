@@ -50,6 +50,18 @@ import React, { useCallback, useEffect, useRef } from 'react';
 const READY_FALLBACK_MS = 800;
 const RENDER_TREE_FALLBACK_MS = 2500;
 
+// Artwork, not media: the surface shouldn't select with a swipe, drag out
+// of the page, long-press into a save sheet, or flash a tap highlight.
+// Callers can still override any of it through `style`.
+const SURFACE_STYLE = {
+  userSelect: 'none',
+  WebkitUserSelect: 'none',
+  WebkitTouchCallout: 'none',
+  WebkitUserDrag: 'none',
+  WebkitTapHighlightColor: 'transparent',
+  pointerEvents: 'none',
+};
+
 let sourceHost = null;
 
 /**
@@ -284,8 +296,9 @@ export default function IllustrationCanvas({
     <canvas
       ref={canvasRef}
       className={className}
-      style={style}
+      style={{ ...SURFACE_STYLE, ...style }}
       aria-hidden="true"
+      draggable={false}
       {...rest}
     />
   );

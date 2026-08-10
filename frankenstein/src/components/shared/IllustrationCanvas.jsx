@@ -95,6 +95,7 @@ export default function IllustrationCanvas({
   play = false,            // caller owns the decode budget
   playbackRate = 1,
   preload = 'metadata',
+  onReady,                 // first frame is up (or the clip failed) — once per src
   className,
   style,
   ...rest                  // spread onto the canvas (draggable, data-*)
@@ -104,7 +105,19 @@ export default function IllustrationCanvas({
   const preloadRef = useRef(preload);
   const rateRef = useRef(playbackRate);
   const playRef = useRef(play);
-  const jobRef = useRef({ raf: 0, watchdog: 0, lastPainted: -1, painted: false, attached: false });
+  const onReadyRef = useRef(onReady);
+  const jobRef = useRef({ raf: 0, watchdog: 0, lastPainted: -1, painted: false, attached: false, readyFired: false });
+
+  onReadyRef.current = onReady;
+
+  // Settled: something is on screen, or nothing ever will be. Callers gate
+  // interaction on this, so it has to fire either way — and only once.
+  const fireReady = useCallback(() => {
+    const job = jobRef.current;
+    if (job.readyFired) return;
+    job.readyFired = true;
+    onReadyRef.current?.();
+  }, []);
 
   // Blit the currently decoded frame. Sizing the backing store to the
   // clip keeps this a straight copy; the element's CSS box does the rest.
@@ -134,9 +147,10 @@ export default function IllustrationCanvas({
       } catch {
         job.painted = true;
       }
+      if (job.painted) fireReady();
     }
     return job.painted;
-  }, []);
+  }, [fireReady]);
 
   // Keep the live element in step with props that must not restart it.
   useEffect(() => {
@@ -178,7 +192,7 @@ export default function IllustrationCanvas({
     video.preload = preloadRef.current;
     video.src = src;
     videoRef.current = video;
-    jobRef.current = { raf: 0, watchdog: 0, lastPainted: -1, painted: false, attached: false };
+    jobRef.current = { raf: 0, watchdog: 0, lastPainted: -1, painted: false, attached: false, readyFired: false };
 
     // A clip that has never played has no frame to hand out, so the blit
     // lands nothing. Nudging the playhead off zero forces exactly one
@@ -204,6 +218,9 @@ export default function IllustrationCanvas({
     video.addEventListener('loadedmetadata', primeStillFrame);
     video.addEventListener('loadeddata', onFrame);
     video.addEventListener('seeked', onFrame);
+    // A clip that can't load still has to release whatever the caller is
+    // gating on it.
+    video.addEventListener('error', fireReady);
 
     return () => {
       const job = jobRef.current;
@@ -212,6 +229,7 @@ export default function IllustrationCanvas({
       video.removeEventListener('loadedmetadata', primeStillFrame);
       video.removeEventListener('loadeddata', onFrame);
       video.removeEventListener('seeked', onFrame);
+      video.removeEventListener('error', fireReady);
       try {
         video.pause();
       } catch {}
@@ -223,7 +241,7 @@ export default function IllustrationCanvas({
       } catch {}
       videoRef.current = null;
     };
-  }, [src, paint]);
+  }, [src, paint, fireReady]);
 
   // Playback + the paint loop.
   useEffect(() => {

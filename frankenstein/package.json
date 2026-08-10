@@ -7,6 +7,7 @@
     "dev": "vite",
     "prebuild": "node scripts/build-docs.mjs",
     "build": "vite build",
+    "postbuild": "node scripts/prerender-seo.mjs",
     "preview": "vite preview",
     "build:docs": "node scripts/build-docs.mjs"
   },

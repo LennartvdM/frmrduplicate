@@ -8,6 +8,16 @@ import DocsTocRail from '../components/docs/DocsTocRail';
 import useTransitionNavigate from '../hooks/useTransitionNavigate';
 import { useBackdropTarget } from '../backdrop/useBackdrop';
 import { TOOLBOX_DECK, toolboxIdxForSlug } from '../backdrop/decks';
+import Seo from '../seo/Seo';
+import { describePage } from '../seo/astText';
+import {
+  absoluteUrl,
+  clampDescription,
+  docsJsonLd,
+  docsRouteMeta,
+  staticRouteMeta,
+  withBrand,
+} from '../seo/siteMeta';
 import '../components/docs/docs.css';
 
 export default function DocsPage() {
@@ -62,7 +72,57 @@ export default function DocsPage() {
   const trail = useMemo(() => breadcrumbFor(slug), [slug]);
   const sectionCrumb = trail[0]?.title || null;
 
-  if (!page) return <NotFound slug={raw} />;
+  // Built before the not-found early return so every branch, including
+  // the 404, still gets correct <head> tags on a client-side navigation.
+  const seo = useMemo(() => {
+    if (!page) {
+      return (
+        <Seo
+          title={withBrand('Page not found')}
+          description="This toolbox page doesn't exist. Browse the Neoflix toolbox for guidance on video recording and video reflection in healthcare."
+          path={`/toolbox/${raw}`.replace(/\/+$/, '')}
+          noindex
+        />
+      );
+    }
+    if (!slug) {
+      const root = staticRouteMeta('/toolbox');
+      return (
+        <Seo title={withBrand(root.title)} description={root.description} path="/toolbox" />
+      );
+    }
+    const description = clampDescription(
+      describePage(page) ||
+        `${page.title} — part of the Neoflix toolbox for video recording and video reflection in healthcare.`
+    );
+    const meta = docsRouteMeta({ slug, title: page.title, description });
+    return (
+      <Seo
+        title={meta.title}
+        description={description}
+        path={meta.path}
+        type="article"
+        jsonLd={docsJsonLd({
+          path: meta.path,
+          title: page.title,
+          description,
+          breadcrumbs: trail.map((crumb) => ({
+            name: crumb.title,
+            ...(crumb.slug ? { item: absoluteUrl(`/toolbox/${crumb.slug}`) } : {}),
+          })),
+        })}
+      />
+    );
+  }, [page, slug, raw, trail]);
+
+  if (!page) {
+    return (
+      <>
+        {seo}
+        <NotFound slug={raw} />
+      </>
+    );
+  }
 
   const sourcePath = page.meta?.source;
   const hrefForSection = (section) => {
@@ -72,6 +132,7 @@ export default function DocsPage() {
 
   return (
     <div ref={scrollRef} className="docs-scroll">
+      {seo}
       <div className="docs-shell">
         <DocsSidebar sections={navSections} activeSlug={slug} />
 

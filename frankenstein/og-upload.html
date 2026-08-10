@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Internal tool, not content. Also disallowed in robots.txt; the
+         meta tag is what actually removes it from an index, since a
+         disallowed URL can still be indexed from an external link. -->
+    <meta name="robots" content="noindex, nofollow" />
     <title>Upload og-preview.png · Neoflix</title>
     <style>
       :root {

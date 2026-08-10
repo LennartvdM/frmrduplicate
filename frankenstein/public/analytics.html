@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Analytics · Neoflix</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style>
+      :root {
+        --bg: #f5f9fc;
+        --panel: #ffffff;
+        --ink: #2a2a30;
+        --muted: #83828f;
+        --line: #e4ebf1;
+        --accent: #529c9c;
+        --danger: #b3261e;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 32px 20px 72px;
+        background: var(--bg);
+        color: var(--ink);
+        font: 15px/1.5 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      }
+      main { max-width: 940px; margin: 0 auto; }
+      h1 { font-size: 26px; letter-spacing: -0.6px; margin: 0 0 4px; }
+      .sub { color: var(--muted); margin: 0 0 28px; }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 20px 22px;
+        margin-bottom: 18px;
+      }
+      .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+      input, select, button {
+        font: inherit;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        padding: 9px 12px;
+        background: #fff;
+        color: inherit;
+      }
+      input { flex: 1 1 260px; min-width: 0; }
+      button {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      button:disabled { opacity: 0.55; cursor: progress; }
+      .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+      .tile { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+      .tile b { display: block; font-size: 30px; font-weight: 600; letter-spacing: -1px; }
+      .tile span { color: var(--muted); font-size: 13px; }
+      h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 0 0 14px; }
+      table { width: 100%; border-collapse: collapse; }
+      td { padding: 7px 0; border-bottom: 1px solid var(--line); vertical-align: middle; }
+      tr:last-child td { border-bottom: 0; }
+      td.n { text-align: right; width: 76px; font-variant-numeric: tabular-nums; color: var(--muted); }
+      .bar { position: relative; }
+      .bar i {
+        position: absolute; inset: 0 auto 0 0;
+        background: rgba(82, 156, 156, 0.16);
+        border-radius: 4px;
+      }
+      .bar span { position: relative; display: block; padding: 0 6px; overflow-wrap: anywhere; }
+      .chart { display: flex; align-items: flex-end; gap: 3px; height: 130px; }
+      .chart div { flex: 1; background: var(--accent); border-radius: 3px 3px 0 0; min-height: 2px; opacity: 0.85; }
+      .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+      .msg { color: var(--danger); margin: 12px 0 0; }
+      .empty { color: var(--muted); }
+      footer { color: var(--muted); font-size: 13px; margin-top: 26px; }
+      code { background: #eef3f7; border-radius: 5px; padding: 1px 5px; font-size: 13px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Neoflix analytics</h1>
+      <p class="sub">Cookieless, aggregate-only. Nothing here identifies a visitor.</p>
+
+      <form class="panel" id="auth">
+        <div class="row">
+          <input
+            id="token"
+            type="password"
+            placeholder="ANALYTICS_TOKEN"
+            autocomplete="off"
+            aria-label="Analytics token"
+          />
+          <select id="days" aria-label="Period">
+            <option value="7">7 days</option>
+            <option value="30" selected>30 days</option>
+            <option value="90">90 days</option>
+          </select>
+          <button id="go" type="submit">Load</button>
+        </div>
+        <p class="msg" id="msg" hidden></p>
+      </form>
+
+      <div id="out" hidden>
+        <div class="tiles" id="tiles"></div>
+        <div class="panel"><h2 id="chartTitle">Pageviews per day</h2><div class="chart" id="chart"></div></div>
+        <div class="grid2">
+          <div class="panel"><h2>Pages</h2><div id="paths"></div></div>
+          <div class="panel"><h2>Referrers</h2><div id="referrers"></div></div>
+          <div class="panel"><h2>Countries</h2><div id="countries"></div></div>
+          <div class="panel"><h2>Devices</h2><div id="devices"></div></div>
+        </div>
+      </div>
+
+      <footer>
+        The token is <code>ANALYTICS_TOKEN</code> from the Netlify environment variables. It is kept
+        in memory only — this page stores nothing, same as the site itself.
+      </footer>
+    </main>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const esc = (value) =>
+        String(value).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+
+      function table(rows) {
+        if (!rows.length) return '<p class="empty">Nothing yet.</p>';
+        const max = Math.max(...rows.map((row) => row.count));
+        return `<table>${rows
+          .slice(0, 12)
+          .map(
+            (row) => `<tr>
+              <td class="bar"><i style="width:${max ? (row.count / max) * 100 : 0}%"></i><span>${esc(
+              row.key
+            )}</span></td>
+              <td class="n">${row.count.toLocaleString()}</td>
+            </tr>`
+          )
+          .join('')}</table>`;
+      }
+
+      function render(data) {
+        const avg =
+          data.avgSeconds == null
+            ? '—'
+            : data.avgSeconds >= 60
+              ? `${Math.floor(data.avgSeconds / 60)}m ${data.avgSeconds % 60}s`
+              : `${data.avgSeconds}s`;
+
+        $('tiles').innerHTML = [
+          ['Pageviews', data.views.toLocaleString()],
+          ['Visits', data.visits.toLocaleString()],
+          ['Avg. time on page', avg],
+          ['Days', String(data.days)],
+        ]
+          .map(([label, value]) => `<div class="tile"><b>${esc(value)}</b><span>${label}</span></div>`)
+          .join('');
+
+        const max = Math.max(1, ...data.series.map((point) => point.views));
+        $('chart').innerHTML = data.series
+          .map(
+            (point) =>
+              `<div style="height:${(point.views / max) * 100}%" title="${esc(point.day)}: ${
+                point.views
+              } views, ${point.visits} visits"></div>`
+          )
+          .join('');
+        $('chartTitle').textContent = `Pageviews per day — peak ${max.toLocaleString()}`;
+
+        $('paths').innerHTML = table(data.paths);
+        $('referrers').innerHTML = table(data.referrers);
+        $('countries').innerHTML = table(data.countries);
+        $('devices').innerHTML = table(
+          Object.entries(data.devices)
+            .map(([key, count]) => ({ key, count }))
+            .sort((a, b) => b.count - a.count)
+        );
+
+        $('out').hidden = false;
+      }
+
+      $('auth').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const token = $('token').value.trim();
+        const days = $('days').value;
+        const msg = $('msg');
+        msg.hidden = true;
+        if (!token) {
+          msg.textContent = 'Enter the token first.';
+          msg.hidden = false;
+          return;
+        }
+        $('go').disabled = true;
+        try {
+          const response = await fetch(`/api/stats?days=${encodeURIComponent(days)}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const body = await response.json();
+          if (!response.ok) throw new Error(body.error || `HTTP ${response.status}`);
+          render(body);
+        } catch (error) {
+          $('out').hidden = true;
+          msg.textContent = error.message;
+          msg.hidden = false;
+        } finally {
+          $('go').disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>

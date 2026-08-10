@@ -11,14 +11,38 @@ import React from 'react';
 import BlogPage from '../components/shared/BlogPage';
 import MobileNeoflixPage from '../components/mobile/MobileNeoflixPage';
 import useTabletLayout from '../hooks/useTabletLayout';
+import Seo from '../seo/Seo';
+import { staticRouteMeta, withBrand } from '../seo/siteMeta';
 import { sections } from '../data/neoflixPage';
 
 export default function NeoflixPage({ scrollTo }) {
   const { width } = useTabletLayout();
 
+  // /contact renders this same component; its meta canonicalises back to
+  // /neoflix so the two URLs don't compete for identical content.
+  const meta = staticRouteMeta(scrollTo === 'contact' ? '/contact' : '/neoflix');
+
+  const seo = (
+    <Seo
+      title={withBrand(meta.title)}
+      description={meta.description}
+      path={meta.canonical || meta.path}
+    />
+  );
+
   if (width > 0 && width < 600) {
-    return <MobileNeoflixPage sections={sections} scrollTo={scrollTo} />;
+    return (
+      <>
+        {seo}
+        <MobileNeoflixPage sections={sections} scrollTo={scrollTo} />
+      </>
+    );
   }
 
-  return <BlogPage sections={sections} scrollTo={scrollTo} />;
+  return (
+    <>
+      {seo}
+      <BlogPage sections={sections} scrollTo={scrollTo} heading={meta.heading} />
+    </>
+  );
 }

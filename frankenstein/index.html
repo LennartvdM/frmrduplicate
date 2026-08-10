@@ -4,9 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!--
+      Everything between the seo:start / seo:end markers is REPLACED per
+      route by scripts/prerender-seo.mjs after `vite build`. The values
+      below are the dev-server defaults and the home-page fallback; edit
+      the real copy in src/seo/siteMeta.js instead.
+    -->
+    <!-- seo:start -->
     <title>Neoflix: Hospital Video Recording and Medical Training</title>
-    <meta name="description" content="Video Recording in Healthcare: Improve Training, Reduce Errors, Enhance Patient Safety." />
+    <meta name="description" content="Neoflix helps clinical teams record real procedures and reflect on them together — sharpening skills, strengthening teamwork and improving patient safety." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://www.neoflix.care/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Neoflix" />
+    <meta property="og:url" content="https://www.neoflix.care/" />
+    <meta property="og:title" content="Neoflix: Hospital Video Recording and Medical Training" />
+    <meta property="og:description" content="Neoflix helps clinical teams record real procedures and reflect on them together — sharpening skills, strengthening teamwork and improving patient safety." />
+    <meta property="og:image" content="https://www.neoflix.care/og-preview.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Neoflix: record, reflect, refine — video review for clinical teams" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://www.neoflix.care/" />
+    <meta name="twitter:title" content="Neoflix: Hospital Video Recording and Medical Training" />
+    <meta name="twitter:description" content="Neoflix helps clinical teams record real procedures and reflect on them together — sharpening skills, strengthening teamwork and improving patient safety." />
+    <meta name="twitter:image" content="https://www.neoflix.care/og-preview.png" />
+    <meta name="twitter:image:alt" content="Neoflix: record, reflect, refine — video review for clinical teams" />
+    <!-- seo:end -->
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
@@ -15,28 +42,16 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#ffffff" />
 
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Neoflix" />
-    <meta property="og:url" content="https://www.neoflix.care/" />
-    <meta property="og:title" content="Neoflix: Hospital Video Recording and Medical Training" />
-    <meta property="og:description" content="Video Recording in Healthcare: Improve Training, Reduce Errors, Enhance Patient Safety." />
-    <meta property="og:image" content="https://www.neoflix.care/og-preview.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Neoflix documentation: Elevate your medical practice" />
-    <meta property="og:locale" content="en_US" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://www.neoflix.care/" />
-    <meta name="twitter:title" content="Neoflix: Hospital Video Recording and Medical Training" />
-    <meta name="twitter:description" content="Video Recording in Healthcare: Improve Training, Reduce Errors, Enhance Patient Safety." />
-    <meta name="twitter:image" content="https://www.neoflix.care/og-preview.png" />
-    <meta name="twitter:image:alt" content="Neoflix documentation: Elevate your medical practice" />
-
+    <!-- The font stylesheet is render-blocking; opening both connections
+         during head parsing saves a DNS + TLS round trip before it can
+         even start downloading. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500&display=swap" rel="stylesheet">
   </head>
   <body>
     <div id="root"></div>
+    <!-- seo:noscript -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

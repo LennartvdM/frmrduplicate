@@ -23,7 +23,9 @@ export default function DocsNode({ node }) {
       return <p>{kids()}</p>;
 
     case 'heading': {
-      const Tag = `h${Math.min(Math.max(node.depth || 2, 1), 6)}`;
+      // Floor of 2: the page title above the body is the <h1>, so a
+      // GitBook page that opens with `#` must not create a second one.
+      const Tag = `h${Math.min(Math.max(node.depth || 2, 2), 6)}`;
       return <Tag id={node.id}>{kids()}</Tag>;
     }
 

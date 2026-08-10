@@ -1,4 +1,6 @@
 import React, { lazy, Suspense } from 'react';
+import Seo from '../seo/Seo';
+import { organizationJsonLd, staticRouteMeta, websiteJsonLd, withBrand } from '../seo/siteMeta';
 import ScrollSnap from '../components/ScrollSnap';
 import SectionManager from '../components/SectionManager';
 import Footer from '../components/Footer';
@@ -34,22 +36,41 @@ const sections = [
   { name: 'worldmap', component: LazyWorldMap },
 ];
 
+const meta = staticRouteMeta('/');
+
+const HomeSeo = () => (
+  <Seo
+    title={withBrand(meta.title)}
+    description={meta.description}
+    path="/"
+    jsonLd={[organizationJsonLd(), websiteJsonLd()]}
+  />
+);
+
 const Home = () => {
   const { width } = useTabletLayout();
   const useMobileHome = width > 0 && width < 600;
 
   if (useMobileHome) {
-    return <MobileHome />;
+    return (
+      <>
+        <HomeSeo />
+        <MobileHome />
+      </>
+    );
   }
 
   // Footer sits inside ScrollSnap so scrolling past the last section reveals
   // it. Its scroll-snap-align:end makes it a reachable snap target without
   // becoming its own full slide.
   return (
-    <ScrollSnap>
-      <SectionManager sections={sections} />
-      <Footer />
-    </ScrollSnap>
+    <>
+      <HomeSeo />
+      <ScrollSnap>
+        <SectionManager sections={sections} />
+        <Footer />
+      </ScrollSnap>
+    </>
   );
 };
 

@@ -1,0 +1,13 @@
+{
+  "name": "frmrduplicate",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Netlify Functions for neoflix.care. The site itself is built from frankenstein/ — see build.sh.",
+  "scripts": {
+    "test:analytics": "node scripts/test-analytics.mjs"
+  },
+  "dependencies": {
+    "@netlify/blobs": "9.1.5"
+  }
+}

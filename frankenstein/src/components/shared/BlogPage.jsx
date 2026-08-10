@@ -82,7 +82,7 @@ const PUBLICATION_PREVIEW_OVERRIDES = new Map([
   ],
 ]);
 
-export default function BlogPage({ sections, scrollTo }) {
+export default function BlogPage({ sections, scrollTo, heading }) {
   // Internal scroll container. BlogPage renders inside RouteSlider,
   // which is `position: fixed; inset: 0` — window never scrolls under
   // that layout, so the page scrolls on this inner element instead.
@@ -198,6 +198,12 @@ export default function BlogPage({ sections, scrollTo }) {
         overflowX: 'hidden',
       }}
     >
+      {/* The design opens on section titles (<h2>) with no page title of
+          its own, which left these routes with no <h1> at all — bad for
+          screen readers landing on the page and for how search engines
+          read the document outline. The text matches the page's meta
+          title, so it says the same thing the tab and the snippet do. */}
+      {heading && <h1 className="sr-only">{heading}</h1>}
       <div
         style={{
           position: 'relative',

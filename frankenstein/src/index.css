@@ -1,4 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* Inter (and Montserrat) are requested by the <link> in index.html,
+   which the browser starts during head parsing. A duplicate @import here
+   could only start once this stylesheet had itself downloaded and
+   parsed, chaining a second DNS + TLS + fetch in front of first paint
+   for fonts that were already on their way. */
 
 @tailwind base;
 @tailwind components;

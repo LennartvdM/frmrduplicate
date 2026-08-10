@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { initAnalytics, trackPageview } from './analytics';
 import Navbar from './components/Navbar';
 import MobileDock from './components/mobile/MobileDock';
 import RouteSlider from './components/RouteSlider';
@@ -19,6 +20,17 @@ function AppShell() {
   const isContact = location.pathname === '/contact';
   const isToolbox = location.pathname.startsWith('/toolbox');
   const showMobileDock = width > 0 && width < 600;
+
+  // Cookieless pageview reporting. Nothing is read from or written to
+  // the device, so there is no consent gate in front of this — see
+  // src/analytics/index.js. Keyed on pathname only: the hash moves
+  // within a page (docs anchors, /contact's section) and is not a view.
+  useEffect(() => {
+    initAnalytics();
+  }, []);
+  useEffect(() => {
+    trackPageview(location.pathname);
+  }, [location.pathname]);
 
   // The navbar, backdrop, and route slider each render independently.
   // They share a single source of truth — TransitionContext — for the

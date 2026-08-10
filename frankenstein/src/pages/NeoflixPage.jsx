@@ -20,5 +20,5 @@ export default function NeoflixPage({ scrollTo }) {
     return <MobileNeoflixPage sections={sections} scrollTo={scrollTo} />;
   }
 
-  return <BlogPage sections={sections} scrollTo={scrollTo} />;
+  return <BlogPage sections={sections} scrollTo={scrollTo} pageTitle="Record. Reflect. Refine." />;
 }

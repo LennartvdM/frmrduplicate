@@ -85,10 +85,13 @@ export default function Footer() {
           style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}
         >
           <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 sm:gap-6 text-[13px] leading-5 text-white/70">
+            {/* Was an absolute https://neoflix.care/contact opening in a new
+                tab: the apex host (which redirects to www), a full reload out
+                of the SPA, and a link to a URL that canonicalises to /neoflix.
+                Now an ordinary in-app link like its four siblings above. */}
             <a
-              href="https://neoflix.care/contact"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/neoflix"
+              onClick={handleNav('/neoflix')}
               className="hover:text-white underline-offset-2 hover:underline transition-colors"
             >
               © 2024 Neoflix

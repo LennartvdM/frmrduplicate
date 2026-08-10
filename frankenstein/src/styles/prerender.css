@@ -1,0 +1,169 @@
+/**
+ * Styling for the static copy of each page that scripts/prerender.mjs bakes
+ * into #root.
+ *
+ * This markup is only on screen between first paint and React mounting — after
+ * that main.jsx clears it. It exists so crawlers, and anyone whose bundle has
+ * not arrived, get the page's real words instead of a blank document. The
+ * styling here is deliberately plain: enough that the moment before hydration
+ * reads as a clean document rather than as a broken one, and nothing so
+ * elaborate that it competes with the app it is standing in for.
+ *
+ * It is the same copy the app renders — not crawler-only text — so it stays on
+ * the right side of the line about hiding content from users.
+ */
+
+.seo-prerender {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 7rem 1.5rem 5rem;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #2c3440;
+  background: var(--cool-page, #f5f9fc);
+  min-height: 100vh;
+}
+
+.seo-prerender h1 {
+  font-size: 2.25rem;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.75rem;
+  color: #1b2430;
+}
+
+.seo-prerender h2 {
+  font-size: 1.4rem;
+  line-height: 1.25;
+  font-weight: 700;
+  margin: 2.5rem 0 0.75rem;
+  color: #1b2430;
+}
+
+.seo-prerender h3,
+.seo-prerender h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 1.75rem 0 0.5rem;
+  color: #1b2430;
+}
+
+.seo-prerender p,
+.seo-prerender ul,
+.seo-prerender ol {
+  margin: 0 0 1.1rem;
+}
+
+.seo-prerender ul,
+.seo-prerender ol {
+  padding-left: 1.35rem;
+}
+
+.seo-prerender li {
+  margin-bottom: 0.4rem;
+}
+
+.seo-prerender a {
+  color: #1c6ea4;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.seo-prerender .seo-lede {
+  font-size: 1.15rem;
+  color: #5a6673;
+  margin-bottom: 2rem;
+}
+
+.seo-prerender img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.seo-prerender figure {
+  margin: 1.75rem 0;
+}
+
+.seo-prerender figcaption {
+  font-size: 0.875rem;
+  color: #6b7684;
+  margin-top: 0.5rem;
+}
+
+.seo-prerender blockquote {
+  margin: 1.5rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--edge-2, rgba(28, 54, 100, 0.12));
+  color: #5a6673;
+}
+
+.seo-prerender table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.seo-prerender td {
+  border: 1px solid var(--edge-3, rgba(28, 54, 100, 0.09));
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+}
+
+.seo-prerender hr {
+  border: 0;
+  border-top: 1px solid var(--edge-3, rgba(28, 54, 100, 0.09));
+  margin: 2rem 0;
+}
+
+.seo-prerender .docs-hint {
+  margin: 1.5rem 0;
+  padding: 0.9rem 1.1rem;
+  border-radius: 8px;
+  background: var(--cool-subtle, #edf2f8);
+  border: 1px solid var(--edge-3, rgba(28, 54, 100, 0.09));
+}
+
+.seo-prerender .seo-nav ul,
+.seo-prerender .seo-breadcrumb ol,
+.seo-prerender .docs-cards {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.seo-prerender .seo-nav,
+.seo-prerender .seo-breadcrumb {
+  font-size: 0.875rem;
+  color: #6b7684;
+  margin-bottom: 1.5rem;
+}
+
+.seo-prerender .seo-breadcrumb li:not(:last-child)::after {
+  content: '/';
+  margin-left: 1rem;
+  color: #a3adb9;
+}
+
+.seo-prerender .docs-cards {
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.seo-prerender .seo-pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--edge-3, rgba(28, 54, 100, 0.09));
+}
+
+.seo-prerender .seo-toc ul {
+  list-style: none;
+  padding-left: 1rem;
+}

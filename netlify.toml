@@ -11,13 +11,37 @@
   GIT_LFS_ENABLED = "false"
   SUBMODULE_STRATEGY = "recursive"
 
-# SPA routing (React Router)
+# ---------------------------------------------------------------------------
+# Routing
+# ---------------------------------------------------------------------------
+# There is deliberately no `/* -> /index.html 200` catch-all any more.
+#
+# That rule made every URL on the site answer 200 with the homepage's HTML:
+# one <title>, one description, one canonical pointing at "/", and an empty
+# <div id="root"> where the content should be. It also meant a typo'd URL
+# returned 200 OK — a soft 404, which search engines have to guess about.
+#
+# scripts/prerender.mjs now writes a real index.html for every route the app
+# serves (see build.sh), so each URL is a genuine document. Netlify serves
+# 404.html with a 404 status for anything else, and that page still boots the
+# SPA — so a URL the router can resolve client-side (an old toolbox slug in
+# unusual casing, say) still lands the visitor on the right page, while
+# crawlers get the honest status code.
+#
+# Known legacy slugs are emitted as 301s into dist/_redirects by the same
+# script, from src/data/legacySlugMap.js.
+
+# The analytics functions declare their own routes via `export const config`
+# (Netlify Functions v2). This mapping is the belt-and-braces equivalent, so
+# /api/* reaches them even if that declaration is not honoured.
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
   status = 200
 
-# Cache static assets
+# ---------------------------------------------------------------------------
+# Caching
+# ---------------------------------------------------------------------------
 [[headers]]
   for = "/assets/*"
   [headers.values]
@@ -28,13 +52,79 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# Never cache HTML
+# Content-hashed by the docs build, so safe to cache hard.
+[[headers]]
+  for = "/docs-assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Self-hosted webfonts never change without changing filename.
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Never cache HTML — every route is its own prerendered document now, and a
+# stale one would pin an old title/description in the index.
+#
+# These match on the *request path*, not on the file that ends up being served.
+# "/*.html" therefore only ever catches a literal /index.html: every pretty URL
+# (/neoflix, /toolbox/...) is served from a directory index and would miss it.
+# Hence the explicit route patterns below.
+#
+# Deliberately not a blanket `for = "/*"` — Netlify merges matching rules and
+# the last match wins, which would strip `immutable` off the hashed-asset
+# blocks above.
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/neoflix"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/publications"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/contact"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/toolbox"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/toolbox/*"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
 [[headers]]
   for = "/*.html"
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
 
+# Crawl directives change rarely but must never be served stale.
 [[headers]]
-  for = "/*.htm"
+  for = "/sitemap.xml"
   [headers.values]
-    Cache-Control = "no-cache, no-store, must-revalidate"
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+# The OG upload tool is an internal utility that ships with the site. Keep it
+# out of the index belt-and-braces: robots.txt disallows it, this makes it
+# unindexable even if something links to it.
+[[headers]]
+  for = "/og-upload.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

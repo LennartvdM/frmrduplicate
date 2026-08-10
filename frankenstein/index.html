@@ -4,9 +4,39 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Neoflix: Hospital Video Recording and Medical Training</title>
-    <meta name="description" content="Video Recording in Healthcare: Improve Training, Reduce Errors, Enhance Patient Safety." />
+    <!--
+      Everything between the seo:head markers is rewritten per URL by
+      scripts/prerender.mjs after `vite build`, so each of the ~78 routes ships
+      its own title, description, canonical and social card instead of all of
+      them sharing the homepage's. What is written here is the homepage set,
+      which is also what `vite dev` and any un-prerendered path falls back to.
+      Once React mounts, src/seo/DocumentHead.jsx keeps these same tags in sync
+      across client-side navigations. Edit the copy in src/seo/siteMeta.js, not
+      here.
+    -->
+    <!--seo:head-->
+    <title>Neoflix: Video Recording and Review for Medical Teams</title>
+    <meta name="description" content="Record, reflect, refine. Neoflix helps hospital teams use video review to sharpen skills, strengthen teamwork and improve patient care." />
     <link rel="canonical" href="https://www.neoflix.care/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Neoflix" />
+    <meta property="og:url" content="https://www.neoflix.care/" />
+    <meta property="og:title" content="Neoflix: Video Recording and Review for Medical Teams" />
+    <meta property="og:description" content="Record, reflect, refine. Neoflix helps hospital teams use video review to sharpen skills, strengthen teamwork and improve patient care." />
+    <meta property="og:image" content="https://www.neoflix.care/og-preview.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Neoflix — record, reflect, refine" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://www.neoflix.care/" />
+    <meta name="twitter:title" content="Neoflix: Video Recording and Review for Medical Teams" />
+    <meta name="twitter:description" content="Record, reflect, refine. Neoflix helps hospital teams use video review to sharpen skills, strengthen teamwork and improve patient care." />
+    <meta name="twitter:image" content="https://www.neoflix.care/og-preview.png" />
+    <meta name="twitter:image:alt" content="Neoflix — record, reflect, refine" />
+    <!--/seo:head-->
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
@@ -15,28 +45,22 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#ffffff" />
 
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Neoflix" />
-    <meta property="og:url" content="https://www.neoflix.care/" />
-    <meta property="og:title" content="Neoflix: Hospital Video Recording and Medical Training" />
-    <meta property="og:description" content="Video Recording in Healthcare: Improve Training, Reduce Errors, Enhance Patient Safety." />
-    <meta property="og:image" content="https://www.neoflix.care/og-preview.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Neoflix documentation: Elevate your medical practice" />
-    <meta property="og:locale" content="en_US" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://www.neoflix.care/" />
-    <meta name="twitter:title" content="Neoflix: Hospital Video Recording and Medical Training" />
-    <meta name="twitter:description" content="Video Recording in Healthcare: Improve Training, Reduce Errors, Enhance Patient Safety." />
-    <meta name="twitter:image" content="https://www.neoflix.care/og-preview.png" />
-    <meta name="twitter:image:alt" content="Neoflix documentation: Elevate your medical practice" />
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <!--
+      Fonts are self-hosted (src/styles/fonts.css). Preloading the two latin
+      cuts that every page uses lets them download alongside the CSS instead of
+      waiting for the stylesheet to parse and discover them.
+    -->
+    <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/montserrat-500-latin.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body>
-    <div id="root"></div>
+    <!--
+      The prerenderer injects a static, readable copy of each page inside #root.
+      It is the same copy the app renders, and main.jsx clears it the moment
+      React mounts. Crawlers that do not run JavaScript — and visitors whose
+      bundle has not arrived yet — get real content instead of a blank page.
+    -->
+    <div id="root"><!--seo:body--></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

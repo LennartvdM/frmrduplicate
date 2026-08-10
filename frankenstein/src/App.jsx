@@ -10,10 +10,14 @@ import Home from './pages/Home';
 import NeoflixPage from './pages/NeoflixPage';
 import PublicationsPage from './pages/PublicationsPage';
 import DocsPage from './pages/DocsPage';
+import NotFoundPage from './pages/NotFoundPage';
+import DocumentHead from './seo/DocumentHead';
+import usePageviews from './analytics/usePageviews';
 
 function AppShell() {
   const location = useLocation();
   const { width } = useTabletLayout();
+  usePageviews();
   const isNeoflix = location.pathname === '/neoflix' || location.pathname.startsWith('/neoflix/');
   const isPublications = location.pathname === '/publications';
   const isContact = location.pathname === '/contact';
@@ -29,6 +33,7 @@ function AppShell() {
   // nav, which produced dead-click windows on persistent chrome.
   return (
     <div className={`min-h-screen ${isNeoflix || isPublications || isContact || isToolbox ? '' : 'bg-[var(--cool-page)]'}`}>
+      <DocumentHead />
       <Navbar />
       <BackdropProvider>
         <RouteSlider>
@@ -40,6 +45,9 @@ function AppShell() {
               <Route path="/contact" element={<NeoflixPage scrollTo="contact" />} />
               <Route path="/toolbox" element={<DocsPage />} />
               <Route path="/toolbox/*" element={<DocsPage />} />
+              {/* Without this, an unmatched path rendered nothing at all — a
+                  blank white page rather than a way back. */}
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           )}
         </RouteSlider>

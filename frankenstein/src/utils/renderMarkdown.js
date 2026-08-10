@@ -1,6 +1,7 @@
 import toolboxPages from '../data/toolboxPages';
 import legacySlugMap from '../data/legacySlugMap';
 import { pageMeta } from '../data/docsIndex';
+import { slugifyHeading } from '../seo/astText';
 
 /**
  * Render markdown text to HTML.
@@ -68,7 +69,7 @@ export function renderMarkdown(text) {
     if (h3) {
       flushParagraph();
       flushList();
-      blocks.push(`<h3>${renderInline(h3[1])}</h3>`);
+      blocks.push(`<h3 id="${slugifyHeading(h3[1])}">${renderInline(h3[1])}</h3>`);
       continue;
     }
 
@@ -76,7 +77,7 @@ export function renderMarkdown(text) {
     if (h2) {
       flushParagraph();
       flushList();
-      blocks.push(`<h2>${renderInline(h2[1])}</h2>`);
+      blocks.push(`<h2 id="${slugifyHeading(h2[1])}">${renderInline(h2[1])}</h2>`);
       continue;
     }
 

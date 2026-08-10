@@ -1,7 +1,7 @@
 /**
  * Publications Page Data
  */
-import { assetUrl } from '../utils/assetUrl';
+import { assetUrl } from '../utils/assetUrl.js';
 
 // All 7 publication sections
 export const sections = [

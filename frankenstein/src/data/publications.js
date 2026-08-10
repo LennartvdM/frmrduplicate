@@ -2,7 +2,7 @@
  * Publications Section Data
  * Content for the Publications page (/publications route)
  */
-import { assetUrl } from '../utils/assetUrl';
+import { assetUrl } from '../utils/assetUrl.js';
 
 // Section definitions with real content
 export const sections = [

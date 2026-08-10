@@ -15,6 +15,9 @@ npm ci --prefer-offline 2>/dev/null || npm install
 # Transform docs-content/ (GitBook mirror) → compiled AST JSON + assets
 node scripts/build-docs.mjs
 npx vite build --outDir "../$OUT"
+# Expand the single-page build into one indexable HTML document per route,
+# plus sitemap.xml, robots.txt, 404.html and the legacy-slug redirects.
+node scripts/prerender.mjs --out "../$OUT"
 cd ..
 
 echo "=== Build complete → $OUT/ ==="

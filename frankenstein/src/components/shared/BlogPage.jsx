@@ -82,7 +82,7 @@ const PUBLICATION_PREVIEW_OVERRIDES = new Map([
   ],
 ]);
 
-export default function BlogPage({ sections, scrollTo }) {
+export default function BlogPage({ sections, scrollTo, pageTitle }) {
   // Internal scroll container. BlogPage renders inside RouteSlider,
   // which is `position: fixed; inset: 0` — window never scrolls under
   // that layout, so the page scrolls on this inner element instead.
@@ -212,6 +212,14 @@ export default function BlogPage({ sections, scrollTo }) {
         }}
         className="blog-grid"
       >
+        {/* The desktop layout has no visible page title — the design carries
+            that job with the sidebar and the section headings, which are all
+            h2. That left the document with no h1 at all, so nothing named the
+            page for search engines or announced it to a screen reader on
+            arrival. The mobile layouts already render this same text as their
+            visible h1; here it is present but not shown. */}
+        {pageTitle && <h1 className="sr-only">{pageTitle}</h1>}
+
         {/* Sticky sidebar. Tagged with data-blog-sidebar for styling
             hooks; slides as part of the page's RouteSlider wrapper,
             plus an optional inner translate when it trails. */}

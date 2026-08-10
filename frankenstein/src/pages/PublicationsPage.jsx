@@ -16,5 +16,5 @@ export default function PublicationsPage() {
     return <MobilePublicationsPage sections={sections} />;
   }
 
-  return <BlogPage sections={sections} />;
+  return <BlogPage sections={sections} pageTitle="Articles" />;
 }

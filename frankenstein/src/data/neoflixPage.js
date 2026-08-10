@@ -5,10 +5,10 @@
  * team, perspectives) live here for the /neoflix route. The academic
  * publications live in publicationsPage.js for /publications.
  */
-import { assetUrl } from '../utils/assetUrl';
+import { assetUrl } from '../utils/assetUrl.js';
 
 // Product sections are defined in publications.js (legacy filename).
-export { sections, animationConfig } from './publications';
+export { sections, animationConfig } from './publications.js';
 
 // Video backdrop mapping for product sections
 export const sectionToVideo = {

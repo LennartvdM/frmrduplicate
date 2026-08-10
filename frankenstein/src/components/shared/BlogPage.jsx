@@ -6,6 +6,7 @@ import { useTransitionState } from '../../contexts/TransitionContext';
 import { renderMarkdown } from '../../utils/renderMarkdown';
 import { useBackdropTarget } from '../../backdrop/useBackdrop';
 import { BLOG_DECK, blogIdxForSection } from '../../backdrop/decks';
+import IllustrationCanvas from './IllustrationCanvas';
 
 /**
  * BlogPage — shared layout for /neoflix and /publications.
@@ -987,36 +988,47 @@ function parseSectionContent(content, opts = {}) {
 }
 
 /* ── Inline illustrative video ──────────────────────────────────────── */
+/**
+ * The clip inside a product section is a moving illustration: silent,
+ * six seconds, looping, with nothing to control. It is painted into a
+ * canvas rather than mounted as a <video> so browsers stop offering
+ * reader-facing media controls over it — Edge otherwise puts a
+ * picture-in-picture button in the frame on hover and an "Enhance video"
+ * prompt in the address bar. See IllustrationCanvas for the mechanics.
+ *
+ * Playback is still scroll-gated: the clip only decodes while its frame
+ * is on screen.
+ */
 function InlineVideo({ src }) {
-  const ref = useRef(null);
+  const frameRef = useRef(null);
+  const [inView, setInView] = useState(false);
+
   useEffect(() => {
-    const el = ref.current;
-    if (!el || typeof IntersectionObserver === 'undefined') return undefined;
+    const el = frameRef.current;
+    if (!el) return undefined;
+    if (typeof IntersectionObserver === 'undefined') {
+      setInView(true);
+      return undefined;
+    }
     const io = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            el.play().catch(() => {});
-          } else {
-            el.pause();
-          }
-        });
+        entries.forEach((entry) => setInView(entry.isIntersecting));
       },
       { threshold: 0.25 }
     );
     io.observe(el);
     return () => io.disconnect();
   }, []);
+
   return (
-    <div style={{ maxWidth: 620, margin: '26px 0', borderRadius: 8, overflow: 'hidden', boxShadow: '0 4px 16px rgba(28,54,100,0.1)' }}>
-      <video
-        ref={ref}
+    <div
+      ref={frameRef}
+      style={{ maxWidth: 620, margin: '26px 0', borderRadius: 8, overflow: 'hidden', boxShadow: '0 4px 16px rgba(28,54,100,0.1)' }}
+    >
+      <IllustrationCanvas
         src={src}
-        muted
-        loop
-        playsInline
+        play={inView}
         preload="metadata"
-        aria-hidden="true"
         style={{ display: 'block', width: '100%', height: 'auto', aspectRatio: '3 / 2', objectFit: 'cover', background: '#000' }}
       />
     </div>

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { decorativeVideoProps } from '../../../utils/decorativeVideoProps';
 
 const SLIDE_GUTTER = 20;
 const SLIDE_RATIO = 3 / 2;
@@ -197,6 +198,7 @@ export default function MedicalMobileLayout({
                   aria-label={`Open ${headlines[idx]?.firstLine || `slide ${idx + 1}`}`}
                 >
                   <video
+                    {...decorativeVideoProps}
                     ref={(el) => { videoRefs.current[idx] = el; }}
                     src={video.video}
                     muted

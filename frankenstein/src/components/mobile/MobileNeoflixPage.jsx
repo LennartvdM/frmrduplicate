@@ -5,6 +5,7 @@ import useTransitionNavigate from '../../hooks/useTransitionNavigate';
 import { useBackdropTarget } from '../../backdrop/useBackdrop';
 import { assetUrl } from '../../utils/assetUrl';
 import { renderMarkdown } from '../../utils/renderMarkdown';
+import { decorativeVideoProps } from '../../utils/decorativeVideoProps';
 import '../../styles/mobile-neoflix.css';
 
 const NEOFLIX_MEDIA_BY_SECTION = {
@@ -148,6 +149,7 @@ export default function MobileNeoflixPage({ sections, scrollTo }) {
         style={{ '--mobile-neoflix-hero-poster': `url("${HERO_POSTER}")` }}
       >
         <video
+          {...decorativeVideoProps}
           ref={heroVideoRef}
           className="mobile-neoflix__hero-video"
           poster={HERO_POSTER}
@@ -156,8 +158,6 @@ export default function MobileNeoflixPage({ sections, scrollTo }) {
           playsInline
           autoPlay={!reduceMotion}
           preload="metadata"
-          disablePictureInPicture
-          controlsList="nodownload nofullscreen noplaybackrate"
           aria-hidden="true"
         >
           <source src={HERO_VIDEO} type="video/mp4" />
@@ -214,6 +214,7 @@ export default function MobileNeoflixPage({ sections, scrollTo }) {
             {media?.blur && (
               <div className="mobile-neoflix__section-backdrop" aria-hidden="true">
                 <video
+                  {...decorativeVideoProps}
                   ref={(node) => { videoRefs.current[index * 2] = node; }}
                   src={media.blur}
                   muted
@@ -232,6 +233,7 @@ export default function MobileNeoflixPage({ sections, scrollTo }) {
             {media?.clean && (
               <div className="mobile-neoflix__visual">
                 <video
+                  {...decorativeVideoProps}
                   ref={(node) => { videoRefs.current[(index * 2) + 1] = node; }}
                   src={media.clean}
                   muted

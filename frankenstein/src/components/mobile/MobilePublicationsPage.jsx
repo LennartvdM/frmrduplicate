@@ -5,6 +5,7 @@ import useTransitionNavigate from '../../hooks/useTransitionNavigate';
 import { useBackdropTarget } from '../../backdrop/useBackdrop';
 import { assetUrl } from '../../utils/assetUrl';
 import { renderMarkdown } from '../../utils/renderMarkdown';
+import { decorativeVideoProps } from '../../utils/decorativeVideoProps';
 import '../../styles/mobile-publications.css';
 
 const HERO_VIDEO = assetUrl('/videos/mobile/neoflix_intro_blur_montage.mp4');
@@ -140,6 +141,7 @@ export default function MobilePublicationsPage({ sections, scrollTo }) {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          const video = entry.target;
           if (entry.isIntersecting) {
             video.play().catch(() => {});
           } else {
@@ -177,6 +179,7 @@ export default function MobilePublicationsPage({ sections, scrollTo }) {
         style={{ '--mobile-publications-hero-poster': `url("${HERO_POSTER}")` }}
       >
         <video
+          {...decorativeVideoProps}
           ref={heroVideoRef}
           className="mobile-publications__hero-video"
           poster={HERO_POSTER}
@@ -185,8 +188,6 @@ export default function MobilePublicationsPage({ sections, scrollTo }) {
           playsInline
           autoPlay={!reduceMotion}
           preload="metadata"
-          disablePictureInPicture
-          controlsList="nodownload nofullscreen noplaybackrate"
           aria-hidden="true"
         >
           <source src={HERO_VIDEO} type="video/mp4" />
@@ -247,6 +248,7 @@ export default function MobilePublicationsPage({ sections, scrollTo }) {
           >
             <div className="mobile-publications__article-backdrop" aria-hidden="true">
               <video
+                {...decorativeVideoProps}
                 ref={(node) => { articleVideoRefs.current[index] = node; }}
                 src={media.blur}
                 muted

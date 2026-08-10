@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { assetUrl } from '../../utils/assetUrl';
 import useTransitionNavigate from '../../hooks/useTransitionNavigate';
+import { decorativeVideoProps } from '../../utils/decorativeVideoProps';
 import '../../styles/mobile-home.css';
 
 const TEXT_REVEAL_DELAY_MS = 140;
@@ -428,6 +429,7 @@ export default function MobileHome() {
         {!sharedBackdrop && (
           <>
             <video
+              {...decorativeVideoProps}
               ref={(node) => { videoRefs.current[index] = node; }}
               className="mobile-home__video"
               poster={panel.poster}
@@ -491,6 +493,7 @@ export default function MobileHome() {
       >
         <div className="mobile-home__intro-backdrop" aria-hidden="true">
           <video
+            {...decorativeVideoProps}
             ref={sharedIntroVideoRef}
             className="mobile-home__video mobile-home__video--intro-shared"
             poster={INTRO_BLUR_POSTER}

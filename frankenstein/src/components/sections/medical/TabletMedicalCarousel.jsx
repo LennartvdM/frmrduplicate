@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, memo } from 'react';
+import IllustrationCanvas from '../../shared/IllustrationCanvas';
 
 const TabletMedicalCarousel = memo(function TabletMedicalCarousel({ videos = [], current = 0, onChange, onPauseChange, className, style, sectionActive = true, onCarouselClick }) {
   const containerRef = useRef(null);
-  const videoRefs = useRef([null, null, null]);
   const [deckLoaded, setDeckLoaded] = React.useState(false);
 
   // Defer loading of lower deck videos - load top video first, then rest after grace period
@@ -11,19 +11,10 @@ const TabletMedicalCarousel = memo(function TabletMedicalCarousel({ videos = [],
     return () => clearTimeout(timer);
   }, []);
 
-  // Pause/play videos - only play the topmost visible video (current) and base (2)
-  // Others are stacked underneath and don't need to decode frames
-  // When section is off-screen, pause ALL videos to free GPU decode.
-  useEffect(() => {
-    videoRefs.current.forEach((video, idx) => {
-      if (!video) return;
-      if (sectionActive && (idx === current || idx === 2)) {
-        video.play().catch(() => {});
-      } else {
-        video.pause();
-      }
-    });
-  }, [current, deckLoaded, sectionActive]);
+  // Only the topmost visible clip (current) and the base (2) decode; the
+  // others are stacked underneath where nobody can see them. When the
+  // section is off-screen, nothing decodes.
+  const shouldPlay = (idx) => sectionActive && (idx === current || idx === 2);
 
   // Ensure there are 3 valid slides
   const videoSlides = [
@@ -60,18 +51,11 @@ const TabletMedicalCarousel = memo(function TabletMedicalCarousel({ videos = [],
             pointerEvents: i === current ? 'auto' : 'none',
           }}
         >
-          <video
-            ref={el => { videoRefs.current[i] = el; }}
+          <IllustrationCanvas
             src={i === 0 || deckLoaded ? videoSlides[i]?.video : undefined}
-            className="w-full h-full object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
+            play={shouldPlay(i)}
             preload="metadata"
-            tabIndex={-1}
-            aria-hidden="true"
-            draggable="false"
+            className="w-full h-full object-cover"
             style={{ outline: 'none', background: 'none', width: '100%', height: '100%' }}
           />
         </div>

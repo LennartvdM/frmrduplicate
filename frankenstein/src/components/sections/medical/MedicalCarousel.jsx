@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, memo } from "react";
 import { assetUrl } from "../../../utils/assetUrl";
+import IllustrationCanvas from "../../shared/IllustrationCanvas";
 
 const AUTOPLAY_MS = 6600; // 6.6 seconds
 
@@ -36,7 +37,6 @@ The stacking is intentional to avoid ugly transitions.
 */
 
 const MedicalCarousel = memo(function MedicalCarousel({ current, hoveredIndex, isActive, videoHover, setVideoHover, interactionsEnabled, videos, enableTouchNavigation, onTouchChange, sectionActive = true, onCarouselClick, onReady }) {
-  const videoRefs = useRef([null, null, null]);
   const [deckLoaded, setDeckLoaded] = React.useState(false);
 
   // Use videos prop if provided, otherwise fallback to default slides
@@ -48,24 +48,15 @@ const MedicalCarousel = memo(function MedicalCarousel({ current, hoveredIndex, i
     return () => clearTimeout(timer);
   }, []);
 
-  // Pause/play videos based on visibility - only play the topmost visible video
-  // Video 0 is on top, covers 1 and 2. Video 1 covers 2. No need to decode hidden videos.
-  // When section is off-screen, pause ALL videos to free GPU decode.
-  useEffect(() => {
-    videoRefs.current.forEach((video, idx) => {
-      if (!video) return;
-      if (sectionActive && (idx === current || idx === 2)) {
-        video.play().catch(() => {});
-      } else {
-        video.pause();
-      }
-    });
-  }, [current, deckLoaded, sectionActive]);
+  // Which clips decode: the topmost visible one (current) and the base (2).
+  // Clip 0 is on top, covering 1 and 2; clip 1 covers 2. No need to decode
+  // what nobody can see. When the section is off-screen, nothing decodes.
+  const shouldPlay = (idx) => sectionActive && (idx === current || idx === 2);
 
   // Real readiness signal. The parent gates interaction on this instead of a
   // fixed timer that just hopes the footage finished loading. Each clip reports
-  // when it can show a frame (or errors); once all three are settled we tell the
-  // parent the carousel is genuinely ready.
+  // when it has a frame up (or has failed); once all three are settled we tell
+  // the parent the carousel is genuinely ready.
   const onReadyFiredRef = useRef(false);
   const readyIdxRef = useRef(new Set());
   const markReady = (idx) => {
@@ -78,12 +69,7 @@ const MedicalCarousel = memo(function MedicalCarousel({ current, hoveredIndex, i
   };
 
   useEffect(() => {
-    // Count clips already buffered before these handlers attached (cache, or a
-    // fast re-mount when scrolling back to the section).
-    videoRefs.current.forEach((v, idx) => {
-      if (v && v.readyState >= 2) markReady(idx); // HAVE_CURRENT_DATA = first frame
-    });
-    // Failsafe: never leave interaction wedged off if a load event never lands.
+    // Failsafe: never leave interaction wedged off if a clip never settles.
     const failsafe = setTimeout(() => {
       if (!onReadyFiredRef.current) {
         onReadyFiredRef.current = true;
@@ -119,21 +105,12 @@ const MedicalCarousel = memo(function MedicalCarousel({ current, hoveredIndex, i
           overflow: 'hidden',
         }}
       >
-        <video
-          ref={el => { videoRefs.current[2] = el; }}
+        <IllustrationCanvas
           src={deckLoaded ? videoSlides[2].video : undefined}
-          className="w-full h-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
+          play={shouldPlay(2)}
           preload="metadata"
-          alt={videoSlides[2].alt}
-          tabIndex="-1"
-          aria-hidden="true"
-          draggable="false"
-          onLoadedData={() => markReady(2)}
-          onError={() => markReady(2)}
+          onReady={() => markReady(2)}
+          className="w-full h-full object-cover"
           style={{
             outline: 'none',
             transition: 'outline 0.2s',
@@ -172,26 +149,17 @@ const MedicalCarousel = memo(function MedicalCarousel({ current, hoveredIndex, i
               transition: 'opacity 1.2s cubic-bezier(0.4,0,0.2,1)' // Slower fade
             }}
           >
-            <video
-              ref={el => { videoRefs.current[i] = el; }}
+            <IllustrationCanvas
               src={i === 0 || deckLoaded ? videoSlides[i].video : undefined}
-              className="w-full h-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
+              play={shouldPlay(i)}
               preload="metadata"
-              alt={videoSlides[i].alt}
-              tabIndex="-1"
-              aria-hidden="true"
-              draggable="false"
-              onLoadedData={() => markReady(i)}
-              onError={() => markReady(i)}
+              onReady={() => markReady(i)}
+              className="w-full h-full object-cover"
               style={{
                 outline: 'none',
                 transition: 'outline 0.2s',
                 background: 'none',
-                opacity: 1, // Video itself is always at full opacity
+                opacity: 1, // The clip itself is always at full opacity
                 willChange: 'opacity'
               }}
             />

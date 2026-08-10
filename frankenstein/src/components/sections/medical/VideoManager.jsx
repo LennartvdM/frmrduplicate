@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react';
+import { decorativeVideoProps } from '../../../utils/decorativeVideoProps';
 
 const VideoManager = ({ src, isPlaying, style, preload = 'metadata', ...props }) => {
   const videoRef = useRef(null);
@@ -37,6 +38,7 @@ const VideoManager = ({ src, isPlaying, style, preload = 'metadata', ...props })
         WebkitPerspective: '1000px',
       }}
       {...props}
+      {...decorativeVideoProps}
       preload={preload}
       autoPlay={false} // We control playback
       muted

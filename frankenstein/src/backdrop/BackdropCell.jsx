@@ -1,7 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import IllustrationCanvas from '../components/shared/IllustrationCanvas';
 
 /**
  * One backdrop cell — either a video deck or a camo fill.
+ *
+ * Deck cards are <canvas>, not <video>: the clips are decoded off-DOM and
+ * blitted in (see IllustrationCanvas). Browsers hang a media UI on any
+ * video element that looks like content — Edge offers picture-in-picture
+ * and "Enhance video" for these 6-second silent loops — and a canvas
+ * gives them nothing to hang it on. Every rule below is unchanged by
+ * that; the cards still decode, play, pause and fade exactly as they did.
  *
  * Deck-fade rule (rule 0): opacity of card idx = (idx >= topIdx ? 1 : 0).
  * Cards at-or-below topIdx stay opaque; cards above fade out. That means
@@ -63,7 +71,6 @@ export default function BackdropCell({
 }
 
 function VideoDeck({ deck, topIdx, decodeState, fadeDuration, camo, style }) {
-  const videoRefs = useRef([]);
   const [deckLoaded, setDeckLoaded] = useState(false);
 
   // Rule 1: hold lower-deck srcs for 500ms after mount. The top card
@@ -73,28 +80,7 @@ function VideoDeck({ deck, topIdx, decodeState, fadeDuration, camo, style }) {
     return () => clearTimeout(t);
   }, []);
 
-  // Rules 2 + 3: decide which videos actually decode.
-  //   decodeState === 'active': play topIdx + base (last idx). Pause rest.
-  //   decodeState !== 'active': pause everything in this cell.
-  // The topIdx + base pair is the "2-decoder" budget — the active top is
-  // what the user sees, the base is always-on so its final reveal (all
-  // upper cards faded out) is instant and never lands on a black frame.
-  useEffect(() => {
-    const baseIdx = deck.length - 1;
-    videoRefs.current.forEach((v, idx) => {
-      if (!v) return;
-      const shouldPlay =
-        decodeState === 'active' && (idx === topIdx || idx === baseIdx);
-      try {
-        if (shouldPlay) {
-          v.playbackRate = 0.5;
-          if (v.paused) v.play().catch(() => {});
-        } else if (!v.paused) {
-          v.pause();
-        }
-      } catch {}
-    });
-  }, [deck, topIdx, decodeState, deckLoaded]);
+  const baseIdx = deck.length - 1;
 
   return (
     <div
@@ -103,32 +89,30 @@ function VideoDeck({ deck, topIdx, decodeState, fadeDuration, camo, style }) {
     >
       {deck.map((src, idx) => {
         const isTop = idx === topIdx;
-        const isBase = idx === deck.length - 1;
+        const isBase = idx === baseIdx;
         const isVisible = idx >= topIdx; // rule 0: staircase
         // Top card always loads its src. Base always loads its src
         // (so the final reveal has something to show). Middle cards
         // wait for the 500ms deckLoaded grace.
         const srcGated = isTop || isBase || deckLoaded ? src : undefined;
+        // Rules 2 + 3: which cards actually decode.
+        //   decodeState === 'active': play topIdx + base (last idx).
+        //   decodeState !== 'active': nothing in this cell plays.
+        // The topIdx + base pair is the "2-decoder" budget — the active
+        // top is what the user sees, the base is always-on so its final
+        // reveal (all upper cards faded out) is instant and never lands
+        // on a black frame. A stopped card keeps its last painted frame,
+        // so pausing costs nothing visually.
+        const play = decodeState === 'active' && (isTop || isBase);
         return (
-          <video
+          <IllustrationCanvas
             key={src}
-            ref={(el) => {
-              videoRefs.current[idx] = el;
-            }}
             className="absolute inset-0 w-full h-full object-cover"
             src={srcGated}
-            muted
-            loop
-            playsInline
+            play={play}
+            playbackRate={0.5}
             preload={isTop ? 'auto' : 'metadata'}
-            tabIndex={-1}
-            aria-hidden="true"
             draggable="false"
-            onLoadedData={(e) => {
-              try {
-                e.target.playbackRate = 0.5;
-              } catch {}
-            }}
             style={{
               opacity: isVisible ? 1 : 0,
               transition: `opacity ${fadeDuration}s cubic-bezier(0.4,0,0.2,1)`,

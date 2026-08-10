@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, memo } from 'react';
+import { decorativeVideoProps } from '../../../utils/decorativeVideoProps';
 
 const TabletMedicalCarousel = memo(function TabletMedicalCarousel({ videos = [], current = 0, onChange, onPauseChange, className, style, sectionActive = true, onCarouselClick }) {
   const containerRef = useRef(null);
@@ -61,6 +62,7 @@ const TabletMedicalCarousel = memo(function TabletMedicalCarousel({ videos = [],
           }}
         >
           <video
+            {...decorativeVideoProps}
             ref={el => { videoRefs.current[i] = el; }}
             src={i === 0 || deckLoaded ? videoSlides[i]?.video : undefined}
             className="w-full h-full object-cover"

@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, memo } from "react";
 import { assetUrl } from "../../../utils/assetUrl";
+import { decorativeVideoProps } from '../../../utils/decorativeVideoProps';
 
 const AUTOPLAY_MS = 6600; // 6.6 seconds
 
@@ -120,6 +121,7 @@ const MedicalCarousel = memo(function MedicalCarousel({ current, hoveredIndex, i
         }}
       >
         <video
+          {...decorativeVideoProps}
           ref={el => { videoRefs.current[2] = el; }}
           src={deckLoaded ? videoSlides[2].video : undefined}
           className="w-full h-full object-cover"
@@ -173,6 +175,7 @@ const MedicalCarousel = memo(function MedicalCarousel({ current, hoveredIndex, i
             }}
           >
             <video
+              {...decorativeVideoProps}
               ref={el => { videoRefs.current[i] = el; }}
               src={i === 0 || deckLoaded ? videoSlides[i].video : undefined}
               className="w-full h-full object-cover"

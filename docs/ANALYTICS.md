@@ -15,6 +15,7 @@ Two halves, both first-party:
 | Route hook | `frankenstein/src/analytics/usePageviews.js` | Fires one per client-side navigation |
 | Endpoint | `netlify/functions/collect.mjs` | Increments per-day counters in Netlify Blobs |
 | Read-back | `netlify/functions/stats.mjs` | Returns the counters as JSON |
+| Dashboard | `frankenstein/public/stats/index.html` | `/stats` — what a human actually looks at |
 
 Nothing is loaded from a third-party domain, so no other company sees your
 visitors.
@@ -86,10 +87,33 @@ is a deliberate choice and easy to reverse (delete the `optedOut()` check in
 
 ## Reading the numbers
 
-Set `ANALYTICS_STATS_TOKEN` in the Netlify site environment
-(**Site configuration → Environment variables**) to any long random string.
-Until you do, `/api/stats` refuses every request — it fails closed rather than
-serving the data to whoever guesses the URL.
+**<https://www.neoflix.care/stats>** — a dashboard, password-protected, meant to
+be handed to whoever needs to see the traffic.
+
+It shows total pageviews for the range, a per-day chart, the most-read pages
+(by title, not by URL path), referring sites, device class and browser
+language. Ranges are 7 days / 30 days / 90 days / 12 months.
+
+### Switching it on
+
+Set `ANALYTICS_STATS_TOKEN` in the Netlify site environment (**Site
+configuration → Environment variables**) to any long random string. That string
+is the dashboard password. Until it is set, both the dashboard and the API
+refuse every request — they fail closed rather than serve the numbers to
+whoever guesses the URL.
+
+The password is held in `sessionStorage` for the tab, so it is asked for once
+per session and never written to disk. The page itself is `noindex` and
+disallowed in robots.txt.
+
+There is only one password, so anyone you give it to sees everything. If a
+client should see the numbers but not be able to change anything, that is
+already the case — the dashboard is read-only.
+
+### The raw JSON
+
+The dashboard is a thin client over one endpoint, which is there if you want to
+pull the data somewhere else:
 
 ```bash
 curl -H "Authorization: Bearer $TOKEN" 'https://www.neoflix.care/api/stats?days=30'
@@ -109,8 +133,10 @@ curl -H "Authorization: Bearer $TOKEN" 'https://www.neoflix.care/api/stats?days=
 }
 ```
 
-There is no dashboard UI. If you want one, the JSON is the thing to build it
-from — or switch to a hosted product below.
+The dashboard is `frankenstein/public/stats/index.html` — one standalone file,
+no build step and no libraries, so it keeps working even if the React app
+breaks. It reads page titles from `/stats/titles.json`, which
+`scripts/prerender.mjs` writes at build time.
 
 ## Switching to a hosted product
 

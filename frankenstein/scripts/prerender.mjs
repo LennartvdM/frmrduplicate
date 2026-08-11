@@ -590,6 +590,25 @@ async function main() {
     'utf8'
   );
 
+  // --- stats dashboard lookup ---------------------------------------------
+  // public/stats/index.html reads this so the traffic list shows page titles
+  // rather than raw paths. Titles are already public; the counts behind the
+  // dashboard are not, and stay behind the token on /api/stats.
+  const titleByPath = {};
+  for (const [routePath, route] of Object.entries(STATIC_ROUTES)) {
+    titleByPath[routePath] = route.heading || route.title;
+  }
+  for (const slug of Object.keys(pages)) {
+    const meta = metaForDocsPage(slug, pages[slug], '');
+    titleByPath[meta.path] = slug ? meta.heading : 'Toolbox';
+  }
+  await fs.mkdir(path.join(OUT_DIR, 'stats'), { recursive: true });
+  await fs.writeFile(
+    path.join(OUT_DIR, 'stats', 'titles.json'),
+    JSON.stringify(titleByPath),
+    'utf8'
+  );
+
   // --- legacy slug redirects ----------------------------------------------
   // resolveSlug() maps these client-side, which means the old and new URLs both
   // answer 200 with identical content — two URLs competing for one page. As

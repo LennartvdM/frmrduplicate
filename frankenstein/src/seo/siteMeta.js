@@ -92,7 +92,7 @@ export const TOOLBOX_ROOT = {
 };
 
 /** Paths that exist in the deploy but must never enter the index. */
-export const NOINDEX_PATHS = ['/og-upload.html', '/.netlify/'];
+export const NOINDEX_PATHS = ['/og-upload.html', '/.netlify/', '/stats', '/api/'];
 
 /**
  * A frontmatter description this short is a GitBook subtitle stub ("LUMC

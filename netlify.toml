@@ -128,3 +128,17 @@
   for = "/og-upload.html"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
+
+# The traffic dashboard. Same reasoning — and never cached, since a cached copy
+# of yesterday's numbers is worse than a slow load.
+[[headers]]
+  for = "/stats"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/stats/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-cache, no-store, must-revalidate"

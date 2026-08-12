@@ -104,7 +104,24 @@ export default async (req) => {
       bump(day.viewports, event.viewport);
       bump(day.languages, event.language);
 
-      const conditions = existing?.etag ? { onlyIfMatch: existing.etag } : { onlyIfNew: true };
+      // Three cases, not two.
+      //
+      // The original ternary was `existing?.etag ? onlyIfMatch : onlyIfNew`,
+      // which silently conflated "no entry yet" with "entry exists but the
+      // backend sent no ETag header". getWithMetadata resolves its etag as
+      // `res.headers.get("etag") ?? undefined`, so the second case yields a
+      // truthy `existing` with an undefined etag — and onlyIfNew can never
+      // succeed against a key that already exists. Every pageview after the
+      // day's first was dropped, with a 204 and nothing in the log.
+      let conditions;
+      if (!existing) {
+        conditions = { onlyIfNew: true };            // claim the day
+      } else if (existing.etag) {
+        conditions = { onlyIfMatch: existing.etag }; // the contended case
+      } else {
+        conditions = undefined;                      // unconditional
+      }
+
       const result = await store.setJSON(key, day, conditions);
       if (result.modified) return new Response(null, { status: 204 });
 
@@ -118,6 +135,14 @@ export default async (req) => {
 
   // Contention we could not resolve. Losing one pageview is the right outcome
   // here — far better than retrying forever or overwriting a concurrent write.
+  //
+  // Say so, though. A 204 is indistinguishable from success, so a bug that ends
+  // up here on every request looks exactly like "the site has no traffic". That
+  // is precisely how the conditions bug above stayed invisible; if this line is
+  // in the log at any volume, the write path is broken, not the traffic.
+  console.error(
+    `[analytics] gave up after ${MAX_ATTEMPTS} attempts for ${key} — pageview dropped`
+  );
   return new Response(null, { status: 204 });
 };
 

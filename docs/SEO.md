@@ -103,11 +103,32 @@ hand-maintained twins over the same node types. A new type added in
 
 ```bash
 bash build.sh
-find dist -name index.html | wc -l                                    # 78
+find dist -name index.html | wc -l                                    # 78 (+1 for /stats)
 grep -c '<loc>' dist/sitemap.xml                                      # 77 (/contact is canonicalised away)
 grep -rho '<title>[^<]*' --include=index.html dist | sort -u | wc -l   # 78 — all distinct
 grep -rho 'name="description" content="[^"]*"' --include=index.html dist | sort -u | wc -l  # 78
 ```
+
+## Verifying a deploy
+
+The build output cannot tell you about status codes, redirect rules, function
+routing or the Blobs write — those are serving behaviours. `scripts/verify-deploy.sh`
+checks all of them against a running site:
+
+```bash
+./scripts/verify-deploy.sh https://deploy-preview-12--neoflixduplicate.netlify.app
+./scripts/verify-deploy.sh https://neoflix.care "$ANALYTICS_STATS_TOKEN"
+```
+
+Ten checks: per-URL titles, canonical host, a real 404 on an unknown path, the
+legacy-slug 301, sitemap count, robots.txt, the OG image, and the analytics
+round trip. The token is optional — without it the two checks that read
+analytics back are skipped rather than failed. Exits non-zero if anything fails,
+so it drops into CI unchanged.
+
+Run it against a deploy preview before merging, and against production after.
+Each failure prints what it expected, what it got, and what that particular
+difference means.
 
 ## What still needs the site owner
 

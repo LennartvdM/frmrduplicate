@@ -87,7 +87,7 @@ is a deliberate choice and easy to reverse (delete the `optedOut()` check in
 
 ## Reading the numbers
 
-**<https://www.neoflix.care/stats>** — a dashboard, password-protected, meant to
+**<https://neoflix.care/stats>** — a dashboard, password-protected, meant to
 be handed to whoever needs to see the traffic.
 
 It shows total pageviews for the range, a per-day chart, the most-read pages
@@ -116,7 +116,7 @@ The dashboard is a thin client over one endpoint, which is there if you want to
 pull the data somewhere else:
 
 ```bash
-curl -H "Authorization: Bearer $TOKEN" 'https://www.neoflix.care/api/stats?days=30'
+curl -H "Authorization: Bearer $TOKEN" 'https://neoflix.care/api/stats?days=30'
 ```
 
 ```json

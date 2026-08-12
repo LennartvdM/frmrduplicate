@@ -12,7 +12,14 @@
  * Plain ESM and plain data only.
  */
 
-export const SITE_ORIGIN = 'https://www.neoflix.care';
+/**
+ * The apex, not www. Netlify has neoflix.care set as the site's primary domain
+ * and redirects www.neoflix.care to it, so this is the host that is actually
+ * served — and the one that has been live and indexed. Canonicals, og:url, the
+ * sitemap and every JSON-LD @id derive from here, so a mismatch would point all
+ * of them at a redirect.
+ */
+export const SITE_ORIGIN = 'https://neoflix.care';
 export const SITE_NAME = 'Neoflix';
 export const SITE_LOCALE = 'en_US';
 export const SITE_LANG = 'en';

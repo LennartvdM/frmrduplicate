@@ -113,13 +113,15 @@ grep -rho 'name="description" content="[^"]*"' --include=index.html dist | sort 
 
 These cannot be done from the repo:
 
-1. **Confirm `www.neoflix.care` is the primary domain** in the Netlify UI.
-   Netlify performs the apex→www 301 at the platform layer; a redirect rule in
-   `netlify.toml` cannot substitute for it. Every canonical URL the build emits
-   assumes `www`.
+1. **Keep `neoflix.care` as the primary domain** in the Netlify UI. It is the
+   apex today, with `www.neoflix.care` redirecting to it, and `SITE_ORIGIN` in
+   `src/seo/siteMeta.js` matches that. Netlify performs the redirect at the
+   platform layer, so nothing in `netlify.toml` can substitute for it — and if
+   the primary is ever switched to `www`, `SITE_ORIGIN` has to move with it or
+   every canonical, `og:url` and sitemap entry will point at a redirect.
 2. **Google Search Console and Bing Webmaster Tools** — verify the property
    (DNS TXT, or drop the HTML verification file in `frankenstein/public/`) and
-   submit `https://www.neoflix.care/sitemap.xml`.
+   submit `https://neoflix.care/sitemap.xml`.
 3. **Re-scrape the social cards** once deployed, via the LinkedIn Post
    Inspector and X card validator. `og-preview.png` never existed before this
    change, so every previously shared link is cached with a broken image.

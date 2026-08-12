@@ -100,4 +100,5 @@ export default async (req) => {
   });
 };
 
-export const config = { path: '/api/stats' };
+// No custom `config.path` — see the note at the foot of collect.mjs. Routing for
+// both functions comes from the single /api/* rewrite in netlify.toml.

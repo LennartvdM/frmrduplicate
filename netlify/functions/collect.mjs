@@ -81,24 +81,39 @@ export default async (req) => {
 
   const date = new Date().toISOString().slice(0, 10);
   const key = `day/${date}`;
-  const store = getStore(STORE);
 
-  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
-    const existing = await store.getWithMetadata(key, { type: 'json', consistency: 'strong' });
-    const day = existing?.data || emptyDay(date);
+  let store;
+  try {
+    store = getStore(STORE);
+  } catch (err) {
+    // getStore throws when the Blobs environment is not wired up. Say so in one
+    // greppable line rather than leaving a bare stack in the function log — this
+    // is the failure that is hardest to tell apart from "no traffic yet".
+    console.error(`[analytics] Netlify Blobs unavailable (getStore): ${err?.message || err}`);
+    return json(500, { error: 'blobs unavailable' });
+  }
 
-    day.views += 1;
-    bump(day.paths, event.path);
-    bump(day.referrers, event.referrer || 'direct');
-    bump(day.viewports, event.viewport);
-    bump(day.languages, event.language);
+  try {
+    for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
+      const existing = await store.getWithMetadata(key, { type: 'json', consistency: 'strong' });
+      const day = existing?.data || emptyDay(date);
 
-    const conditions = existing?.etag ? { onlyIfMatch: existing.etag } : { onlyIfNew: true };
-    const result = await store.setJSON(key, day, conditions);
-    if (result.modified) return new Response(null, { status: 204 });
+      day.views += 1;
+      bump(day.paths, event.path);
+      bump(day.referrers, event.referrer || 'direct');
+      bump(day.viewports, event.viewport);
+      bump(day.languages, event.language);
 
-    // Someone else wrote first. Back off a little and merge against their value.
-    await new Promise((resolve) => setTimeout(resolve, 15 * (attempt + 1)));
+      const conditions = existing?.etag ? { onlyIfMatch: existing.etag } : { onlyIfNew: true };
+      const result = await store.setJSON(key, day, conditions);
+      if (result.modified) return new Response(null, { status: 204 });
+
+      // Someone else wrote first. Back off a little and merge against their value.
+      await new Promise((resolve) => setTimeout(resolve, 15 * (attempt + 1)));
+    }
+  } catch (err) {
+    console.error(`[analytics] Blobs read/write failed for ${key}: ${err?.message || err}`);
+    return json(500, { error: 'blobs write failed' });
   }
 
   // Contention we could not resolve. Losing one pageview is the right outcome
@@ -106,4 +121,11 @@ export default async (req) => {
   return new Response(null, { status: 204 });
 };
 
-export const config = { path: '/api/collect' };
+// Deliberately no `export const config = { path: … }`.
+//
+// Declaring a custom path here would have this function and the `/api/*` rewrite
+// in netlify.toml both claiming /api/collect, and a declared path can replace
+// the function's default /.netlify/functions/collect route — which is what that
+// rewrite targets. Whichever of the two the platform evaluates first, the other
+// becomes either redundant or a rewrite pointing at nothing. One mechanism, the
+// long-stable one: the rewrite maps /api/* onto the default function path.

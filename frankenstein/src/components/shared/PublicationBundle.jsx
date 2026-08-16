@@ -7,20 +7,16 @@ import '../../styles/publication-bundle.css';
  *
  * The per-section attachments answer "I want this one"; this answers "I
  * want the set", which is the reason someone lands on a publications
- * page in the first place. It renders in three places, all the same
- * object in different materials:
+ * page in the first place. It renders in two places, the same object in
+ * two materials:
  *
  *   sidebar  a labelled row under the section index, in context
- *   gutter   a round glass button out on the dark background beside an
- *            article, one per article rather than one per page
  *   mobile   a full-width card closing out the phone article stack
  *
- * The gutter button is anchored to its article, not to the viewport: it
- * sits one hero-height up from the section's bottom edge and scrolls
- * with it, so it stays next to whatever you are reading instead of
- * trailing you around. It only appears above 1400px, which is where the grid's
- * tracks stop short of the viewport and leave enough background to sit
- * on; below that the sidebar row carries the job alone.
+ * The round button out in the gutter belongs to PublicationAttachment,
+ * not here — it hands over the one paper it sits beside. Its arrow is a
+ * single stroke where the glyph below is an arrow onto a stack, so the
+ * two marks say "this paper" and "all of them".
  *
  * Contents, count and size come from src/generated/publications-bundle.json,
  * written by scripts/build-publications-zip.mjs from whatever PDFs are in
@@ -36,25 +32,6 @@ export default function PublicationBundle({ bundle, variant = 'sidebar' }) {
   // across two lines and the tooltip never reaches them.
   const described = `${action} as one ZIP archive, ${bundle.size}`;
   const href = assetUrl(bundle.file);
-
-  if (variant === 'gutter') {
-    return (
-      <div className="publication-bundle publication-bundle--gutter">
-        <a
-          className="publication-bundle__fab"
-          href={href}
-          download
-          aria-label={described}
-        >
-          <ArchiveDownload />
-        </a>
-        <span className="publication-bundle__tip" aria-hidden="true">
-          <span className="publication-bundle__tip-title">{action}</span>
-          <span className="publication-bundle__tip-meta">{meta}</span>
-        </span>
-      </div>
-    );
-  }
 
   return (
     <a

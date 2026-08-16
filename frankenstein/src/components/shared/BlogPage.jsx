@@ -413,12 +413,15 @@ export default function BlogPage({ sections, scrollTo, bundle }) {
                   overflow: 'visible',
                 }}
               >
-                {/* Out on the background beside this article, three
-                    quarters of the way down it. Anchored to the section
-                    rather than the viewport, so it travels with the
-                    paper it belongs to. */}
+                {/* This article's own PDF, out on the background beside
+                    it. Anchored to the section rather than the viewport,
+                    so it travels with the paper it hands over. */}
                 {hasPublicationLead && (
-                  <PublicationBundle bundle={bundle} variant="gutter" />
+                  <PublicationAttachment
+                    pdf={section.pdf}
+                    variant="gutter"
+                    title={parsed.titleCard?.title}
+                  />
                 )}
 
                 <div className={`blog-section__lead${hasPublicationLead ? ' blog-section__lead--publication' : ' blog-section__lead--plain'}`}>

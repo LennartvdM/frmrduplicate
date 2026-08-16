@@ -21,16 +21,48 @@ import '../../styles/publication-attachment.css';
  * an <a> inside an <a> is invalid and breaks keyboard traversal.
  *
  * Data comes from each section's `pdf` field in data/publicationsPage.js.
- * A section without one renders nothing, which is how the sixth article
- * behaves until its file lands.
+ * A section without one renders nothing, which is how a section behaves
+ * until its file lands.
+ *
+ * The `gutter` variant is the same paper in a different place: a round
+ * glass button out on the dark background beside the article, hitting
+ * the same file the card's download button does. It carries the single
+ * down-arrow the card uses, where the bundle's sidebar button carries an
+ * arrow onto a stack — one mark for this paper, another for all of them.
  */
-export default function PublicationAttachment({ pdf, variant = 'blog', accentLabel }) {
+export default function PublicationAttachment({ pdf, variant = 'blog', accentLabel, title }) {
   if (!pdf || !pdf.src) return null;
 
   const href = assetUrl(pdf.src);
   const meta = formatAttachmentMeta(pdf);
   const label = pdf.label || 'Read the full paper';
   const downloadLabel = `Download the PDF${pdf.size ? ` (${pdf.size})` : ''}`;
+
+  if (variant === 'gutter') {
+    // Named by its paper rather than "download this paper", because six
+    // of these sit on the page and a screen reader would otherwise read
+    // the same label six times with nothing to tell them apart.
+    const described = title
+      ? `Download “${title}” — ${meta.replace(/ · /g, ', ')}`
+      : `Download this paper — ${meta.replace(/ · /g, ', ')}`;
+
+    return (
+      <div className="publication-attachment publication-attachment--gutter">
+        <a
+          className="publication-attachment__fab"
+          href={href}
+          download
+          aria-label={described}
+        >
+          <DownloadArrow />
+        </a>
+        <span className="publication-attachment__tip" aria-hidden="true">
+          <span className="publication-attachment__tip-title">Download this paper</span>
+          <span className="publication-attachment__tip-meta">{meta}</span>
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className={`publication-attachment publication-attachment--${variant}`}>

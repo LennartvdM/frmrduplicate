@@ -18,13 +18,11 @@ export const publicationPdfs = {
     pages: 7,
     size: '1.6 MB',
   },
-  // recordreflectrefine: still to come — drop the file in
-  // public/publications/ and uncomment:
-  // recordreflectrefine: {
-  //   src: '/publications/record-reflect-refine-pediatric-research-2024.pdf',
-  //   pages: 0,
-  //   size: '0.0 MB',
-  // },
+  recordreflectrefine: {
+    src: '/publications/record-reflect-refine-pediatric-research-2024.pdf',
+    pages: 10,
+    size: '1.8 MB',
+  },
   practicalguidance: {
     src: '/publications/practical-guidance-bmj-open-quality-2024.pdf',
     pages: 9,

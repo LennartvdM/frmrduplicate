@@ -10,15 +10,17 @@ import '../../styles/publication-bundle.css';
  * page in the first place. It renders in three places, all the same
  * object in different materials:
  *
- *   sidebar   a labelled row under the section index, in context
- *   floating  a round glass button parked in the page's right-hand
- *             gutter, following the reader down the page
- *   mobile    a full-width card closing out the phone article stack
+ *   sidebar  a labelled row under the section index, in context
+ *   gutter   a round glass button out on the dark background beside an
+ *            article, one per article rather than one per page
+ *   mobile   a full-width card closing out the phone article stack
  *
- * The floating button only appears above 1360px, which is where the
- * grid's tracks stop short of the viewport and leave real background to
- * sit on; below that it would overlap the article and the sidebar row
- * carries the job alone.
+ * The gutter button is anchored to its article, not to the viewport: it
+ * sits three-quarters of the way down the section and scrolls with it,
+ * so it stays next to whatever you are reading instead of trailing you
+ * around. It only appears above 1400px, which is where the grid's
+ * tracks stop short of the viewport and leave enough background to sit
+ * on; below that the sidebar row carries the job alone.
  *
  * Contents, count and size come from src/generated/publications-bundle.json,
  * written by scripts/build-publications-zip.mjs from whatever PDFs are in
@@ -35,9 +37,9 @@ export default function PublicationBundle({ bundle, variant = 'sidebar' }) {
   const described = `${action} as one ZIP archive, ${bundle.size}`;
   const href = assetUrl(bundle.file);
 
-  if (variant === 'floating') {
+  if (variant === 'gutter') {
     return (
-      <div className="publication-bundle publication-bundle--floating">
+      <div className="publication-bundle publication-bundle--gutter">
         <a
           className="publication-bundle__fab"
           href={href}

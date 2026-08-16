@@ -1,6 +1,7 @@
 /* PublicationBundle — "take all the papers" in three materials.
      --sidebar   a row under the section index, inside the navy card
-     --floating  a round glass button in the page's right-hand gutter
+     --gutter    a round glass button out on the background beside an
+                 article, one per article
      --mobile    a full-width card closing the phone article stack */
 
 .publication-bundle {
@@ -74,22 +75,31 @@
   opacity: 0.76;
 }
 
-/* ── Floating glass button ───────────────────────────────────────────
-   Fixed to the viewport so it stays put while the article scrolls. Only
-   shown once the layout leaves enough background to its right — below
-   1360px the grid's tracks run to the edge and it would sit on the
-   article instead of beside it. */
-.publication-bundle--floating {
-  position: fixed;
-  right: 34px;
-  bottom: 46px;
-  z-index: 20;
+/* ── Gutter glass button ─────────────────────────────────────────────
+   Out on the dark background beside its article, anchored to the
+   section rather than the viewport: `left: 100%` puts it just past the
+   article column's right edge, and 75% down places it beside the body
+   copy rather than the title plates. It scrolls with the section, so
+   each article carries its own.
+
+   The article column stops at a fixed 1254px until the grid starts
+   centring at 1480px, so the button's right edge sits at 1340px and the
+   room left over is simply `viewport - 1340`. Below 1400 that is under
+   60px, which a classic (non-overlay) scrollbar would eat into, so the
+   button gives way and the sidebar row carries the job alone. */
+.publication-bundle--gutter {
+  position: absolute;
+  top: 75%;
+  left: 100%;
+  z-index: 5;
   display: none;
   align-items: center;
+  margin-left: 30px;
+  transform: translateY(-50%);
 }
 
-@media (min-width: 1360px) {
-  .publication-bundle--floating {
+@media (min-width: 1400px) {
+  .publication-bundle--gutter {
     display: flex;
   }
 }
@@ -118,7 +128,7 @@
   height: 24px;
 }
 
-.publication-bundle--floating:hover .publication-bundle__fab {
+.publication-bundle--gutter:hover .publication-bundle__fab {
   border-color: rgba(255, 255, 255, 0.44);
   background: rgba(255, 255, 255, 0.23);
   transform: translateY(-2px);
@@ -166,8 +176,8 @@
   transform: rotate(45deg);
 }
 
-.publication-bundle--floating:hover .publication-bundle__tip,
-.publication-bundle--floating:focus-within .publication-bundle__tip {
+.publication-bundle--gutter:hover .publication-bundle__tip,
+.publication-bundle--gutter:focus-within .publication-bundle__tip {
   opacity: 1;
   transform: translate(0, -50%);
 }
@@ -238,7 +248,7 @@
     transition: none;
   }
 
-  .publication-bundle--floating:hover .publication-bundle__fab {
+  .publication-bundle--gutter:hover .publication-bundle__fab {
     transform: none;
   }
 }

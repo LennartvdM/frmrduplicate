@@ -383,6 +383,14 @@ export default function BlogPage({ sections, scrollTo, bundle }) {
                   overflow: 'visible',
                 }}
               >
+                {/* Out on the background beside this article, three
+                    quarters of the way down it. Anchored to the section
+                    rather than the viewport, so it travels with the
+                    paper it belongs to. */}
+                {hasPublicationLead && (
+                  <PublicationBundle bundle={bundle} variant="gutter" />
+                )}
+
                 <div className={`blog-section__lead${hasPublicationLead ? ' blog-section__lead--publication' : ' blog-section__lead--plain'}`}>
                   {hasPublicationLead && (
                     <div aria-hidden="true" className="blog-section__glass" />
@@ -481,10 +489,6 @@ export default function BlogPage({ sections, scrollTo, bundle }) {
           <div aria-hidden="true" style={{ minHeight: 'calc(100vh - 200px)' }} />
         </motion.article>
       </div>
-
-      {/* Parked in the right-hand gutter, outside the grid entirely, so
-          it follows the reader instead of belonging to one section. */}
-      <PublicationBundle bundle={bundle} variant="floating" />
 
       <style>{`
         .blog-section {

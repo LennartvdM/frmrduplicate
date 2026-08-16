@@ -7,6 +7,7 @@
     "dev": "vite",
     "prebuild": "npm run build:docs && npm run build:publications-zip",
     "build": "vite build",
+    "postbuild": "node scripts/build-route-html.mjs",
     "preview": "vite preview",
     "build:docs": "node scripts/build-docs.mjs",
     "build:publications-zip": "node scripts/build-publications-zip.mjs"

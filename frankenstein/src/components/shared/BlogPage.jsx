@@ -7,6 +7,7 @@ import { renderMarkdown } from '../../utils/renderMarkdown';
 import { useBackdropTarget } from '../../backdrop/useBackdrop';
 import { BLOG_DECK, blogIdxForSection } from '../../backdrop/decks';
 import IllustrationCanvas from './IllustrationCanvas';
+import PublicationAttachment from './PublicationAttachment';
 
 /**
  * BlogPage — shared layout for /neoflix and /publications.
@@ -406,7 +407,12 @@ export default function BlogPage({ sections, scrollTo }) {
                   </div>
 
                   {hasPublicationLead && (
-                    <PublicationLead card={parsed.titleCard} citation={parsed.citation} preview={publicationPreview} />
+                    <PublicationLead
+                      card={parsed.titleCard}
+                      citation={parsed.citation}
+                      preview={publicationPreview}
+                      pdf={section.pdf}
+                    />
                   )}
                 </div>
 
@@ -562,12 +568,17 @@ export default function BlogPage({ sections, scrollTo }) {
           pointer-events: none;
           border-radius: 12px 12px 0 0;
         }
+        /* Journal-page still, peeking from behind the lead's right-hand
+           plates. Its left edge is set to the attachment sheet's left
+           edge (grid column 7 plus that sheet's 18px inset), so the
+           still reads as one band tucked underneath rather than a
+           rectangle the sheet happens to overlap. */
         .blog-section__glass-preview-plate {
           position: absolute;
           top: 266px;
           right: 0;
           bottom: 0;
-          left: 46%;
+          left: 52%;
           overflow: hidden;
           background: #f7fafc;
         }
@@ -824,7 +835,7 @@ function PublicationGlassPreview({ preview }) {
   );
 }
 
-function PublicationLead({ card, citation, preview }) {
+function PublicationLead({ card, citation, preview, pdf }) {
 
   return (
     <div className="publication-lead">
@@ -862,6 +873,9 @@ function PublicationLead({ card, citation, preview }) {
           {citation}
         </cite>
       )}
+      {/* Third plate in the stack: the paper's own PDF, tucked under the
+          title card's right edge opposite the citation. */}
+      <PublicationAttachment pdf={pdf} variant="blog" />
     </div>
   );
 }

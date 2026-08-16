@@ -6,6 +6,7 @@ import { useBackdropTarget } from '../../backdrop/useBackdrop';
 import { assetUrl } from '../../utils/assetUrl';
 import { renderMarkdown } from '../../utils/renderMarkdown';
 import { decorativeVideoProps } from '../../utils/decorativeVideoProps';
+import PublicationAttachment from '../shared/PublicationAttachment';
 import '../../styles/mobile-publications.css';
 
 const HERO_VIDEO = assetUrl('/videos/mobile/neoflix_intro_blur_montage.mp4');
@@ -284,6 +285,10 @@ export default function MobilePublicationsPage({ sections, scrollTo }) {
               {parsed.citation && (
                 <p className="mobile-publications__citation">{parsed.citation}</p>
               )}
+
+              {/* The paper itself, below its citation — inherits the
+                  section's --publication-accent from the <section>. */}
+              <PublicationAttachment pdf={section.pdf} variant="mobile" />
 
               <div
                 className="mobile-publications__body"

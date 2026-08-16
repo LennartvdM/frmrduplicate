@@ -1,0 +1,337 @@
+/* PublicationAttachment — the article's own PDF, presented as a sheet
+   sliding out from behind the publication's title card.
+
+   Two variants share the markup:
+     --blog    the /publications desktop lead (light paper on the glass)
+     --mobile  the phone article stack (dark glass, per-section accent)
+
+   The wrapper positions the sheet; .__face is the sheet itself; the two
+   .__page elements are the edges of the pages underneath it. */
+
+.publication-attachment {
+  position: relative;
+  font-family: Inter, sans-serif;
+}
+
+.publication-attachment__stack {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.publication-attachment__page {
+  position: absolute;
+  border-radius: 8px;
+  transition: transform 0.34s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* No overflow clipping here: the children carry no background of their
+   own, and clipping would eat the focus ring of the link inside. */
+.publication-attachment__face {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: stretch;
+  border-radius: 8px;
+}
+
+/* Stretched, not centred, so the whole left plate is the click target;
+   the link centres its own contents. */
+.publication-attachment__open {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+  padding: 18px 8px 18px 22px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.publication-attachment__glyph {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 40px;
+}
+
+.publication-attachment__glyph svg {
+  display: block;
+  width: 26px;
+  height: 32px;
+}
+
+.publication-attachment__text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.publication-attachment__label {
+  font-size: 15px;
+  font-weight: 760;
+  line-height: 1.24;
+  letter-spacing: 0;
+}
+
+.publication-attachment__meta {
+  font-size: 12px;
+  font-weight: 640;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+.publication-attachment__download {
+  flex: 0 0 auto;
+  align-self: center;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-right: 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background-color 0.24s ease, transform 0.24s ease;
+}
+
+.publication-attachment__download svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+/* ── Blog variant (desktop /publications lead) ───────────────────────
+   Sits in the lead's 12-column grid, to the right of the citation and
+   tucked under the navy title card. z-index 2 keeps it *behind* that
+   card (3) and the citation (4) but above the glass preview plate (1),
+   which is what sells "sheet pulled out from underneath". */
+.publication-attachment--blog {
+  grid-column: 7 / 13;
+  align-self: start;
+  z-index: 2;
+  margin: -26px -16px 0 18px;
+  transition: transform 0.34s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* The pages underneath fan straight down — never sideways. The lead's
+   glass panel ends at the sheet's right edge, so any horizontal peek
+   would hang over the dark page background and read as a stray artifact
+   rather than paper. */
+.publication-attachment--blog .publication-attachment__page--mid {
+  top: 12px;
+  right: 11px;
+  bottom: -8px;
+  left: 11px;
+  background: rgba(247, 251, 253, 0.62);
+  box-shadow: 0 8px 18px rgba(17, 34, 65, 0.1);
+}
+
+.publication-attachment--blog .publication-attachment__page--back {
+  top: 24px;
+  right: 23px;
+  bottom: -16px;
+  left: 23px;
+  background: rgba(247, 251, 253, 0.36);
+  box-shadow: 0 10px 22px rgba(17, 34, 65, 0.08);
+}
+
+.publication-attachment--blog .publication-attachment__face {
+  min-height: 110px;
+  background: linear-gradient(148deg, #ffffff 0%, #f1f6fa 62%, #e9f1f6 100%);
+  box-shadow:
+    0 20px 42px rgba(17, 34, 65, 0.18),
+    inset 0 0 0 1px rgba(14, 28, 49, 0.07);
+}
+
+/* The sheet slides down out of the title card's shadow. Padding lives on
+   the link so the whole plate is the click target. */
+.publication-attachment--blog .publication-attachment__open {
+  padding: 22px 10px 22px 24px;
+  color: #0e1c31;
+}
+
+.publication-attachment--blog .publication-attachment__glyph {
+  color: #0e1c31;
+}
+
+.publication-attachment--blog .publication-attachment__label {
+  color: #0e1c31;
+}
+
+.publication-attachment--blog .publication-attachment__meta {
+  color: rgba(56, 52, 55, 0.58);
+}
+
+.publication-attachment--blog .publication-attachment__download {
+  color: #ffffff;
+  background: #0e1c31;
+  box-shadow: 0 8px 18px rgba(14, 28, 49, 0.24);
+}
+
+.publication-attachment--blog:hover {
+  transform: translateY(4px);
+}
+
+.publication-attachment--blog:hover .publication-attachment__page--mid {
+  transform: translateY(3px);
+}
+
+.publication-attachment--blog:hover .publication-attachment__page--back {
+  transform: translateY(6px);
+}
+
+.publication-attachment--blog .publication-attachment__open:hover .publication-attachment__label {
+  color: #14314f;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.publication-attachment--blog .publication-attachment__download:hover {
+  background: #132641;
+  transform: translateY(2px);
+}
+
+/* Negative offset keeps the ring inside the sheet, where it reads
+   against the paper instead of against whatever image is behind it. */
+.publication-attachment--blog .publication-attachment__open:focus-visible {
+  outline: 2px solid #0e1c31;
+  outline-offset: -4px;
+}
+
+.publication-attachment--blog .publication-attachment__download:focus-visible {
+  outline: 2px solid #0e1c31;
+  outline-offset: 2px;
+}
+
+/* The six-column slot holds the meta line ("PDF · 19 pages · 1.6 MB",
+   230px at its longest) down to about a 1126px viewport. Below that the
+   sheet drops to its own row under the citation and takes the title
+   card's full width — same three plates, cascading instead of paired.
+   The margin is buffer against font-rendering and scrollbar width. */
+@media (max-width: 1160px) and (min-width: 901px) {
+  .publication-attachment--blog {
+    grid-column: 2 / 13;
+    grid-row: 3;
+    margin: 14px -16px 0 0;
+  }
+
+  .publication-attachment--blog .publication-attachment__face {
+    min-height: 92px;
+  }
+}
+
+/* Below 900px the lead is a single column: the sheet is just the last
+   card in the stack, no tucking and no overhang. */
+@media (max-width: 900px) {
+  .publication-attachment--blog {
+    grid-column: 1;
+    grid-row: auto;
+    margin: 16px 0 0;
+  }
+
+  .publication-attachment--blog .publication-attachment__face {
+    min-height: 88px;
+  }
+
+  .publication-attachment--blog .publication-attachment__open {
+    padding: 18px 8px 18px 20px;
+  }
+}
+
+/* ── Mobile variant (phone article stack) ────────────────────────────
+   Same object in the phone page's material: dark glass keyed to the
+   section accent, matching .mobile-publications__paper-link above it. */
+.publication-attachment--mobile {
+  margin: 0 0 22px;
+}
+
+/* The phone face is translucent glass, so the pages underneath have to
+   stay strictly below its bottom edge — anything tucked behind would
+   show straight through and read as a misprint rather than a stack. */
+.publication-attachment--mobile .publication-attachment__page {
+  top: 100%;
+  border-radius: 0 0 6px 6px;
+}
+
+.publication-attachment--mobile .publication-attachment__page--mid {
+  left: 10px;
+  right: 10px;
+  height: 6px;
+  background: color-mix(in srgb, var(--publication-accent, #62c8c9) 20%, rgba(255, 255, 255, 0.12));
+}
+
+.publication-attachment--mobile .publication-attachment__page--back {
+  left: 22px;
+  right: 22px;
+  height: 11px;
+  background: color-mix(in srgb, var(--publication-accent, #62c8c9) 11%, rgba(255, 255, 255, 0.06));
+}
+
+.publication-attachment--mobile .publication-attachment__face {
+  min-height: 72px;
+  border: 1px solid color-mix(in srgb, var(--publication-accent, #62c8c9) 34%, rgba(255, 255, 255, 0.14));
+  border-radius: 6px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--publication-accent, #62c8c9) 13%, transparent), transparent 46%),
+    rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+}
+
+.publication-attachment--mobile .publication-attachment__open {
+  padding: 14px 6px 14px 16px;
+  border-radius: 6px;
+  color: #ffffff;
+}
+
+.publication-attachment--mobile .publication-attachment__glyph {
+  color: var(--publication-accent, #62c8c9);
+}
+
+.publication-attachment--mobile .publication-attachment__label {
+  color: #ffffff;
+}
+
+.publication-attachment--mobile .publication-attachment__meta {
+  color: rgba(247, 250, 248, 0.62);
+}
+
+.publication-attachment--mobile .publication-attachment__download {
+  width: 44px;
+  height: 44px;
+  margin-right: 12px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+}
+
+.publication-attachment--mobile .publication-attachment__open:focus-visible {
+  outline: 2px solid var(--publication-accent, #62c8c9);
+  outline-offset: -4px;
+}
+
+.publication-attachment--mobile .publication-attachment__download:focus-visible {
+  outline: 2px solid var(--publication-accent, #62c8c9);
+  outline-offset: 3px;
+}
+
+/* Nothing here should move for a reader who asked for stillness — the
+   sheet's meaning is in its position, not its travel. */
+@media (prefers-reduced-motion: reduce) {
+  .publication-attachment,
+  .publication-attachment__page,
+  .publication-attachment__download {
+    transition: none;
+  }
+
+  .publication-attachment--blog:hover,
+  .publication-attachment--blog:hover .publication-attachment__page--mid,
+  .publication-attachment--blog:hover .publication-attachment__page--back,
+  .publication-attachment--blog .publication-attachment__download:hover {
+    transform: none;
+  }
+}

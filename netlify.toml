@@ -28,6 +28,14 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# Publication PDFs. Not immutable — a paper's file can be swapped for a
+# corrected version under the same name, and a year-long immutable cache
+# would strand readers on the old one.
+[[headers]]
+  for = "/publications/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, must-revalidate"
+
 # Never cache HTML
 [[headers]]
   for = "/*.html"

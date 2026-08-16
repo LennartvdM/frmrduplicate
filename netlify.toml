@@ -28,13 +28,20 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# Publication PDFs. Not immutable — a paper's file can be swapped for a
-# corrected version under the same name, and a year-long immutable cache
-# would strand readers on the old one.
+# Publication PDFs and the bundle archive. Not immutable — a paper's
+# file can be swapped for a corrected version under the same name, and a
+# year-long immutable cache would strand readers on the old one.
+#
+# noindex keeps these convenience copies out of search results. They
+# exist for people already on the page; letting Google index them would
+# put a bare PDF in the results competing with the publisher's own
+# article page, and land searchers on a file with no way back into the
+# site. The publisher link in each section stays the indexable route.
 [[headers]]
-  for = "/publications/*"
+  for = "/papers/*"
   [headers.values]
     Cache-Control = "public, max-age=604800, must-revalidate"
+    X-Robots-Tag = "noindex"
 
 # Never cache HTML
 [[headers]]

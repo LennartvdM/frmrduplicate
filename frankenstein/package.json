@@ -3,12 +3,13 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "predev": "node scripts/build-docs.mjs",
+    "predev": "npm run build:docs && npm run build:publications-zip",
     "dev": "vite",
-    "prebuild": "node scripts/build-docs.mjs",
+    "prebuild": "npm run build:docs && npm run build:publications-zip",
     "build": "vite build",
     "preview": "vite preview",
-    "build:docs": "node scripts/build-docs.mjs"
+    "build:docs": "node scripts/build-docs.mjs",
+    "build:publications-zip": "node scripts/build-publications-zip.mjs"
   },
   "dependencies": {
     "framer-motion": "^10.12.16",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.4.1",
     "autoprefixer": "^10.4.14",
+    "jszip": "^3.10.1",
     "mdast-util-to-string": "^4.0.0",
     "postcss": "^8.4.21",
     "remark-gfm": "^4.0.1",

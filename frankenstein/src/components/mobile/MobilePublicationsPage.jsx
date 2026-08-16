@@ -7,6 +7,7 @@ import { assetUrl } from '../../utils/assetUrl';
 import { renderMarkdown } from '../../utils/renderMarkdown';
 import { decorativeVideoProps } from '../../utils/decorativeVideoProps';
 import PublicationAttachment from '../shared/PublicationAttachment';
+import PublicationBundle from '../shared/PublicationBundle';
 import '../../styles/mobile-publications.css';
 
 const HERO_VIDEO = assetUrl('/videos/mobile/neoflix_intro_blur_montage.mp4');
@@ -98,7 +99,7 @@ function sectionLabel(section, index) {
   return `Article ${String(index).padStart(2, '0')}`;
 }
 
-export default function MobilePublicationsPage({ sections, scrollTo }) {
+export default function MobilePublicationsPage({ sections, scrollTo, bundle }) {
   const scrollRef = useRef(null);
   const heroVideoRef = useRef(null);
   const articleVideoRefs = useRef([]);
@@ -299,6 +300,9 @@ export default function MobilePublicationsPage({ sections, scrollTo }) {
           </section>
         );
       })}
+
+      {/* End of the stack: you've read the set, here it is to keep. */}
+      <PublicationBundle bundle={bundle} variant="mobile" />
 
       <div className="mobile-publications__bottom-spacer" aria-hidden="true" />
     </main>

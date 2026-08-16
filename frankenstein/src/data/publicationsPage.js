@@ -2,39 +2,45 @@
  * Publications Page Data
  */
 import { assetUrl } from '../utils/assetUrl';
+import bundleManifest from '../generated/publications-bundle.json';
 
-// Author copies of the papers, served from public/publications/.
+// The "all the papers at once" archive, built from public/papers/
+// by scripts/build-publications-zip.mjs. Null when there is nothing to
+// bundle, which is what hides the download from the page.
+export const bundle = bundleManifest?.count > 0 ? bundleManifest : null;
+
+// Author copies of the papers, served from public/papers/.
 // `pages`/`size` describe the committed file and are shown in the
 // attachment's meta line — re-check them if a PDF is ever replaced.
 // A section without a `pdf` entry simply renders no attachment.
 export const publicationPdfs = {
   narrative: {
-    src: '/publications/narrative-review-frontiers-2022.pdf',
+    src: '/papers/narrative-review-frontiers-2022.pdf',
     pages: 9,
     size: '1.8 MB',
   },
   providers: {
-    src: '/publications/providers-perspective-adc-fetal-neonatal-2024.pdf',
+    src: '/papers/providers-perspective-adc-fetal-neonatal-2024.pdf',
     pages: 7,
     size: '1.6 MB',
   },
   recordreflectrefine: {
-    src: '/publications/record-reflect-refine-pediatric-research-2024.pdf',
+    src: '/papers/record-reflect-refine-pediatric-research-2024.pdf',
     pages: 10,
     size: '1.8 MB',
   },
   practicalguidance: {
-    src: '/publications/practical-guidance-bmj-open-quality-2024.pdf',
+    src: '/papers/practical-guidance-bmj-open-quality-2024.pdf',
     pages: 9,
     size: '3.3 MB',
   },
   drivingresearch: {
-    src: '/publications/driving-research-resuscitation-2024.pdf',
+    src: '/papers/driving-research-resuscitation-2024.pdf',
     pages: 7,
     size: '1.5 MB',
   },
   internationalcollab: {
-    src: '/publications/international-collaboration-children-2026.pdf',
+    src: '/papers/international-collaboration-children-2026.pdf',
     pages: 19,
     size: '1.6 MB',
   },

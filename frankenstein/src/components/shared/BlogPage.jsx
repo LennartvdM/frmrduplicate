@@ -8,6 +8,7 @@ import { useBackdropTarget } from '../../backdrop/useBackdrop';
 import { BLOG_DECK, blogIdxForSection } from '../../backdrop/decks';
 import IllustrationCanvas from './IllustrationCanvas';
 import PublicationAttachment from './PublicationAttachment';
+import PublicationBundle from './PublicationBundle';
 
 /**
  * BlogPage — shared layout for /neoflix and /publications.
@@ -83,7 +84,7 @@ const PUBLICATION_PREVIEW_OVERRIDES = new Map([
   ],
 ]);
 
-export default function BlogPage({ sections, scrollTo }) {
+export default function BlogPage({ sections, scrollTo, bundle }) {
   // Internal scroll container. BlogPage renders inside RouteSlider,
   // which is `position: fixed; inset: 0` — window never scrolls under
   // that layout, so the page scrolls on this inner element instead.
@@ -332,6 +333,22 @@ export default function BlogPage({ sections, scrollTo }) {
               );
             })}
           </ul>
+
+          {/* Foot of the index: everything at once. Divider matches the
+              one the numbered sections already sit under. */}
+          {bundle && (
+            <>
+              <div
+                aria-hidden="true"
+                style={{
+                  height: 1,
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  margin: '18px 8px 0',
+                }}
+              />
+              <PublicationBundle bundle={bundle} variant="sidebar" />
+            </>
+          )}
         </motion.aside>
 
         {/* Content column */}
@@ -464,6 +481,10 @@ export default function BlogPage({ sections, scrollTo }) {
           <div aria-hidden="true" style={{ minHeight: 'calc(100vh - 200px)' }} />
         </motion.article>
       </div>
+
+      {/* Parked in the right-hand gutter, outside the grid entirely, so
+          it follows the reader instead of belonging to one section. */}
+      <PublicationBundle bundle={bundle} variant="floating" />
 
       <style>{`
         .blog-section {

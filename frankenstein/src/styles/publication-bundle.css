@@ -1,0 +1,244 @@
+/* PublicationBundle — "take all the papers" in three materials.
+     --sidebar   a row under the section index, inside the navy card
+     --floating  a round glass button in the page's right-hand gutter
+     --mobile    a full-width card closing the phone article stack */
+
+.publication-bundle {
+  font-family: Inter, sans-serif;
+}
+
+.publication-bundle__glyph {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+}
+
+.publication-bundle__glyph svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+.publication-bundle__text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.publication-bundle__title {
+  font-size: 13px;
+  font-weight: 720;
+  line-height: 1.25;
+}
+
+.publication-bundle__meta {
+  font-size: 11px;
+  font-weight: 620;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Sidebar row ─────────────────────────────────────────────────────
+   Lives inside the navy index card, below its divider. Muted like an
+   inactive section link until hovered, so it reads as an offer rather
+   than a demand. */
+.publication-bundle--sidebar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 0;
+  padding: 12px 13px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #8d97a4;
+  text-decoration: none;
+  transition: background-color 0.24s ease, border-color 0.24s ease, color 0.24s ease;
+}
+
+.publication-bundle--sidebar:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.11);
+  color: #ffffff;
+}
+
+.publication-bundle--sidebar:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.publication-bundle--sidebar .publication-bundle__meta {
+  opacity: 0.76;
+}
+
+/* ── Floating glass button ───────────────────────────────────────────
+   Fixed to the viewport so it stays put while the article scrolls. Only
+   shown once the layout leaves enough background to its right — below
+   1360px the grid's tracks run to the edge and it would sit on the
+   article instead of beside it. */
+.publication-bundle--floating {
+  position: fixed;
+  right: 34px;
+  bottom: 46px;
+  z-index: 20;
+  display: none;
+  align-items: center;
+}
+
+@media (min-width: 1360px) {
+  .publication-bundle--floating {
+    display: flex;
+  }
+}
+
+.publication-bundle__fab {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  text-decoration: none;
+  box-shadow:
+    0 18px 38px rgba(4, 12, 9, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  transition: background-color 0.24s ease, border-color 0.24s ease, transform 0.24s ease;
+}
+
+.publication-bundle__fab svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.publication-bundle--floating:hover .publication-bundle__fab {
+  border-color: rgba(255, 255, 255, 0.44);
+  background: rgba(255, 255, 255, 0.23);
+  transform: translateY(-2px);
+}
+
+.publication-bundle__fab:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* The tooltip is the only thing that says what the button does, so it
+   answers both halves: what is in the file, and how big it is. */
+.publication-bundle__tip {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 13px);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 11px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: #0e1c31;
+  box-shadow: 0 18px 36px rgba(4, 12, 9, 0.42);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(8px, -50%);
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+/* Caret joining the pill to the button. */
+.publication-bundle__tip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  margin-left: -5px;
+  background: #0e1c31;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  transform: rotate(45deg);
+}
+
+.publication-bundle--floating:hover .publication-bundle__tip,
+.publication-bundle--floating:focus-within .publication-bundle__tip {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.publication-bundle__tip-title {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 740;
+  line-height: 1.25;
+}
+
+.publication-bundle__tip-meta {
+  color: rgba(245, 249, 252, 0.62);
+  font-size: 11px;
+  font-weight: 620;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Mobile card ─────────────────────────────────────────────────────
+   Closes the phone article stack: you've read to the end, here is all
+   of it. Neutral teal rather than a section accent, since it belongs to
+   the page and not to any one paper. */
+.publication-bundle--mobile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  padding: 20px 22px calc(20px + env(safe-area-inset-bottom));
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  background:
+    linear-gradient(135deg, rgba(98, 200, 201, 0.16), transparent 46%),
+    #07110f;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.publication-bundle--mobile .publication-bundle__glyph {
+  color: #62c8c9;
+}
+
+.publication-bundle--mobile .publication-bundle__glyph svg {
+  width: 26px;
+  height: 26px;
+}
+
+.publication-bundle--mobile .publication-bundle__title {
+  font-size: 16px;
+  font-weight: 760;
+}
+
+.publication-bundle--mobile .publication-bundle__meta {
+  color: rgba(247, 250, 248, 0.62);
+  font-size: 12px;
+}
+
+.publication-bundle--mobile:focus-visible {
+  outline: 2px solid #62c8c9;
+  outline-offset: -3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .publication-bundle--sidebar,
+  .publication-bundle__fab,
+  .publication-bundle__tip {
+    transition: none;
+  }
+
+  .publication-bundle--floating:hover .publication-bundle__fab {
+    transform: none;
+  }
+}

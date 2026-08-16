@@ -78,9 +78,18 @@
 /* ── Gutter glass button ─────────────────────────────────────────────
    Out on the dark background beside its article, anchored to the
    section rather than the viewport: `left: 100%` puts it just past the
-   article column's right edge, and 75% down places it beside the body
-   copy rather than the title plates. It scrolls with the section, so
-   each article carries its own.
+   article column's right edge. It scrolls with the section, so each
+   article carries its own.
+
+   Vertically it sits one hero-height up from the section's bottom edge
+   — the same distance as the hero occupies at the top — so the button
+   is always the same span away from the next article's header no
+   matter how long the body copy runs. A percentage put it anywhere
+   between 320 and 470px above the boundary depending on the article,
+   which read as arbitrary while scrolling. BlogPage measures the hero
+   and publishes it as --publication-hero-h; the fallback covers the
+   frame before that lands, and the min() keeps the button clear of the
+   hero itself should an article ever be shorter than two heroes.
 
    The article column stops at a fixed 1254px until the grid starts
    centring at 1480px, so the button's right edge sits at 1340px and the
@@ -89,13 +98,13 @@
    button gives way and the sidebar row carries the job alone. */
 .publication-bundle--gutter {
   position: absolute;
-  top: 75%;
+  bottom: min(var(--publication-hero-h, 375px), calc(100% - 160px));
   left: 100%;
   z-index: 5;
   display: none;
   align-items: center;
   margin-left: 30px;
-  transform: translateY(-50%);
+  transform: translateY(50%);
 }
 
 @media (min-width: 1400px) {

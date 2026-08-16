@@ -6,6 +6,7 @@ import RouteSlider from './components/RouteSlider';
 import BackdropProvider from './backdrop/BackdropProvider';
 import { TransitionProvider } from './contexts/TransitionContext';
 import useTabletLayout from './hooks/useTabletLayout';
+import useDocumentMeta from './hooks/useDocumentMeta';
 import Home from './pages/Home';
 import NeoflixPage from './pages/NeoflixPage';
 import PublicationsPage from './pages/PublicationsPage';
@@ -19,6 +20,11 @@ function AppShell() {
   const isContact = location.pathname === '/contact';
   const isToolbox = location.pathname.startsWith('/toolbox');
   const showMobileDock = width > 0 && width < 600;
+
+  // Client-side navigation doesn't reload the document, so the head has
+  // to be updated by hand. The build writes the same values into each
+  // route's HTML for anything that doesn't run JavaScript.
+  useDocumentMeta();
 
   // The navbar, backdrop, and route slider each render independently.
   // They share a single source of truth — TransitionContext — for the

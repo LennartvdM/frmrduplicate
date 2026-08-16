@@ -14,7 +14,12 @@ cd frankenstein
 npm ci --prefer-offline 2>/dev/null || npm install
 # Transform docs-content/ (GitBook mirror) → compiled AST JSON + assets
 node scripts/build-docs.mjs
+# Bundle public/papers/*.pdf → one archive + its manifest
+node scripts/build-publications-zip.mjs
 npx vite build --outDir "../$OUT"
+# Give each route its own HTML head (+ sitemap, robots.txt). Must run
+# after vite build — it rewrites the emitted index.html per route.
+node scripts/build-route-html.mjs --out "../$OUT"
 cd ..
 
 echo "=== Build complete → $OUT/ ==="

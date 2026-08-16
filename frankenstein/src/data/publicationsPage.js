@@ -2,9 +2,52 @@
  * Publications Page Data
  */
 import { assetUrl } from '../utils/assetUrl';
+import bundleManifest from '../generated/publications-bundle.json';
+
+// The "all the papers at once" archive, built from public/papers/
+// by scripts/build-publications-zip.mjs. Null when there is nothing to
+// bundle, which is what hides the download from the page.
+export const bundle = bundleManifest?.count > 0 ? bundleManifest : null;
+
+// Author copies of the papers, served from public/papers/.
+// `pages`/`size` describe the committed file and are shown in the
+// attachment's meta line — re-check them if a PDF is ever replaced.
+// A section without a `pdf` entry simply renders no attachment.
+export const publicationPdfs = {
+  narrative: {
+    src: '/papers/narrative-review-frontiers-2022.pdf',
+    pages: 9,
+    size: '1.8 MB',
+  },
+  providers: {
+    src: '/papers/providers-perspective-adc-fetal-neonatal-2024.pdf',
+    pages: 7,
+    size: '1.6 MB',
+  },
+  recordreflectrefine: {
+    src: '/papers/record-reflect-refine-pediatric-research-2024.pdf',
+    pages: 10,
+    size: '1.8 MB',
+  },
+  practicalguidance: {
+    src: '/papers/practical-guidance-bmj-open-quality-2024.pdf',
+    pages: 9,
+    size: '3.3 MB',
+  },
+  drivingresearch: {
+    src: '/papers/driving-research-resuscitation-2024.pdf',
+    pages: 7,
+    size: '1.5 MB',
+  },
+  internationalcollab: {
+    src: '/papers/international-collaboration-children-2026.pdf',
+    pages: 19,
+    size: '1.6 MB',
+  },
+};
 
 // All 7 publication sections
-export const sections = [
+const baseSections = [
   {
     id: 'preface',
     title: 'Preface',
@@ -199,6 +242,13 @@ This study provides a roadmap for implementing multicenter video review initiati
 This innovative approach holds the potential to revolutionize neonatal care by driving evidence-based practice, improving patient outcomes, and enhancing the overall quality of care.`,
   },
 ];
+
+// Hang each paper's file off its section. Keeping the registry above
+// rather than inline means adding a PDF is one entry, not an edit
+// buried in a wall of markdown.
+export const sections = baseSections.map((section) =>
+  publicationPdfs[section.id] ? { ...section, pdf: publicationPdfs[section.id] } : section
+);
 
 // Video backdrop mapping — same videos as neoflix page
 export const sectionToVideo = {

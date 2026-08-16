@@ -7,6 +7,8 @@ import { renderMarkdown } from '../../utils/renderMarkdown';
 import { useBackdropTarget } from '../../backdrop/useBackdrop';
 import { BLOG_DECK, blogIdxForSection } from '../../backdrop/decks';
 import IllustrationCanvas from './IllustrationCanvas';
+import PublicationAttachment from './PublicationAttachment';
+import PublicationBundle from './PublicationBundle';
 
 /**
  * BlogPage — shared layout for /neoflix and /publications.
@@ -82,7 +84,7 @@ const PUBLICATION_PREVIEW_OVERRIDES = new Map([
   ],
 ]);
 
-export default function BlogPage({ sections, scrollTo }) {
+export default function BlogPage({ sections, scrollTo, bundle }) {
   // Internal scroll container. BlogPage renders inside RouteSlider,
   // which is `position: fixed; inset: 0` — window never scrolls under
   // that layout, so the page scrolls on this inner element instead.
@@ -331,6 +333,22 @@ export default function BlogPage({ sections, scrollTo }) {
               );
             })}
           </ul>
+
+          {/* Foot of the index: everything at once. Divider matches the
+              one the numbered sections already sit under. */}
+          {bundle && (
+            <>
+              <div
+                aria-hidden="true"
+                style={{
+                  height: 1,
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  margin: '18px 8px 0',
+                }}
+              />
+              <PublicationBundle bundle={bundle} variant="sidebar" />
+            </>
+          )}
         </motion.aside>
 
         {/* Content column */}
@@ -406,7 +424,12 @@ export default function BlogPage({ sections, scrollTo }) {
                   </div>
 
                   {hasPublicationLead && (
-                    <PublicationLead card={parsed.titleCard} citation={parsed.citation} preview={publicationPreview} />
+                    <PublicationLead
+                      card={parsed.titleCard}
+                      citation={parsed.citation}
+                      preview={publicationPreview}
+                      pdf={section.pdf}
+                    />
                   )}
                 </div>
 
@@ -458,6 +481,10 @@ export default function BlogPage({ sections, scrollTo }) {
           <div aria-hidden="true" style={{ minHeight: 'calc(100vh - 200px)' }} />
         </motion.article>
       </div>
+
+      {/* Parked in the right-hand gutter, outside the grid entirely, so
+          it follows the reader instead of belonging to one section. */}
+      <PublicationBundle bundle={bundle} variant="floating" />
 
       <style>{`
         .blog-section {
@@ -562,12 +589,17 @@ export default function BlogPage({ sections, scrollTo }) {
           pointer-events: none;
           border-radius: 12px 12px 0 0;
         }
+        /* Journal-page still, peeking from behind the lead's right-hand
+           plates. Its left edge is set to the attachment sheet's left
+           edge (grid column 7 plus that sheet's 18px inset), so the
+           still reads as one band tucked underneath rather than a
+           rectangle the sheet happens to overlap. */
         .blog-section__glass-preview-plate {
           position: absolute;
           top: 266px;
           right: 0;
           bottom: 0;
-          left: 46%;
+          left: 52%;
           overflow: hidden;
           background: #f7fafc;
         }
@@ -824,7 +856,7 @@ function PublicationGlassPreview({ preview }) {
   );
 }
 
-function PublicationLead({ card, citation, preview }) {
+function PublicationLead({ card, citation, preview, pdf }) {
 
   return (
     <div className="publication-lead">
@@ -862,6 +894,9 @@ function PublicationLead({ card, citation, preview }) {
           {citation}
         </cite>
       )}
+      {/* Third plate in the stack: the paper's own PDF, tucked under the
+          title card's right edge opposite the citation. */}
+      <PublicationAttachment pdf={pdf} variant="blog" />
     </div>
   );
 }

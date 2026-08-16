@@ -1,7 +1,5 @@
 /* PublicationBundle — "take all the papers" in three materials.
      --sidebar   a row under the section index, inside the navy card
-     --gutter    a round glass button out on the background beside an
-                 article, one per article
      --mobile    a full-width card closing the phone article stack */
 
 .publication-bundle {
@@ -75,139 +73,6 @@
   opacity: 0.76;
 }
 
-/* ── Gutter glass button ─────────────────────────────────────────────
-   Out on the dark background beside its article, anchored to the
-   section rather than the viewport: `left: 100%` puts it just past the
-   article column's right edge. It scrolls with the section, so each
-   article carries its own.
-
-   Vertically it sits one hero-height up from the section's bottom edge
-   — the same distance as the hero occupies at the top — so the button
-   is always the same span away from the next article's header no
-   matter how long the body copy runs. A percentage put it anywhere
-   between 320 and 470px above the boundary depending on the article,
-   which read as arbitrary while scrolling. BlogPage measures the hero
-   and publishes it as --publication-hero-h; the fallback covers the
-   frame before that lands, and the min() keeps the button clear of the
-   hero itself should an article ever be shorter than two heroes.
-
-   The article column stops at a fixed 1254px until the grid starts
-   centring at 1480px, so the button's right edge sits at 1340px and the
-   room left over is simply `viewport - 1340`. Below 1400 that is under
-   60px, which a classic (non-overlay) scrollbar would eat into, so the
-   button gives way and the sidebar row carries the job alone. */
-.publication-bundle--gutter {
-  position: absolute;
-  bottom: min(var(--publication-hero-h, 375px), calc(100% - 160px));
-  left: 100%;
-  z-index: 5;
-  display: none;
-  align-items: center;
-  margin-left: 30px;
-  transform: translateY(50%);
-}
-
-@media (min-width: 1400px) {
-  .publication-bundle--gutter {
-    display: flex;
-  }
-}
-
-.publication-bundle__fab {
-  display: grid;
-  place-items: center;
-  width: 56px;
-  height: 56px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
-  color: #ffffff;
-  text-decoration: none;
-  box-shadow:
-    0 18px 38px rgba(4, 12, 9, 0.42),
-    inset 0 1px 0 rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(14px) saturate(1.1);
-  -webkit-backdrop-filter: blur(14px) saturate(1.1);
-  transition: background-color 0.24s ease, border-color 0.24s ease, transform 0.24s ease;
-}
-
-.publication-bundle__fab svg {
-  display: block;
-  width: 24px;
-  height: 24px;
-}
-
-.publication-bundle--gutter:hover .publication-bundle__fab {
-  border-color: rgba(255, 255, 255, 0.44);
-  background: rgba(255, 255, 255, 0.23);
-  transform: translateY(-2px);
-}
-
-.publication-bundle__fab:focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: 3px;
-}
-
-/* The tooltip is the only thing that says what the button does, so it
-   answers both halves: what is in the file, and how big it is. */
-.publication-bundle__tip {
-  position: absolute;
-  top: 50%;
-  right: calc(100% + 13px);
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding: 11px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
-  background: #0e1c31;
-  box-shadow: 0 18px 36px rgba(4, 12, 9, 0.42);
-  white-space: nowrap;
-  opacity: 0;
-  transform: translate(8px, -50%);
-  pointer-events: none;
-  transition: opacity 0.22s ease, transform 0.22s ease;
-}
-
-/* Caret joining the pill to the button. */
-.publication-bundle__tip::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 100%;
-  width: 8px;
-  height: 8px;
-  margin-top: -4px;
-  margin-left: -5px;
-  background: #0e1c31;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  border-right: 1px solid rgba(255, 255, 255, 0.12);
-  transform: rotate(45deg);
-}
-
-.publication-bundle--gutter:hover .publication-bundle__tip,
-.publication-bundle--gutter:focus-within .publication-bundle__tip {
-  opacity: 1;
-  transform: translate(0, -50%);
-}
-
-.publication-bundle__tip-title {
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 740;
-  line-height: 1.25;
-}
-
-.publication-bundle__tip-meta {
-  color: rgba(245, 249, 252, 0.62);
-  font-size: 11px;
-  font-weight: 620;
-  line-height: 1.2;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  font-variant-numeric: tabular-nums;
-}
-
 /* ── Mobile card ─────────────────────────────────────────────────────
    Closes the phone article stack: you've read to the end, here is all
    of it. Neutral teal rather than a section accent, since it belongs to
@@ -251,13 +116,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .publication-bundle--sidebar,
-  .publication-bundle__fab,
-  .publication-bundle__tip {
+  .publication-bundle--sidebar {
     transition: none;
-  }
-
-  .publication-bundle--gutter:hover .publication-bundle__fab {
-    transform: none;
   }
 }

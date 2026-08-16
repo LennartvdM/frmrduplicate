@@ -16,9 +16,9 @@ import '../../styles/publication-bundle.css';
  *   mobile   a full-width card closing out the phone article stack
  *
  * The gutter button is anchored to its article, not to the viewport: it
- * sits three-quarters of the way down the section and scrolls with it,
- * so it stays next to whatever you are reading instead of trailing you
- * around. It only appears above 1400px, which is where the grid's
+ * sits one hero-height up from the section's bottom edge and scrolls
+ * with it, so it stays next to whatever you are reading instead of
+ * trailing you around. It only appears above 1400px, which is where the grid's
  * tracks stop short of the viewport and leave enough background to sit
  * on; below that the sidebar row carries the job alone.
  *

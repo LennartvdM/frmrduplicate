@@ -165,6 +165,36 @@ export default function BlogPage({ sections, scrollTo, bundle }) {
     };
   }, []);
 
+  // Publish each publication section's hero height as a custom property
+  // so the gutter download button can sit that far up from the section's
+  // bottom edge. Anchoring it to a percentage instead put it at a
+  // different distance from every section boundary — articles run from
+  // 900 to 1500px of body copy — which read as arbitrary while
+  // scrolling. Measured rather than hard-coded because a wrapped title
+  // or a three-line citation changes the hero's height.
+  useEffect(() => {
+    const root = scrollRef.current;
+    if (!root || !bundle || typeof ResizeObserver === 'undefined') return undefined;
+
+    const pairs = Array.from(
+      root.querySelectorAll('section.blog-section--with-publication')
+    )
+      .map((section) => [section, section.querySelector('.blog-section__lead')])
+      .filter(([, lead]) => lead);
+    if (!pairs.length) return undefined;
+
+    const apply = () => {
+      pairs.forEach(([section, lead]) => {
+        section.style.setProperty('--publication-hero-h', `${Math.round(lead.offsetHeight)}px`);
+      });
+    };
+
+    apply();
+    const observer = new ResizeObserver(apply);
+    pairs.forEach(([, lead]) => observer.observe(lead));
+    return () => observer.disconnect();
+  }, [sections, bundle]);
+
   // Intercept clicks on internal toolbox/article links inside the
   // markdown body so they route through the direction-aware slide
   // instead of triggering a full page reload. renderMarkdown tags

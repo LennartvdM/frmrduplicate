@@ -475,3 +475,25 @@
     transform: none;
   }
 }
+
+/* ── Cooling off ─────────────────────────────────────────────────────
+   A soft brake after an implausible run of clicks on one file (see
+   hooks/useDownloadGuard.js). Muted rather than disabled: the control
+   keeps its shape and stays focusable, so a keyboard user can still
+   reach it and hear why it isn't firing yet. */
+.publication-attachment__download.is-cooling,
+.publication-attachment--gutter.is-cooling .publication-attachment__fab {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.publication-attachment--gutter.is-cooling .publication-attachment__fab:hover {
+  transform: none;
+}
+
+/* Held open while cooling, and while the pointer is nowhere near it:
+   the countdown is the only thing explaining why the click did nothing. */
+.publication-attachment--gutter.is-cooling .publication-attachment__tip {
+  opacity: 1;
+  transform: translate(0, -50%);
+}

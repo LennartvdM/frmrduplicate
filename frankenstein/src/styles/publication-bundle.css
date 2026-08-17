@@ -120,3 +120,11 @@
     transition: none;
   }
 }
+
+/* Cooling off — see hooks/useDownloadGuard.js. The row keeps its shape
+   and its focusability; only the emphasis drops, and the label itself
+   carries the countdown. */
+.publication-bundle.is-cooling {
+  opacity: 0.62;
+  cursor: not-allowed;
+}

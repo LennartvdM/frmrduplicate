@@ -1,5 +1,6 @@
 import React from 'react';
 import { assetUrl } from '../../utils/assetUrl';
+import useDownloadGuard from '../../hooks/useDownloadGuard';
 import '../../styles/publication-attachment.css';
 
 /**
@@ -31,6 +32,11 @@ import '../../styles/publication-attachment.css';
  * arrow onto a stack — one mark for this paper, another for all of them.
  */
 export default function PublicationAttachment({ pdf, variant = 'blog', accentLabel, title }) {
+  // Keyed by file, so this paper's card button and its gutter button
+  // share one brake. Called before the early return because hooks must
+  // run unconditionally; a missing key makes it inert.
+  const guard = useDownloadGuard(pdf?.src);
+
   if (!pdf || !pdf.src) return null;
 
   const href = assetUrl(pdf.src);
@@ -47,18 +53,30 @@ export default function PublicationAttachment({ pdf, variant = 'blog', accentLab
       : `Download this paper — ${meta.replace(/ · /g, ', ')}`;
 
     return (
-      <div className="publication-attachment publication-attachment--gutter">
+      <div
+        className={`publication-attachment publication-attachment--gutter${
+          guard.cooling ? ' is-cooling' : ''
+        }`}
+      >
         <a
           className="publication-attachment__fab"
           href={href}
           download
-          aria-label={described}
+          aria-disabled={guard.cooling || undefined}
+          aria-label={guard.cooling ? waitLabel(guard.secondsLeft) : described}
+          onClick={guard.onClick}
         >
           <DownloadArrow />
         </a>
+        {/* Pinned open while cooling: a click that does nothing needs to
+            say why, or it just reads as a broken button. */}
         <span className="publication-attachment__tip" aria-hidden="true">
-          <span className="publication-attachment__tip-title">Download this paper</span>
-          <span className="publication-attachment__tip-meta">{meta}</span>
+          <span className="publication-attachment__tip-title">
+            {guard.cooling ? 'Just a moment' : 'Download this paper'}
+          </span>
+          <span className="publication-attachment__tip-meta">
+            {guard.cooling ? `Ready again in ${guard.secondsLeft}s` : meta}
+          </span>
         </span>
       </div>
     );
@@ -92,17 +110,28 @@ export default function PublicationAttachment({ pdf, variant = 'blog', accentLab
         </a>
 
         <a
-          className="publication-attachment__download"
+          className={`publication-attachment__download${guard.cooling ? ' is-cooling' : ''}`}
           href={href}
           download
-          aria-label={downloadLabel}
-          title={downloadLabel}
+          aria-disabled={guard.cooling || undefined}
+          aria-label={guard.cooling ? waitLabel(guard.secondsLeft) : downloadLabel}
+          title={guard.cooling ? waitLabel(guard.secondsLeft) : downloadLabel}
+          onClick={guard.onClick}
         >
           <DownloadArrow />
         </a>
       </div>
     </div>
   );
+}
+
+/**
+ * Never "you already downloaded this" — the visitor may not have, and
+ * being told otherwise about a file you haven't got is worse than the
+ * extra request the message was trying to save.
+ */
+function waitLabel(seconds) {
+  return `Download ready again in ${seconds} second${seconds === 1 ? '' : 's'}`;
 }
 
 /**

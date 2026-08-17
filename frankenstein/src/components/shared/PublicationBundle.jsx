@@ -1,5 +1,6 @@
 import React from 'react';
 import { assetUrl } from '../../utils/assetUrl';
+import useDownloadGuard from '../../hooks/useDownloadGuard';
 import '../../styles/publication-bundle.css';
 
 /**
@@ -23,6 +24,11 @@ import '../../styles/publication-bundle.css';
  * public/papers/ — so a seventh paper updates the label by itself.
  */
 export default function PublicationBundle({ bundle, variant = 'sidebar' }) {
+  // The archive is the heaviest thing on the site at 12MB, so it gets
+  // the same soft brake the individual papers do. Hook first: it must
+  // run unconditionally, and a missing key makes it inert.
+  const guard = useDownloadGuard(bundle?.file);
+
   if (!bundle || !bundle.count || !bundle.file) return null;
 
   const papers = `${bundle.count} paper${bundle.count === 1 ? '' : 's'}`;
@@ -31,21 +37,32 @@ export default function PublicationBundle({ bundle, variant = 'sidebar' }) {
   // Spelled out for screen readers, since the visible label is split
   // across two lines and the tooltip never reaches them.
   const described = `${action} as one ZIP archive, ${bundle.size}`;
+  const waiting = `Download ready again in ${guard.secondsLeft} second${
+    guard.secondsLeft === 1 ? '' : 's'
+  }`;
   const href = assetUrl(bundle.file);
 
   return (
     <a
-      className={`publication-bundle publication-bundle--${variant}`}
+      className={`publication-bundle publication-bundle--${variant}${
+        guard.cooling ? ' is-cooling' : ''
+      }`}
       href={href}
       download
-      aria-label={described}
+      aria-disabled={guard.cooling || undefined}
+      aria-label={guard.cooling ? waiting : described}
+      onClick={guard.onClick}
     >
       <span className="publication-bundle__glyph" aria-hidden="true">
         <ArchiveDownload />
       </span>
       <span className="publication-bundle__text">
-        <span className="publication-bundle__title">{action}</span>
-        <span className="publication-bundle__meta">{meta}</span>
+        <span className="publication-bundle__title">
+          {guard.cooling ? 'Just a moment' : action}
+        </span>
+        <span className="publication-bundle__meta">
+          {guard.cooling ? `Ready again in ${guard.secondsLeft}s` : meta}
+        </span>
       </span>
     </a>
   );

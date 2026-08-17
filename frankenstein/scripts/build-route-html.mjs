@@ -202,9 +202,15 @@ async function main() {
   }
 
   await fs.writeFile(path.join(outDir, 'sitemap.xml'), sitemap(routePaths));
+  // /papers/ is disallowed for bandwidth, not secrecy. The PDFs already
+  // carry X-Robots-Tag: noindex, but a crawler only reads that header
+  // after downloading the file — so Google was pulling 24MB of papers,
+  // seeing "noindex", discarding them, and coming back later. Disallow
+  // stops the fetch instead of wasting it. Readers are unaffected;
+  // robots.txt binds crawlers, not browsers.
   await fs.writeFile(
     path.join(outDir, 'robots.txt'),
-    `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`
+    `User-agent: *\nAllow: /\nDisallow: /papers/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`
   );
 
   console.log(

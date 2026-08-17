@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { pageMeta, resolveSlug, getPage } from '../data/docsIndex';
 import { resolveRouteMeta } from '../data/routeMeta';
+import { recordForSlug } from '../data/publicationRecords';
 
 /**
  * Keeps <title> and the head's meta tags in step with the current route.
@@ -24,6 +25,9 @@ export default function useDocumentMeta() {
       docsPages: pageMeta,
       resolveSlug,
       leadTextFor: leadParagraphFor,
+      // Same resolver the build uses, so a paper reached by clicking
+      // ends up with the head it would have had on a direct visit.
+      paperFor: (slug) => recordForSlug(slug)?.record || null,
     });
 
     document.title = meta.title;

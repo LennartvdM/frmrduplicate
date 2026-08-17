@@ -11,12 +11,13 @@ import Home from './pages/Home';
 import NeoflixPage from './pages/NeoflixPage';
 import PublicationsPage from './pages/PublicationsPage';
 import DocsPage from './pages/DocsPage';
+import PaperPage from './pages/PaperPage';
 
 function AppShell() {
   const location = useLocation();
   const { width } = useTabletLayout();
   const isNeoflix = location.pathname === '/neoflix' || location.pathname.startsWith('/neoflix/');
-  const isPublications = location.pathname === '/publications';
+  const isPublications = location.pathname.startsWith('/publications');
   const isContact = location.pathname === '/contact';
   const isToolbox = location.pathname.startsWith('/toolbox');
   const showMobileDock = width > 0 && width < 600;
@@ -43,6 +44,7 @@ function AppShell() {
               <Route path="/" element={<Home />} />
               <Route path="/neoflix" element={<NeoflixPage />} />
               <Route path="/publications" element={<PublicationsPage />} />
+              <Route path="/publications/:slug" element={<PaperPage />} />
               <Route path="/contact" element={<NeoflixPage scrollTo="contact" />} />
               <Route path="/toolbox" element={<DocsPage />} />
               <Route path="/toolbox/*" element={<DocsPage />} />

@@ -121,8 +121,25 @@ export function canonicalUrl(pathname) {
  * map; `leadTextFor` is an optional (slug) => string used only when a
  * toolbox page has no description of its own.
  */
-export function resolveRouteMeta(pathname, { docsPages, leadTextFor, resolveSlug } = {}) {
+export function resolveRouteMeta(pathname, { docsPages, leadTextFor, resolveSlug, paperFor } = {}) {
   const path = normalizePath(pathname);
+
+  // A paper's own page is described by the paper, not by the index it
+  // sits under: its real title, and its abstract's opening as the
+  // description, so a search result shows the study rather than the site.
+  if (path.startsWith('/publications/') && paperFor) {
+    const paper = paperFor(path.slice('/publications/'.length));
+    if (paper) {
+      return withDefaults(
+        {
+          title: `${paper.title} | ${SITE_NAME}`,
+          description: paper.abstract || ROUTE_META['/publications'].description,
+        },
+        path
+      );
+    }
+    return withDefaults(ROUTE_META['/publications'], path);
+  }
 
   if (path.startsWith('/toolbox')) {
     const raw = path.slice('/toolbox'.length).replace(/^\/+/, '');

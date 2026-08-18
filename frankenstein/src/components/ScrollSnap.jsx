@@ -26,8 +26,18 @@ const ScrollSnap = ({ children }) => {
     if (typeof window === 'undefined') return 'desktop';
     return window.innerWidth >= BREAKPOINT_WIDTH ? 'desktop' : 'tablet';
   });
-  const [dotNavTop, setDotNavTop] = useState(null); // null = default 50%
   const [dotNavReady, setDotNavReady] = useState(false);
+  // The dot nav tracks the active section's carousel per scroll frame.
+  // Its position is written imperatively to this ref (never through
+  // React state) — routing it through setState re-rendered this whole
+  // component on every animation frame for the duration of every
+  // scroll, and re-targeted a 0.4s `top` transition 60×/s so it never
+  // settled. Tracking the real position 1:1 needs no transition at all.
+  const dotNavRef = useRef(null);
+  // Cached offsetTop/offsetHeight per section, refreshed alongside the
+  // section list. Reading them live inside the scroll handler forced
+  // ~12 synchronous layout reads per scroll event.
+  const sectionMetricsRef = useRef([]);
 
   // The backdrop's Home y-stack translates based on this container's
   // scrollTop/clientHeight. Published imperatively from inside the
@@ -83,6 +93,10 @@ const ScrollSnap = ({ children }) => {
     if (!container) return;
 
     sectionsRef.current = Array.from(container.querySelectorAll('section[id]'));
+    sectionMetricsRef.current = sectionsRef.current.map((section) => ({
+      top: section.offsetTop,
+      height: section.offsetHeight,
+    }));
     const count = sectionsRef.current.length;
     setSectionCount(count);
 
@@ -234,18 +248,24 @@ const ScrollSnap = ({ children }) => {
     };
   }, [scrollToIndex, refreshSections]);
 
-  // Align dot nav vertically to the carousel in sections that have one
+  // Align dot nav vertically to the carousel in sections that have one.
+  // Writes the position straight to the nav element and then announces
+  // it: MedicalDesktopLayout keeps SVG punch-out circles glued to the
+  // arrow buttons and listens for this event instead of running its own
+  // per-frame polling loop.
   const dotNavRafRef = useRef(null);
   const updateDotNavPosition = useCallback(() => {
+    const nav = dotNavRef.current;
+    if (!nav) return;
     const activeSection = sectionsRef.current[currentIndexRef.current];
-    if (!activeSection) { setDotNavTop(null); return; }
-    const target = activeSection.querySelector('[data-dot-nav-target]');
-    if (!target) { setDotNavTop(null); return; }
-    const rect = target.getBoundingClientRect();
-    // Only update if the element is actually visible (has dimensions)
-    if (rect.height === 0) { setDotNavTop(null); return; }
-    const centerY = rect.top + rect.height / 2;
-    setDotNavTop(centerY);
+    const target = activeSection?.querySelector('[data-dot-nav-target]');
+    const rect = target?.getBoundingClientRect();
+    if (rect && rect.height !== 0) {
+      nav.style.top = `${rect.top + rect.height / 2}px`;
+    } else {
+      nav.style.top = '50%';
+    }
+    window.dispatchEvent(new CustomEvent('scrollsnap:dotnav-sync'));
   }, []);
 
   useEffect(() => {
@@ -258,17 +278,16 @@ const ScrollSnap = ({ children }) => {
       // Don't update during resize/orientation changes
       if (isResizingRef.current) return;
 
-      // Determine which discrete section (0-4) is most visible
-      // Use viewport center to determine the active section
+      // Determine which discrete section (0-4) is most visible, from
+      // the offsets cached in refreshSections — no layout reads here.
       const viewportCenter = container.scrollTop + (container.clientHeight / 2);
 
       let closestIndex = 0;
       let closestDistance = Infinity;
 
-      sectionsRef.current.forEach((section, idx) => {
-        if (!section) return;
-        const sectionTop = section.offsetTop;
-        const sectionCenter = sectionTop + (section.offsetHeight / 2);
+      sectionMetricsRef.current.forEach((metrics, idx) => {
+        if (!metrics) return;
+        const sectionCenter = metrics.top + (metrics.height / 2);
         const distance = Math.abs(viewportCenter - sectionCenter);
 
         if (distance < closestDistance) {
@@ -365,11 +384,13 @@ const ScrollSnap = ({ children }) => {
   }, [currentBreakpoint, refreshSections]);
 
   useEffect(() => {
-    // Measure immediately + after a delay (for lazy-loaded/animated sections)
+    // Measure immediately + after a delay (for lazy-loaded/animated
+    // sections). dotNavReady is a dependency because the nav element
+    // mounts late — the first write has to wait for its ref to exist.
     updateDotNavPosition();
     const delayId = setTimeout(updateDotNavPosition, 500);
     return () => clearTimeout(delayId);
-  }, [currentIndex, updateDotNavPosition]);
+  }, [currentIndex, dotNavReady, updateDotNavPosition]);
 
   // Listen for home button click to scroll to top
   useEffect(() => {
@@ -435,9 +456,11 @@ const ScrollSnap = ({ children }) => {
           height: 56px;
           border-radius: 50%;
           border: 3px solid rgba(255,255,255,0.45);
-          background: rgba(255,255,255,0.10);
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
+          /* Flat fill, no backdrop-filter: a permanently-animating
+             element (pulse ring + bouncing chevron) with backdrop
+             blur forced the video behind it to be re-blurred every
+             frame, indefinitely. */
+          background: rgba(255,255,255,0.16);
           cursor: pointer;
           display: flex;
           align-items: center;
@@ -522,12 +545,16 @@ const ScrollSnap = ({ children }) => {
       `}</style>
 
       <nav
+        ref={dotNavRef}
         className="scrollsnap-dotnav fixed right-7 z-50 flex flex-col items-center"
         style={{
           gap: '12px',
-          top: dotNavTop != null ? `${dotNavTop}px` : '50%',
+          // `top` is written imperatively by updateDotNavPosition; it
+          // tracks the carousel 1:1 per scroll frame, so it needs no
+          // transition (a transition retargeted every frame never
+          // settles and forces layout each tick).
+          top: '50%',
           transform: 'translateY(-50%)',
-          transition: 'top 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
         <button

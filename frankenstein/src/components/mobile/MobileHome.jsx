@@ -46,6 +46,7 @@ const MOBILE_PANELS = [
   {
     id: 'urgency',
     video: assetUrl('/videos/mobile/urgency.mp4'),
+    poster: assetUrl('/videos/mobile/urgency_poster.jpg'),
     target: 'time-sensitive',
     label: 'Medical interventions demand precision and urgency.',
     lines: [
@@ -56,6 +57,7 @@ const MOBILE_PANELS = [
   {
     id: 'coordination',
     video: assetUrl('/videos/mobile/coordination.mp4'),
+    poster: assetUrl('/videos/mobile/coordination_poster.jpg'),
     target: 'like-a-dance',
     label: 'Which makes coordination within teams vital for success.',
     lines: [
@@ -66,6 +68,7 @@ const MOBILE_PANELS = [
   {
     id: 'tunnelvision',
     video: assetUrl('/videos/mobile/tunnelvision.mp4'),
+    poster: assetUrl('/videos/mobile/tunnelvision_poster.jpg'),
     target: 'cost',
     label: 'Task-driven focus can lead to tunnel vision and misalignment.',
     lines: [
@@ -97,6 +100,7 @@ const MOBILE_PANELS = [
   {
     id: 'reflection',
     video: assetUrl('/videos/mobile/reflection.mp4'),
+    poster: assetUrl('/videos/mobile/reflection_poster.jpg'),
     target: 'sharpening',
     label: 'Quiet reflection allows for sharpening skills.',
     lines: [
@@ -107,6 +111,7 @@ const MOBILE_PANELS = [
   {
     id: 'cohesion',
     video: assetUrl('/videos/mobile/cohesion.mp4'),
+    poster: assetUrl('/videos/mobile/cohesion_poster.jpg'),
     target: 'team-dynamics',
     label: 'Further video debriefs foster cohesion amongst peers.',
     lines: [
@@ -117,6 +122,7 @@ const MOBILE_PANELS = [
   {
     id: 'alignment',
     video: assetUrl('/videos/mobile/alignment.mp4'),
+    poster: assetUrl('/videos/mobile/alignment_poster.jpg'),
     target: 'perspectives',
     label: 'Shared understanding enhances decisiveness.',
     lines: [
@@ -500,7 +506,7 @@ export default function MobileHome() {
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
           >
             <source src={INTRO_BLUR_VIDEO} type="video/mp4" />
           </video>

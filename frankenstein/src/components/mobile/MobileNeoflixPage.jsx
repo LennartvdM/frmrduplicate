@@ -6,6 +6,7 @@ import { useBackdropTarget } from '../../backdrop/useBackdrop';
 import { assetUrl } from '../../utils/assetUrl';
 import { renderMarkdown } from '../../utils/renderMarkdown';
 import { decorativeVideoProps } from '../../utils/decorativeVideoProps';
+import { prefersReducedMedia, stillFor } from '../../utils/reducedMedia';
 import '../../styles/mobile-neoflix.css';
 
 const NEOFLIX_MEDIA_BY_SECTION = {
@@ -72,9 +73,10 @@ export default function MobileNeoflixPage({ sections, scrollTo }) {
   const sectionIds = sections.map((section) => section.id);
   const active = useScrollSpy(sectionIds, 96, scrollRef);
   const transitionNavigate = useTransitionNavigate();
-  const reduceMotion = typeof window !== 'undefined'
-    && typeof window.matchMedia === 'function'
-    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Reduced-media mode: OS reduced-motion, Save-Data, or a low-memory
+  // device (utils/reducedMedia). Loops pause and high-quality stills
+  // stand in for the section footage.
+  const liteMedia = prefersReducedMedia();
 
   // Mobile Neoflix paints its own media surfaces. Clear the shared blog
   // backdrop so stale desktop targets do not sit behind this route.
@@ -102,7 +104,7 @@ export default function MobileNeoflixPage({ sections, scrollTo }) {
     if (!root || typeof IntersectionObserver === 'undefined') return undefined;
 
     const videos = [heroVideoRef.current, ...videoRefs.current].filter(Boolean);
-    if (reduceMotion) {
+    if (liteMedia) {
       videos.forEach((video) => video.pause());
       return undefined;
     }
@@ -124,7 +126,7 @@ export default function MobileNeoflixPage({ sections, scrollTo }) {
     videos.forEach((video) => observer.observe(video));
 
     return () => observer.disconnect();
-  }, [reduceMotion]);
+  }, [liteMedia]);
 
   const scrollToSection = useCallback((id) => {
     const container = scrollRef.current;
@@ -156,7 +158,7 @@ export default function MobileNeoflixPage({ sections, scrollTo }) {
           muted
           loop
           playsInline
-          autoPlay={!reduceMotion}
+          autoPlay={!liteMedia}
           preload="metadata"
           aria-hidden="true"
         >
@@ -213,15 +215,19 @@ export default function MobileNeoflixPage({ sections, scrollTo }) {
           >
             {media?.blur && (
               <div className="mobile-neoflix__section-backdrop" aria-hidden="true">
-                <video
-                  {...decorativeVideoProps}
-                  ref={(node) => { videoRefs.current[index * 2] = node; }}
-                  src={media.blur}
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                />
+                {liteMedia ? (
+                  <img src={stillFor(media.blur)} alt="" draggable={false} />
+                ) : (
+                  <video
+                    {...decorativeVideoProps}
+                    ref={(node) => { videoRefs.current[index * 2] = node; }}
+                    src={media.blur}
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                  />
+                )}
                 <div />
               </div>
             )}
@@ -232,16 +238,20 @@ export default function MobileNeoflixPage({ sections, scrollTo }) {
                 <div className="mobile-neoflix__section-content">
             {media?.clean && (
               <div className="mobile-neoflix__visual">
-                <video
-                  {...decorativeVideoProps}
-                  ref={(node) => { videoRefs.current[(index * 2) + 1] = node; }}
-                  src={media.clean}
-                  muted
-                  loop
-                  playsInline
-                  preload={index < 2 ? 'auto' : 'metadata'}
-                  aria-hidden="true"
-                />
+                {liteMedia ? (
+                  <img src={stillFor(media.clean)} alt="" aria-hidden="true" draggable={false} />
+                ) : (
+                  <video
+                    {...decorativeVideoProps}
+                    ref={(node) => { videoRefs.current[(index * 2) + 1] = node; }}
+                    src={media.clean}
+                    muted
+                    loop
+                    playsInline
+                    preload={index < 2 ? 'auto' : 'metadata'}
+                    aria-hidden="true"
+                  />
+                )}
               </div>
             )}
 

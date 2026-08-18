@@ -6,6 +6,7 @@ import { useBackdropTarget } from '../../backdrop/useBackdrop';
 import { assetUrl } from '../../utils/assetUrl';
 import { renderMarkdown } from '../../utils/renderMarkdown';
 import { decorativeVideoProps } from '../../utils/decorativeVideoProps';
+import { prefersReducedMedia, stillFor } from '../../utils/reducedMedia';
 import PublicationAttachment from '../shared/PublicationAttachment';
 import PublicationBundle from '../shared/PublicationBundle';
 import '../../styles/mobile-publications.css';
@@ -106,9 +107,10 @@ export default function MobilePublicationsPage({ sections, scrollTo, bundle }) {
   const sectionIds = sections.map((section) => section.id);
   const active = useScrollSpy(sectionIds, 88, scrollRef);
   const transitionNavigate = useTransitionNavigate();
-  const reduceMotion = typeof window !== 'undefined'
-    && typeof window.matchMedia === 'function'
-    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Reduced-media mode: OS reduced-motion, Save-Data, or a low-memory
+  // device (utils/reducedMedia). Loops pause and high-quality stills
+  // stand in for the section footage.
+  const liteMedia = prefersReducedMedia();
 
   useBackdropTarget('blog', null);
 
@@ -135,7 +137,7 @@ export default function MobilePublicationsPage({ sections, scrollTo, bundle }) {
     const videos = [heroVideoRef.current, ...articleVideoRefs.current].filter(Boolean);
     if (!videos.length) return undefined;
 
-    if (reduceMotion) {
+    if (liteMedia) {
       videos.forEach((video) => video.pause());
       return undefined;
     }
@@ -156,7 +158,7 @@ export default function MobilePublicationsPage({ sections, scrollTo, bundle }) {
 
     videos.forEach((video) => observer.observe(video));
     return () => observer.disconnect();
-  }, [reduceMotion, sections]);
+  }, [liteMedia, sections]);
 
   const scrollToSection = useCallback((id) => {
     const container = scrollRef.current;
@@ -188,7 +190,7 @@ export default function MobilePublicationsPage({ sections, scrollTo, bundle }) {
           muted
           loop
           playsInline
-          autoPlay={!reduceMotion}
+          autoPlay={!liteMedia}
           preload="metadata"
           aria-hidden="true"
         >
@@ -249,15 +251,19 @@ export default function MobilePublicationsPage({ sections, scrollTo, bundle }) {
             style={{ '--publication-accent': media.accent }}
           >
             <div className="mobile-publications__article-backdrop" aria-hidden="true">
-              <video
-                {...decorativeVideoProps}
-                ref={(node) => { articleVideoRefs.current[index] = node; }}
-                src={media.blur}
-                muted
-                loop
-                playsInline
-                preload="metadata"
-              />
+              {liteMedia ? (
+                <img src={stillFor(media.blur)} alt="" draggable={false} />
+              ) : (
+                <video
+                  {...decorativeVideoProps}
+                  ref={(node) => { articleVideoRefs.current[index] = node; }}
+                  src={media.blur}
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                />
+              )}
               <div />
             </div>
 

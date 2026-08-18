@@ -58,11 +58,18 @@ everything, regenerates route HTML, and runs the smoke assertions.
 6. **`HOME_CELLS` in `src/backdrop/BackdropProvider.jsx` mirrors the
    `sections` array in `src/pages/DesktopHome.jsx` by position.** Changing
    one requires changing the other.
-7. **Media weight is budgeted.** Videos are compressed on purpose
-   (blurred backdrops ~30fps/CRF≈30, montage 540p). If you add media, keep
-   posters, `preload="metadata"`, and sizes in the same range as the
-   existing files. Don't reintroduce a Google Fonts link (fonts are
-   self-hosted) and don't remove `dnt=1` from the Vimeo URL.
+7. **Media quality is deliberate — do NOT re-compress the backdrops.**
+   The blurred backdrop clips and the phone montage ship at the owner's
+   original encodes; pushing them to CRF≈30 posterizes the gradients
+   (that mistake and its revert are documented in AUDIT.md). The cheap
+   path for constrained visitors is `utils/reducedMedia.js`: webp
+   stills in `public/videos/stills/` replace the loops under
+   prefers-reduced-motion / Save-Data / low device memory. If a clip
+   changes, regenerate its still (`ffmpeg -ss 1.5 -i clip.mp4
+   -frames:v 1 -c:v libwebp -quality 88 stills/<name>.webp`). New
+   media keeps posters and `preload="metadata"`. Don't reintroduce a
+   Google Fonts link (fonts are self-hosted) and don't remove `dnt=1`
+   from the Vimeo URL.
 8. **No cookies, no analytics without an explicit cookieless choice** —
    the site's privacy posture is "no banner needed" and it should stay so.
 9. **Netlify config**: there is intentionally NO `/* → /index.html`

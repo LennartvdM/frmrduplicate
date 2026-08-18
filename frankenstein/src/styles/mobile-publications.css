@@ -222,7 +222,8 @@
   background: #07110f;
 }
 
-.mobile-publications__article-backdrop video {
+.mobile-publications__article-backdrop video,
+.mobile-publications__article-backdrop img {
   position: absolute;
   inset: -18px;
   display: block;

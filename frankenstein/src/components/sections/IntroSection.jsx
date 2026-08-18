@@ -1,7 +1,6 @@
 import React from 'react';
-import { IntroSlide } from 'neoflix-intro-card';
+import IntroSlide from '../intro/IntroSlide.jsx';
 import { useTabletLayout } from '../../hooks/useTabletLayout';
-import HeroScrollCue from '../HeroScrollCue';
 
 const IntroSection = ({ inView }) => {
   const { isTablet, isTouchDevice, width } = useTabletLayout();
@@ -27,13 +26,16 @@ const IntroSection = ({ inView }) => {
         backgroundColor="#F5F9FC"
         fullHeight={false}
         subtitle="Improve patient care through video reflection."
+        cyclePaused={!inView}
         style={{
           width: '100%',
           height: '100%',
           background: 'linear-gradient(to top, #FFFFFF, #F5F9FC)',
         }}
       />
-      <HeroScrollCue />
+      {/* The clickable scroll cue lives in ScrollSnap's overlay; a second
+          cue here stacked on top of it and doubled an SVG-mask animation
+          loop for no visual gain. */}
     </div>
   );
 };

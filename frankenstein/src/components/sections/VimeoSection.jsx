@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDropPhysics } from 'neoflix-intro-card';
+import useDropPhysics from '../intro/useDropPhysics.js';
 import { useTabletLayout } from '../../hooks/useTabletLayout';
 
 // Vimeo embed for the showcase slide. dnt=1 tells the player not to set

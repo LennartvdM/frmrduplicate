@@ -26,8 +26,12 @@ export const useSectionLifecycle = (sectionId, inView) => {
       return;
     }
 
-    if (inView && sectionState === 'idle') {
-      // Section comes into view
+    if (inView && (sectionState === 'idle' || sectionState === 'cleaned')) {
+      // Section comes into view — either for the first time or again
+      // after cleanup. 'cleaned' used to be a dead end: scroll past a
+      // section, wait out the 4s preserve window, scroll back, and the
+      // section stayed invisible (opacity 0) for the rest of the
+      // session because no branch ever left 'cleaned'.
       setSectionState('entering');
       entranceCompleteRef.current = false;
       

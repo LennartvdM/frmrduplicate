@@ -14,6 +14,9 @@ export default function ScrollSection({ name, children, background }) {
   // with the live Framer Motion slide we have to gate the flag
   // explicitly.
   const [inView, setInView] = useState(false);
+  // Bumped when observer creation was deferred during a rotation and
+  // needs another attempt once the rotation settles.
+  const [observerRetry, setObserverRetry] = useState(0);
   const realInViewRef = useRef(false);
   const { isTablet } = useViewport();
   const { isSliding } = useTransitionState();
@@ -42,12 +45,14 @@ export default function ScrollSection({ name, children, background }) {
     // CRITICAL: Don't recreate observer during rotation - causes layout thrashing
     // Defer observer updates until rotation completes
     if (document.documentElement.classList.contains('is-resizing')) {
-      // Wait for rotation to complete, then recreate observer
+      // Wait for rotation to complete, then bump the retry counter so
+      // this effect re-runs and actually creates the observer. (It used
+      // to only clear the interval — a section whose effect first ran
+      // mid-rotation never got an observer and never revealed.)
       const checkRotationComplete = setInterval(() => {
         if (!document.documentElement.classList.contains('is-resizing')) {
           clearInterval(checkRotationComplete);
-          // Trigger re-run of this effect after rotation completes
-          // (This is a bit hacky but prevents observer churn during rotation)
+          setObserverRetry((n) => n + 1);
         }
       }, 100);
       return () => clearInterval(checkRotationComplete);
@@ -85,7 +90,7 @@ export default function ScrollSection({ name, children, background }) {
         observerRef.current.disconnect();
       }
     };
-  }, [isTablet]); // Recreate observer when tablet state changes
+  }, [isTablet, observerRetry]); // Recreate when tablet state changes or a deferred creation retries
 
   // CRITICAL: Lock all three height properties to identical values to "defend" section dimensions
   // This prevents layout thrashing during rotation by eliminating conflicting constraints

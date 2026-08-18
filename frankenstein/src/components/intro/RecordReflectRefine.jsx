@@ -39,6 +39,7 @@ export default function RecordReflectRefine({
   subtitle = "Improve patient care through video reflection.",
   variant = "desktop",
   started = true,
+  paused = false,
   onVariantChange,
   onFirstCycleComplete,
   className = "",
@@ -89,9 +90,12 @@ export default function RecordReflectRefine({
     return () => clearTimeout(timer);
   }, [introStep, introComplete, cycleDelay, onFirstCycleComplete]);
 
-  // Phase 2: Post-intro cycling
+  // Phase 2: Post-intro cycling. `paused` stops the interval while the
+  // intro slide is scrolled out of view — without it, these springs
+  // retargeted two large SVG rings forever, even while the visitor was
+  // reading the footer or the tab sat in the background.
   useEffect(() => {
-    if (!started || !introComplete) return;
+    if (!started || !introComplete || paused) return;
     const timer = setInterval(() => {
       setActiveIndex((prev) => {
         const next = (prev + 1) % 3;
@@ -100,7 +104,7 @@ export default function RecordReflectRefine({
       });
     }, cycleDelay);
     return () => clearInterval(timer);
-  }, [cycleDelay, started, introComplete, onVariantChange]);
+  }, [cycleDelay, started, introComplete, paused, onVariantChange]);
 
   const handleClick = useCallback(() => {
     if (!introComplete) {

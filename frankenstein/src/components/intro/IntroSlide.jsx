@@ -85,6 +85,7 @@ export default function IntroSlide({
   subtitle = "Improve patient care through video reflection.",
   subtitleColor = "rgb(152, 151, 161)",
   fullHeight = true,
+  cyclePaused = false,
   className = "",
   style = {},
   calibration,
@@ -226,6 +227,7 @@ export default function IntroSlide({
             variant={isMobile ? "mobile" : "desktop"}
             showSubtitle={!isMobile}
             started={showHeadline}
+            paused={cyclePaused}
             cycleDelay={cal.cycleDelay}
             {...headlineProps}
           />

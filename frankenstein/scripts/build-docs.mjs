@@ -208,6 +208,12 @@ function preprocessLiquid(src) {
 // Link & asset rewriting
 // ---------------------------------------------------------------------------
 
+// Names of .gitbook/assets files actually referenced by some page. Only
+// these are copied into public/docs-assets — the GitBook space carries
+// many uploads (old decks, duplicate exports, raw footage) that no page
+// links to, and none of that belongs on the public site.
+const usedAssetNames = new Set();
+
 function normalizeAssetUrl(rawUrl, assetMap) {
   // Strip angle-bracket wrapping used by GitBook for paths with spaces/parens
   let url = rawUrl.trim();
@@ -224,6 +230,7 @@ function normalizeAssetUrl(rawUrl, assetMap) {
   const name = match[1];
   const safe = assetMap.get(name);
   if (!safe) return null;
+  usedAssetNames.add(name);
   return `${ASSET_URL_PREFIX}/${safe}`;
 }
 
@@ -613,15 +620,14 @@ async function main() {
     return;
   }
 
-  // 1. Copy assets, building a name → safe-name map
-  await fs.mkdir(ASSETS_OUT, { recursive: true });
+  // 1. Index assets into a name → safe-name map. Copying happens after
+  // page compilation, so only assets a page actually references are
+  // published (see usedAssetNames).
   const assetMap = new Map();
   try {
     const assetNames = await fs.readdir(ASSETS_SRC);
     for (const name of assetNames) {
-      const safe = slugifyAssetName(name);
-      assetMap.set(name, safe);
-      await fs.copyFile(path.join(ASSETS_SRC, name), path.join(ASSETS_OUT, safe));
+      assetMap.set(name, slugifyAssetName(name));
     }
   } catch (err) {
     console.warn(`[build-docs] no .gitbook/assets dir (${err.message})`);
@@ -700,8 +706,18 @@ async function main() {
     JSON.stringify({ sections: navSections, pages: pageMeta }, null, 2),
   );
 
+  // 7. Publish only the assets the compiled pages referenced. The output
+  // dir is cleared first so nothing unreferenced can survive from an
+  // earlier build.
+  await fs.rm(ASSETS_OUT, { recursive: true, force: true });
+  await fs.mkdir(ASSETS_OUT, { recursive: true });
+  for (const name of usedAssetNames) {
+    await fs.copyFile(path.join(ASSETS_SRC, name), path.join(ASSETS_OUT, assetMap.get(name)));
+  }
+
   console.log(
-    `[build-docs] ${mdFiles.length - 1} pages, ${assetMap.size} assets, ${navSections.length} nav sections`,
+    `[build-docs] ${mdFiles.length - 1} pages, ${navSections.length} nav sections, ` +
+      `${usedAssetNames.size}/${assetMap.size} assets referenced and published`,
   );
 }
 

@@ -25,11 +25,27 @@ canonicalized + homepage Organization JSON-LD (6.6), and the handoff kit
 missing from the site — it was already present in `Footer.jsx`. No change was
 needed there.
 
+**Second pass (same day):** the deferred §5.4 items are now also done —
+`useTabletLayout` reads one module-level store via `useSyncExternalStore`
+(one set of window listeners instead of ~150+ on /toolbox), the dot nav
+writes its position imperatively and broadcasts `scrollsnap:dotnav-sync`
+(no more per-frame renders or retargeted transitions), the medical
+punch-out circles react to that event instead of a perpetual
+rAF/querySelectorAll loop, the arrow buttons lost their backdrop-filter,
+and the canvas blit engine is reverted: decorative clips render as real
+`<video>` again through `IllustrationClip` (same props contract; Edge's
+address-bar "Enhance video" prompt accepted as documented in the
+component header).
+
+**Decision recorded (7.1):** the GitBook chain **stays** — the client
+prefers editing in GitBook. `docs-content/` remains a mirror; CLAUDE.md's
+hard rule 1 stands. Revisit only if she later moves her editing to AI.
+
 **Still open (owner decisions):** mirror-side asset prune + consent review
 for the three referenced clinical clips (1.2), LICENSE choice (1.3),
-analytics pick (6.2), GitBook-chain decision (7.1), git history rewrite at
-transfer (7.4), Vite upgrade (7.5), and the §5.4 canvas-engine/dot-nav
-rewrites (deferred as designed).
+analytics pick (6.2), git history rewrite at transfer (7.4), Vite upgrade
+(7.5). The cookie-cutter band merge remains deliberately unmerged (pure
+refactor, no runtime cost, regression risk on the flagship sections).
 
 ---
 

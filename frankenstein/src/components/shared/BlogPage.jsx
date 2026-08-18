@@ -9,6 +9,7 @@ import { BLOG_DECK, blogIdxForSection } from '../../backdrop/decks';
 import IllustrationCanvas from './IllustrationCanvas';
 import PublicationAttachment from './PublicationAttachment';
 import PublicationBundle from './PublicationBundle';
+import { paperPath } from '../../data/publicationRecords';
 
 /**
  * BlogPage — shared layout for /neoflix and /publications.
@@ -470,6 +471,7 @@ export default function BlogPage({ sections, scrollTo, bundle }) {
                       citation={parsed.citation}
                       preview={publicationPreview}
                       pdf={section.pdf}
+                      paperHref={paperPath(section.id)}
                     />
                   )}
                 </div>
@@ -752,6 +754,26 @@ export default function BlogPage({ sections, scrollTo, bundle }) {
           color: rgba(255, 255, 255, 0.92);
           margin-left: 0 !important;
         }
+        .publication-lead__details {
+          position: relative;
+          z-index: 4;
+          grid-column: 1 / 7;
+          justify-self: start;
+          margin: 14px 0 0 -26px;
+          padding: 8px 14px;
+          border: 1px solid rgba(255, 255, 255, 0.28);
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.14);
+          color: #ffffff;
+          font-size: 12.5px;
+          font-weight: 700;
+          text-decoration: none;
+          transition: background-color 0.22s ease, border-color 0.22s ease;
+        }
+        .publication-lead__details:hover {
+          border-color: rgba(255, 255, 255, 0.46);
+          background: rgba(255, 255, 255, 0.24);
+        }
         .publication-lead__citation {
           position: relative;
           display: block;
@@ -836,7 +858,27 @@ export default function BlogPage({ sections, scrollTo, bundle }) {
             width: 26px;
             height: 26px;
           }
-          .publication-lead__citation {
+          .publication-lead__details {
+          position: relative;
+          z-index: 4;
+          grid-column: 1 / 7;
+          justify-self: start;
+          margin: 14px 0 0 -26px;
+          padding: 8px 14px;
+          border: 1px solid rgba(255, 255, 255, 0.28);
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.14);
+          color: #ffffff;
+          font-size: 12.5px;
+          font-weight: 700;
+          text-decoration: none;
+          transition: background-color 0.22s ease, border-color 0.22s ease;
+        }
+        .publication-lead__details:hover {
+          border-color: rgba(255, 255, 255, 0.46);
+          background: rgba(255, 255, 255, 0.24);
+        }
+        .publication-lead__citation {
             grid-column: 1;
             margin: -10px 0 0 -12px;
             padding: 20px 20px 18px;
@@ -893,7 +935,7 @@ function PublicationGlassPreview({ preview }) {
   );
 }
 
-function PublicationLead({ card, citation, preview, pdf }) {
+function PublicationLead({ card, citation, preview, pdf, paperHref }) {
 
   return (
     <div className="publication-lead">
@@ -934,6 +976,14 @@ function PublicationLead({ card, citation, preview, pdf }) {
       {/* Third plate in the stack: the paper's own PDF, tucked under the
           title card's right edge opposite the citation. */}
       <PublicationAttachment pdf={pdf} variant="blog" />
+      {/* Only papers with a page of their own link out to it — the two
+          under an exclusive publisher licence have nothing to put there
+          yet. Also how a crawler reaches those pages at all. */}
+      {paperHref && (
+        <a className="publication-lead__details" href={paperHref} data-internal="true">
+          Abstract, citation &amp; DOI →
+        </a>
+      )}
     </div>
   );
 }

@@ -38,6 +38,15 @@ import {
   canonicalUrl,
   staticRoutePaths,
 } from '../src/data/routeMeta.js';
+import {
+  publicationRecords,
+  publicationOrder,
+  publicationSlugs,
+  papersWithPages,
+  recordForSlug,
+  paperPath,
+  doiUrl,
+} from '../src/data/publicationRecords.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FRANKENSTEIN_ROOT = path.resolve(__dirname, '..');
@@ -101,6 +110,144 @@ function applyMeta(template, meta) {
   html = replaceMeta(html, 'name', 'twitter:image', meta.image);
   html = replaceMeta(html, 'name', 'twitter:image:alt', meta.imageAlt);
   return html;
+}
+
+/* ── Machine-readable bibliography ──────────────────────────────────
+   The six papers as schema.org ScholarlyArticle, injected into the
+   /publications HTML. Two KB of JSON buys a crawler every fact it would
+   otherwise have to guess at by parsing 24MB of two-column PDF: exact
+   titles, complete author lists, journals, years and DOIs. Nothing here
+   is visible, so it costs the reader nothing.
+
+   The DOI is the important field. It resolves to the publisher's copy
+   of record, which is what a citation should point at — this page is
+   how a machine finds that, not a substitute for it. */
+function publicationsJsonLd() {
+  const articles = publicationOrder
+    .map((id) => [id, publicationRecords[id]])
+    .filter(([, record]) => record)
+    .map(([id, record]) => {
+      const node = {
+        '@type': 'ScholarlyArticle',
+        headline: record.title,
+        name: record.title,
+        author: record.authors.map((name) => ({ '@type': 'Person', name })),
+        datePublished: String(record.year),
+        isPartOf: { '@type': 'Periodical', name: record.journal },
+        url: paperPath(id)
+          ? canonicalUrl(paperPath(id))
+          : `${canonicalUrl('/publications')}#${id}`,
+      };
+      const doi = doiUrl(record);
+      if (doi) {
+        node.identifier = { '@type': 'PropertyValue', propertyID: 'DOI', value: record.doi };
+        node.sameAs = doi;
+      }
+      if (record.licence) node.license = record.licence;
+      return node;
+    });
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: ROUTE_META['/publications'].title,
+    description: ROUTE_META['/publications'].description,
+    url: canonicalUrl('/publications'),
+    isPartOf: { '@type': 'WebSite', name: SITE_NAME, url: `${SITE_URL}/` },
+    hasPart: articles,
+  };
+}
+
+/* A paper's own page describes exactly one article, and says which page
+   it belongs to. The abstract goes in here as well as on screen — it is
+   the field a citation tool reads. */
+function paperJsonLd(id) {
+  const record = publicationRecords[id];
+  const node = {
+    '@context': 'https://schema.org',
+    '@type': 'ScholarlyArticle',
+    headline: record.title,
+    name: record.title,
+    author: record.authors.map((name) => ({ '@type': 'Person', name })),
+    datePublished: String(record.year),
+    isPartOf: { '@type': 'Periodical', name: record.journal },
+    url: canonicalUrl(paperPath(id)),
+    mainEntityOfPage: canonicalUrl(paperPath(id)),
+    isBasedOn: canonicalUrl('/publications'),
+    publisher: { '@type': 'Organization', name: record.journal },
+  };
+  if (record.abstract) node.abstract = record.abstract;
+  const doi = doiUrl(record);
+  if (doi) {
+    node.identifier = { '@type': 'PropertyValue', propertyID: 'DOI', value: record.doi };
+    node.sameAs = doi;
+  }
+  if (record.licence) node.license = record.licence;
+  return node;
+}
+
+function withJsonLd(html, data) {
+  // </script> inside JSON would close the tag early; escaping the slash
+  // is the standard way to keep the payload inert.
+  const json = JSON.stringify(data, null, 2).replace(/</g, '\\u003c');
+  return html.replace(
+    '</head>',
+    `  <script type="application/ld+json">\n${json}\n  </script>\n  </head>`
+  );
+}
+
+/* ── llms.txt ───────────────────────────────────────────────────────
+   The convention for handing an LLM a clean map of a site instead of
+   letting it scrape one. A few KB of markdown, no JavaScript to run and
+   no PDF to misparse, listing each paper with its DOI so an answer that
+   draws on this work can attribute it correctly. */
+function llmsTxt() {
+  const papers = publicationOrder
+    .map((id) => [id, publicationRecords[id]])
+    .filter(([, record]) => record)
+    .map(([id, record]) => {
+      const doi = doiUrl(record);
+      return [
+        `- [${record.title}](${
+          paperPath(id) ? canonicalUrl(paperPath(id)) : `${canonicalUrl('/publications')}#${id}`
+        })`,
+        `  ${record.authors.join(', ')}. *${record.journal}*, ${record.year}.`,
+        doi ? `  DOI: ${doi}` : null,
+      ]
+        .filter(Boolean)
+        .join('\n');
+    })
+    .join('\n');
+
+  return `# ${SITE_NAME}
+
+> ${ROUTE_META['/'].description}
+
+Neoflix is interprofessional video review of real neonatal procedures:
+recording care as it happens, then reviewing it together to find what
+routine hides. Developed at the Department of Neonatology, Leiden
+University Medical Center.
+
+## Publications
+
+The peer-reviewed work behind the method. Cite the publisher's copy of
+record via the DOI.
+
+${papers}
+
+## Guides
+
+- [Toolbox](${canonicalUrl('/toolbox')}): practical guidance for running video review in a unit — consent and privacy, equipment, running sessions, acting on what you find.
+- [How video review works](${canonicalUrl('/neoflix')}): why acute care is hard to see clearly, and what review changes.
+
+## Notes
+
+- Author copies of the papers are available on the publications page as
+  PDFs. They are excluded from crawling in robots.txt because they are
+  large and their text extracts poorly; the metadata above and the
+  publisher DOI are the better source.
+- Contact: info@neoflix.care
+`;
 }
 
 /* ── Toolbox lead paragraphs ────────────────────────────────────────
@@ -186,8 +333,11 @@ async function main() {
 
   const { pages, leads } = await loadDocs();
 
+  const paperPaths = papersWithPages().map((id) => paperPath(id));
+
   const routePaths = [
     ...staticRoutePaths(),
+    ...paperPaths,
     ...Object.keys(pages)
       .filter((slug) => slug !== '')
       .map((slug) => `/toolbox/${slug}`),
@@ -197,9 +347,19 @@ async function main() {
     const meta = resolveRouteMeta(routePath, {
       docsPages: pages,
       leadTextFor: (slug) => leads[slug] || '',
+      paperFor: (slug) => recordForSlug(slug)?.record || null,
     });
-    await writeRoute(outDir, routePath, applyMeta(template, meta));
+    let html = applyMeta(template, meta);
+    if (routePath === '/publications') {
+      html = withJsonLd(html, publicationsJsonLd());
+    } else if (paperPaths.includes(routePath)) {
+      const found = recordForSlug(routePath.slice('/publications/'.length));
+      if (found) html = withJsonLd(html, paperJsonLd(found.id));
+    }
+    await writeRoute(outDir, routePath, html);
   }
+
+  await fs.writeFile(path.join(outDir, 'llms.txt'), llmsTxt());
 
   await fs.writeFile(path.join(outDir, 'sitemap.xml'), sitemap(routePaths));
   // /papers/ is disallowed for bandwidth, not secrecy. The PDFs already
@@ -216,7 +376,9 @@ async function main() {
   console.log(
     `[route-html] ${routePaths.length} routes (${
       Object.keys(pages).length
-    } toolbox pages) + sitemap.xml + robots.txt for ${SITE_NAME}`
+    } toolbox pages, ${paperPaths.length} paper pages) + sitemap.xml + robots.txt + llms.txt, ${
+      publicationOrder.length
+    } papers as JSON-LD, for ${SITE_NAME}`
   );
 }
 

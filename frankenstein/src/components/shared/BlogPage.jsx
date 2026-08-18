@@ -44,42 +44,42 @@ const PUBLICATION_PREVIEW_OVERRIDES = new Map([
   [
     'https://www.frontiersin.org/articles/10.3389/fped.2022.931055/full',
     {
-      image: '/docs-assets/narrative-review-frontiers-preview.png',
+      image: '/previews/narrative-review-frontiers-preview.png',
       label: 'Frontiers in Pediatrics',
     },
   ],
   [
     'https://fn.bmj.com/content/early/2024/02/07/archdischild-2023-326528',
     {
-      image: '/docs-assets/providers-perspective-bmj-preview.png',
+      image: '/previews/providers-perspective-bmj-preview.png',
       label: 'Fetal & Neonatal',
     },
   ],
   [
     'https://www.nature.com/articles/s41390-024-03083-w',
     {
-      image: '/docs-assets/record-reflect-refine-nature-preview.png',
+      image: '/previews/record-reflect-refine-nature-preview.png',
       label: 'Pediatric Research',
     },
   ],
   [
     'https://docs.google.com/viewerng/viewer?url=https://bmjopenquality.bmj.com/content/bmjqir/13/2/e002588.full.pdf',
     {
-      image: '/docs-assets/practical-guidance-bmj-open-quality-preview.png',
+      image: '/previews/practical-guidance-bmj-open-quality-preview.png',
       label: 'BMJ Open Quality',
     },
   ],
   [
     'https://www.sciencedirect.com/science/article/pii/S030095722300789X',
     {
-      image: '/docs-assets/driving-research-sciencedirect-preview.png',
+      image: '/previews/driving-research-sciencedirect-preview.png',
       label: 'Resuscitation',
     },
   ],
   [
     'https://www.mdpi.com/2227-9067/13/6/816',
     {
-      image: '/docs-assets/international-collaboration-mdpi-preview.png',
+      image: '/previews/international-collaboration-mdpi-preview.png',
       label: 'Children',
     },
   ],

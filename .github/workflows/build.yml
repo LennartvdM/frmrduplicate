@@ -1,0 +1,23 @@
+# Build check: every push and PR runs the same build Netlify runs,
+# plus the post-build smoke assertions. This is the safety net for
+# AI-made edits — a broken import, a stray brace in a data file, or a
+# missing emitted file fails here before it can reach production.
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frankenstein/package-lock.json
+      - name: Build the site (same script Netlify runs)
+        run: bash build.sh

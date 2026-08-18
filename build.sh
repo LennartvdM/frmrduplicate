@@ -11,7 +11,9 @@ rm -rf "$OUT"
 # It lives here as regular tracked files. Do not edit by hand.
 
 cd frankenstein
-npm ci --prefer-offline 2>/dev/null || npm install
+# Strict install: if the lockfile and package.json disagree, fail loudly
+# instead of silently resolving fresh versions on a production build.
+npm ci --prefer-offline
 # Transform docs-content/ (GitBook mirror) → compiled AST JSON + assets
 node scripts/build-docs.mjs
 # Bundle public/papers/*.pdf → one archive + its manifest
@@ -20,6 +22,9 @@ npx vite build --outDir "../$OUT"
 # Give each route its own HTML head (+ sitemap, robots.txt). Must run
 # after vite build — it rewrites the emitted index.html per route.
 node scripts/build-route-html.mjs --out "../$OUT"
+# Post-build assertions: og image present, every route emitted,
+# sitemap/404/_redirects/fonts in place. Fails the deploy if not.
+node scripts/smoke-check.mjs --out "../$OUT"
 cd ..
 
 echo "=== Build complete → $OUT/ ==="

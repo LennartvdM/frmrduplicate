@@ -6,6 +6,33 @@
 
 ---
 
+## Execution status (2026-08-18, same day)
+
+Phases 0–2 of §9 were implemented on this branch the same day. Delivered: the
+delete list (§2.1–2.2), the referenced-only asset filter and 260 MB source
+prune (§2.3 — mirror-side prune still pending upstream), og-preview.png
+(1.1), 404 + error boundary + real 404 statuses + legacy 301s (6.1), security
+headers + CSP (6.3), self-hosted fonts + Vimeo `dnt=1` (6.4), the og-upload
+tool retired (7.2), Node 22 + strict `npm ci` + stale config removed (4.6),
+video re-encodes/posters/blur removal and full bundle splitting (§5.1–5.3),
+both §5.5 bugs fixed, `neoflix-intro-card` inlined (7.3), the data-layer
+rename + one-source tagline (4.1/4.3), a11y quick wins (6.5: skip link, focus
+reset, `aria-current`, reduced-motion route swaps, sr-only h1s), `/contact`
+canonicalized + homepage Organization JSON-LD (6.6), and the handoff kit
+(§8: README/CLAUDE.md/CONTENT.md, CI, smoke checks, prettier config).
+
+**Correction:** §1.3 originally claimed the KNAW Van Walree Fund credit was
+missing from the site — it was already present in `Footer.jsx`. No change was
+needed there.
+
+**Still open (owner decisions):** mirror-side asset prune + consent review
+for the three referenced clinical clips (1.2), LICENSE choice (1.3),
+analytics pick (6.2), GitBook-chain decision (7.1), git history rewrite at
+transfer (7.4), Vite upgrade (7.5), and the §5.4 canvas-engine/dot-nav
+rewrites (deferred as designed).
+
+---
+
 ## Verdict
 
 The site is in better shape than the "frankenstein" framing suggests — and worse in a few places nobody was looking.

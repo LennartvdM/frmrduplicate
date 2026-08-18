@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { assetUrl } from '../../utils/assetUrl';
 import useTransitionNavigate from '../../hooks/useTransitionNavigate';
 import { decorativeVideoProps } from '../../utils/decorativeVideoProps';
+import { prefersReducedMedia } from '../../utils/reducedMedia';
 import '../../styles/mobile-home.css';
 
 const TEXT_REVEAL_DELAY_MS = 140;
@@ -205,6 +206,9 @@ function headlineLabel(lines) {
 }
 
 export default function MobileHome() {
+  // Reduced-media mode (utils/reducedMedia): panels keep their poster
+  // frames and never fetch or play their clips.
+  const liteMedia = prefersReducedMedia();
   const scrollRef = useRef(null);
   const sectionRefs = useRef([]);
   const videoRefs = useRef([]);
@@ -376,7 +380,7 @@ export default function MobileHome() {
             // Some browsers reject seeking before metadata is available.
           }
         }
-        sharedIntroVideo.play().catch(() => {});
+        if (!liteMedia) sharedIntroVideo.play().catch(() => {});
       } else {
         sharedIntroVideo.pause();
         try {
@@ -405,7 +409,7 @@ export default function MobileHome() {
       } catch {
         // Playback can still start if an early seek is not accepted.
       }
-      video.play().catch(() => {});
+      if (!liteMedia) video.play().catch(() => {});
     });
 
     previousVideoIndexRef.current = activeIndex;
@@ -448,7 +452,7 @@ export default function MobileHome() {
               muted
               loop
               playsInline
-              preload={index < 3 ? 'auto' : 'metadata'}
+              preload={liteMedia ? 'none' : index < 3 ? 'auto' : 'metadata'}
               aria-hidden="true"
             >
               <source src={panel.video} type="video/mp4" />
@@ -512,7 +516,7 @@ export default function MobileHome() {
             muted
             loop
             playsInline
-            preload="metadata"
+            preload={liteMedia ? 'none' : 'metadata'}
           >
             <source src={INTRO_BLUR_VIDEO} type="video/mp4" />
           </video>

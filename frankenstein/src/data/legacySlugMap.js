@@ -1,9 +1,10 @@
-// Map from the old `PascalDashCase` slugs used in publications.js
+// Map from the old `PascalDashCase` slugs used in legacy toolbox links
 // (routes like /toolbox/Beyond-The-Procedure) to the new path-based
 // slugs that mirror docs-content/ (e.g. level-1-fundamentals/1.-preproduction/1.1-beyond-the-procedure).
 //
-// Keep this in sync with data/toolboxPages.js until publications.js
-// has been rewritten to emit the new slugs directly.
+// toolboxPages.js carries the same 89 rows as GitBook URLs; if a slug
+// is added or corrected here, correct it there too (renderMarkdown's
+// legacy-URL rewriting reads that file).
 const legacySlugMap = {
   // Welcome
   'Welcome': '',

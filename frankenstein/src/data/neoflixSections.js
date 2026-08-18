@@ -1,6 +1,10 @@
 /**
- * Publications Section Data
- * Content for the Publications page (/publications route)
+ * Neoflix page sections — the product/philosophy content for /neoflix
+ * (and /contact, which is the same page scrolled to its last section).
+ *
+ * History note: this file was called publications.js for a long time,
+ * and its old header claimed it fed /publications — both were wrong.
+ * The /publications content lives in publicationsPage.js.
  */
 import { assetUrl } from '../utils/assetUrl';
 
@@ -89,25 +93,3 @@ This toolbox was developed under the guidance of **Professor Arjan te Pas** and 
   },
 ];
 
-// Animation timing config
-export const animationConfig = {
-  sidebar: {
-    delay: 1.2,
-    duration: 1.1,
-    stiffness: 120,
-    damping: 30,
-  },
-  section: {
-    initialDelay: 0.25,
-    stagger: 0.27,
-    duration: 1.05,
-    firstSectionDelay: 0,
-  },
-};
-
-// Page-level styling
-export const pageStyle = {
-  backgroundClassName: 'bg-[var(--cool-page)]',
-  sidebarClassName: 'bg-[#112038]',
-  sectionClassName: 'bg-gradient-to-br from-stone-50 to-fuchsia-50',
-};

@@ -20,7 +20,7 @@ const MedicalSection = ({ inView, sectionRef, variant = 'v2' }) => {
   const transitionNavigate = useTransitionNavigate();
   // Each caption/video is a deep-link into the corresponding /neoflix
   // section. Captions and videos map 1:1 to the page's scroll anchors
-  // (see data/publications.js section ids), turning the carousel into
+  // (see data/neoflixSections.js section ids), turning the carousel into
   // a reverse-funnel entry point for the long-form article.
   const navigateToSection = useCallback((idx) => {
     const target = sectionTargets?.[idx];

@@ -23,6 +23,7 @@
  *
  * Dependencies: React 18+, framer-motion 11+
  */
+import { TAGLINE } from "../../data/homePage.js";
 import { useMemo, useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import NeoflixLogo from "./NeoflixLogo.jsx";
@@ -82,7 +83,7 @@ export default function IntroSlide({
   backgroundColor = "rgb(255, 255, 255)",
   logoProps = {},
   headlineProps = {},
-  subtitle = "Improve patient care through video reflection.",
+  subtitle = TAGLINE,
   subtitleColor = "rgb(152, 151, 161)",
   fullHeight = true,
   cyclePaused = false,

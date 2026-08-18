@@ -1,3 +1,8 @@
+// CONTENT WARNING — duplicated copy, edit BOTH surfaces.
+// The phone homepage restates these headlines in
+// components/mobile/MobileHome.jsx (MOBILE_PANELS), in a different
+// data shape. When wording changes here, make the same change there,
+// or phone and desktop will say different things. See data/homePage.js.
 import SimpleCookieCutterBand from '../../SimpleCookieCutterBand';
 import MirroredCookieCutterBand from '../../MirroredCookieCutterBand';
 import { assetUrl } from '../../../utils/assetUrl';

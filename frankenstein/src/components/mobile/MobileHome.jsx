@@ -10,6 +10,12 @@ const INTRO_SEQUENCE_COUNT = 2;
 const INTRO_BLUR_VIDEO = assetUrl('/videos/mobile/neoflix_intro_blur_montage.mp4');
 const INTRO_BLUR_POSTER = assetUrl('/videos/mobile/neoflix_intro_blur_montage_poster.png');
 
+// CONTENT WARNING — duplicated copy, edit BOTH surfaces.
+// These panels restate the desktop homepage copy from
+// components/sections/medical/MedicalSection.data.js in a different
+// shape (per-line accents and delays). When wording changes on either
+// surface, make the same change in the other file, or phone and
+// desktop will say different things. See data/homePage.js.
 const MOBILE_PANELS = [
   {
     id: 'intro',

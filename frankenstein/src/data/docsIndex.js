@@ -1,7 +1,7 @@
 // docsIndex.js
 // Single entry point for the compiled docs (written by build-docs.mjs).
 // Exposes nav tree, per-slug metadata, page loader, and legacy-slug
-// compatibility for the PascalDashCase slugs the old publications.js uses.
+// compatibility for PascalDashCase slugs from legacy content links.
 import manifest from '../generated/docs-manifest.json';
 import legacySlugMap from './legacySlugMap';
 

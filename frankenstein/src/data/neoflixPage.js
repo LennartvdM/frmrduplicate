@@ -2,13 +2,13 @@
  * Neoflix Product Page Data
  *
  * The product/philosophy sections (time-sensitive, dance, cost, skills,
- * team, perspectives) live here for the /neoflix route. The academic
- * publications live in publicationsPage.js for /publications.
+ * team, perspectives) live in neoflixSections.js for the /neoflix
+ * route. The academic publications live in publicationsPage.js for
+ * /publications. This file adds the page's video mappings.
  */
 import { assetUrl } from '../utils/assetUrl';
 
-// Product sections are defined in publications.js (legacy filename).
-export { sections, animationConfig } from './publications';
+export { sections } from './neoflixSections';
 
 // Video backdrop mapping for product sections
 export const sectionToVideo = {
@@ -31,11 +31,3 @@ export const deckSources = [
   assetUrl('/videos/blururgency.mp4'),
 ];
 
-// Page styling — matches frmrduplicate's Neoflix design (warm brown)
-export const pageStyle = {
-  backgroundColor: '#483226',
-  sidebarClassName: 'bg-[#112038]',
-  sectionStyle: {
-    background: 'linear-gradient(135deg, rgba(250,250,249,0.85), rgba(253,244,255,0.85))',
-  },
-};

@@ -15,6 +15,7 @@
  *
  * Dependencies: React 18+
  */
+import { TAGLINE } from "../../data/homePage.js";
 import { useState, useEffect, useCallback, useRef } from "react";
 
 const CYCLE_DELAY_MS = 1260;
@@ -36,7 +37,7 @@ export default function RecordReflectRefine({
   darkColor = DARK,
   greyColor = GREY,
   showSubtitle = true,
-  subtitle = "Improve patient care through video reflection.",
+  subtitle = TAGLINE,
   variant = "desktop",
   started = true,
   paused = false,

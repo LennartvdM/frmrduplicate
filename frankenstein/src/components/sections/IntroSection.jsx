@@ -1,6 +1,7 @@
 import React from 'react';
 import IntroSlide from '../intro/IntroSlide.jsx';
 import { useTabletLayout } from '../../hooks/useTabletLayout';
+import { TAGLINE } from '../../data/homePage';
 
 const IntroSection = ({ inView }) => {
   const { isTablet, isTouchDevice, width } = useTabletLayout();
@@ -21,11 +22,14 @@ const IntroSection = ({ inView }) => {
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
+      {/* The visible headline is animated display type built from divs;
+          this gives the desktop homepage a real document outline. */}
+      <h1 className="sr-only">Neoflix — Record. Reflect. Refine. {TAGLINE}</h1>
       <IntroSlide
         variant={variant}
         backgroundColor="#F5F9FC"
         fullHeight={false}
-        subtitle="Improve patient care through video reflection."
+        subtitle={TAGLINE}
         cyclePaused={!inView}
         style={{
           width: '100%',

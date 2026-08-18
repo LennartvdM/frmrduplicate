@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import MobileDock from './components/mobile/MobileDock';
@@ -8,12 +8,19 @@ import { TransitionProvider } from './contexts/TransitionContext';
 import useTabletLayout from './hooks/useTabletLayout';
 import useDocumentMeta from './hooks/useDocumentMeta';
 import ErrorBoundary from './components/ErrorBoundary';
-import Home from './pages/Home';
-import NeoflixPage from './pages/NeoflixPage';
-import PublicationsPage from './pages/PublicationsPage';
-import DocsPage from './pages/DocsPage';
-import PaperPage from './pages/PaperPage';
-import NotFoundPage from './pages/NotFoundPage';
+
+// Every page is its own chunk. Before this, one bundle carried all five
+// pages (each with both its desktop and mobile tree) plus the docs
+// viewer to every visitor; a phone visitor parsed ~80% JS it never
+// rendered. The Suspense fallback is null on purpose — the backdrop
+// keeps painting during the (one-time, small) chunk fetch, which reads
+// better than a spinner flashing inside the slide.
+const Home = lazy(() => import('./pages/Home'));
+const NeoflixPage = lazy(() => import('./pages/NeoflixPage'));
+const PublicationsPage = lazy(() => import('./pages/PublicationsPage'));
+const DocsPage = lazy(() => import('./pages/DocsPage'));
+const PaperPage = lazy(() => import('./pages/PaperPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 function AppShell() {
   const location = useLocation();
@@ -43,16 +50,18 @@ function AppShell() {
         <BackdropProvider>
           <RouteSlider>
             {(captured) => (
-              <Routes location={captured}>
-                <Route path="/" element={<Home />} />
-                <Route path="/neoflix" element={<NeoflixPage />} />
-                <Route path="/publications" element={<PublicationsPage />} />
-                <Route path="/publications/:slug" element={<PaperPage />} />
-                <Route path="/contact" element={<NeoflixPage scrollTo="contact" />} />
-                <Route path="/toolbox" element={<DocsPage />} />
-                <Route path="/toolbox/*" element={<DocsPage />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
+              <Suspense fallback={null}>
+                <Routes location={captured}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/neoflix" element={<NeoflixPage />} />
+                  <Route path="/publications" element={<PublicationsPage />} />
+                  <Route path="/publications/:slug" element={<PaperPage />} />
+                  <Route path="/contact" element={<NeoflixPage scrollTo="contact" />} />
+                  <Route path="/toolbox" element={<DocsPage />} />
+                  <Route path="/toolbox/*" element={<DocsPage />} />
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </Suspense>
             )}
           </RouteSlider>
         </BackdropProvider>

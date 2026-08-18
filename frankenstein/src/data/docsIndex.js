@@ -8,25 +8,47 @@ import legacySlugMap from './legacySlugMap';
 export const navSections = manifest.sections || [];
 export const pageMeta = manifest.pages || {};
 
-// Vite glob: eager-evaluated import map of every compiled page AST. We
-// eager-import because there are only ~75 pages and the combined JSON is
-// small; swapping to lazy `import.meta.glob` with `eager:false` is a
-// one-line change if the bundle ever gets heavy.
-const pageModules = import.meta.glob('../generated/docs/*.json', { eager: true });
+// Vite glob: lazy import map of every compiled page AST. The ~75 page
+// chunks used to be eager-bundled into the main chunk, which shipped
+// the entire toolbox to every visitor on every route; lazily each page
+// is a small JSON chunk fetched on first visit and cached below.
+const pageLoaders = import.meta.glob('../generated/docs/*.json');
 
-const slugToModule = new Map();
-for (const [path, mod] of Object.entries(pageModules)) {
-  const file = path.split('/').pop();
-  slugToModule.set(file, mod.default || mod);
+const fileToLoader = new Map();
+for (const [path, loader] of Object.entries(pageLoaders)) {
+  fileToLoader.set(path.split('/').pop(), loader);
 }
+
+// file -> parsed module, filled by loadPage. getPage stays synchronous
+// against this cache so callers that run before a page is fetched just
+// see null and try again after awaiting loadPage.
+const loadedPages = new Map();
 
 export function getPage(slug) {
   const normalized = normalizeSlug(slug);
   const meta = pageMeta[normalized];
   if (!meta) return null;
-  const mod = slugToModule.get(meta.file);
+  const mod = loadedPages.get(meta.file);
   if (!mod) return null;
   return { ...mod, meta, slug: normalized };
+}
+
+export async function loadPage(slug) {
+  const normalized = normalizeSlug(slug);
+  const meta = pageMeta[normalized];
+  if (!meta) return null;
+  if (!loadedPages.has(meta.file)) {
+    const loader = fileToLoader.get(meta.file);
+    if (!loader) return null;
+    const mod = await loader();
+    loadedPages.set(meta.file, mod.default || mod);
+  }
+  return getPage(normalized);
+}
+
+/** True when the slug names a real page (loaded or not). */
+export function hasPage(slug) {
+  return Boolean(pageMeta[normalizeSlug(slug)]);
 }
 
 export function resolveSlug(input) {

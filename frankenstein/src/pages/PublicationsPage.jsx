@@ -2,21 +2,30 @@
  * /publications — native React. Uses the shared BlogPage layout;
  * content lives in data/publicationsPage.js and is unchanged. Video
  * backdrop is mounted at AppShell level (SharedVideoBackdrop).
+ *
+ * Desktop (BlogPage) and mobile are separate chunks; the width branch is
+ * stable on first render, so only one is fetched per device.
  */
-import React from 'react';
-import BlogPage from '../components/shared/BlogPage';
-import MobilePublicationsPage from '../components/mobile/MobilePublicationsPage';
+import React, { Suspense, lazy } from 'react';
 import useTabletLayout from '../hooks/useTabletLayout';
 import { sections, bundle } from '../data/publicationsPage';
 
+const BlogPage = lazy(() => import('../components/shared/BlogPage'));
+const MobilePublicationsPage = lazy(() => import('../components/mobile/MobilePublicationsPage'));
+
 export default function PublicationsPage() {
   const { width } = useTabletLayout();
-
-  if (width > 0 && width < 600) {
-    return <MobilePublicationsPage sections={sections} bundle={bundle} />;
-  }
+  const mobile = width > 0 && width < 600;
 
   // Only this route passes a bundle; /neoflix shares BlogPage and has
   // no papers to hand over, so the download simply doesn't render there.
-  return <BlogPage sections={sections} bundle={bundle} />;
+  return (
+    <Suspense fallback={null}>
+      {mobile ? (
+        <MobilePublicationsPage sections={sections} bundle={bundle} />
+      ) : (
+        <BlogPage sections={sections} bundle={bundle} />
+      )}
+    </Suspense>
+  );
 }

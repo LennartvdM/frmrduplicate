@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { prefersReducedMedia, stillFor } from '../../utils/reducedMedia';
 
 /**
  * A looping decorative clip, rendered as a real <video>.
@@ -25,6 +26,17 @@ import React, { useEffect, useRef } from 'react';
  *   video" prompt for sub-720p clips. That is browser chrome outside
  *   the page; we accept it as the price of not blitting.
  *
+ * Playback is deliberately relentless. Scripted play() on muted inline
+ * video is allowed by every default policy, but stricter environments
+ * (Safari in Low Power Mode, Brave's autoplay shield, "Auto-Play:
+ * Never" site settings) reject it, and React never writes the `muted`
+ * ATTRIBUTE some engines' heuristics look for. So this component:
+ * writes muted/playsinline as real attributes, toggles the native
+ * `autoplay` attribute with the `play` prop (the most privileged start
+ * path), retries on canplay/loadeddata, and — if a policy still says
+ * no — retries once on the visitor's first pointer/key/touch input,
+ * which for a below-the-fold deck has effectively always happened.
+ *
  * Contract (unchanged from the canvas version):
  * - `src` may be undefined to render the styled box without loading.
  * - `play` is owned by the caller (decode budget); a paused clip keeps
@@ -46,6 +58,21 @@ const SURFACE_STYLE = {
   pointerEvents: 'none',
 };
 
+// Clips whose play() was policy-blocked, waiting for the first user
+// gesture to try again. One shared document listener serves them all.
+const pendingUnlocks = new Set();
+let unlockArmed = false;
+function armUnlockListener() {
+  if (unlockArmed || typeof document === 'undefined') return;
+  unlockArmed = true;
+  const fire = () => {
+    for (const retry of [...pendingUnlocks]) retry();
+  };
+  for (const type of ['pointerdown', 'keydown', 'touchend']) {
+    document.addEventListener(type, fire, { capture: true, passive: true });
+  }
+}
+
 export default function IllustrationClip({
   src,                     // clip URL, or undefined to load nothing yet
   play = false,            // caller owns the decode budget
@@ -61,9 +88,52 @@ export default function IllustrationClip({
   const rateRef = useRef(playbackRate);
   const readyFiredRef = useRef(false);
   const onReadyRef = useRef(onReady);
+  const unlockRef = useRef(null);
   onReadyRef.current = onReady;
   playRef.current = play;
   rateRef.current = playbackRate;
+
+  const attemptPlay = useCallback(() => {
+    const video = videoRef.current;
+    if (!video || !playRef.current) return;
+    // Assert the muted state right before asking — it is what every
+    // autoplay policy checks, and belt-and-braces costs nothing.
+    video.muted = true;
+    try {
+      video.playbackRate = rateRef.current;
+    } catch {}
+    const started = video.play();
+    if (started && typeof started.catch === 'function') {
+      started.catch(() => {
+        if (playRef.current) pendingUnlocks.add(unlockRef.current);
+      });
+    }
+  }, []);
+
+  if (!unlockRef.current) {
+    unlockRef.current = () => {
+      pendingUnlocks.delete(unlockRef.current);
+      attemptPlay();
+    };
+  }
+
+  // The ref callback writes the attributes React won't: `muted` is
+  // property-only in React DOM, and some engines' autoplay heuristics
+  // read the attribute.
+  const attachVideo = useCallback((el) => {
+    videoRef.current = el;
+    if (!el) return;
+    el.muted = true;
+    el.defaultMuted = true;
+    el.setAttribute('muted', '');
+  }, []);
+
+  useEffect(() => {
+    armUnlockListener();
+    return () => {
+      pendingUnlocks.delete(unlockRef.current);
+    };
+  }, []);
 
   // onReady is once-per-src; a new src starts a new wait.
   useEffect(() => {
@@ -78,24 +148,25 @@ export default function IllustrationClip({
     } catch {}
   }, [playbackRate, src]);
 
-  // Playback follows the `play` prop. The play() promise rejects when a
-  // src is still loading or was swapped mid-call — harmless, so it is
-  // swallowed; the loadeddata handler below starts playback late.
+  // Playback follows the `play` prop. The native `autoplay` attribute
+  // is toggled with it so a clip whose data hasn't arrived yet starts
+  // through the engine's own (most permissive) path the moment it can.
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !src) return;
     if (play) {
-      try {
-        video.playbackRate = rateRef.current;
-      } catch {}
-      const started = video.play();
-      if (started && typeof started.catch === 'function') started.catch(() => {});
-    } else if (!video.paused) {
-      try {
-        video.pause();
-      } catch {}
+      video.autoplay = true;
+      attemptPlay();
+    } else {
+      video.autoplay = false;
+      pendingUnlocks.delete(unlockRef.current);
+      if (!video.paused) {
+        try {
+          video.pause();
+        } catch {}
+      }
     }
-  }, [play, src]);
+  }, [play, src, attemptPlay]);
 
   const fireReady = () => {
     if (readyFiredRef.current) return;
@@ -103,9 +174,35 @@ export default function IllustrationClip({
     onReadyRef.current?.();
   };
 
+  // Reduced-media mode (prefers-reduced-motion / Save-Data / low-memory
+  // device): stand a high-quality still in for the loop. Same box, same
+  // styling, none of the decoders. Evaluated once per mount — these
+  // signals don't change mid-visit in practice.
+  const [reduced] = useState(prefersReducedMedia);
+  const still = reduced ? stillFor(src) : null;
+  if (still) {
+    return (
+      <img
+        src={still}
+        alt=""
+        className={className}
+        style={{ ...SURFACE_STYLE, ...style }}
+        aria-hidden="true"
+        draggable={false}
+        // A cached image can be complete before onLoad binds.
+        ref={(el) => {
+          if (el && el.complete) fireReady();
+        }}
+        onLoad={fireReady}
+        onError={fireReady}
+        {...rest}
+      />
+    );
+  }
+
   return (
     <video
-      ref={videoRef}
+      ref={attachVideo}
       className={className}
       style={{ ...SURFACE_STYLE, ...style }}
       src={src}
@@ -123,7 +220,6 @@ export default function IllustrationClip({
       draggable={false}
       onLoadedMetadata={(e) => {
         const video = e.currentTarget;
-        video.defaultMuted = true;
         // A clip that isn't playing has no frame to show until one is
         // decoded. Nudging the playhead off zero forces exactly one
         // decode, so a loaded-but-paused card shows artwork, not a hole.
@@ -133,13 +229,11 @@ export default function IllustrationClip({
           } catch {}
         }
       }}
+      onCanPlay={(e) => {
+        if (playRef.current && e.currentTarget.paused) attemptPlay();
+      }}
       onLoadedData={(e) => {
-        // Data arrived after the play effect ran (src was still loading
-        // then) — start playback now if the caller wants it.
-        if (playRef.current && e.currentTarget.paused) {
-          const started = e.currentTarget.play();
-          if (started && typeof started.catch === 'function') started.catch(() => {});
-        }
+        if (playRef.current && e.currentTarget.paused) attemptPlay();
         fireReady();
       }}
       onError={fireReady}

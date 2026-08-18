@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import IllustrationCanvas from '../components/shared/IllustrationCanvas';
+import IllustrationClip from '../components/shared/IllustrationClip';
 
 /**
  * One backdrop cell — either a video deck or a camo fill.
  *
- * Deck cards are <canvas>, not <video>: the clips are decoded off-DOM and
- * blitted in (see IllustrationCanvas). Browsers hang a media UI on any
- * video element that looks like content — Edge offers picture-in-picture
- * and "Enhance video" for these 6-second silent loops — and a canvas
- * gives them nothing to hang it on. Every rule below is unchanged by
- * that; the cards still decode, play, pause and fade exactly as they did.
+ * Deck cards render through IllustrationClip: a real <video> with every
+ * media-UI affordance opted out (PiP, remote playback, controls,
+ * pointer events). It used to be a canvas blit — see IllustrationClip's
+ * header for why that was reverted. Every rule below is unchanged;
+ * the cards still decode, play, pause and fade exactly as they did.
  *
  * Deck-fade rule (rule 0): opacity of card idx = (idx >= topIdx ? 1 : 0).
  * Cards at-or-below topIdx stay opaque; cards above fade out. That means
@@ -105,7 +104,7 @@ function VideoDeck({ deck, topIdx, decodeState, fadeDuration, camo, style }) {
         // so pausing costs nothing visually.
         const play = decodeState === 'active' && (isTop || isBase);
         return (
-          <IllustrationCanvas
+          <IllustrationClip
             key={src}
             className="absolute inset-0 w-full h-full object-cover"
             src={srcGated}

@@ -76,14 +76,13 @@ export default function MedicalDesktopLayout({
   const lineCircle2Ref = useRef(null);
   const lineRafRef = useRef(null);
 
-  // Sync mask circles on the horizontal line with SectionDotNav arrow buttons.
-  // The line and its punch-out circles only exist in the DOM while this desktop
-  // section is on-screen (sectionState not idle/cleaned) and not in a tablet
-  // layout. Outside that window lineRef is null, so a free-running rAF would
-  // just burn a frame every tick forcing layout — and with both V2 and V3
-  // mounted at once that's two perpetual loops. Gate the loop on the same
-  // condition that renders the line: behaviour is identical whenever the line
-  // is actually visible, and it stops entirely when it isn't.
+  // Sync mask circles on the horizontal line with SectionDotNav arrow
+  // buttons. The buttons only move when the page scrolls (the dot nav
+  // tracks the active carousel) or the viewport resizes, and ScrollSnap
+  // announces every dot-nav write via 'scrollsnap:dotnav-sync'. Reacting
+  // to that event replaces the previous free-running rAF loop, which
+  // did a document-wide querySelectorAll plus three getBoundingClientRect
+  // calls per frame, per mounted section, for the whole session.
   useEffect(() => {
     const lineRendered =
       sectionState !== 'idle' && sectionState !== 'cleaned' &&
@@ -91,29 +90,45 @@ export default function MedicalDesktopLayout({
     if (!lineRendered) return undefined;
 
     const refs = [lineCircle1Ref, lineCircle2Ref];
-    const update = () => {
+    const sync = () => {
+      lineRafRef.current = null;
       const svg = lineRef.current;
-      if (svg) {
-        const sRect = svg.getBoundingClientRect();
-        const buttons = document.querySelectorAll('.arrow-btn');
-        for (let i = 0; i < refs.length; i++) {
-          const circleEl = refs[i].current;
-          const btn = buttons[i];
-          if (!circleEl || !btn) continue;
-          if (btn.classList.contains('arrow-hidden')) {
-            circleEl.setAttribute('r', '0');
-            continue;
-          }
-          const bRect = btn.getBoundingClientRect();
-          circleEl.setAttribute('cx', bRect.left + bRect.width / 2 - sRect.left);
-          circleEl.setAttribute('cy', bRect.top + bRect.height / 2 - sRect.top);
-          circleEl.setAttribute('r', Math.max(bRect.width, bRect.height) / 2 + 2);
+      if (!svg) return;
+      const sRect = svg.getBoundingClientRect();
+      const buttons = document.querySelectorAll('.arrow-btn');
+      for (let i = 0; i < refs.length; i++) {
+        const circleEl = refs[i].current;
+        const btn = buttons[i];
+        if (!circleEl || !btn) continue;
+        if (btn.classList.contains('arrow-hidden')) {
+          circleEl.setAttribute('r', '0');
+          continue;
         }
+        const bRect = btn.getBoundingClientRect();
+        circleEl.setAttribute('cx', bRect.left + bRect.width / 2 - sRect.left);
+        circleEl.setAttribute('cy', bRect.top + bRect.height / 2 - sRect.top);
+        // The 1.1 factor pre-covers the button's :hover scale(1.1), so
+        // the punch-out never lags a hover that happens between events.
+        circleEl.setAttribute('r', (Math.max(bRect.width, bRect.height) / 2) * 1.1 + 2);
       }
-      lineRafRef.current = requestAnimationFrame(update);
     };
-    lineRafRef.current = requestAnimationFrame(update);
-    return () => { if (lineRafRef.current) cancelAnimationFrame(lineRafRef.current); };
+    const schedule = () => {
+      if (lineRafRef.current) return;
+      lineRafRef.current = requestAnimationFrame(sync);
+    };
+
+    schedule();
+    // Re-measure once the section's entrance animations settle.
+    const settleId = setTimeout(schedule, 600);
+    window.addEventListener('scrollsnap:dotnav-sync', schedule);
+    window.addEventListener('resize', schedule, { passive: true });
+    return () => {
+      clearTimeout(settleId);
+      if (lineRafRef.current) cancelAnimationFrame(lineRafRef.current);
+      lineRafRef.current = null;
+      window.removeEventListener('scrollsnap:dotnav-sync', schedule);
+      window.removeEventListener('resize', schedule);
+    };
   }, [sectionState, isTabletLayout, isLandscapeTablet]);
 
   return (

@@ -1,9 +1,9 @@
 // toolboxPages.js
-// Single source of truth: slug -> GitBook URL mapping
-// Used by: ToolboxEmbed.jsx (iframe URL lookup), CMS /admin (link insertion dropdown)
-//
-// Convention: slugs use hyphens, match the route /Toolbox-{slug}
-// All URLs point to docs.neoflix.care
+// Legacy registry: slug -> old GitBook URL, from the era when the toolbox
+// was an embedded GitBook site. Its ONLY remaining consumer is
+// utils/renderMarkdown.js, which uses it to rewrite absolute
+// docs.neoflix.care links found in content back into internal /toolbox/
+// routes. Do not add new entries; new pages never had GitBook URLs.
 
 const BASE = "https://docs.neoflix.care";
 
@@ -122,40 +122,5 @@ const toolboxPages = [
   { slug: "Expanding-Your-Video-Program", label: "18. Expanding Your Video Program", url: `${BASE}/level-3-growth/18.-expanding-your-video-program` },
   { slug: "Join-The-Network", label: "18.1 Join the Network", url: `${BASE}/level-3-growth/18.-expanding-your-video-program/18.1-revolutionize-reflection-in-medical-care-join-the-network` },
 ];
-
-// -- Helpers --
-
-/** Look up a page by slug (case-insensitive) */
-export function getPageBySlug(slug) {
-  return toolboxPages.find(
-    (p) => p.slug.toLowerCase() === slug.toLowerCase()
-  );
-}
-
-/** Get the iframe-ready GitBook URL for a slug */
-export function getEmbedUrl(slug) {
-  const page = getPageBySlug(slug);
-  return page ? page.url : null;
-}
-
-/** Grouped by level -- useful for the CMS dropdown */
-export function getGroupedPages() {
-  const groups = {
-    "Welcome": [],
-    "Level 1: Fundamentals": [],
-    "Level 2: In Action": [],
-    "Level 3: Growth": [],
-  };
-
-  for (const page of toolboxPages) {
-    if (page.url.includes("/welcome/")) groups["Welcome"].push(page);
-    else if (page.url.includes("/level-1-")) groups["Level 1: Fundamentals"].push(page);
-    else if (page.url.includes("/level-2-")) groups["Level 2: In Action"].push(page);
-    else if (page.url.includes("/level-3-")) groups["Level 3: Growth"].push(page);
-    else groups["Welcome"].push(page); // root Welcome page
-  }
-
-  return groups;
-}
 
 export default toolboxPages;

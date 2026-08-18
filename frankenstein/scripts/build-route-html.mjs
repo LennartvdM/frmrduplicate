@@ -47,6 +47,7 @@ import {
   paperPath,
   doiUrl,
 } from '../src/data/publicationRecords.js';
+import legacySlugMap from '../src/data/legacySlugMap.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FRANKENSTEIN_ROOT = path.resolve(__dirname, '..');
@@ -186,6 +187,28 @@ function paperJsonLd(id) {
   return node;
 }
 
+/* The homepage names the organization behind the site. Kept to facts
+   that appear on the site itself (footer, llms.txt, contact copy). */
+function siteJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'WebSite', name: SITE_NAME, url: `${SITE_URL}/` },
+      {
+        '@type': 'Organization',
+        name: SITE_NAME,
+        url: `${SITE_URL}/`,
+        logo: `${SITE_URL}/web-app-manifest-512x512.png`,
+        email: 'info@neoflix.care',
+        parentOrganization: {
+          '@type': 'Organization',
+          name: 'Department of Neonatology, Leiden University Medical Center',
+        },
+      },
+    ],
+  };
+}
+
 function withJsonLd(html, data) {
   // </script> inside JSON would close the tag early; escaping the slash
   // is the standard way to keep the payload inert.
@@ -317,6 +340,46 @@ function sitemap(paths) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
+/* ── 404.html ───────────────────────────────────────────────────────
+   Every real route gets a physical HTML file above, so the SPA rewrite
+   is gone from netlify.toml: a URL with no file behind it now falls
+   through to this shell, which Netlify serves with a genuine 404
+   status (no more soft-404s for crawlers). The shell is still the app,
+   so the visitor sees the router's NotFoundPage, navbar intact. */
+function notFoundHtml(template) {
+  let html = applyMeta(template, {
+    title: `Page not found · ${SITE_NAME}`,
+    description: 'There is nothing at this address.',
+    canonical: `${SITE_URL}/`,
+    image: `${SITE_URL}/og-preview.png`,
+    imageAlt: SITE_NAME,
+  });
+  return html.replace('</head>', '  <meta name="robots" content="noindex" />\n  </head>');
+}
+
+/* ── Legacy redirects ───────────────────────────────────────────────
+   Two generations of old toolbox URLs survive in the wild (LinkedIn
+   posts, printed QR codes): /toolbox/PascalDashCase from the iframe
+   era and /Toolbox-PascalDashCase from the Framer era. legacySlugMap
+   already knows the mapping for client-side resolution; emitting the
+   same table as Netlify 301s means old links land on the canonical
+   URL with a real redirect instead of a 404 shell. Netlify matches
+   redirect paths case-insensitively, so the map's lowercase aliases
+   are skipped. */
+function legacyRedirects() {
+  const seen = new Set();
+  const lines = [];
+  for (const [key, target] of Object.entries(legacySlugMap)) {
+    const lower = key.toLowerCase();
+    if (seen.has(lower)) continue;
+    seen.add(lower);
+    const to = target ? `/toolbox/${target}` : '/toolbox';
+    lines.push(`/toolbox/${key} ${to} 301`);
+    lines.push(`/Toolbox-${key} ${to} 301`);
+  }
+  return lines.join('\n') + '\n';
+}
+
 async function main() {
   const outDir = parseOutDir();
   const templatePath = path.join(outDir, 'index.html');
@@ -343,14 +406,22 @@ async function main() {
       .map((slug) => `/toolbox/${slug}`),
   ];
 
+  const sitemapPaths = [];
   for (const routePath of routePaths) {
     const meta = resolveRouteMeta(routePath, {
       docsPages: pages,
       leadTextFor: (slug) => leads[slug] || '',
       paperFor: (slug) => recordForSlug(slug)?.record || null,
     });
+    // Alias routes (canonical pointing elsewhere, e.g. /contact →
+    // /neoflix) still get their HTML file but stay out of the sitemap:
+    // a sitemap entry whose page declares a different canonical is a
+    // duplicate-content signal.
+    if (meta.canonical === canonicalUrl(routePath)) sitemapPaths.push(routePath);
     let html = applyMeta(template, meta);
-    if (routePath === '/publications') {
+    if (routePath === '/') {
+      html = withJsonLd(html, siteJsonLd());
+    } else if (routePath === '/publications') {
       html = withJsonLd(html, publicationsJsonLd());
     } else if (paperPaths.includes(routePath)) {
       const found = recordForSlug(routePath.slice('/publications/'.length));
@@ -359,9 +430,12 @@ async function main() {
     await writeRoute(outDir, routePath, html);
   }
 
+  await fs.writeFile(path.join(outDir, '404.html'), notFoundHtml(template));
+  await fs.writeFile(path.join(outDir, '_redirects'), legacyRedirects());
+
   await fs.writeFile(path.join(outDir, 'llms.txt'), llmsTxt());
 
-  await fs.writeFile(path.join(outDir, 'sitemap.xml'), sitemap(routePaths));
+  await fs.writeFile(path.join(outDir, 'sitemap.xml'), sitemap(sitemapPaths));
   // /papers/ is disallowed for bandwidth, not secrecy. The PDFs already
   // carry X-Robots-Tag: noindex, but a crawler only reads that header
   // after downloading the file — so Google was pulling 24MB of papers,
@@ -376,7 +450,7 @@ async function main() {
   console.log(
     `[route-html] ${routePaths.length} routes (${
       Object.keys(pages).length
-    } toolbox pages, ${paperPaths.length} paper pages) + sitemap.xml + robots.txt + llms.txt, ${
+    } toolbox pages, ${paperPaths.length} paper pages) + 404.html + _redirects + sitemap.xml + robots.txt + llms.txt, ${
       publicationOrder.length
     } papers as JSON-LD, for ${SITE_NAME}`
   );

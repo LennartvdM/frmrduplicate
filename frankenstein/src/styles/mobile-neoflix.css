@@ -212,7 +212,10 @@
   width: calc(100% + 36px);
   height: calc(100% + 36px);
   object-fit: cover;
-  filter: blur(14px) saturate(1.08) brightness(0.82);
+  /* The source clips (blur*.mp4) are pre-blurred assets — a live
+     filter: blur() here re-blurred every frame on the GPU and was the
+     single biggest scroll-framerate cost on mid-range phones. */
+  filter: saturate(1.08) brightness(0.82);
   transform: scale(1.08);
   opacity: 0.94;
   pointer-events: none;
@@ -260,8 +263,9 @@
     linear-gradient(to bottom, rgba(7, 17, 15, 0.54), rgba(16, 36, 43, 0.78) 42%, rgba(7, 17, 15, 0.9)),
     linear-gradient(135deg, color-mix(in srgb, var(--mobile-neoflix-section-accent, #62c8c9) 18%, transparent), rgba(17, 32, 56, 0.2));
   box-shadow: none;
-  backdrop-filter: blur(20px) saturate(1.15);
-  -webkit-backdrop-filter: blur(20px) saturate(1.15);
+  /* No backdrop-filter: the footage behind this panel is already
+     blurred, and the gradient above carries the legibility. A live
+     backdrop blur re-sampled the playing video every frame. */
 }
 
 .mobile-neoflix__copy h2 {

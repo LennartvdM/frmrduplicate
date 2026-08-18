@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { pageMeta, resolveSlug, getPage } from '../data/docsIndex';
+import { pageMeta, resolveSlug, getPage, loadPage, hasPage } from '../data/docsIndex';
 import { resolveRouteMeta } from '../data/routeMeta';
 import { recordForSlug } from '../data/publicationRecords';
 
@@ -21,30 +21,53 @@ export default function useDocumentMeta() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const meta = resolveRouteMeta(pathname, {
-      docsPages: pageMeta,
-      resolveSlug,
-      leadTextFor: leadParagraphFor,
-      // Same resolver the build uses, so a paper reached by clicking
-      // ends up with the head it would have had on a direct visit.
-      paperFor: (slug) => recordForSlug(slug)?.record || null,
-    });
+    let cancelled = false;
 
-    document.title = meta.title;
-    setMeta('name', 'description', meta.description);
-    setLink('canonical', meta.canonical);
+    const apply = () => {
+      const meta = resolveRouteMeta(pathname, {
+        docsPages: pageMeta,
+        resolveSlug,
+        leadTextFor: leadParagraphFor,
+        // Same resolver the build uses, so a paper reached by clicking
+        // ends up with the head it would have had on a direct visit.
+        paperFor: (slug) => recordForSlug(slug)?.record || null,
+      });
 
-    setMeta('property', 'og:url', meta.canonical);
-    setMeta('property', 'og:title', meta.title);
-    setMeta('property', 'og:description', meta.description);
-    setMeta('property', 'og:image', meta.image);
-    setMeta('property', 'og:image:alt', meta.imageAlt);
+      document.title = meta.title;
+      setMeta('name', 'description', meta.description);
+      setLink('canonical', meta.canonical);
 
-    setMeta('name', 'twitter:url', meta.canonical);
-    setMeta('name', 'twitter:title', meta.title);
-    setMeta('name', 'twitter:description', meta.description);
-    setMeta('name', 'twitter:image', meta.image);
-    setMeta('name', 'twitter:image:alt', meta.imageAlt);
+      setMeta('property', 'og:url', meta.canonical);
+      setMeta('property', 'og:title', meta.title);
+      setMeta('property', 'og:description', meta.description);
+      setMeta('property', 'og:image', meta.image);
+      setMeta('property', 'og:image:alt', meta.imageAlt);
+
+      setMeta('name', 'twitter:url', meta.canonical);
+      setMeta('name', 'twitter:title', meta.title);
+      setMeta('name', 'twitter:description', meta.description);
+      setMeta('name', 'twitter:image', meta.image);
+      setMeta('name', 'twitter:image:alt', meta.imageAlt);
+    };
+
+    apply();
+
+    // Toolbox descriptions fall back to the page's lead paragraph, which
+    // lives in a lazily-loaded AST chunk (docsIndex.js). When the chunk
+    // isn't cached yet, apply again once it arrives so the description
+    // isn't left empty after a client-side navigation.
+    if (pathname === '/toolbox' || pathname.startsWith('/toolbox/')) {
+      const slug = resolveSlug(pathname.replace(/^\/toolbox\/?/, ''));
+      if (hasPage(slug) && !getPage(slug)) {
+        loadPage(slug).then(() => {
+          if (!cancelled) apply();
+        });
+      }
+    }
+
+    return () => {
+      cancelled = true;
+    };
   }, [pathname]);
 }
 

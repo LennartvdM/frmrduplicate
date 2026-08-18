@@ -86,12 +86,11 @@ export default function Footer() {
         >
           <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 sm:gap-6 text-[13px] leading-5 text-white/70">
             <a
-              href="https://neoflix.care/contact"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/contact"
+              onClick={handleNav('/contact')}
               className="hover:text-white underline-offset-2 hover:underline transition-colors"
             >
-              © 2024 Neoflix
+              © 2024–2026 Neoflix
             </a>
             <a
               href="mailto:info@neoflix.care"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import MobileDock from './components/mobile/MobileDock';
@@ -7,11 +7,20 @@ import BackdropProvider from './backdrop/BackdropProvider';
 import { TransitionProvider } from './contexts/TransitionContext';
 import useTabletLayout from './hooks/useTabletLayout';
 import useDocumentMeta from './hooks/useDocumentMeta';
-import Home from './pages/Home';
-import NeoflixPage from './pages/NeoflixPage';
-import PublicationsPage from './pages/PublicationsPage';
-import DocsPage from './pages/DocsPage';
-import PaperPage from './pages/PaperPage';
+import ErrorBoundary from './components/ErrorBoundary';
+
+// Every page is its own chunk. Before this, one bundle carried all five
+// pages (each with both its desktop and mobile tree) plus the docs
+// viewer to every visitor; a phone visitor parsed ~80% JS it never
+// rendered. The Suspense fallback is null on purpose — the backdrop
+// keeps painting during the (one-time, small) chunk fetch, which reads
+// better than a spinner flashing inside the slide.
+const Home = lazy(() => import('./pages/Home'));
+const NeoflixPage = lazy(() => import('./pages/NeoflixPage'));
+const PublicationsPage = lazy(() => import('./pages/PublicationsPage'));
+const DocsPage = lazy(() => import('./pages/DocsPage'));
+const PaperPage = lazy(() => import('./pages/PaperPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 function AppShell() {
   const location = useLocation();
@@ -27,6 +36,19 @@ function AppShell() {
   // route's HTML for anything that doesn't run JavaScript.
   useDocumentMeta();
 
+  // After a client-side navigation, move focus into the new page's
+  // region. Without this, focus stays on the navbar link that was
+  // clicked and screen readers announce nothing about the change.
+  const mainRef = React.useRef(null);
+  const firstRenderRef = React.useRef(true);
+  React.useEffect(() => {
+    if (firstRenderRef.current) {
+      firstRenderRef.current = false;
+      return;
+    }
+    mainRef.current?.focus({ preventScroll: true });
+  }, [location.pathname]);
+
   // The navbar, backdrop, and route slider each render independently.
   // They share a single source of truth — TransitionContext — for the
   // current slide direction and "is a slide in flight" flag, but none
@@ -36,22 +58,36 @@ function AppShell() {
   // nav, which produced dead-click windows on persistent chrome.
   return (
     <div className={`min-h-screen ${isNeoflix || isPublications || isContact || isToolbox ? '' : 'bg-[var(--cool-page)]'}`}>
+      <a className="skip-link" href="#main-content">
+        Skip to content
+      </a>
       <Navbar />
-      <BackdropProvider>
-        <RouteSlider>
-          {(captured) => (
-            <Routes location={captured}>
-              <Route path="/" element={<Home />} />
-              <Route path="/neoflix" element={<NeoflixPage />} />
-              <Route path="/publications" element={<PublicationsPage />} />
-              <Route path="/publications/:slug" element={<PaperPage />} />
-              <Route path="/contact" element={<NeoflixPage scrollTo="contact" />} />
-              <Route path="/toolbox" element={<DocsPage />} />
-              <Route path="/toolbox/*" element={<DocsPage />} />
-            </Routes>
-          )}
-        </RouteSlider>
-      </BackdropProvider>
+      {/* The pages render position:fixed inside RouteSlider, so this
+          <main> contributes no layout of its own — it exists as the
+          landmark and focus target for the skip link and for the
+          focus reset above. */}
+      <main id="main-content" ref={mainRef} tabIndex={-1} style={{ outline: 'none' }}>
+      <ErrorBoundary>
+        <BackdropProvider>
+          <RouteSlider>
+            {(captured) => (
+              <Suspense fallback={null}>
+                <Routes location={captured}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/neoflix" element={<NeoflixPage />} />
+                  <Route path="/publications" element={<PublicationsPage />} />
+                  <Route path="/publications/:slug" element={<PaperPage />} />
+                  <Route path="/contact" element={<NeoflixPage scrollTo="contact" />} />
+                  <Route path="/toolbox" element={<DocsPage />} />
+                  <Route path="/toolbox/*" element={<DocsPage />} />
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </Suspense>
+            )}
+          </RouteSlider>
+        </BackdropProvider>
+      </ErrorBoundary>
+      </main>
       {showMobileDock ? <MobileDock /> : null}
     </div>
   );

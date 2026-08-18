@@ -1,11 +1,12 @@
-import React, { useCallback, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { breadcrumbFor, getPage, navSections, neighbors, pageMeta, resolveSlug } from '../data/docsIndex';
+import { breadcrumbFor, getPage, hasPage, loadPage, navSections, neighbors, pageMeta, resolveSlug } from '../data/docsIndex';
 import DocsNode from '../components/docs/DocsNode';
 import DocsLink from '../components/docs/DocsLink';
 import DocsSidebar from '../components/docs/DocsSidebar';
 import DocsTocRail from '../components/docs/DocsTocRail';
 import useTransitionNavigate from '../hooks/useTransitionNavigate';
+import { useTabletLayout } from '../hooks/useTabletLayout';
 import { useBackdropTarget } from '../backdrop/useBackdrop';
 import { TOOLBOX_DECK, toolboxIdxForSlug } from '../backdrop/decks';
 import '../components/docs/docs.css';
@@ -15,7 +16,21 @@ export default function DocsPage() {
   const location = useLocation();
   const raw = params['*'] ?? params.slug ?? '';
   const slug = resolveSlug(raw);
+  // Page ASTs are lazy chunks (see docsIndex.js). getPage reads the
+  // cache; the effect below fetches on first visit and re-renders.
   const page = getPage(slug);
+  const known = hasPage(slug);
+  const [, rerender] = useReducer((n) => n + 1, 0);
+  useEffect(() => {
+    if (page || !known) return undefined;
+    let live = true;
+    loadPage(slug).then(() => {
+      if (live) rerender();
+    });
+    return () => {
+      live = false;
+    };
+  }, [slug, page, known]);
 
   const scrollRef = useRef(null);
   const transitionNavigate = useTransitionNavigate();
@@ -24,13 +39,21 @@ export default function DocsPage() {
   // deck (slug-hash mod 6). Deterministic: same page, same video, every
   // visit — so the change-video cue reads as "you moved" and not as
   // random flicker between reloads.
+  //
+  // Phones skip the deck entirely: the docs layout covers the viewport
+  // below 600px, so the six decoding videos behind it were pure cost.
+  const { width } = useTabletLayout();
+  const isPhone = width > 0 && width < 600;
   const toolboxTarget = useMemo(
-    () => ({
-      kind: 'video',
-      deck: TOOLBOX_DECK,
-      topIdx: toolboxIdxForSlug(slug),
-    }),
-    [slug]
+    () =>
+      isPhone
+        ? null
+        : {
+            kind: 'video',
+            deck: TOOLBOX_DECK,
+            topIdx: toolboxIdxForSlug(slug),
+          },
+    [slug, isPhone]
   );
   useBackdropTarget('toolbox', toolboxTarget);
 
@@ -62,7 +85,11 @@ export default function DocsPage() {
   const trail = useMemo(() => breadcrumbFor(slug), [slug]);
   const sectionCrumb = trail[0]?.title || null;
 
-  if (!page) return <NotFound slug={raw} />;
+  if (!known) return <NotFound slug={raw} />;
+  // Known page, chunk still in flight: hold the frame briefly rather
+  // than flashing the not-found view. The docs shell (sidebar, rail)
+  // needs the AST, so there is nothing partial worth painting yet.
+  if (!page) return null;
 
   const sourcePath = page.meta?.source;
   const hrefForSection = (section) => {

@@ -5,8 +5,7 @@ import { useLayoutEffect, useState } from 'react';
  * @param {string[]} ids - Array of section IDs to track
  * @param {number} offset - Pixel offset from top of viewport (default: 100)
  * @param {object|null} scrollerRef - Optional ref whose .current is the
- *   scrollable container. Falls back to window when null/undefined — used
- *   by legacy consumers (SidebarLayout) that still scroll the document.
+ *   scrollable container. Falls back to window when null/undefined.
  *   Pages inside the fixed RouteSlider wrapper must pass a ref to
  *   their own internal scroll container, because `window` never scrolls
  *   in the new layout.

@@ -19,7 +19,7 @@
  * There is no opt-out for Edge's enhance prompt, so where a reader can
  * actually reach a clip — the blur backdrops and the inline product
  * clips — we don't ship a video element at all: those are painted into a
- * canvas instead. See components/shared/IllustrationCanvas.
+ * canvas instead. See components/shared/IllustrationClip.
  */
 export const decorativeVideoProps = {
   controls: false,

@@ -6,7 +6,7 @@ import { useTransitionState } from '../../contexts/TransitionContext';
 import { renderMarkdown } from '../../utils/renderMarkdown';
 import { useBackdropTarget } from '../../backdrop/useBackdrop';
 import { BLOG_DECK, blogIdxForSection } from '../../backdrop/decks';
-import IllustrationCanvas from './IllustrationCanvas';
+import IllustrationClip from './IllustrationClip';
 import PublicationAttachment from './PublicationAttachment';
 import PublicationBundle from './PublicationBundle';
 import { paperPath } from '../../data/publicationRecords';
@@ -44,48 +44,48 @@ const PUBLICATION_PREVIEW_OVERRIDES = new Map([
   [
     'https://www.frontiersin.org/articles/10.3389/fped.2022.931055/full',
     {
-      image: '/docs-assets/narrative-review-frontiers-preview.png',
+      image: '/previews/narrative-review-frontiers-preview.png',
       label: 'Frontiers in Pediatrics',
     },
   ],
   [
     'https://fn.bmj.com/content/early/2024/02/07/archdischild-2023-326528',
     {
-      image: '/docs-assets/providers-perspective-bmj-preview.png',
+      image: '/previews/providers-perspective-bmj-preview.png',
       label: 'Fetal & Neonatal',
     },
   ],
   [
     'https://www.nature.com/articles/s41390-024-03083-w',
     {
-      image: '/docs-assets/record-reflect-refine-nature-preview.png',
+      image: '/previews/record-reflect-refine-nature-preview.png',
       label: 'Pediatric Research',
     },
   ],
   [
     'https://docs.google.com/viewerng/viewer?url=https://bmjopenquality.bmj.com/content/bmjqir/13/2/e002588.full.pdf',
     {
-      image: '/docs-assets/practical-guidance-bmj-open-quality-preview.png',
+      image: '/previews/practical-guidance-bmj-open-quality-preview.png',
       label: 'BMJ Open Quality',
     },
   ],
   [
     'https://www.sciencedirect.com/science/article/pii/S030095722300789X',
     {
-      image: '/docs-assets/driving-research-sciencedirect-preview.png',
+      image: '/previews/driving-research-sciencedirect-preview.png',
       label: 'Resuscitation',
     },
   ],
   [
     'https://www.mdpi.com/2227-9067/13/6/816',
     {
-      image: '/docs-assets/international-collaboration-mdpi-preview.png',
+      image: '/previews/international-collaboration-mdpi-preview.png',
       label: 'Children',
     },
   ],
 ]);
 
-export default function BlogPage({ sections, scrollTo, bundle }) {
+export default function BlogPage({ sections, scrollTo, bundle, pageTitle }) {
   // Internal scroll container. BlogPage renders inside RouteSlider,
   // which is `position: fixed; inset: 0` — window never scrolls under
   // that layout, so the page scrolls on this inner element instead.
@@ -383,6 +383,7 @@ export default function BlogPage({ sections, scrollTo, bundle }) {
         </motion.aside>
 
         {/* Content column */}
+        {pageTitle ? <h1 className="sr-only">{pageTitle}</h1> : null}
         <motion.article
           initial={articleTrails ? { x: STAGGER_OFFSET } : false}
           animate={articleTrails ? { x: 0 } : undefined}
@@ -1112,14 +1113,12 @@ function parseSectionContent(content, opts = {}) {
 /* ── Inline illustrative video ──────────────────────────────────────── */
 /**
  * The clip inside a product section is a moving illustration: silent,
- * six seconds, looping, with nothing to control. It is painted into a
- * canvas rather than mounted as a <video> so browsers stop offering
- * reader-facing media controls over it — Edge otherwise puts a
- * picture-in-picture button in the frame on hover and an "Enhance video"
- * prompt in the address bar. See IllustrationCanvas for the mechanics.
+ * six seconds, looping, with nothing to control. IllustrationClip
+ * renders it as a <video> with every media affordance opted out (see
+ * that component's header for the canvas-era history).
  *
- * Playback is still scroll-gated: the clip only decodes while its frame
- * is on screen.
+ * Playback is scroll-gated: the clip only plays while its frame is on
+ * screen.
  */
 function InlineVideo({ src }) {
   const frameRef = useRef(null);
@@ -1147,7 +1146,7 @@ function InlineVideo({ src }) {
       ref={frameRef}
       style={{ maxWidth: 620, margin: '26px 0', borderRadius: 8, overflow: 'hidden', boxShadow: '0 4px 16px rgba(28,54,100,0.1)' }}
     >
-      <IllustrationCanvas
+      <IllustrationClip
         src={src}
         play={inView}
         preload="metadata"

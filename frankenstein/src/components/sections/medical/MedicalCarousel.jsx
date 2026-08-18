@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, memo } from "react";
 import { assetUrl } from "../../../utils/assetUrl";
-import IllustrationCanvas from "../../shared/IllustrationCanvas";
+import IllustrationClip from "../../shared/IllustrationClip";
 
 const AUTOPLAY_MS = 6600; // 6.6 seconds
 
@@ -105,7 +105,7 @@ const MedicalCarousel = memo(function MedicalCarousel({ current, hoveredIndex, i
           overflow: 'hidden',
         }}
       >
-        <IllustrationCanvas
+        <IllustrationClip
           src={deckLoaded ? videoSlides[2].video : undefined}
           play={shouldPlay(2)}
           preload="metadata"
@@ -149,7 +149,7 @@ const MedicalCarousel = memo(function MedicalCarousel({ current, hoveredIndex, i
               transition: 'opacity 1.2s cubic-bezier(0.4,0,0.2,1)' // Slower fade
             }}
           >
-            <IllustrationCanvas
+            <IllustrationClip
               src={i === 0 || deckLoaded ? videoSlides[i].video : undefined}
               play={shouldPlay(i)}
               preload="metadata"

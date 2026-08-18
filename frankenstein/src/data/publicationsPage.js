@@ -271,11 +271,3 @@ export const deckSources = [
   assetUrl('/videos/blururgency.mp4'),
 ];
 
-// Page styling — matches frmrduplicate's Publications design
-export const pageStyle = {
-  backgroundColor: '#00333b',
-  sidebarClassName: 'bg-[#1c3664]',
-  sectionStyle: {
-    background: 'rgba(245,249,252,0.8)',
-  },
-};

@@ -1,15 +1,9 @@
 [build]
   command = "bash build.sh"
   publish = "dist"
-  functions = "netlify/functions"
 
 [build.environment]
-  NODE_VERSION = "18"
-  # Pull submodule HEADs (docs-content) fresh on every build so the
-  # live site tracks the latest GitBook push. The doc repo has its own
-  # GitHub webhook pointed at Netlify's build hook for auto-rebuilds.
-  GIT_LFS_ENABLED = "false"
-  SUBMODULE_STRATEGY = "recursive"
+  NODE_VERSION = "22"
 
 # SPA routing (React Router)
 [[redirects]]

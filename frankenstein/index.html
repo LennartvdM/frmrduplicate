@@ -33,7 +33,10 @@
     <meta name="twitter:image" content="https://www.neoflix.care/og-preview.png" />
     <meta name="twitter:image:alt" content="Neoflix documentation: Elevate your medical practice" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <!-- Fonts are self-hosted (see src/styles/fonts.css): no visitor data
+         goes to Google, and no third-party connection blocks first paint. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/inter-latin.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/montserrat-latin.woff2" />
   </head>
   <body>
     <div id="root"></div>

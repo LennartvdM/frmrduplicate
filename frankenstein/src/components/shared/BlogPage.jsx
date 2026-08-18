@@ -85,7 +85,7 @@ const PUBLICATION_PREVIEW_OVERRIDES = new Map([
   ],
 ]);
 
-export default function BlogPage({ sections, scrollTo, bundle }) {
+export default function BlogPage({ sections, scrollTo, bundle, pageTitle }) {
   // Internal scroll container. BlogPage renders inside RouteSlider,
   // which is `position: fixed; inset: 0` — window never scrolls under
   // that layout, so the page scrolls on this inner element instead.
@@ -383,6 +383,7 @@ export default function BlogPage({ sections, scrollTo, bundle }) {
         </motion.aside>
 
         {/* Content column */}
+        {pageTitle ? <h1 className="sr-only">{pageTitle}</h1> : null}
         <motion.article
           initial={articleTrails ? { x: STAGGER_OFFSET } : false}
           animate={articleTrails ? { x: 0 } : undefined}

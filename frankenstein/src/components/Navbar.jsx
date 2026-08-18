@@ -305,6 +305,7 @@ export default function Navbar() {
                 </AnimatePresence>
                 <a
                   href={link.to}
+                  aria-current={active ? 'page' : undefined}
                   onClick={(e) => handleNavClick(e, link.to, link.section)}
                   className={`relative z-30 flex items-center justify-center rounded-full transform-gpu transition duration-200 ease-out
                     hover:scale-105 focus:scale-105

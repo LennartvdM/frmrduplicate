@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useTransitionState } from '../contexts/TransitionContext';
 import { getNavIndexForPath } from '../hooks/useNavIndex';
 import useTabletLayout from '../hooks/useTabletLayout';
@@ -68,19 +68,28 @@ export default function RouteSlider({ children }) {
     }
   }, [location.pathname, direction, setIsSliding]);
 
-  const variants = {
-    enter: (dir) => ({
-      x: dir > 0 ? '100%' : dir < 0 ? '-100%' : 0,
-    }),
-    center: {
-      x: 0,
-      transition: { duration: SLIDE_DURATION, ease: EASE },
-    },
-    exit: (dir) => ({
-      x: dir > 0 ? '-100%' : dir < 0 ? '100%' : 0,
-      transition: { duration: SLIDE_DURATION, ease: EASE },
-    }),
-  };
+  // prefers-reduced-motion swaps pages instantly instead of sliding a
+  // full viewport of content sideways — the site's largest motion.
+  const prefersReducedMotion = useReducedMotion();
+  const variants = prefersReducedMotion
+    ? {
+        enter: { x: 0 },
+        center: { x: 0, transition: { duration: 0 } },
+        exit: { x: 0, transition: { duration: 0 } },
+      }
+    : {
+        enter: (dir) => ({
+          x: dir > 0 ? '100%' : dir < 0 ? '-100%' : 0,
+        }),
+        center: {
+          x: 0,
+          transition: { duration: SLIDE_DURATION, ease: EASE },
+        },
+        exit: (dir) => ({
+          x: dir > 0 ? '-100%' : dir < 0 ? '100%' : 0,
+          transition: { duration: SLIDE_DURATION, ease: EASE },
+        }),
+      };
 
   return (
     <div

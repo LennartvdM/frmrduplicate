@@ -36,6 +36,19 @@ function AppShell() {
   // route's HTML for anything that doesn't run JavaScript.
   useDocumentMeta();
 
+  // After a client-side navigation, move focus into the new page's
+  // region. Without this, focus stays on the navbar link that was
+  // clicked and screen readers announce nothing about the change.
+  const mainRef = React.useRef(null);
+  const firstRenderRef = React.useRef(true);
+  React.useEffect(() => {
+    if (firstRenderRef.current) {
+      firstRenderRef.current = false;
+      return;
+    }
+    mainRef.current?.focus({ preventScroll: true });
+  }, [location.pathname]);
+
   // The navbar, backdrop, and route slider each render independently.
   // They share a single source of truth — TransitionContext — for the
   // current slide direction and "is a slide in flight" flag, but none
@@ -45,7 +58,15 @@ function AppShell() {
   // nav, which produced dead-click windows on persistent chrome.
   return (
     <div className={`min-h-screen ${isNeoflix || isPublications || isContact || isToolbox ? '' : 'bg-[var(--cool-page)]'}`}>
+      <a className="skip-link" href="#main-content">
+        Skip to content
+      </a>
       <Navbar />
+      {/* The pages render position:fixed inside RouteSlider, so this
+          <main> contributes no layout of its own — it exists as the
+          landmark and focus target for the skip link and for the
+          focus reset above. */}
+      <main id="main-content" ref={mainRef} tabIndex={-1} style={{ outline: 'none' }}>
       <ErrorBoundary>
         <BackdropProvider>
           <RouteSlider>
@@ -66,6 +87,7 @@ function AppShell() {
           </RouteSlider>
         </BackdropProvider>
       </ErrorBoundary>
+      </main>
       {showMobileDock ? <MobileDock /> : null}
     </div>
   );

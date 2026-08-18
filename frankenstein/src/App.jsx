@@ -71,7 +71,28 @@ function AppShell() {
         <BackdropProvider>
           <RouteSlider>
             {(captured) => (
-              <Suspense fallback={null}>
+              // While the home chunk loads, paint what the page itself
+              // will paint. The backdrop's cell-0 camo (#739780, chosen
+              // to blend the snap into the medical deck) sits under the
+              // intro, and with pages arriving as lazy chunks it showed
+              // as a green flash on first load. Blog/toolbox routes keep
+              // a null fallback — their backdrop showing through during
+              // the fetch IS their designed look.
+              <Suspense
+                fallback={
+                  captured.pathname === '/' ? (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: showMobileDock
+                          ? '#07110f'
+                          : 'linear-gradient(to top, #FFFFFF, #F5F9FC)',
+                      }}
+                    />
+                  ) : null
+                }
+              >
                 <Routes location={captured}>
                   <Route path="/" element={<Home />} />
                   <Route path="/neoflix" element={<NeoflixPage />} />

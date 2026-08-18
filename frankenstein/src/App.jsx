@@ -7,11 +7,13 @@ import BackdropProvider from './backdrop/BackdropProvider';
 import { TransitionProvider } from './contexts/TransitionContext';
 import useTabletLayout from './hooks/useTabletLayout';
 import useDocumentMeta from './hooks/useDocumentMeta';
+import ErrorBoundary from './components/ErrorBoundary';
 import Home from './pages/Home';
 import NeoflixPage from './pages/NeoflixPage';
 import PublicationsPage from './pages/PublicationsPage';
 import DocsPage from './pages/DocsPage';
 import PaperPage from './pages/PaperPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 function AppShell() {
   const location = useLocation();
@@ -37,21 +39,24 @@ function AppShell() {
   return (
     <div className={`min-h-screen ${isNeoflix || isPublications || isContact || isToolbox ? '' : 'bg-[var(--cool-page)]'}`}>
       <Navbar />
-      <BackdropProvider>
-        <RouteSlider>
-          {(captured) => (
-            <Routes location={captured}>
-              <Route path="/" element={<Home />} />
-              <Route path="/neoflix" element={<NeoflixPage />} />
-              <Route path="/publications" element={<PublicationsPage />} />
-              <Route path="/publications/:slug" element={<PaperPage />} />
-              <Route path="/contact" element={<NeoflixPage scrollTo="contact" />} />
-              <Route path="/toolbox" element={<DocsPage />} />
-              <Route path="/toolbox/*" element={<DocsPage />} />
-            </Routes>
-          )}
-        </RouteSlider>
-      </BackdropProvider>
+      <ErrorBoundary>
+        <BackdropProvider>
+          <RouteSlider>
+            {(captured) => (
+              <Routes location={captured}>
+                <Route path="/" element={<Home />} />
+                <Route path="/neoflix" element={<NeoflixPage />} />
+                <Route path="/publications" element={<PublicationsPage />} />
+                <Route path="/publications/:slug" element={<PaperPage />} />
+                <Route path="/contact" element={<NeoflixPage scrollTo="contact" />} />
+                <Route path="/toolbox" element={<DocsPage />} />
+                <Route path="/toolbox/*" element={<DocsPage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            )}
+          </RouteSlider>
+        </BackdropProvider>
+      </ErrorBoundary>
       {showMobileDock ? <MobileDock /> : null}
     </div>
   );

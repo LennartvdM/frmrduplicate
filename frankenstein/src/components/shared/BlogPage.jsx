@@ -6,7 +6,7 @@ import { useTransitionState } from '../../contexts/TransitionContext';
 import { renderMarkdown } from '../../utils/renderMarkdown';
 import { useBackdropTarget } from '../../backdrop/useBackdrop';
 import { BLOG_DECK, blogIdxForSection } from '../../backdrop/decks';
-import IllustrationCanvas from './IllustrationCanvas';
+import IllustrationClip from './IllustrationClip';
 import PublicationAttachment from './PublicationAttachment';
 import PublicationBundle from './PublicationBundle';
 import { paperPath } from '../../data/publicationRecords';
@@ -1113,14 +1113,12 @@ function parseSectionContent(content, opts = {}) {
 /* ── Inline illustrative video ──────────────────────────────────────── */
 /**
  * The clip inside a product section is a moving illustration: silent,
- * six seconds, looping, with nothing to control. It is painted into a
- * canvas rather than mounted as a <video> so browsers stop offering
- * reader-facing media controls over it — Edge otherwise puts a
- * picture-in-picture button in the frame on hover and an "Enhance video"
- * prompt in the address bar. See IllustrationCanvas for the mechanics.
+ * six seconds, looping, with nothing to control. IllustrationClip
+ * renders it as a <video> with every media affordance opted out (see
+ * that component's header for the canvas-era history).
  *
- * Playback is still scroll-gated: the clip only decodes while its frame
- * is on screen.
+ * Playback is scroll-gated: the clip only plays while its frame is on
+ * screen.
  */
 function InlineVideo({ src }) {
   const frameRef = useRef(null);
@@ -1148,7 +1146,7 @@ function InlineVideo({ src }) {
       ref={frameRef}
       style={{ maxWidth: 620, margin: '26px 0', borderRadius: 8, overflow: 'hidden', boxShadow: '0 4px 16px rgba(28,54,100,0.1)' }}
     >
-      <IllustrationCanvas
+      <IllustrationClip
         src={src}
         play={inView}
         preload="metadata"

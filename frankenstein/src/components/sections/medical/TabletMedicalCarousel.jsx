@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, memo } from 'react';
-import IllustrationCanvas from '../../shared/IllustrationCanvas';
+import IllustrationClip from '../../shared/IllustrationClip';
 
 const TabletMedicalCarousel = memo(function TabletMedicalCarousel({ videos = [], current = 0, onChange, onPauseChange, className, style, sectionActive = true, onCarouselClick }) {
   const containerRef = useRef(null);
@@ -51,7 +51,7 @@ const TabletMedicalCarousel = memo(function TabletMedicalCarousel({ videos = [],
             pointerEvents: i === current ? 'auto' : 'none',
           }}
         >
-          <IllustrationCanvas
+          <IllustrationClip
             src={i === 0 || deckLoaded ? videoSlides[i]?.video : undefined}
             play={shouldPlay(i)}
             preload="metadata"

@@ -187,6 +187,28 @@ function paperJsonLd(id) {
   return node;
 }
 
+/* The homepage names the organization behind the site. Kept to facts
+   that appear on the site itself (footer, llms.txt, contact copy). */
+function siteJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'WebSite', name: SITE_NAME, url: `${SITE_URL}/` },
+      {
+        '@type': 'Organization',
+        name: SITE_NAME,
+        url: `${SITE_URL}/`,
+        logo: `${SITE_URL}/web-app-manifest-512x512.png`,
+        email: 'info@neoflix.care',
+        parentOrganization: {
+          '@type': 'Organization',
+          name: 'Department of Neonatology, Leiden University Medical Center',
+        },
+      },
+    ],
+  };
+}
+
 function withJsonLd(html, data) {
   // </script> inside JSON would close the tag early; escaping the slash
   // is the standard way to keep the payload inert.
@@ -384,14 +406,22 @@ async function main() {
       .map((slug) => `/toolbox/${slug}`),
   ];
 
+  const sitemapPaths = [];
   for (const routePath of routePaths) {
     const meta = resolveRouteMeta(routePath, {
       docsPages: pages,
       leadTextFor: (slug) => leads[slug] || '',
       paperFor: (slug) => recordForSlug(slug)?.record || null,
     });
+    // Alias routes (canonical pointing elsewhere, e.g. /contact →
+    // /neoflix) still get their HTML file but stay out of the sitemap:
+    // a sitemap entry whose page declares a different canonical is a
+    // duplicate-content signal.
+    if (meta.canonical === canonicalUrl(routePath)) sitemapPaths.push(routePath);
     let html = applyMeta(template, meta);
-    if (routePath === '/publications') {
+    if (routePath === '/') {
+      html = withJsonLd(html, siteJsonLd());
+    } else if (routePath === '/publications') {
       html = withJsonLd(html, publicationsJsonLd());
     } else if (paperPaths.includes(routePath)) {
       const found = recordForSlug(routePath.slice('/publications/'.length));
@@ -405,7 +435,7 @@ async function main() {
 
   await fs.writeFile(path.join(outDir, 'llms.txt'), llmsTxt());
 
-  await fs.writeFile(path.join(outDir, 'sitemap.xml'), sitemap(routePaths));
+  await fs.writeFile(path.join(outDir, 'sitemap.xml'), sitemap(sitemapPaths));
   // /papers/ is disallowed for bandwidth, not secrecy. The PDFs already
   // carry X-Robots-Tag: noindex, but a crawler only reads that header
   // after downloading the file — so Google was pulling 24MB of papers,

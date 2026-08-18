@@ -57,6 +57,11 @@ export const ROUTE_META = {
     title: `Contact | ${SITE_NAME}`,
     description:
       'Questions about starting video review in your department? Reach the Neoflix team at the Department of Neonatology, Leiden University Medical Center.',
+    // /contact renders the same page as /neoflix (scrolled to its last
+    // section). Two URLs with identical content each claiming to be
+    // canonical read as duplicate content, so this one points at the
+    // page that owns the content — and the sitemap skips it.
+    canonicalPath: '/neoflix',
   },
   '/toolbox': {
     title: `Toolbox | ${SITE_NAME}`,
@@ -165,7 +170,7 @@ function withDefaults(meta, path) {
     path,
     title: meta.title,
     description: clampDescription(meta.description),
-    canonical: canonicalUrl(path),
+    canonical: canonicalUrl(meta.canonicalPath || path),
     image: `${SITE_URL}${meta.image || DEFAULT_OG_IMAGE}`,
     imageAlt: meta.imageAlt || OG_IMAGE_ALT,
   };

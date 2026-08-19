@@ -58,18 +58,54 @@ everything, regenerates route HTML, and runs the smoke assertions.
 6. **`HOME_CELLS` in `src/backdrop/BackdropProvider.jsx` mirrors the
    `sections` array in `src/pages/DesktopHome.jsx` by position.** Changing
    one requires changing the other.
-7. **Media quality is deliberate — do NOT re-compress the backdrops.**
-   The blurred backdrop clips and the phone montage ship at the owner's
-   original encodes; pushing them to CRF≈30 posterizes the gradients
-   (that mistake and its revert are documented in AUDIT.md). The cheap
-   path for constrained visitors is `utils/reducedMedia.js`: webp
-   stills in `public/videos/stills/` replace the loops under
-   prefers-reduced-motion / Save-Data / low device memory. If a clip
-   changes, regenerate its still (`ffmpeg -ss 1.5 -i clip.mp4
-   -frames:v 1 -c:v libwebp -quality 88 stills/<name>.webp`). New
-   media keeps posters and `preload="metadata"`. Don't reintroduce a
-   Google Fonts link (fonts are self-hosted) and don't remove `dnt=1`
-   from the Vimeo URL.
+7. **Media quality is deliberate — measure before you re-encode.**
+   A blanket compression pass over these clips was tried and reverted:
+   CRF≈30 posterized the gradients (see AUDIT.md). Two clips
+   (`Blursskills.mp4`, `mobile/neoflix_intro_blur_montage.mp4`) are
+   already artefact-free and near-optimally encoded — re-encoding them
+   at ANY setting measurably *loses* quality and, for the montage,
+   produces a bigger file. Leave them alone.
+
+   The other five backdrop loops went through a deliberate pass that
+   exploits the fact that they are heavily blurred by design: an extra
+   gaussian blur is imperceptible on already-blurred footage, but it
+   is a low-pass filter, so it erases compression artefacts (which are
+   high-frequency) and leaves the encoder almost nothing to waste bits
+   on. Blur in 10-bit and dither down, so the smoothing doesn't cause
+   banding:
+
+   ```bash
+   ffmpeg -i in.mp4 -an \
+     -vf "format=yuv420p10le,gblur=sigma=2.5,format=yuv420p" \
+     -c:v libx264 -preset veryslow -crf 18 \
+     -x264-params "aq-mode=3:psy-rd=0.3" \
+     -pix_fmt yuv420p -movflags +faststart out.mp4
+   ```
+
+   That gained +10.5 to +12.8 dB of artefact-freeness at 33–86% of the
+   original size. Before applying it to any clip, measure whether the
+   clip needs it — a whole-clip self-vs-blur PSNR under ~60 dB means
+   real artefacts, over ~70 dB means it is already clean and you would
+   only add generation loss:
+
+   ```bash
+   ffmpeg -i clip.mp4 -filter_complex \
+     "split[a][b];[a]gblur=sigma=1[ab];[b][ab]psnr" -f null -
+   ```
+
+   Never apply this to the sharp foreground clips (`urgency`, `focus`,
+   `coordination`, `skills`, `team`, `perspectives`) — blurring real
+   detail is visible immediately. Keep the backdrops at 720x426 and the
+   foreground clips at their native resolutions.
+
+   Constrained visitors get stills instead of video via
+   `utils/reducedMedia.js` (prefers-reduced-motion / Save-Data / low
+   device memory). If a clip changes, regenerate its still so the two
+   match: `ffmpeg -ss 1.5 -i clip.mp4 -frames:v 1 -c:v libwebp
+   -quality 88 stills/<name>.webp`. New media keeps posters and
+   `preload="metadata"`. Don't reintroduce a Google Fonts link (fonts
+   are self-hosted) and don't remove `dnt=1` from the Vimeo URL.
+
 8. **No cookies, no analytics without an explicit cookieless choice** —
    the site's privacy posture is "no banner needed" and it should stay so.
 9. **Netlify config**: there is intentionally NO `/* → /index.html`

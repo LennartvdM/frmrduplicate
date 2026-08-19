@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { breadcrumbFor, getPage, hasPage, loadPage, navSections, neighbors, pageMeta, resolveSlug } from '../data/docsIndex';
+import { breadcrumbFor, getPage, hasPage, loadPages, navSections, neighbors, pageMeta, pagesReady, resolveSlug } from '../data/docsIndex';
 import DocsNode from '../components/docs/DocsNode';
 import DocsLink from '../components/docs/DocsLink';
 import DocsSidebar from '../components/docs/DocsSidebar';
@@ -16,21 +16,21 @@ export default function DocsPage() {
   const location = useLocation();
   const raw = params['*'] ?? params.slug ?? '';
   const slug = resolveSlug(raw);
-  // Page ASTs are lazy chunks (see docsIndex.js). getPage reads the
-  // cache; the effect below fetches on first visit and re-renders.
+  // The compiled pages arrive as one bundle, fetched once when a visitor
+  // enters the toolbox (see docsIndex.js). After that getPage is
+  // synchronous, so moving between pages never waits on anything.
   const page = getPage(slug);
   const known = hasPage(slug);
+  const meta = pageMeta[slug];
   const [, rerender] = useReducer((n) => n + 1, 0);
   useEffect(() => {
-    if (page || !known) return undefined;
+    if (pagesReady()) return undefined;
     let live = true;
-    loadPage(slug).then(() => {
-      if (live) rerender();
-    });
-    return () => {
-      live = false;
-    };
-  }, [slug, page, known]);
+    loadPages()
+      .then(() => { if (live) rerender(); })
+      .catch(() => { /* the shell still renders from the manifest */ });
+    return () => { live = false; };
+  }, []);
 
   const scrollRef = useRef(null);
   const transitionNavigate = useTransitionNavigate();
@@ -86,12 +86,15 @@ export default function DocsPage() {
   const sectionCrumb = trail[0]?.title || null;
 
   if (!known) return <NotFound slug={raw} />;
-  // Known page, chunk still in flight: hold the frame briefly rather
-  // than flashing the not-found view. The docs shell (sidebar, rail)
-  // needs the AST, so there is nothing partial worth painting yet.
-  if (!page) return null;
 
-  const sourcePath = page.meta?.source;
+  // NEVER unmount while the bundle loads. The nav tree, titles,
+  // descriptions and neighbours all come from the manifest, which is
+  // already in memory — so the whole page renders immediately and only
+  // the article body waits. Returning null here instead made the entire
+  // toolbox disappear and re-appear on every click.
+  const title = page?.title ?? meta?.title ?? '';
+  const description = page?.frontmatter?.description ?? meta?.description ?? null;
+  const sourcePath = meta?.source;
   const hrefForSection = (section) => {
     const slug = section.items?.[0]?.slug;
     return slug ? `/toolbox/${slug}` : '/toolbox';
@@ -119,13 +122,13 @@ export default function DocsPage() {
             {sectionCrumb && (
               <div className="docs-section-crumb">{sectionCrumb.toUpperCase()}</div>
             )}
-            <h1 className="docs-title">{page.title}</h1>
-            {page.frontmatter?.description && (
-              <p className="docs-description">{page.frontmatter.description}</p>
+            <h1 className="docs-title">{title}</h1>
+            {description && (
+              <p className="docs-description">{description}</p>
             )}
 
-            <div className="docs-body" onClick={handleBodyClick}>
-              <DocsNode node={page.ast} />
+            <div className="docs-body" onClick={handleBodyClick} aria-busy={page ? undefined : 'true'}>
+              {page ? <DocsNode node={page.ast} /> : null}
             </div>
 
             <footer className="docs-footer">
@@ -164,7 +167,7 @@ export default function DocsPage() {
           </article>
 
           <aside className="docs-rail">
-            <DocsTocRail ast={page.ast} scrollContainerRef={scrollRef} />
+            {page ? <DocsTocRail ast={page.ast} scrollContainerRef={scrollRef} /> : null}
           </aside>
         </main>
       </div>

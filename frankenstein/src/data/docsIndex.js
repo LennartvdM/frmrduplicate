@@ -8,42 +8,53 @@ import legacySlugMap from './legacySlugMap';
 export const navSections = manifest.sections || [];
 export const pageMeta = manifest.pages || {};
 
-// Vite glob: lazy import map of every compiled page AST. The ~75 page
-// chunks used to be eager-bundled into the main chunk, which shipped
-// the entire toolbox to every visitor on every route; lazily each page
-// is a small JSON chunk fetched on first visit and cached below.
-const pageLoaders = import.meta.glob('../generated/docs/*.json');
+// The compiled page ASTs, as ONE lazily-imported bundle (built by
+// scripts/build-docs.mjs). Two failure modes to avoid, and this sits
+// between them:
+//   - eager-importing them put the entire toolbox in the main chunk, so
+//     every visitor on every route downloaded all 74 pages;
+//   - splitting them per page put a network round trip in front of every
+//     click inside the toolbox, which made the docs visibly reload.
+// One bundle, fetched when a visitor actually enters /toolbox, then
+// every page is in memory and navigation is instant.
+let pagesPromise = null;
+let pagesByFile = null;
 
-const fileToLoader = new Map();
-for (const [path, loader] of Object.entries(pageLoaders)) {
-  fileToLoader.set(path.split('/').pop(), loader);
+export function loadPages() {
+  if (pagesByFile) return Promise.resolve(pagesByFile);
+  if (!pagesPromise) {
+    pagesPromise = import('../generated/docs-pages.json')
+      .then((mod) => {
+        pagesByFile = mod.default || mod;
+        return pagesByFile;
+      })
+      .catch((err) => {
+        // Let a later attempt retry rather than caching the failure.
+        pagesPromise = null;
+        throw err;
+      });
+  }
+  return pagesPromise;
 }
 
-// file -> parsed module, filled by loadPage. getPage stays synchronous
-// against this cache so callers that run before a page is fetched just
-// see null and try again after awaiting loadPage.
-const loadedPages = new Map();
+/** True once the page bundle is in memory (so getPage can resolve). */
+export function pagesReady() {
+  return pagesByFile != null;
+}
 
 export function getPage(slug) {
   const normalized = normalizeSlug(slug);
   const meta = pageMeta[normalized];
-  if (!meta) return null;
-  const mod = loadedPages.get(meta.file);
-  if (!mod) return null;
-  return { ...mod, meta, slug: normalized };
+  if (!meta || !pagesByFile) return null;
+  const compiled = pagesByFile[meta.file];
+  if (!compiled) return null;
+  return { ...compiled, meta, slug: normalized };
 }
 
+/** Await the bundle, then resolve one page. */
 export async function loadPage(slug) {
-  const normalized = normalizeSlug(slug);
-  const meta = pageMeta[normalized];
-  if (!meta) return null;
-  if (!loadedPages.has(meta.file)) {
-    const loader = fileToLoader.get(meta.file);
-    if (!loader) return null;
-    const mod = await loader();
-    loadedPages.set(meta.file, mod.default || mod);
-  }
-  return getPage(normalized);
+  await loadPages();
+  return getPage(slug);
 }
 
 /** True when the slug names a real page (loaded or not). */

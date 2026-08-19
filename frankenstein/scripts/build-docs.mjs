@@ -645,6 +645,7 @@ async function main() {
 
   // 4. Compile each page
   const pageMeta = {};
+  const allPages = {};
   for (const relPath of mdFiles) {
     if (relPath.toLowerCase() === "summary.md") continue;
     const abs = path.join(DOCS_SRC, relPath);
@@ -681,7 +682,15 @@ async function main() {
 
     const slug = pageSlugFromRelPath(relPath);
     const outFile = slug === "" ? "_root.json" : `${slug.replace(/\//g, "__")}.json`;
-    await fs.writeFile(path.join(PAGES_OUT, outFile), JSON.stringify({ slug, title, frontmatter, ast }));
+    const compiled = { slug, title, frontmatter, ast };
+    // Per-page file: read at build time by build-route-html.mjs for each
+    // route's meta description.
+    await fs.writeFile(path.join(PAGES_OUT, outFile), JSON.stringify(compiled));
+    // ...and into the single bundle the CLIENT loads. One request when a
+    // visitor enters /toolbox, then every page is in memory, so moving
+    // between pages never waits on the network. Splitting this per page
+    // meant each click paid a round trip.
+    allPages[outFile] = compiled;
 
     pageMeta[slug] = {
       title,
@@ -700,10 +709,14 @@ async function main() {
     console.warn(`[build-docs] no SUMMARY.md (${err.message})`);
   }
 
-  // 6. Emit manifest
+  // 6. Emit manifest + the single client-side page bundle
   await fs.writeFile(
     path.join(GENERATED_DIR, "docs-manifest.json"),
     JSON.stringify({ sections: navSections, pages: pageMeta }, null, 2),
+  );
+  await fs.writeFile(
+    path.join(GENERATED_DIR, "docs-pages.json"),
+    JSON.stringify(allPages),
   );
 
   // 7. Publish only the assets the compiled pages referenced. The output

@@ -90,18 +90,30 @@ export default function MedicalDesktopLayout({
     if (!lineRendered) return undefined;
 
     const refs = [lineCircle1Ref, lineCircle2Ref];
+    // Self-settling sync: run per-frame while the measured geometry is
+    // still moving (the section's entrance animation translates the
+    // line for a couple of seconds after mount — a one-shot sync left
+    // the punch-outs stranded where the buttons USED to be), then go
+    // to sleep once positions have been stable, and wake on the dot
+    // nav's scroll broadcasts or a resize.
+    let stableFrames = 0;
+    let lastKey = '';
     const sync = () => {
-      lineRafRef.current = null;
       const svg = lineRef.current;
-      if (!svg) return;
+      if (!svg) {
+        lineRafRef.current = null;
+        return;
+      }
       const sRect = svg.getBoundingClientRect();
       const buttons = document.querySelectorAll('.arrow-btn');
+      let key = `${sRect.left.toFixed(1)},${sRect.top.toFixed(1)}`;
       for (let i = 0; i < refs.length; i++) {
         const circleEl = refs[i].current;
         const btn = buttons[i];
         if (!circleEl || !btn) continue;
         if (btn.classList.contains('arrow-hidden')) {
           circleEl.setAttribute('r', '0');
+          key += ',h';
           continue;
         }
         const bRect = btn.getBoundingClientRect();
@@ -110,24 +122,44 @@ export default function MedicalDesktopLayout({
         // The 1.1 factor pre-covers the button's :hover scale(1.1), so
         // the punch-out never lags a hover that happens between events.
         circleEl.setAttribute('r', (Math.max(bRect.width, bRect.height) / 2) * 1.1 + 2);
+        key += `,${bRect.left.toFixed(1)},${bRect.top.toFixed(1)}`;
       }
+      if (key === lastKey) {
+        stableFrames += 1;
+      } else {
+        stableFrames = 0;
+        lastKey = key;
+      }
+      // ~12 stable frames (~200ms) means everything has settled;
+      // stop looping and wait for the next wake event.
+      lineRafRef.current = stableFrames < 12 ? requestAnimationFrame(sync) : null;
     };
-    const schedule = () => {
-      if (lineRafRef.current) return;
-      lineRafRef.current = requestAnimationFrame(sync);
+    const wake = () => {
+      stableFrames = 0;
+      if (!lineRafRef.current) lineRafRef.current = requestAnimationFrame(sync);
     };
 
-    schedule();
-    // Re-measure once the section's entrance animations settle.
-    const settleId = setTimeout(schedule, 600);
-    window.addEventListener('scrollsnap:dotnav-sync', schedule);
-    window.addEventListener('resize', schedule, { passive: true });
+    wake();
+    window.addEventListener('scrollsnap:dotnav-sync', wake);
+    window.addEventListener('resize', wake, { passive: true });
+    // The caption card (this svg's positioning parent) slides 200px on
+    // its own internal timing (captionsVisible), and other content
+    // staggers in too — none of which raises a scroll or resize. CSS
+    // transition/animation lifecycle events are the universal "something
+    // is moving" signal, so any of them re-wakes the tracking loop; it
+    // goes back to sleep ~200ms after geometry stops changing.
+    const motionEvents = ['transitionrun', 'transitionstart', 'transitionend', 'animationstart', 'animationend'];
+    for (const type of motionEvents) {
+      document.addEventListener(type, wake, { capture: true, passive: true });
+    }
     return () => {
-      clearTimeout(settleId);
       if (lineRafRef.current) cancelAnimationFrame(lineRafRef.current);
       lineRafRef.current = null;
-      window.removeEventListener('scrollsnap:dotnav-sync', schedule);
-      window.removeEventListener('resize', schedule);
+      window.removeEventListener('scrollsnap:dotnav-sync', wake);
+      window.removeEventListener('resize', wake);
+      for (const type of motionEvents) {
+        document.removeEventListener(type, wake, { capture: true });
+      }
     };
   }, [sectionState, isTabletLayout, isLandscapeTablet]);
 

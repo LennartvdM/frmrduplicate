@@ -5,6 +5,7 @@ import { useTabletLayout } from '../../../hooks/useTabletLayout';
 import { useThrottleWithTrailing } from '../../../hooks/useDebounce';
 import { visibilityReducer, measurementsReducer, interactionReducer } from './MedicalSection.reducers';
 import { VARIANTS } from './MedicalSection.data';
+import { HEADLINE_FONT_SIZE, HEADLINE_CAP_INSET_RATIO } from './MedicalSection.styles';
 
 // True when the primary pointer can hover and is fine (a mouse or trackpad),
 // regardless of whether the screen also accepts touch. This separates a
@@ -252,7 +253,11 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
     // Navbar height. This is the only layout value that feeds rendered
     // output here, and it only changes on resize — never during a scroll —
     // so the handler below listens for resize only.
-    const nav = document.querySelector('nav');
+    // The site navbar specifically — NOT just the first <nav> in the
+    // document. ScrollSnap's dot rail is also a <nav>, and the navbar
+    // renders null on compact mobile, so a bare 'nav' selector can
+    // resolve to the rail and drop the whole collection by ~74px.
+    const nav = document.querySelector('nav[data-app-navbar]');
     const h = nav ? (nav.getBoundingClientRect().height || 60) : 60;
     dispatchMeasurements({ type: 'SET_NAVBAR_HEIGHT', payload: h });
   }, []);
@@ -408,10 +413,20 @@ export function useMedicalSection({ inView, variant = 'v2' }) {
     const navH = navbarHeight;
     // Content center should be at: navH + (sectionHeight - navH) / 2
     // Simplified: sectionHeight/2 + navH/2
-    const top = (sectionHeight / 2) - (totalHeight / 2) + (navH / 2);
+    // Optical correction. `totalHeight` measures BOXES, but the block's
+    // top edge is the headline's line box — whose first painted pixel
+    // (the cap top) sits HEADLINE_CAP_INSET_RATIO * fontSize lower —
+    // while its bottom edge is the video card's border, which has no
+    // such slack. Centring the boxes hands all of that gap to the top,
+    // so the block reads low. Give half of it back.
+    const headlineSize = isLandscapeTablet
+      ? HEADLINE_FONT_SIZE.landscapeTablet
+      : HEADLINE_FONT_SIZE.desktop;
+    const capInset = headlineSize * HEADLINE_CAP_INSET_RATIO;
+    const top = (sectionHeight / 2) - (totalHeight / 2) + (navH / 2) - (capInset / 2);
     dispatchMeasurements({ type: 'SET_COLLECTION_TOP', payload: `${top}px` });
     dispatchMeasurements({ type: 'SET_VIDEO_AND_CAPTION_TOP', payload: `${top + headerHeight + gap}px` });
-  }, [headerHeight, gap, videoHeight, navbarHeight]);
+  }, [headerHeight, gap, videoHeight, navbarHeight, isLandscapeTablet]);
 
 
   // Animate outline opacity

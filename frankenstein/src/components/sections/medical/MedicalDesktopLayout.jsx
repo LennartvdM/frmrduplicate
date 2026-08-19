@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import MedicalCarousel from './MedicalCarousel';
 import AutoFitHeading from '../../AutoFitHeading';
-import { VIDEO_CONTROLS_HIDDEN_CSS } from './MedicalSection.styles';
+import { VIDEO_CONTROLS_HIDDEN_CSS, HEADLINE_FONT_SIZE, HEADLINE_LINE_HEIGHT } from './MedicalSection.styles';
 
 export default function MedicalDesktopLayout({
   sectionRef,
@@ -163,6 +163,26 @@ export default function MedicalDesktopLayout({
     };
   }, [sectionState, isTabletLayout, isLandscapeTablet]);
 
+  // Horizontal centring of the two halves.
+  //
+  // Both halves hang off the same 50% line with a symmetric 20px offset,
+  // but they are NOT the same width: the video column is 480 and the
+  // caption column 444. A symmetric split therefore leaves 480-444 = 36px
+  // more empty space on the caption side, putting the composition's centre
+  // 18px left of the viewport's (measured: 454px left void vs 490px right
+  // at 1908px wide, and it never scales with the viewport because it is a
+  // pure width difference). Transferring half the difference across the
+  // axis centres the pair while preserving the 40px gutter between them.
+  //
+  // The header frame joins the video side here too — it used to hang at
+  // gap/2 (16px), leaving the headline inset 4px from the card it labels.
+  //
+  // Tablet layouts keep the old split: their columns are sized differently
+  // (captions can be WIDER than the video there), so this correction
+  // doesn't apply.
+  const axisSkew = isTabletLayout || isLandscapeTablet ? 0 : (480 - 444) / 2;
+  const videoAxis = `calc(50% + ${20 - axisSkew}px)`;
+  const captionAxis = `calc(50% + ${20 + axisSkew}px)`;
   return (
     <div
       key={layoutKey}
@@ -274,8 +294,8 @@ export default function MedicalDesktopLayout({
             ...(isTabletLayout
               ? {}
               : isVideoLeft
-                ? { left: 'calc(50% + 20px)' }
-                : { right: 'calc(50% + 20px)' }),
+                ? { left: videoAxis }
+                : { right: videoAxis }),
             top: isTabletLayout ? 'auto' : videoAndCaptionTop,
             width: videoContainerWidth,
             maxWidth: isTabletLayout ? '90vw' : 480,
@@ -410,8 +430,8 @@ export default function MedicalDesktopLayout({
           style={{
             position: 'absolute',
             ...(isVideoLeft
-              ? { left: 'calc(50% + 20px)' }
-              : { right: 'calc(50% + 20px)' }),
+              ? { left: videoAxis }
+              : { right: videoAxis }),
             top: videoAndCaptionTop,
             width: 480,
             height: videoHeight,
@@ -428,8 +448,8 @@ export default function MedicalDesktopLayout({
             ...(isTabletLayout
               ? {}
               : isVideoLeft
-                ? { right: 'calc(50% + 20px)' }
-                : { left: 'calc(50% + 20px)' }),
+                ? { right: captionAxis }
+                : { left: captionAxis }),
             top: isTabletLayout ? 'auto' : videoAndCaptionTop,
             width: captionContainerWidth,
             maxWidth: isTabletLayout ? '90vw' : 444,
@@ -643,8 +663,8 @@ export default function MedicalDesktopLayout({
         style={{
           position: 'absolute',
           ...(isVideoLeft
-            ? { left: `calc(50% + ${gap / 2}px)` }
-            : { right: `calc(50% + ${gap / 2}px)` }),
+            ? { left: videoAxis }
+            : { right: videoAxis }),
           top: collectionTop,
           width: cutoutWidth,
           background: 'none',
@@ -656,10 +676,10 @@ export default function MedicalDesktopLayout({
         <div style={{ width: cutoutWidth, display: 'flex', alignItems: isVideoLeft ? 'flex-end' : 'flex-start', justifyContent: isVideoLeft ? 'flex-end' : 'flex-start', marginRight: 0 }}>
           <h2 style={{
             fontFamily: 'Inter, sans-serif',
-            fontSize: isLandscapeTablet ? 32 : 48,
+            fontSize: isLandscapeTablet ? HEADLINE_FONT_SIZE.landscapeTablet : HEADLINE_FONT_SIZE.desktop,
             fontWeight: 700,
             letterSpacing: -2,
-            lineHeight: 1.2,
+            lineHeight: HEADLINE_LINE_HEIGHT,
             color: '#fff',
             margin: 0,
             marginBottom: 32,

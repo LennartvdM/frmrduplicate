@@ -108,6 +108,12 @@ export default function RouteSlider({ children }) {
       >
         <motion.div
           key={slotKey}
+          // Portal target for page-level overlays that must escape a
+          // subtree's stacking context but still belong to the page —
+          // the docs sidebar's active-row tab uses this. Anchoring them
+          // here means they slide out with the page instead of hanging
+          // over the incoming one (see DocsSidebar.jsx).
+          data-route-slide=""
           custom={directionAtStart.current}
           variants={variants}
           initial="enter"

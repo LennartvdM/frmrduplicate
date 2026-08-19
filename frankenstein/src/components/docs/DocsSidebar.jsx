@@ -297,21 +297,35 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
     };
   }
 
-  // Portal the active row to document.body so it can render ABOVE the
+  // Portal the active row out of the sidebar so it can render ABOVE the
   // article (z-index: 1000) while everything else in the sidebar
   // (section outlines, strips, inactive rows) stays in the sidebar's
   // natural stacking context — under the article card. The original
   // row stays in place as an invisible placeholder so the foldout's
   // layout doesn't collapse.
+  //
+  // The target is the route-slide wrapper, NOT document.body. The tab is
+  // position:fixed, so parked on <body> it ignored the page transition
+  // entirely: leaving the toolbox slid the sidebar away and left the tab
+  // hanging in mid-air over the incoming page for the length of the
+  // slide. Anchored inside the wrapper it rides the same transform, so
+  // it slides out with the page it belongs to and is clipped by the
+  // wrapper's overflow. The wrapper is `inset: 0` on a position:fixed
+  // parent, so viewport coordinates still land in the right place
+  // whether or not a transform is active.
   const rowRef = useRef(null);
   const [rowRect, setRowRect] = useState(null);
+  const [portalTarget, setPortalTarget] = useState(null);
 
   useLayoutEffect(() => {
     if (!isActive || !rowRef.current) {
       setRowRect(null);
+      setPortalTarget(null);
       return;
     }
     const el = rowRef.current;
+    const host = el.closest('[data-route-slide]') || document.body;
+    setPortalTarget(host);
     // Debounce repeated triggers into one rAF tick so a burst of layout
     // changes during a foldout animation collapses into a single update.
     let rafId = 0;
@@ -319,17 +333,26 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
       rafId = 0;
       if (!rowRef.current) return;
       const r = rowRef.current.getBoundingClientRect();
+      // Offsets are relative to the host, not the viewport, so whatever
+      // transform the route slide is applying sits in BOTH rects and
+      // cancels out. Measuring against the viewport instead would place
+      // the tab at double the slide offset while a page is animating in.
+      const o = host === document.body
+        ? { left: 0, top: 0 }
+        : host.getBoundingClientRect();
+      const x = r.left - o.left;
+      const y = r.top - o.top;
       setRowRect((prev) => {
         if (
           prev &&
-          prev.x === r.x &&
-          prev.y === r.y &&
+          prev.x === x &&
+          prev.y === y &&
           prev.w === r.width &&
           prev.h === r.height
         ) {
           return prev;
         }
-        return { x: r.x, y: r.y, w: r.width, h: r.height };
+        return { x, y, w: r.width, h: r.height };
       });
     };
     const schedule = () => {
@@ -398,13 +421,16 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
       >
         {rowContent}
       </div>
-      {isActive && rowRect && typeof document !== 'undefined' &&
+      {isActive && rowRect && portalTarget &&
         createPortal(
           <div
             className={`docs-nav-row${hasChildren ? ' is-foldout' : ''} is-active`}
             onClick={onRowClick}
             style={{
-              position: 'fixed',
+              // Absolute inside the slide wrapper (which is inset:0 on a
+              // position:fixed parent, so it spans the viewport anyway);
+              // fixed only in the <body> fallback.
+              position: portalTarget === document.body ? 'fixed' : 'absolute',
               left: rowRect.x,
               top: rowRect.y,
               width: rowRect.w + 60,
@@ -440,7 +466,7 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
               }}
             />
           </div>,
-          document.body,
+          portalTarget,
         )}
       {hasChildren && (
         <AnimatePresence initial={false}>

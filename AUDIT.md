@@ -41,11 +41,74 @@ component header).
 prefers editing in GitBook. `docs-content/` remains a mirror; CLAUDE.md's
 hard rule 1 stands. Revisit only if she later moves her editing to AI.
 
+**Third pass (2026-08-19/20), from owner review of the deploy previews:**
+
+- *Media, reversed then redone properly.* The Phase-1 re-encodes were
+  rejected on sight — the blurred backdrops had started to artefact. The
+  originals were restored byte-identical, then re-encoded on the owner's
+  own insight: the backdrops are heavily blurred **by design**, so an extra
+  gaussian pass is imperceptible but acts as a low-pass filter that erases
+  the (high-frequency) compression artefacts, leaving the encoder almost
+  nothing to waste bits on. Five clips gained +10.5 to +12.8 dB of
+  artefact-freeness at 33–86% of their original size; two measured as
+  already clean and were left alone. The method, the decision metric and
+  the do-not-touch list are now CLAUDE.md rule 7.
+- *A camo flash on first load*, introduced by the Phase-1 lazy-chunk split:
+  the backdrop's cell-0 fill showed through the gap before the home chunk
+  arrived. Fixed with Suspense fallbacks that paint the page's own colours.
+- *The decorative clips render as real `<video>` again* (`IllustrationClip`),
+  with relentless playback recovery and a shared first-gesture unlock, plus
+  the stills path for constrained visitors (`utils/reducedMedia.js`).
+- *The medical slides were off-centre* — the owner measured it from
+  screenshots and pushed back twice on wrong diagnoses. Real cause: two
+  columns of 480 vs 444 px with a symmetric 20 px offset, plus a vertical
+  cap-height trim. The punch-out circles now re-settle off CSS
+  transition/animation lifecycle events instead of a perpetual rAF loop.
+- *The toolbox reloaded on every click* (a Phase-1 regression): per-page
+  chunks plus an early `return null`. Now one lazily-imported bundle, and
+  `DocsPage` never unmounts. → CLAUDE.md rule 12.
+- *The world map's labels were being restyled by the docs stylesheet* —
+  `.docs-body h2` and Framer's `h2.framer-text` tie on specificity, so the
+  map rendered differently depending on the route the visitor took into it.
+  → CLAUDE.md rule 10.
+- *The sidebar's active-row tab* stopped hanging over the incoming page
+  after a route change (portal moved into the slide wrapper → CLAUDE.md
+  rule 11), got a consistent two-line height, and now reserves that height
+  in the list instead of overlapping its neighbours. Fixing the last pixels
+  surfaced an older bug: rendered outside the sidebar, the tab never
+  inherited its 14 px type and had been 5.6 px taller than its row.
+
+**Repo weight, measured 2026-08-20.** The source tree is clean — 103 of 104
+files under `src/` are reachable from the entry point (the exception is the
+map's SVG, pulled in by a Framer chunk), no unused dependencies, no
+unreferenced tracked assets under `public/`. What remains is entirely git:
+
+| | |
+|---|---|
+| Clone size | 208 MiB |
+| Blob bytes across all history | 320.8 MB |
+| Blob bytes at HEAD | 126.4 MB |
+| **Dead history** (§2.4) | **194.4 MB — 61%** |
+| …of HEAD, `docs-content/.gitbook/assets/` | 94.6 MB |
+| …of HEAD, actual source | 2.3 MB |
+
+The 260 MB prune removed those files from the tree but every byte is still
+in history; only a rewrite reclaims it. Of what is still tracked, three
+GitBook attachments carry most of the weight (a 46 MB video, a 15.5 MB
+video, a 13.8 MB pptx). They are `{% file %}` blocks — download links, not
+embeds — so they are deploy and clone weight, not page weight; docs images
+are already `loading="lazy"`.
+
 **Still open (owner decisions):** mirror-side asset prune + consent review
 for the three referenced clinical clips (1.2), LICENSE choice (1.3),
 analytics pick (6.2), git history rewrite at transfer (7.4), Vite upgrade
 (7.5). The cookie-cutter band merge remains deliberately unmerged (pure
 refactor, no runtime cost, regression risk on the flagship sections).
+
+Presented to the owner on 2026-08-20 as four decisions (history rewrite
+timing, what to do about the mirror attachments, LICENSE, analytics); the
+prompt was dismissed without a pick, so all four stay open and nothing was
+acted on.
 
 ---
 

@@ -112,6 +112,39 @@ everything, regenerates route HTML, and runs the smoke assertions.
    rewrite. Every route is a physical file; unknown paths must 404 via
    `404.html`. New routes need an entry in `routeMeta.js` (that alone makes
    the build emit the HTML and sitemap entry).
+10. **Docs typography must not reach into the world map.** The map under
+    `src/frmr-map/` is compiled Framer code that injects its own `<style>`
+    at runtime, and its rules (`h2.framer-text`) tie on specificity with
+    `docs.css`'s (`.docs-body h2`). Whichever the browser injected last
+    wins, so the map's appearance depended on how the visitor arrived —
+    deep-link the toolbox and Framer won, arrive via the home slide (which
+    mounts the same map) and the docs headings hijacked the map's labels.
+    `src/index.css` now restates the component's own declarations, scoped
+    to `.worldmap-mount`, one notch more specific than either sheet.
+    **Any new bare-element rule under `.docs-body` (`p`, `a`, `ul`, `li`,
+    `img`…) can re-open this**: check it doesn't also match Framer markup,
+    and extend that block rather than raising `.docs-body`'s specificity.
+    Never edit the `frmr-map/` chunks — patch from `index.css`.
+
+11. **Page-level overlays portal into the route slide, not `document.body`.**
+    `RouteSlider`'s animated wrapper carries `data-route-slide` for this.
+    The docs sidebar's active-row tab is portal'd out of the sidebar to
+    escape its stacking context; parked on `<body>` it ignored the page
+    transition and hung over the incoming page after the sidebar had slid
+    away. Anchored in the wrapper it rides the same transform and is
+    clipped with the page. Position such overlays from offsets **relative
+    to the host**, never viewport coordinates — inside a transformed
+    ancestor the two stack and the overlay lands at double the slide
+    offset.
+
+12. **The toolbox loads as ONE bundle.** `docsIndex.js` lazily imports a
+    single `docs-pages.json` when a visitor enters `/toolbox`; after that
+    `getPage` is synchronous. Splitting it per page puts a network round
+    trip in front of every click and the whole toolbox visibly reloads;
+    eager-importing it puts all 74 pages in the main chunk for every
+    visitor on every route. `DocsPage` must also never unmount while that
+    bundle loads — the nav, titles and neighbours come from the eager
+    manifest, so only the article body waits.
 
 ## Verifying changes
 

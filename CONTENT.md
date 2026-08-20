@@ -1,6 +1,6 @@
 # CONTENT.md — "I want to change X" → edit Y
 
-Lookup table by what you see on the site. Paths are under `frankenstein/`
+Lookup table by what you see on the site. Paths are under `app/`
 unless noted. After editing, `bash build.sh` from the repo root must pass.
 
 ## Homepage (desktop, ≥600px wide)
@@ -9,7 +9,7 @@ unless noted. After editing, `bash build.sh` from the repo root must pass.
 |---|---|
 | Tagline under the logo ("Improve patient care…") | `TAGLINE` in `src/data/homePage.js` (one string, used everywhere) |
 | The animated "Record / Reflect / Refine" headline words | `src/components/intro/RecordReflectRefine.jsx` (`WORDS`) |
-| Section 2 & 3 headlines, captions, carousel copy | `src/components/sections/medical/MedicalSection.data.js` — **also update the phone version, next table** |
+| The two story sections' headlines, captions, carousel copy | `src/components/sections/medical/MedicalSection.data.js` — keyed `pressure` (the problem) and `reflection` (the answer). **Also update the phone version, next table** |
 | Section videos (blur + clean clips) | `public/videos/*.mp4`, mapped in `MedicalSection.data.js`. Replacing a clip? Read CLAUDE.md rule 7 first, and regenerate its still in `public/videos/stills/`. |
 | World-map city stories | `src/components/sections/worldmap/` |
 | Footer names, credits, KNAW funding line | `src/components/Footer.jsx` |

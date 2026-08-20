@@ -1,6 +1,6 @@
 # Neoflix Website Audit
 
-**Date:** 2026-08-18 · **Scope:** whole repo (`frankenstein/` app, `docs-content/` mirror, build pipeline, Netlify config) · **Method:** five parallel deep audits (architecture, dead-code reachability graph, asset/git-weight analysis, runtime performance patterns, hygiene/handoff), with load-bearing claims independently re-verified. Static analysis only; nothing was modified.
+**Date:** 2026-08-18 · **Scope:** whole repo (`app/` app, `docs-content/` mirror, build pipeline, Netlify config) · **Method:** five parallel deep audits (architecture, dead-code reachability graph, asset/git-weight analysis, runtime performance patterns, hygiene/handoff), with load-bearing claims independently re-verified. Static analysis only; nothing was modified.
 
 **Purpose:** spring cleaning before handoff to a non-technical owner who will maintain the site by prompting AI ("AI as CMS"). Findings are graded: **P0** (fix before handoff), **P1** (correctness/user-facing), **P2** (structural debt), **P3** (polish).
 
@@ -78,6 +78,26 @@ hard rule 1 stands. Revisit only if she later moves her editing to AI.
   surfaced an older bug: rendered outside the sidebar, the tab never
   inherited its 14 px type and had been 5.6 px taller than its row.
 
+**Naming pass (2026-08-20).** `frankenstein/` → `app/` (and the package
+name → `neoflix`). The homepage's two story sections had four names
+between them — `'two'`/`'three'` in `DesktopHome`, `MedicalSectionV2`/`V3`
+as files, `variant="v2"`, and `medical-v2` as the id and backdrop key —
+none saying what the section was about; they are now `pressure` and
+`reflection` end to end, and the two four-line wrapper files are gone
+(one fewer chunk each). `SimpleCookieCutterBand`/`MirroredCookieCutterBand`
+→ `PunchOutBand`/`MirroredPunchOutBand`, matching the "punch-out"
+vocabulary the rest of the code already used and getting the word
+"cookie" out of a codebase whose privacy story is that it has none.
+`src/frmr-map/` → `src/framer-map/`. `Blursskills.mp4` → `blurskills.mp4`
+(capital plus a doubled *s*, among `blurfocus.mp4` and `blurteam.mp4`),
+with its still and all eight references. Dropped a dead `id` field in
+`STORIES` that nothing read, two stale `redeploy marker` comments, and a
+comment in `assetUrl.js` documenting a `base` that was never production.
+The viewport hooks were left alone deliberately: `useTabletLayout` is
+named for tablets but mostly detects phones, and `useViewport` still
+overlaps it — renaming is easy, but they want merging, which is a
+refactor rather than a rename.
+
 **Repo weight, measured 2026-08-20.** The source tree is clean — 103 of 104
 files under `src/` are reachable from the entry point (the exception is the
 map's SVG, pulled in by a Framer chunk), no unused dependencies, no
@@ -135,8 +155,8 @@ The site is in better shape than the "frankenstein" framing suggests — and wor
 ## 1. Critical — fix before handoff (P0)
 
 ### 1.1 The Open Graph image does not exist — every share card is broken
-All ~82 generated route HTMLs point `og:image`/`twitter:image` at `https://www.neoflix.care/og-preview.png` (`frankenstein/index.html:23,33`, `src/data/routeMeta.js:25`). The file is absent from `public/`, from `git ls-files`, and from **all git history** (verified). The entire `og-upload.html` + `netlify/functions/commit-og.mjs` machinery was built to place this file and has evidently never run to completion. Since LinkedIn referrals are the site's primary channel, every share since launch has rendered without an image.
-**Fix:** commit a real 1200×630 PNG at `frankenstein/public/og-preview.png`. Then decide the fate of the upload tool (see 7.2).
+All ~82 generated route HTMLs point `og:image`/`twitter:image` at `https://www.neoflix.care/og-preview.png` (`app/index.html:23,33`, `src/data/routeMeta.js:25`). The file is absent from `public/`, from `git ls-files`, and from **all git history** (verified). The entire `og-upload.html` + `netlify/functions/commit-og.mjs` machinery was built to place this file and has evidently never run to completion. Since LinkedIn referrals are the site's primary channel, every share since launch has rendered without an image.
+**Fix:** commit a real 1200×630 PNG at `app/public/og-preview.png`. Then decide the fate of the upload tool (see 7.2).
 
 ### 1.2 All 57 GitBook assets are published unfiltered, including clinical footage and named-person photos
 `scripts/build-docs.mjs:616-628` copies **everything** in `docs-content/.gitbook/assets/` to `public/docs-assets/` — referenced or not — so each file is publicly reachable at a guessable URL. That includes `GoPro aangezet op opvangkamer geknipt.mp4` (a resuscitation-room recording), `Ruben zet bril op.mp4`, `opzetten tobii bril.mp4`, staff photos (`Foto Henriette.jfif`, `Foto arjan.jfif`, `Veerle Heesters photo.jpg`, …), and internal documents (`Inwerkdocument procesbegeleider.docx`, `NEOFLIX pitch.pptx`). On a neonatology site, publishing a clinical-room recording at a stable public URL is a consent/GDPR question that should be answered explicitly before handover — even if only staff appear in it.
@@ -184,7 +204,7 @@ Vestigial build code: the `ogUploadPlugin` dev middleware in `vite.config.js` (`
 
 - `public/videos/mobile/neoflix_intro_mobile.mp4` — 7.78 MB, superseded, unreferenced.
 - `public/videos/mobile/collaboration.mp4` — 4.31 MB, old-generation clip at 8,545 kbps, unreferenced.
-- `public/worldmap.svg` and `public/assets/worldmap.svg` — two byte-identical copies (942 KB each) of the map SVG whose live copy is bundled from `src/frmr-map/assets/`. (~1.84 MB; verify with one build-and-diff before removing.)
+- `public/worldmap.svg` and `public/assets/worldmap.svg` — two byte-identical copies (942 KB each) of the map SVG whose live copy is bundled from `src/framer-map/assets/`. (~1.84 MB; verify with one build-and-diff before removing.)
 
 ### 2.3 The GitBook asset prune — 260 MB
 
@@ -202,7 +222,7 @@ The pack is 208 MB, dominated by the current asset dump (only 25 MB is orphaned 
 
 - `MedicalSectionV2.jsx` / `MedicalSectionV3.jsx` — not stale revisions; they are 6-line **content-variant** shims (`variant="v2"|"v3"`) rendered as home slides 2 and 3. Consider renaming (e.g. `MedicalSectionMoment` / `MedicalSectionReflection`) so the names stop implying supersession.
 - The 21 hashed `.woff2` files in `public/assets/` — the Framer map runtime's own fonts, loaded via URL strings inside the compiled chunks. (Related bug: the chunks also reference 7 `Inter-Bold.*.woff2` files that **don't exist** — silent 404s at runtime, masked by fallback.)
-- `src/frmr-map/**` — all four chunks + the SVG are live behind `WorldMap.jsx`.
+- `src/framer-map/**` — all four chunks + the SVG are live behind `WorldMap.jsx`.
 - `MedicalMobileLayout.jsx` — *effectively* unreachable (Home short-circuits to `MobileHome` below 600 px before `MedicalSection` can pick it), but keep until the breakpoint unification (4.5) makes that provable.
 - `data/publications.js` — **live** despite the misleading name; it feeds `/neoflix` (see 4.1).
 

@@ -1,0 +1,53 @@
+import React, { useCallback } from 'react';
+import { useMedicalSection } from './medical/useMedicalSection.jsx';
+import MedicalMobileLayout from './medical/MedicalMobileLayout';
+import MedicalTabletLayout from './medical/MedicalTabletLayout';
+import MedicalDesktopLayout from './medical/MedicalDesktopLayout';
+import { useBackdropTarget } from '../../backdrop/useBackdrop';
+import { MEDICAL_PRESSURE_DECK, MEDICAL_REFLECTION_DECK } from '../../backdrop/decks';
+import useTransitionNavigate from '../../hooks/useTransitionNavigate';
+
+const DECK_BY_STORY = {
+  pressure: MEDICAL_PRESSURE_DECK,
+  reflection: MEDICAL_REFLECTION_DECK,
+};
+
+const MedicalSection = ({ inView, sectionRef, story = 'pressure' }) => {
+  const state = useMedicalSection({ inView, story });
+  const { currentVideo, hoveredIndex, interactionsEnabled, sectionTargets } = state;
+
+  const transitionNavigate = useTransitionNavigate();
+  // Each caption/video is a deep-link into the corresponding /neoflix
+  // section. Captions and videos map 1:1 to the page's scroll anchors
+  // (see data/neoflixSections.js section ids), turning the carousel into
+  // a reverse-funnel entry point for the long-form article.
+  const navigateToSection = useCallback((idx) => {
+    const target = sectionTargets?.[idx];
+    if (!target) return;
+    transitionNavigate(`/neoflix#${target}`);
+  }, [sectionTargets, transitionNavigate]);
+
+  // Publish this story's current carousel top into Home's y-stack cell.
+  // The two stories own independent cells; they can't clobber each
+  // other, so each publishes unconditionally while mounted. Hover overrides the
+  // carousel's current index when interactions are enabled.
+  const safeHover = interactionsEnabled ? hoveredIndex : null;
+  const topIdx = safeHover !== null ? safeHover : currentVideo;
+  useBackdropTarget(`medical-${story}`, {
+    kind: 'video',
+    deck: DECK_BY_STORY[story],
+    topIdx,
+  });
+
+  if (state.isMobile) {
+    return <MedicalMobileLayout {...state} sectionRef={sectionRef} navigateToSection={navigateToSection} />;
+  }
+
+  if (state.isTabletLayout) {
+    return <MedicalTabletLayout {...state} sectionRef={sectionRef} navigateToSection={navigateToSection} />;
+  }
+
+  return <MedicalDesktopLayout {...state} sectionRef={sectionRef} navigateToSection={navigateToSection} />;
+};
+
+export default MedicalSection;

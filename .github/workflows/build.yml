@@ -18,6 +18,6 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: frankenstein/package-lock.json
+          cache-dependency-path: app/package-lock.json
       - name: Build the site (same script Netlify runs)
         run: bash build.sh

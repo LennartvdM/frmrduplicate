@@ -36,18 +36,6 @@ import useTransitionNavigate from '../../hooks/useTransitionNavigate';
  */
 const PHASE_MARKER_RE = /\/(record|reflect|refine)$/i;
 
-/**
- * Floor for the active-row tab, in lines of label text.
- *
- * Nav labels wrap to one or two lines, so a tab sized to its own row
- * alternated between a thin 35.6px pill and a broad 55.2px one purely on
- * where the title happened to break. Pad short tabs up to the two-line
- * height so the marker reads as one consistent shape. This is a floor,
- * not a clamp: a label that ever needs three lines keeps its full height
- * rather than being squeezed into two.
- */
-const MIN_TAB_LINES = 2;
-
 function regroupPhaseMarkers(items) {
   const out = [];
   let bucket = null;
@@ -353,23 +341,22 @@ function NavItem({ item, activeSlug, depth, parentSlug, isOpen, toggle, siblingS
         ? { left: 0, top: 0 }
         : host.getBoundingClientRect();
       const x = r.left - o.left;
-      // Pad a short label's tab up to MIN_TAB_LINES, and grow it evenly
-      // above and below so the label stays centred exactly where its row
-      // sits — the tab gets taller, the text doesn't move.
-      const grow = growthToMinLines(rowRef.current);
-      const y = r.top - o.top - grow / 2;
-      const h = r.height + grow;
+      const y = r.top - o.top;
+      // The tab mirrors the row's box exactly. The two-line floor that
+      // keeps short tabs from reading thin is real layout, held by
+      // `.docs-nav-row.is-active`'s min-height in docs.css — so the rows
+      // below make room for it instead of being overlapped.
       setRowRect((prev) => {
         if (
           prev &&
           prev.x === x &&
           prev.y === y &&
           prev.w === r.width &&
-          prev.h === h
+          prev.h === r.height
         ) {
           return prev;
         }
-        return { x, y, w: r.width, h };
+        return { x, y, w: r.width, h: r.height };
       });
     };
     const schedule = () => {
@@ -881,24 +868,6 @@ function sCurveTPath(W_box, H, r, W_strip, flatTop, flatBottom, inset = 0) {
 // effect would immediately close it again, requiring a second click
 // to re-open). Returns slugs in root-to-leaf order so passing them
 // to setUserToggle in iteration order is harmless.
-/**
- * Extra height a row's tab needs to reach MIN_TAB_LINES, or 0 when the
- * label already fills that many lines. The line count comes from the
- * link's content box rather than the label span, so it holds regardless
- * of how the label itself is displayed.
- */
-function growthToMinLines(row) {
-  const link = row && row.querySelector('a');
-  if (!link) return 0;
-  const cs = getComputedStyle(link);
-  const lineHeight = parseFloat(cs.lineHeight);
-  if (!lineHeight) return 0;
-  const contentHeight =
-    link.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
-  const lines = Math.max(1, Math.round(contentHeight / lineHeight));
-  return Math.max(0, MIN_TAB_LINES - lines) * lineHeight;
-}
-
 function collectActiveAncestors(sections, activeSlug) {
   const out = [];
   if (!activeSlug) return out;

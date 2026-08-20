@@ -526,6 +526,32 @@
   position: relative;
   margin-bottom: 2px;
   border-radius: 10px;
+  /* The row states its own type size rather than inheriting the 14px
+     from `.docs-sidebar`. The active row is re-rendered as a tab outside
+     the sidebar (portal'd into the route-slide wrapper, see
+     DocsSidebar.jsx), where that inheritance doesn't reach — it was
+     landing on the page's 16px, so the tab's label ran a size larger
+     than every other row and its text needed 60.8px of height inside a
+     55.2px box. Stated here, the copy matches the row it stands for. */
+  font-size: 14px;
+}
+
+/* The active row is drawn as a raised tab (portal'd out of the sidebar
+   in DocsSidebar.jsx). Sized to its own label it flipped between a thin
+   one-line pill and a broad two-line one depending on where the title
+   happened to break, so the row reserves two lines' worth of height even
+   when its label only needs one.
+
+   Held here as real layout rather than by growing the tab in JS: the
+   rows below shift down to make room instead of being overlapped by it.
+   Scoped to the sidebar so it reserves space in the list only — the tab
+   itself is sized from the row it measures, so the two always agree.
+   min-height is a floor, not a clamp — a title long enough to need three
+   lines still grows past it. The row (not the link) carries the height
+   so the link stays centred in the reserved space; 16px is the link's
+   vertical padding and 1.4em its line-height, both from the rule below. */
+.docs-sidebar .docs-nav-row.is-active {
+  min-height: calc(16px + (1.4em * 2));
 }
 .docs-nav-depth-0 > .docs-nav-item > .docs-nav-row {
   background: rgba(250, 251, 252, 0.92);

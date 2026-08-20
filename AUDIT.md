@@ -98,6 +98,24 @@ named for tablets but mostly detects phones, and `useViewport` still
 overlaps it — renaming is easy, but they want merging, which is a
 refactor rather than a rename.
 
+**Structure pass (2026-08-20).** `src/` was organised by file type
+(`components/`, `hooks/`, `utils/`, `data/`, `styles/`, `contexts/`) — the
+standard React layout, and the wrong axis for an owner who thinks in pages. A
+single page was spread across five folders: `/publications` lived in
+`pages/PublicationsPage.jsx`, `components/mobile/MobilePublicationsPage.jsx`,
+`components/shared/PublicationBundle.jsx`, `data/publicationsPage.js`,
+`data/publicationRecords.js` and three files in `styles/`.
+
+It is now page-first: `pages/<page>/` holds both surfaces, that page's words
+(`content.js`) and its styles together; `site/` holds what every page shares
+(chrome, backdrop, motion system, `routeMeta.js`); `lib/` holds hooks and
+helpers. 93 files moved, imports rewritten by resolving each specifier against
+its pre-move location. The `medical/` folder became `story/` and its files
+`Story*`, finishing the rename started earlier that day.
+
+Paths in the sections below predate this move and are left as written; the
+current layout is in `README.md` and in the per-directory `README.md` files.
+
 **Repo weight, measured 2026-08-20.** The source tree is clean — 103 of 104
 files under `src/` are reachable from the entry point (the exception is the
 map's SVG, pulled in by a Framer chunk), no unused dependencies, no

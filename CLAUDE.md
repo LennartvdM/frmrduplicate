@@ -19,18 +19,26 @@ everything, regenerates route HTML, and runs the smoke assertions.
 
 ## Where things live
 
-- **Content** → `app/src/data/` (see `CONTENT.md` for the per-page
-  table). Toolbox content → `docs-content/` markdown (but see the mirror rule).
-- **Pages** → `src/pages/`. Each of Home/Neoflix/Publications renders a
+Most directories carry a `README.md` saying what's in them and which
+traps live there — `app/src/`, `app/src/pages/`, `app/src/site/`,
+`app/src/framer-map/`, `app/scripts/`. Read the one for the directory you're
+working in; they're short, and GitHub renders them when browsing too.
+
+- **Everything for one page lives in `src/pages/<page>/`** — desktop
+  surface, phone surface, that page's words and its styles, together.
+  `src/site/` holds what every page shares (navbar, footer, the backdrop,
+  the motion system); `src/lib/` holds hooks and helpers. See `CONTENT.md`
+  for the per-page table. Toolbox content → `docs-content/` markdown (but see the mirror rule).
+- **Two surfaces** → each of Home/Neoflix/Publications renders a
   desktop tree or a mobile tree (`< 600px`) — separate lazy chunks.
 - **Motion system** → `RouteSlider` (page slide), `BackdropProvider`
   (persistent video backdrop), `ScrollSnap` + `SectionManager` +
   `ScrollSection` (desktop home), `TransitionContext` (shared direction
   state). It is deliberate and documented in-file; read before changing.
-- **SEO surface** → `src/data/routeMeta.js`, consumed by BOTH
+- **SEO surface** → `src/site/routeMeta.js`, consumed by BOTH
   `hooks/useDocumentMeta.js` (runtime) and `scripts/build-route-html.mjs`
   (build). It must stay **Node-safe**: no `import.meta.env`, no Vite-only
-  imports. Same constraint for `src/data/publicationRecords.js`.
+  imports. Same constraint for `src/pages/publications/records.js`.
 
 ## Hard rules
 
@@ -42,27 +50,27 @@ everything, regenerates route HTML, and runs the smoke assertions.
    hand-edit; never commit files into them. Hand-placed images belong in
    `public/previews/` or another tracked directory.
 3. **Copy changes on the homepage must hit BOTH surfaces.** Desktop
-   headlines: `src/components/sections/medical/MedicalSection.data.js`.
+   headlines: `src/pages/home/story/story.data.js`.
    Phone panels (same sentences, different shape):
-   `src/components/mobile/MobileHome.jsx` (`MOBILE_PANELS`). The files
+   `src/pages/home/HomePhone.jsx` (`MOBILE_PANELS`). The files
    carry warning comments. `/neoflix` and `/publications` share section
    data between surfaces, but their phone files have their own hero
    strings near the top.
-4. **The tagline has one home**: `TAGLINE` in `src/data/homePage.js`.
+4. **The tagline has one home**: `TAGLINE` in `src/pages/home/content.js`.
    Never retype the sentence elsewhere.
-5. **Naming history trap**: `src/data/neoflixSections.js` (the `/neoflix`
-   page content) was called `publications.js` until 2026-08 and old
-   references may linger in conversation history. The real `/publications`
-   content is `publicationsPage.js`; bibliographic facts are
-   `publicationRecords.js`.
-6. **`HOME_CELLS` in `src/backdrop/BackdropProvider.jsx` mirrors the
-   `sections` array in `src/pages/DesktopHome.jsx` by position.** Changing
+5. **Naming history trap**: the `/neoflix` page's prose (now
+   `src/pages/neoflix/content.js`) was called `publications.js` until
+   2026-08, and old references may linger in conversation history. The real
+   `/publications` prose is `src/pages/publications/content.js`;
+   bibliographic facts are `src/pages/publications/records.js`.
+6. **`HOME_CELLS` in `src/site/backdrop/BackdropProvider.jsx` mirrors the
+   `sections` array in `src/pages/home/HomeDesktop.jsx` by position.** Changing
    one requires changing the other. The two story sections are named
    `pressure` (the problem: urgency, coordination, tunnel vision) and
    `reflection` (the answer: skills, cohesion, shared understanding).
    That one name is used end to end — the `sections` entry, the `story`
-   prop, `STORIES` in `MedicalSection.data.js`, the decks in
-   `backdrop/decks.js` and the `medical-<story>` backdrop keys. **Name
+   prop, `STORIES` in `story.data.js`, the decks in
+   `site/backdrop/decks.js` and the `medical-<story>` backdrop keys. **Name
    things for what they are, never for their position or version**: these
    were `'two'`/`'three'`, `MedicalSectionV2`/`V3`, `variant="v2"` and
    `medical-v2` — four names for one thing, none of which said what it
@@ -151,7 +159,7 @@ everything, regenerates route HTML, and runs the smoke assertions.
     `getPage` is synchronous. Splitting it per page puts a network round
     trip in front of every click and the whole toolbox visibly reloads;
     eager-importing it puts all 74 pages in the main chunk for every
-    visitor on every route. `DocsPage` must also never unmount while that
+    visitor on every route. `ToolboxPage` must also never unmount while that
     bundle loads — the nav, titles and neighbours come from the eager
     manifest, so only the article body waits.
 

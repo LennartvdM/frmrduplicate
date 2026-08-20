@@ -12,7 +12,7 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ROUTE_META, SITE_URL } from '../src/data/routeMeta.js';
+import { ROUTE_META, SITE_URL } from '../src/site/routeMeta.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outArg = process.argv.indexOf('--out');

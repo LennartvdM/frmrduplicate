@@ -37,7 +37,7 @@ import {
   resolveRouteMeta,
   canonicalUrl,
   staticRoutePaths,
-} from '../src/data/routeMeta.js';
+} from '../src/site/routeMeta.js';
 import {
   publicationRecords,
   publicationOrder,
@@ -46,8 +46,8 @@ import {
   recordForSlug,
   paperPath,
   doiUrl,
-} from '../src/data/publicationRecords.js';
-import legacySlugMap from '../src/data/legacySlugMap.js';
+} from '../src/pages/publications/records.js';
+import legacySlugMap from '../src/pages/toolbox/legacySlugMap.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FRANKENSTEIN_ROOT = path.resolve(__dirname, '..');

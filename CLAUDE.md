@@ -9,9 +9,9 @@ and deploy. A full architecture/performance audit lives in `AUDIT.md`
 ## Commands
 
 ```bash
-cd frankenstein && npm run dev     # dev server (builds docs first)
+cd app && npm run dev     # dev server (builds docs first)
 bash build.sh                      # full production build → dist/ + smoke checks
-node frankenstein/scripts/smoke-check.mjs --out dist   # assertions alone
+node app/scripts/smoke-check.mjs --out dist   # assertions alone
 ```
 
 Always run `bash build.sh` before pushing a non-trivial change — it compiles
@@ -19,7 +19,7 @@ everything, regenerates route HTML, and runs the smoke assertions.
 
 ## Where things live
 
-- **Content** → `frankenstein/src/data/` (see `CONTENT.md` for the per-page
+- **Content** → `app/src/data/` (see `CONTENT.md` for the per-page
   table). Toolbox content → `docs-content/` markdown (but see the mirror rule).
 - **Pages** → `src/pages/`. Each of Home/Neoflix/Publications renders a
   desktop tree or a mobile tree (`< 600px`) — separate lazy chunks.
@@ -57,11 +57,20 @@ everything, regenerates route HTML, and runs the smoke assertions.
    `publicationRecords.js`.
 6. **`HOME_CELLS` in `src/backdrop/BackdropProvider.jsx` mirrors the
    `sections` array in `src/pages/DesktopHome.jsx` by position.** Changing
-   one requires changing the other.
+   one requires changing the other. The two story sections are named
+   `pressure` (the problem: urgency, coordination, tunnel vision) and
+   `reflection` (the answer: skills, cohesion, shared understanding).
+   That one name is used end to end — the `sections` entry, the `story`
+   prop, `STORIES` in `MedicalSection.data.js`, the decks in
+   `backdrop/decks.js` and the `medical-<story>` backdrop keys. **Name
+   things for what they are, never for their position or version**: these
+   were `'two'`/`'three'`, `MedicalSectionV2`/`V3`, `variant="v2"` and
+   `medical-v2` — four names for one thing, none of which said what it
+   was.
 7. **Media quality is deliberate — measure before you re-encode.**
    A blanket compression pass over these clips was tried and reverted:
    CRF≈30 posterized the gradients (see AUDIT.md). Two clips
-   (`Blursskills.mp4`, `mobile/neoflix_intro_blur_montage.mp4`) are
+   (`blurskills.mp4`, `mobile/neoflix_intro_blur_montage.mp4`) are
    already artefact-free and near-optimally encoded — re-encoding them
    at ANY setting measurably *loses* quality and, for the montage,
    produces a bigger file. Leave them alone.
@@ -113,7 +122,7 @@ everything, regenerates route HTML, and runs the smoke assertions.
    `404.html`. New routes need an entry in `routeMeta.js` (that alone makes
    the build emit the HTML and sitemap entry).
 10. **Docs typography must not reach into the world map.** The map under
-    `src/frmr-map/` is compiled Framer code that injects its own `<style>`
+    `src/framer-map/` is compiled Framer code that injects its own `<style>`
     at runtime, and its rules (`h2.framer-text`) tie on specificity with
     `docs.css`'s (`.docs-body h2`). Whichever the browser injected last
     wins, so the map's appearance depended on how the visitor arrived —
@@ -124,7 +133,7 @@ everything, regenerates route HTML, and runs the smoke assertions.
     **Any new bare-element rule under `.docs-body` (`p`, `a`, `ul`, `li`,
     `img`…) can re-open this**: check it doesn't also match Framer markup,
     and extend that block rather than raising `.docs-body`'s specificity.
-    Never edit the `frmr-map/` chunks — patch from `index.css`.
+    Never edit the `framer-map/` chunks — patch from `index.css`.
 
 11. **Page-level overlays portal into the route slide, not `document.body`.**
     `RouteSlider`'s animated wrapper carries `data-route-slide` for this.

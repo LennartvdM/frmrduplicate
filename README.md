@@ -19,7 +19,7 @@ produce a build that doesn't match production.
 ## Quick start
 
 ```bash
-cd frankenstein
+cd app
 npm ci                       # npm install also works; CI and Netlify use ci
 npm run dev                  # http://localhost:5173
 ```
@@ -38,7 +38,7 @@ bash build.sh                # from the repo root → dist/, then smoke checks
 Run the post-build assertions on their own:
 
 ```bash
-node frankenstein/scripts/smoke-check.mjs --out dist
+node app/scripts/smoke-check.mjs --out dist
 ```
 
 **Run `bash build.sh` before pushing anything non-trivial.** It compiles
@@ -50,13 +50,13 @@ route with no HTML file, an empty sitemap, a stray Google Fonts link).
 
 | Path | What it is |
 |---|---|
-| `frankenstein/` | The app: React 18 + Vite 4 + Tailwind 3 + framer-motion 10, React Router 6 |
-| `frankenstein/src/data/` | Almost all editable content (see `CONTENT.md`) |
-| `frankenstein/src/components/mobile/` | The phone tree — a *separate* set of components (see *Two surfaces*) |
-| `frankenstein/src/backdrop/` | The persistent video backdrop behind every route |
-| `frankenstein/src/frmr-map/` | The world map, exported from Framer as compiled chunks. Vendored, not hand-written — patch via CSS overrides in `src/index.css`, not by editing the chunks. |
-| `frankenstein/scripts/` | The four build steps: docs compiler, publications zip, route-HTML/sitemap writer, smoke checks |
-| `frankenstein/public/` | Media served as-is: videos, stills, paper PDFs, fonts, icons |
+| `app/` | The app: React 18 + Vite 4 + Tailwind 3 + framer-motion 10, React Router 6 |
+| `app/src/data/` | Almost all editable content (see `CONTENT.md`) |
+| `app/src/components/mobile/` | The phone tree — a *separate* set of components (see *Two surfaces*) |
+| `app/src/backdrop/` | The persistent video backdrop behind every route |
+| `app/src/framer-map/` | The world map, exported from Framer as compiled chunks. Vendored, not hand-written — patch via CSS overrides in `src/index.css`, not by editing the chunks. |
+| `app/scripts/` | The four build steps: docs compiler, publications zip, route-HTML/sitemap writer, smoke checks |
+| `app/public/` | Media served as-is: videos, stills, paper PDFs, fonts, icons |
 | `docs-content/` | **Mirrored** GitBook markdown for `/toolbox`. Pushed here by a GitHub Action in `LennartvdM/NFLX-nieuwe-structuur`. Do not hand-edit unless that chain is retired. |
 | `netlify.toml` | Node version, security headers (strict CSP), caching. Deliberately no SPA rewrite — see below. |
 | `build.sh` | The one build entrypoint |
@@ -67,9 +67,9 @@ route with no HTML file, an empty sitemap, a stray Google Fonts link).
 | Path | Written by |
 |---|---|
 | `dist/` | `build.sh` (gitignored) |
-| `frankenstein/src/generated/` | `scripts/build-docs.mjs` — the compiled toolbox pages |
-| `frankenstein/public/docs-assets/` | `scripts/build-docs.mjs` — GitBook images and attachments |
-| `frankenstein/public/papers/neoflix-publications.zip` | `scripts/build-publications-zip.mjs` |
+| `app/src/generated/` | `scripts/build-docs.mjs` — the compiled toolbox pages |
+| `app/public/docs-assets/` | `scripts/build-docs.mjs` — GitBook images and attachments |
+| `app/public/papers/neoflix-publications.zip` | `scripts/build-publications-zip.mjs` |
 
 Hand-placed images belong in `public/previews/` or another tracked directory —
 anything dropped into the paths above is overwritten on the next build.

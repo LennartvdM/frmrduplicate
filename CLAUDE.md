@@ -19,6 +19,11 @@ everything, regenerates route HTML, and runs the smoke assertions.
 
 ## Where things live
 
+Most directories carry a `README.md` saying what's in them and which
+traps live there — `app/src/`, `app/src/data/`, `app/src/components/mobile/`,
+`app/src/framer-map/`, `app/scripts/`. Read the one for the directory you're
+working in; they're short, and GitHub renders them when browsing too.
+
 - **Content** → `app/src/data/` (see `CONTENT.md` for the per-page
   table). Toolbox content → `docs-content/` markdown (but see the mirror rule).
 - **Pages** → `src/pages/`. Each of Home/Neoflix/Publications renders a

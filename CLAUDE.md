@@ -9,9 +9,9 @@ and deploy. A full architecture/performance audit lives in `AUDIT.md`
 ## Commands
 
 ```bash
-cd app && npm run dev     # dev server (builds docs first)
+cd website && npm run dev     # dev server (builds docs first)
 bash build.sh                      # full production build → dist/ + smoke checks
-node app/scripts/smoke-check.mjs --out dist   # assertions alone
+node website/scripts/smoke-check.mjs --out dist   # assertions alone
 ```
 
 Always run `bash build.sh` before pushing a non-trivial change — it compiles
@@ -20,14 +20,14 @@ everything, regenerates route HTML, and runs the smoke assertions.
 ## Where things live
 
 Most directories carry a `README.md` saying what's in them and which
-traps live there — `app/src/`, `app/src/pages/`, `app/src/site/`,
-`app/src/framer-map/`, `app/scripts/`. Read the one for the directory you're
+traps live there — `website/`, `website/pages/`, `website/shared/`,
+`website/framer-map/`, `website/scripts/`. Read the one for the directory you're
 working in; they're short, and GitHub renders them when browsing too.
 
-- **Everything for one page lives in `src/pages/<page>/`** — desktop
+- **Everything for one page lives in `pages/<page>/`** — desktop
   surface, phone surface, that page's words and its styles, together.
-  `src/site/` holds what every page shares (navbar, footer, the backdrop,
-  the motion system); `src/lib/` holds hooks and helpers. See `CONTENT.md`
+  `shared/` holds what every page shares (navbar, footer, the backdrop,
+  the motion system); `lib/` holds hooks and helpers. See `CONTENT.md`
   for the per-page table. Toolbox content → `docs-content/` markdown (but see the mirror rule).
 - **Two surfaces** → each of Home/Neoflix/Publications renders a
   desktop tree or a mobile tree (`< 600px`) — separate lazy chunks.
@@ -35,10 +35,10 @@ working in; they're short, and GitHub renders them when browsing too.
   (persistent video backdrop), `ScrollSnap` + `SectionManager` +
   `ScrollSection` (desktop home), `TransitionContext` (shared direction
   state). It is deliberate and documented in-file; read before changing.
-- **SEO surface** → `src/site/routeMeta.js`, consumed by BOTH
+- **SEO surface** → `shared/routeMeta.js`, consumed by BOTH
   `hooks/useDocumentMeta.js` (runtime) and `scripts/build-route-html.mjs`
   (build). It must stay **Node-safe**: no `import.meta.env`, no Vite-only
-  imports. Same constraint for `src/pages/publications/records.js`.
+  imports. Same constraint for `pages/publications/records.js`.
 
 ## Hard rules
 
@@ -46,31 +46,31 @@ working in; they're short, and GitHub renders them when browsing too.
    `LennartvdM/NFLX-nieuwe-structuur` overwrites it from GitBook. Edits made
    here can be silently reverted by the next mirror push. Edit docs in
    GitBook, or retire the chain first (decision documented in AUDIT.md §7.1).
-2. **`src/generated/` and `public/docs-assets/` are build output.** Never
+2. **`generated/` and `public/docs-assets/` are build output.** Never
    hand-edit; never commit files into them. Hand-placed images belong in
    `public/previews/` or another tracked directory.
 3. **Copy changes on the homepage must hit BOTH surfaces.** Desktop
-   headlines: `src/pages/home/story/story.data.js`.
+   headlines: `pages/home/story/story.data.js`.
    Phone panels (same sentences, different shape):
-   `src/pages/home/HomePhone.jsx` (`MOBILE_PANELS`). The files
+   `pages/home/HomePhone.jsx` (`MOBILE_PANELS`). The files
    carry warning comments. `/neoflix` and `/publications` share section
    data between surfaces, but their phone files have their own hero
    strings near the top.
-4. **The tagline has one home**: `TAGLINE` in `src/pages/home/content.js`.
+4. **The tagline has one home**: `TAGLINE` in `pages/home/content.js`.
    Never retype the sentence elsewhere.
 5. **Naming history trap**: the `/neoflix` page's prose (now
-   `src/pages/neoflix/content.js`) was called `publications.js` until
+   `pages/neoflix/content.js`) was called `publications.js` until
    2026-08, and old references may linger in conversation history. The real
-   `/publications` prose is `src/pages/publications/content.js`;
-   bibliographic facts are `src/pages/publications/records.js`.
-6. **`HOME_CELLS` in `src/site/backdrop/BackdropProvider.jsx` mirrors the
-   `sections` array in `src/pages/home/HomeDesktop.jsx` by position.** Changing
+   `/publications` prose is `pages/publications/content.js`;
+   bibliographic facts are `pages/publications/records.js`.
+6. **`HOME_CELLS` in `shared/backdrop/BackdropProvider.jsx` mirrors the
+   `sections` array in `pages/home/HomeDesktop.jsx` by position.** Changing
    one requires changing the other. The two story sections are named
    `pressure` (the problem: urgency, coordination, tunnel vision) and
    `reflection` (the answer: skills, cohesion, shared understanding).
    That one name is used end to end — the `sections` entry, the `story`
    prop, `STORIES` in `story.data.js`, the decks in
-   `site/backdrop/decks.js` and the `medical-<story>` backdrop keys. **Name
+   `shared/backdrop/decks.js` and the `medical-<story>` backdrop keys. **Name
    things for what they are, never for their position or version**: these
    were `'two'`/`'three'`, `MedicalSectionV2`/`V3`, `variant="v2"` and
    `medical-v2` — four names for one thing, none of which said what it
@@ -130,13 +130,13 @@ working in; they're short, and GitHub renders them when browsing too.
    `404.html`. New routes need an entry in `routeMeta.js` (that alone makes
    the build emit the HTML and sitemap entry).
 10. **Docs typography must not reach into the world map.** The map under
-    `src/framer-map/` is compiled Framer code that injects its own `<style>`
+    `framer-map/` is compiled Framer code that injects its own `<style>`
     at runtime, and its rules (`h2.framer-text`) tie on specificity with
     `docs.css`'s (`.docs-body h2`). Whichever the browser injected last
     wins, so the map's appearance depended on how the visitor arrived —
     deep-link the toolbox and Framer won, arrive via the home slide (which
     mounts the same map) and the docs headings hijacked the map's labels.
-    `src/index.css` now restates the component's own declarations, scoped
+    `index.css` now restates the component's own declarations, scoped
     to `.worldmap-mount`, one notch more specific than either sheet.
     **Any new bare-element rule under `.docs-body` (`p`, `a`, `ul`, `li`,
     `img`…) can re-open this**: check it doesn't also match Framer markup,

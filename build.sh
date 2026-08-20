@@ -10,7 +10,7 @@ rm -rf "$OUT"
 # LennartvdM/NFLX-nieuwe-structuur (.github/workflows/mirror.yml).
 # It lives here as regular tracked files. Do not edit by hand.
 
-cd app
+cd website
 # Strict install: if the lockfile and package.json disagree, fail loudly
 # instead of silently resolving fresh versions on a production build.
 npm ci --prefer-offline

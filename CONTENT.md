@@ -1,7 +1,7 @@
 # CONTENT.md — "I want to change X" → edit Y
 
 Look up what you can see on the site; this tells you the file it lives in.
-Paths are under `app/src/` unless noted. After editing, `bash build.sh` from
+Paths are under `website/` unless noted. After editing, `bash build.sh` from
 the repository root must pass.
 
 **Everything for one page lives in that page's folder.** If you only remember
@@ -21,8 +21,8 @@ the phone version, that page's words and that page's styles, side by side.
 | Phone hero lines + label | top of `pages/home/HomePhone.jsx` |
 | Phone panel videos/posters | `public/videos/mobile/` |
 | The showcase video slide | `pages/home/VimeoSection.jsx` |
-| The world map slide | `site/worldmap/` (shared with the Toolbox) |
-| Footer names, credits, KNAW funding line | `site/Footer.jsx` |
+| The world map slide | `shared/worldmap/` (shared with the Toolbox) |
+| Footer names, credits, KNAW funding line | `shared/Footer.jsx` |
 
 ## /neoflix (and /contact, which is the same page) — `pages/neoflix/`
 
@@ -58,23 +58,23 @@ things here to alter how Toolbox pages look, not what they say.
 
 | What | Where |
 |---|---|
-| Title + description per page (Google, LinkedIn cards) | `site/routeMeta.js` |
+| Title + description per page (Google, LinkedIn cards) | `shared/routeMeta.js` |
 | The share image | `public/og-preview.png` (commit a new 1200×630 PNG under the same name) |
 | Favicon / app icons | `public/favicon.svg` + PNGs in `public/` |
 
-## Things shared by every page — `site/`
+## Things shared by every page — `shared/`
 
 | What you see | Where it lives |
 |---|---|
-| The top navigation bar | `site/Navbar.jsx` |
-| The footer | `site/Footer.jsx` |
-| The bar along the bottom on phones | `site/MobileDock.jsx` |
-| The video playing behind everything | `site/backdrop/` |
-| The way pages slide when you navigate | `site/motion/` |
+| The top navigation bar | `shared/Navbar.jsx` |
+| The footer | `shared/Footer.jsx` |
+| The bar along the bottom on phones | `shared/MobileDock.jsx` |
+| The video playing behind everything | `shared/backdrop/` |
+| The way pages slide when you navigate | `shared/motion/` |
 
 ## Adding a page
 
-Add the route in `src/App.jsx`, an entry in `site/routeMeta.js` (this also
+Add the route in `App.jsx`, an entry in `shared/routeMeta.js` (this also
 puts it in the sitemap and gives it its own HTML file), a folder for it under
-`pages/`, and a link in `site/Navbar.jsx` or `site/Footer.jsx` if it should be
+`pages/`, and a link in `shared/Navbar.jsx` or `shared/Footer.jsx` if it should be
 reachable from the chrome.

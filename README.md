@@ -77,7 +77,7 @@ that doesn't match production.
 ### Quick start
 
 ```bash
-cd app
+cd website
 npm ci                       # npm install also works; CI and Netlify use ci
 npm run dev                  # http://localhost:5173
 ```
@@ -95,7 +95,7 @@ bash build.sh                # from the repo root → dist/, then smoke checks
 Run the post-build assertions on their own:
 
 ```bash
-node app/scripts/smoke-check.mjs --out dist
+node website/scripts/smoke-check.mjs --out dist
 ```
 
 **Run `bash build.sh` before pushing anything non-trivial.** It compiles
@@ -110,13 +110,13 @@ shows it when you open the folder.
 
 | Path | What it is |
 |---|---|
-| `app/` | The site's source — see `app/README.md` |
-| `app/src/pages/<page>/` | **One folder per page of the website**, holding both surfaces, that page's words and its styles |
-| `app/src/site/` | What every page shares: navbar, footer, the video backdrop, the motion system, per-page SEO |
-| `app/src/lib/` | Hooks and small helpers |
-| `app/src/framer-map/` | The world map, exported from Framer. Vendored — patch via CSS, never edit the chunks. |
-| `app/scripts/` | The four build steps |
-| `app/public/` | Media served as-is: videos, stills, paper PDFs, fonts, icons |
+| `website/` | The site's source — see `website/README.md` |
+| `website/pages/<page>/` | **One folder per page of the website**, holding both surfaces, that page's words and its styles |
+| `website/shared/` | What every page shares: navbar, footer, the video backdrop, the motion system, per-page SEO |
+| `website/lib/` | Hooks and small helpers |
+| `website/framer-map/` | The world map, exported from Framer. Vendored — patch via CSS, never edit the chunks. |
+| `website/scripts/` | The four build steps |
+| `website/public/` | Media served as-is: videos, stills, paper PDFs, fonts, icons |
 | `docs-content/` | **Mirrored** GitBook markdown for `/toolbox`. Pushed here by a GitHub Action in `LennartvdM/NFLX-nieuwe-structuur`. Never hand-edit. |
 | `netlify.toml` | Node version, security headers (strict CSP), caching. Deliberately no SPA rewrite — see below. |
 | `build.sh` | The one build entrypoint |
@@ -127,9 +127,9 @@ shows it when you open the folder.
 | Path | Written by |
 |---|---|
 | `dist/` | `build.sh` (gitignored) |
-| `app/src/generated/` | `scripts/build-docs.mjs` — the compiled toolbox pages |
-| `app/public/docs-assets/` | `scripts/build-docs.mjs` — GitBook images and attachments |
-| `app/public/papers/neoflix-publications.zip` | `scripts/build-publications-zip.mjs` |
+| `website/generated/` | `scripts/build-docs.mjs` — the compiled toolbox pages |
+| `website/public/docs-assets/` | `scripts/build-docs.mjs` — GitBook images and attachments |
+| `website/public/papers/neoflix-publications.zip` | `scripts/build-publications-zip.mjs` |
 
 Hand-placed images belong in `public/previews/` or another tracked directory —
 anything dropped into the paths above is overwritten on the next build.
@@ -150,7 +150,7 @@ which don't.
 
 Every real route gets a **physical HTML file** with its own title, description,
 canonical and OG tags (`scripts/build-route-html.mjs`, driven by
-`src/site/routeMeta.js`). Adding a route to `routeMeta.js` is what makes the
+`shared/routeMeta.js`). Adding a route to `routeMeta.js` is what makes the
 build emit its HTML and its sitemap entry.
 
 Legacy toolbox URLs 301 via the generated `_redirects` (two generations of
@@ -187,7 +187,7 @@ are built at runtime from the clip's filename.
   GoatCounter (free) and Netlify Analytics ($9/mo, zero client JS) are the
   shortlisted candidates. Still an open decision — `AUDIT.md` §6.2.
 - Inter and Montserrat are **self-hosted** (`public/fonts/`,
-  `src/site/fonts.css`). Don't reintroduce a Google Fonts `<link>` — the CSP
+  `shared/fonts.css`). Don't reintroduce a Google Fonts `<link>` — the CSP
   forbids it and a smoke check fails the build if one appears.
 - The only third-party iframe is the Vimeo player, and its URL carries `dnt=1`.
   Don't remove it.

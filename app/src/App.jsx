@@ -1,13 +1,13 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import MobileDock from './components/mobile/MobileDock';
-import RouteSlider from './components/RouteSlider';
-import BackdropProvider from './backdrop/BackdropProvider';
-import { TransitionProvider } from './contexts/TransitionContext';
-import useTabletLayout from './hooks/useTabletLayout';
-import useDocumentMeta from './hooks/useDocumentMeta';
-import ErrorBoundary from './components/ErrorBoundary';
+import Navbar from './site/Navbar';
+import MobileDock from './site/MobileDock';
+import RouteSlider from './site/motion/RouteSlider';
+import BackdropProvider from './site/backdrop/BackdropProvider';
+import { TransitionProvider } from './site/motion/TransitionContext';
+import useTabletLayout from './lib/hooks/useTabletLayout';
+import useDocumentMeta from './lib/hooks/useDocumentMeta';
+import ErrorBoundary from './site/ErrorBoundary';
 
 // Every page is its own chunk. Before this, one bundle carried all five
 // pages (each with both its desktop and mobile tree) plus the docs
@@ -15,12 +15,12 @@ import ErrorBoundary from './components/ErrorBoundary';
 // rendered. The Suspense fallback is null on purpose — the backdrop
 // keeps painting during the (one-time, small) chunk fetch, which reads
 // better than a spinner flashing inside the slide.
-const Home = lazy(() => import('./pages/Home'));
-const NeoflixPage = lazy(() => import('./pages/NeoflixPage'));
-const PublicationsPage = lazy(() => import('./pages/PublicationsPage'));
-const DocsPage = lazy(() => import('./pages/DocsPage'));
-const PaperPage = lazy(() => import('./pages/PaperPage'));
-const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+const Home = lazy(() => import('./pages/home/Home'));
+const NeoflixPage = lazy(() => import('./pages/neoflix/NeoflixPage'));
+const PublicationsPage = lazy(() => import('./pages/publications/PublicationsPage'));
+const DocsPage = lazy(() => import('./pages/toolbox/ToolboxPage'));
+const PaperPage = lazy(() => import('./pages/publications/PaperPage'));
+const NotFoundPage = lazy(() => import('./pages/not-found/NotFoundPage'));
 
 function AppShell() {
   const location = useLocation();

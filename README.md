@@ -111,9 +111,9 @@ shows it when you open the folder.
 | Path | What it is |
 |---|---|
 | `app/` | The site's source — see `app/README.md` |
-| `app/src/data/` | Almost all editable content (see `CONTENT.md`) |
-| `app/src/components/mobile/` | The phone tree — a *separate* set of components |
-| `app/src/backdrop/` | The persistent video backdrop behind every route |
+| `app/src/pages/<page>/` | **One folder per page of the website**, holding both surfaces, that page's words and its styles |
+| `app/src/site/` | What every page shares: navbar, footer, the video backdrop, the motion system, per-page SEO |
+| `app/src/lib/` | Hooks and small helpers |
 | `app/src/framer-map/` | The world map, exported from Framer. Vendored — patch via CSS, never edit the chunks. |
 | `app/scripts/` | The four build steps |
 | `app/public/` | Media served as-is: videos, stills, paper PDFs, fonts, icons |
@@ -141,16 +141,16 @@ phone tree**, forked at `600px`, as separate lazy chunks. They are different
 components, not one responsive layout.
 
 The practical consequence: **a copy change on the homepage has to be made
-twice** — desktop headlines live in `MedicalSection.data.js`, the same sentences
-in phone shape live in `MOBILE_PANELS` in `MobileHome.jsx`. Both files carry
-warning comments. `CONTENT.md` lists which pages share their section data and
+twice** — desktop headlines live in `pages/home/story/story.data.js`, the same
+sentences in phone shape live in `MOBILE_PANELS` in `pages/home/HomePhone.jsx`.
+Both files carry warning comments. `CONTENT.md` lists which pages share their section data and
 which don't.
 
 ### How routing and deploys work
 
 Every real route gets a **physical HTML file** with its own title, description,
 canonical and OG tags (`scripts/build-route-html.mjs`, driven by
-`src/data/routeMeta.js`). Adding a route to `routeMeta.js` is what makes the
+`src/site/routeMeta.js`). Adding a route to `routeMeta.js` is what makes the
 build emit its HTML and its sitemap entry.
 
 Legacy toolbox URLs 301 via the generated `_redirects` (two generations of
@@ -173,7 +173,7 @@ compression pass was tried and reverted because it posterized the gradients.
 **`CLAUDE.md` rule 7 is the rulebook: read it before re-encoding anything**,
 including which clips are already optimal and must be left alone.
 
-Visitors who ask for less get less: `utils/reducedMedia.js` swaps the backdrop
+Visitors who ask for less get less: `lib/utils/reducedMedia.js` swaps the backdrop
 videos for stills when the browser reports `prefers-reduced-motion`, Save-Data,
 or low device memory. Every clip therefore has a matching still in
 `public/videos/stills/` — if a clip changes, regenerate its still so the two
@@ -187,7 +187,7 @@ are built at runtime from the clip's filename.
   GoatCounter (free) and Netlify Analytics ($9/mo, zero client JS) are the
   shortlisted candidates. Still an open decision — `AUDIT.md` §6.2.
 - Inter and Montserrat are **self-hosted** (`public/fonts/`,
-  `src/styles/fonts.css`). Don't reintroduce a Google Fonts `<link>` — the CSP
+  `src/site/fonts.css`). Don't reintroduce a Google Fonts `<link>` — the CSP
   forbids it and a smoke check fails the build if one appears.
 - The only third-party iframe is the Vimeo player, and its URL carries `dnt=1`.
   Don't remove it.

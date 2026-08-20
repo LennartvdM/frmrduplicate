@@ -9,7 +9,7 @@ change the map's behaviour:
 
 - **Appearance** — CSS overrides in `../index.css`, scoped to
   `.worldmap-mount` or `.docs-worldmap-embed`. There are already several.
-- **Interaction** — `../components/sections/worldmap/WorldMap.jsx`, which
+- **Interaction** — `../site/worldmap/WorldMap.jsx`, which
   mounts the map and intercepts clicks on the city markers.
 
 The map injects its own stylesheet at runtime, which can collide with the

@@ -213,6 +213,25 @@ html.is-resizing [data-tablet-layout="true"] {
   mask: var(--worldmap-pin) center / contain no-repeat;
 }
 
+/* ...but half that size inside the toolbox embed.
+ *
+ * The embed draws the whole map into an article-width box while the
+ * marker keeps the pixel size Framer gave it, so a full-size pin
+ * blankets the country it is supposed to be pointing at. Shrinking it
+ * is paint-only — `transform` never touches layout, so the "NICU
+ * <city>" tag beside it does not move by so much as a subpixel.
+ *
+ * The origin is the pin's own foot: its ground bar ends 22/24 of the way
+ * down the glyph's viewBox, so scaling about 91.667% keeps that bar on
+ * the exact pixel it already marked and takes the height out of the top
+ * of the pin. Measured across scales, the ink's bottom row and centre
+ * column don't move at all. The full-bleed home slide, where the map is
+ * big enough to carry a full-size pin, is deliberately left alone. */
+.docs-worldmap-embed .worldmap-mount div[style*="display: contents"]:empty {
+  transform: scale(0.5);
+  transform-origin: 50% 91.667%;
+}
+
 /* Tuck the four-city legend into the top-left of the docs embed and
  * shrink it. Framer applies its own absolute positioning + a
  * translateX(-50%) transformTemplate, so we override with !important on

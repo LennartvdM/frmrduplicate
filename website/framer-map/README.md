@@ -26,10 +26,20 @@ import("https://framer.com/m/material-icons/PinDropRounded.js@0.0.32")
 
 Our CSP is `script-src 'self'` (netlify.toml), so that import is refused and
 the component swallows the failure, rendering an empty box. That is what left
-the map showing a "NICU <city>" tag with a hole where its pin belongs. The
-CSS fills the box with the same glyph — Material Icons `pin_drop`, rounded —
-in the component's own orange, and only while the box is empty, so an export
-that ever inlines the glyph takes over on its own.
+the map showing a "NICU <city>" tag with a hole where its pin belongs. The CSS
+paints the same glyph — Material Icons `pin_drop`, rounded — in the
+component's own orange.
+
+It does **not** paint it in that empty box. A marker is a flex row (an
+invisible duplicate of the label, the pin's box, then the visible tag) centred
+in the map, and the camera centres the map on the city's own coordinates — so
+the row's centre is the city, and the box is wherever the row's widths leave
+it. Painting in the box put the tip 29px low and up to 35px sideways: fixed
+pixel offsets, which cover more ground the smaller the map is drawn, and in the
+toolbox embed that put Leiden's pin on Liege. The pin is therefore anchored to
+the row — tip at 50%/50%, the way map pins are always anchored — which lands
+every city within 2-35 km, the map camera's own precision. The box is left
+alone: it still holds the tag's placement.
 
 `bootstrap.mjs` is ours: it mounts the export and patches it to share the
 app's single React instance.
